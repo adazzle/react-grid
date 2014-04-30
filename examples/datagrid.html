@@ -1,0 +1,129 @@
+<!doctype html>
+<html data-reactid=".fpyr3occu8" data-react-checksum="-1685523781"><head data-reactid=".fpyr3occu8.0"><title data-reactid=".fpyr3occu8.0.0">React Grid</title><link rel="stylesheet" href="&#x2f;react-grid&#x2f;styles&#x2f;index.css" data-reactid=".fpyr3occu8.0.1"></head><body title="React Grid" data-reactid=".fpyr3occu8.1"><nav class="NavigationBar navbar navbar-default navbar-fixed-top" role="navigation" data-reactid=".fpyr3occu8.1.0"><div class="container-fluid" data-reactid=".fpyr3occu8.1.0.0"><div class="navbar-header" data-reactid=".fpyr3occu8.1.0.0.0"><a class="navbar-brand" href="&#x2f;react-grid&#x2f;" data-reactid=".fpyr3occu8.1.0.0.0.0">React Grid</a></div><div class="collapse navbar-collapse" data-reactid=".fpyr3occu8.1.0.0.1"><ul class="nav navbar-nav" data-reactid=".fpyr3occu8.1.0.0.1.0"><li data-reactid=".fpyr3occu8.1.0.0.1.0.$documentation&#x2f;"><a href="&#x2f;react-grid&#x2f;documentation&#x2f;" data-reactid=".fpyr3occu8.1.0.0.1.0.$documentation&#x2f;.0">Documentation</a></li><li class="dropdown" data-reactid=".fpyr3occu8.1.0.0.1.0.$1"><a class="dropdown-toggle" data-reactid=".fpyr3occu8.1.0.0.1.0.$1.0"><span data-reactid=".fpyr3occu8.1.0.0.1.0.$1.0.0">Examples</span><span data-reactid=".fpyr3occu8.1.0.0.1.0.$1.0.1"> </span><b class="caret" data-reactid=".fpyr3occu8.1.0.0.1.0.$1.0.2"></b></a><ul class="dropdown-menu" data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1"><li data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1.$undefined__examples&#x2f;resizeable-columns=1html"><a href="&#x2f;react-grid&#x2f;examples&#x2f;resizeable-columns.html" data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1.$undefined__examples&#x2f;resizeable-columns=1html.0">Resizeable columns</a></li><li data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1.$undefined__examples&#x2f;locked-columns=1html"><a href="&#x2f;react-grid&#x2f;examples&#x2f;locked-columns.html" data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1.$undefined__examples&#x2f;locked-columns=1html.0">Locked columns</a></li><li data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1.$undefined__examples&#x2f;custom-renderers=1html"><a href="&#x2f;react-grid&#x2f;examples&#x2f;custom-renderers.html" data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1.$undefined__examples&#x2f;custom-renderers=1html.0">Custom renderers</a></li><li data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1.$undefined__examples&#x2f;sortable-grid=1html"><a href="&#x2f;react-grid&#x2f;examples&#x2f;sortable-grid.html" data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1.$undefined__examples&#x2f;sortable-grid=1html.0">Implementing sortable grid</a></li><li data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1.$undefined__examples&#x2f;datagrid=1html"><a href="&#x2f;react-grid&#x2f;examples&#x2f;datagrid.html" data-reactid=".fpyr3occu8.1.0.0.1.0.$1.1.$undefined__examples&#x2f;datagrid=1html.0">Implementing lazy-loading datagrid</a></li></ul></li></ul><div class="navbar-repo" data-reactid=".fpyr3occu8.1.0.0.1.1"><a href="https:&#x2f;&#x2f;github.com&#x2f;prometheusresearch&#x2f;react-grid" data-reactid=".fpyr3occu8.1.0.0.1.1.0"><span data-reactid=".fpyr3occu8.1.0.0.1.1.0.0">React Grid</span><span data-reactid=".fpyr3occu8.1.0.0.1.1.0.1"> on GitHub →</span></a></div></div></div></nav><div class="wrapper" data-reactid=".fpyr3occu8.1.1"><div class="ExampleDownload container" data-reactid=".fpyr3occu8.1.1.0"><a href="https:&#x2f;&#x2f;github.com&#x2f;prometheusresearch&#x2f;react-grid&#x2f;blob&#x2f;master&#x2f;docs&#x2f;contents&#x2f;scripts&#x2f;examples&#x2f;datagrid.jsx" data-reactid=".fpyr3occu8.1.1.0.0">See example code</a></div><div class="Content container" data-reactid=".fpyr3occu8.1.1.1"><h1 id="implementing-lazy-loading-datagrid">Implementing lazy-loading datagrid</h1>
+<p>This demo shows how to implement a <code>DataGrid</code> component, a grid which lazily
+loads a paged dataset from a remote datasource using XHR. While loading a part
+of a dataset grid would show a loading indicator. When rows are loaded, they
+are cached so no loading for the same row range would occur any more.</p>
+<h2 id="loading-indicator">Loading indicator</h2>
+<p>We start by implementing a loading indicator. This is a simple component which
+just renders an image with an animated icon.</p>
+<pre><code>var LoadingIndicator = React.createClass({
+
+  render: function() {
+    return (
+      &lt;div className=&quot;LoadingIndicator&quot;&gt;
+        &lt;img src=&quot;/react-grid/assets/spinner.gif&quot; /&gt;
+      &lt;/div&gt;
+    )
+  }
+})
+</code></pre><h2 id="datagrid-implementation">DataGrid implementation</h2>
+<p>Now we are going to show how to provide an implementation of a <code>DataGrid</code>
+component which wraps original <code>Grid</code> component and orchestrates data fetching
+routines:</p>
+<pre><code>var DataGrid = React.createClass({
+</code></pre><p>The components stores the currently available rows and an indicator if there
+are more rows in its state. It starts with no rows and with an assumption that
+there are some rows to be fetched.</p>
+<pre><code>  getInitialState: function() {
+    return {
+      rows: [],
+      hasNext: true
+    }
+  }
+</code></pre><p>Also, the component takes an additional prop <code>rowsPerPage</code> which specifies the
+number of rows to fetch per request. We provide the &quot;sensible&quot; default value
+for this.</p>
+<pre><code>  getDefaultProps: function() {
+    return {
+      rowsPerPage: 30
+    }
+  }
+</code></pre><p>Now the <code>render()</code> method just wraps the original <code>Grid</code> component and provides
+it with data source (we will see how to implement one below) and the length of
+the currently available part of the dataset.</p>
+<p>Note that in case <code>this.state.hasNext === true</code> grid provides a space for an
+additional row which will be filled by a loading indicator when user scrolls
+down to the end of available part of the dataset.</p>
+<pre><code>  render: function() {
+    var length = this.state.rows.length +
+                (this.state.hasNext ? 1 : 0)
+
+    return this.transferPropsTo(
+      &lt;Grid
+        rows={this.rows}
+        length={length}
+        /&gt;
+    );
+  }
+</code></pre><p>The <code>DataGrid</code> is mounted in the DOM we start fetching a new page.</p>
+<pre><code>  componentDidMount: function() {
+    this.fetchNextPage()
+  }
+</code></pre><p>The <code>fetchNextPage()</code> method just checks if there are more rows to be fetched
+and calls <code>fetchPage</code> method to fetch rows needed for the current &quot;page&quot;.</p>
+<pre><code>  fetchNextPage: function() {
+    if (this.state.hasNext) {
+      var length = this.state.rows.length
+      this.fetchPage(
+        length,
+        length + this.props.rowsPerPage)
+    }
+  }
+</code></pre><p>The <code>fetchPage(start, end)</code> method makes a request to server with needed range
+and on success it updates the current state of the grid.</p>
+<p>It also tracks if there&#39;s currently active &quot;fetch&quot; to prevent multiple requests
+simultaneously.</p>
+<p>Note that error handling is deliberately absent to simplify the demo, but in
+the &quot;real world&quot; you would want to track error state separately and show user a
+message in case grid can&#39;t get next portion of a dataset.</p>
+<pre><code>  fetchPage: function(start, end) {
+    if (this.fetchInProgress) {
+      return;
+    }
+
+    this.fetchInProgress = true;
+
+    $.ajax({
+      url: this.props.url,
+      data: {start: start, end: end + 1}
+    }).then((rows) =&gt; {
+      var hasNext = rows.length === end - start + 1
+      rows.pop()
+
+      this.setState({
+        rows: this.state.rows.concat(rows),
+        hasNext: hasNext
+      })
+
+      this.fetchInProgress = false
+    })
+  }
+</code></pre><p>The <code>rows(start, end)</code> method returns already available part of the dataset. It
+also appends a loading indicator in case user scrolled down to the end.</p>
+<p>In case user is near the end of the available part of the dataset and there are
+more rows to fetch, this methods starts fetching a new page.</p>
+<pre><code>  rows: function(start, end) {
+    var rows = this.state.rows.slice(start, end)
+
+    if (this.state.hasNext &amp;&amp;
+        this.state.rows.length - end &lt;= 0) {
+      rows.push(LoadingIndicator())
+    }
+
+    if (end &gt;= (this.state.rows.length - 5)) {
+      this.fetchNextPage()
+    }
+
+    return rows
+  }
+</code></pre><h2 id="datagrid-in-action">DataGrid in action</h2>
+<p>You can see the example of the <code>DataGrid</code> which was
+created using the following code:</p>
+<pre><code>&lt;DataGrid
+  url=&quot;/data.json&quot;
+  columns={columns}
+  rowHeight={40}
+  /&gt;
+</code></pre><div id="example"></div>
+</div></div><script src="&#x2f;react-grid&#x2f;scripts&#x2f;react.js" data-reactid=".fpyr3occu8.1.2"></script><script src="&#x2f;react-grid&#x2f;scripts&#x2f;react-grid.js" data-reactid=".fpyr3occu8.1.3"></script><script src="&#x2f;react-grid&#x2f;scripts&#x2f;ShowValue.js" data-reactid=".fpyr3occu8.1.4:$0"></script><script src="&#x2f;react-grid&#x2f;scripts&#x2f;examples&#x2f;datagrid.js" data-reactid=".fpyr3occu8.1.4:$1"></script><script src="&#x2f;react-grid&#x2f;scripts&#x2f;jquery.js" data-reactid=".fpyr3occu8.1.4:$2"></script></body></html>
