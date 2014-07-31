@@ -2,7 +2,7 @@
  * @jsx React.DOM
  */
 'use strict';
-var ExcelGrid = require('../../lib/ExcelGrid');
+var Grid = require('../../lib/Grid');
 var React = require('React');
 
 var data = [];
@@ -59,7 +59,7 @@ var columns = [
 
 var renderGrid = function(containerId) {
   containerId = containerId || 'sandbox';
-  var grid = ExcelGrid({columns:columns, rows: rows, length: data.length, height: 400});
+  var grid = Grid({columns:columns, rows: rows, length: data.length, height: 400});
     React.renderComponent(grid,
       document.getElementById(containerId));
 };
