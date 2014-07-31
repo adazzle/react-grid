@@ -2,7 +2,7 @@
  * @jsx React.DOM
  */
 'use strict';
-var Grid = require('../../lib/Grid');
+var Grid = require('../../lib/components/Grid');
 var React = require('React');
 
 var data = [];
@@ -16,6 +16,15 @@ for (var i = 0; i < 2000; i++) {
     'price':i });
 };
 
+var SelectableCell = React.createClass({
+  render: function() {
+    return (
+      <div style={{fontWeight: 'bold', color: 'red'}}>
+        № {this.props.value}
+      </div>
+    );
+  }
+});
 
 function rows(start, end) {
   return data.slice(start, end);

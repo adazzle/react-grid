@@ -46,7 +46,8 @@
     "underscore": "^1.6.0",
     "gulp-debug": "^1.0.0",
     "gulp-add-src": "^0.1.1",
-    "react-tools": "^0.11.1"
+    "react-tools": "^0.11.1",
+    "es6-promise": "~1.0.0"
   },
   "browser": {
     "react-grid": "./build/js/react-grid.js",

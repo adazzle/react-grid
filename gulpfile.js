@@ -16,7 +16,7 @@ var rename = require('gulp-rename');
 
 gulp.task('js-build',['clean'], function() {
 
-  return gulp.src(['lib/*.js'])
+  return gulp.src(['lib/**/*.js'])
     .pipe(plumber())
     // Turn React JSX syntax into regular js-build
     .pipe(react({harmony:false}))
@@ -134,7 +134,7 @@ gulp.task('tests-1', function () {
   return gulp.src('test/**/*.js')
     .pipe(plumber())
     .pipe(flatten())
-    .pipe(addsrc(['lib/*.js']))
+    .pipe(addsrc(['lib/**/*.js']))
     .pipe(gulp.dest('build/test/temp'))
 
 });
