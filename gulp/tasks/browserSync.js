@@ -9,6 +9,6 @@ gulp.task('browserSync', ['build'], function() {
 			routes: {
 				"/bower_components": "./bower_components",
 			}
-		}
-	});
+    }
+  });
 });
