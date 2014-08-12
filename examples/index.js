@@ -14,6 +14,7 @@ var components = [];
 //the files need to module.export a react component
 components.push({id:'basic', module:require('./basic') });
 components.push({id:'frozen columns', module:require('./frozenCols') });
+components.push({id:'keyboard nav', module:require('./GridWithKeyboardNav') });
 
 //creates a simple nav menu and viewer
 var Examples = React.createClass({
