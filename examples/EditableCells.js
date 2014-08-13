@@ -2,21 +2,42 @@
  * @jsx React.DOM
  */
 var Grid = require('../lib/addons/EditableGrid');
-
+var DropDownEditor = require('../lib/addons/editors/DropDownEditor');
 var React = require('react');
 
 'use strict';
+var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
+
+var DeveloperDropDown = React.createClass({
+
+  render : function(){
+    var devs = [];
+    developers.forEach(function(name){
+      devs.push(<option key={name} value={name}>{name}</option>);
+    });
+    return (
+      this.transferPropsTo(<DropDownEditor>
+        {devs}
+      </DropDownEditor>)
+    )
+  }
+});
 
 var columns = [
   {
     key: 'id',
     name: 'ID',
-    width: '20%'
+    width: '20%',
   },
   {
     key: 'title',
     name: 'Title',
     editable : true
+  },
+  {
+    key: 'developer',
+    name: 'Developer',
+    editor : DeveloperDropDown
   },
   {
     key: 'count',
@@ -31,6 +52,7 @@ var getRows = function(start, end) {
     result.push({
       id: i,
       title: 'Title ' + i,
+      developer : developers[i%6],
       count: i * 1000
     });
   }
