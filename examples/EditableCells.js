@@ -25,7 +25,7 @@ var columns = [
   },
 ]
 
-var rows = function(start, end) {
+var getRows = function(start, end) {
   var result = []
   for (var i = start; i < end; i++) {
     result.push({
@@ -39,6 +39,20 @@ var rows = function(start, end) {
 
 
 var component = React.createClass({
+
+  getInitialState : function(){
+    return {rows : getRows(0, 1000)};
+  },
+
+  updateCell : function(commit){
+      var rows = this.state.rows;
+      var rowToChange = rows[commit.rowIdx];
+      if(rowToChange){
+        rowToChange[commit.key] = commit.value;
+        this.setState({rows:rows});
+      }
+  },
+
   render: function() {
     return (
       <div>
@@ -51,7 +65,8 @@ var component = React.createClass({
         <Grid
         columns={columns}
         length={1000}
-        rows={rows} /></div>
+        rows={this.state.rows}
+        onCellChanged={this.updateCell} /></div>
       </div>);
   }
 });
