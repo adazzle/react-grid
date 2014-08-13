@@ -48,7 +48,7 @@ var component = React.createClass({
       var rows = this.state.rows;
       var rowToChange = rows[commit.rowIdx];
       if(rowToChange){
-        rowToChange[commit.key] = commit.value;
+        rowToChange[commit.cellKey] = commit.value;
         this.setState({rows:rows});
       }
   },
