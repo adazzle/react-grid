@@ -27,11 +27,11 @@ var columns = [
   {
     key: 'id',
     name: 'ID',
-    width: '20%',
+    width: '5%',
   },
   {
-    key: 'title',
-    name: 'Title',
+    key: 'userStory',
+    name: 'User Story',
     editable : true
   },
   {
@@ -51,7 +51,7 @@ var getRows = function(start, end) {
   for (var i = start; i < end; i++) {
     result.push({
       id: i,
-      title: 'Title ' + i,
+      userStory: 'User Story ' + i,
       developer : developers[i%6],
       count: i * 1000
     });
