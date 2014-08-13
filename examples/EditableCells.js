@@ -3,6 +3,7 @@
  */
 var Grid = require('../lib/addons/EditableGrid');
 var DropDownEditor = require('../lib/addons/editors/DropDownEditor');
+var CheckboxEditor = require('../lib/addons/editors/CheckboxEditor');
 var React = require('react');
 
 'use strict';
@@ -23,6 +24,10 @@ var DeveloperDropDown = React.createClass({
   }
 });
 
+
+
+var EpicFormatter
+
 var columns = [
   {
     key: 'id',
@@ -40,6 +45,12 @@ var columns = [
     editor : DeveloperDropDown
   },
   {
+    key: 'taskComplete',
+    name: 'Task Complete',
+    editor : CheckboxEditor,
+    width : '5%'
+  },
+  {
     key: 'count',
     name: 'Count',
     width: '20%'
@@ -53,6 +64,7 @@ var getRows = function(start, end) {
       id: i,
       userStory: 'User Story ' + i,
       developer : developers[i%6],
+      taskComplete : false,
       count: i * 1000
     });
   }
