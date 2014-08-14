@@ -42,11 +42,19 @@
   padding : 0
 }
 
-.react-grid-Cell.editing input, select{
+.react-grid-Cell.editing input:not([type='checkbox']), select{
   width : 100%
 }
 
-
+.react-grid-cell.editing input[type='checkbox']{
+  display: block;
+  margin : 0;
+  margin-left: auto;
+  margin-right: auto;
+  position : relative;
+  top : 50%;
+  transform : translateY(-50%);
+}
 
 .react-grid-Header {
   box-shadow: @react-grid-shadow;
