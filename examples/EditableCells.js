@@ -5,6 +5,7 @@ var Grid = require('../lib/addons/EditableGrid');
 var DropDownEditor = require('../lib/addons/editors/DropDownEditor');
 var CheckboxEditor = require('../lib/addons/editors/CheckboxEditor');
 var React = require('react');
+var cx = React.addons.classSet;
 
 'use strict';
 var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
@@ -25,12 +26,33 @@ var DeveloperDropDown = React.createClass({
 });
 
 
+var TrueFalseFormatter = React.createClass({
+  render : function(){
+    var className = cx({
+      'glyphicon' : true,
+      'glyphicon-ok' : this.props.value === true,
+      'glyphicon-remove' : this.props.value === false
+
+    })
+
+    return (<span className={className}></span>)
+  }
+});
+
+
 
 var EpicFormatter
 
 var columns = [
+{
+  key: 'taskComplete',
+  name: 'Complete',
+  formatter : TrueFalseFormatter,
+  width : '5%'
+},
   {
     key: 'id',
+
     name: 'ID',
     width: '5%',
   },
@@ -45,15 +67,9 @@ var columns = [
     editor : DeveloperDropDown
   },
   {
-    key: 'taskComplete',
-    name: 'Task Complete',
-    editor : CheckboxEditor,
-    width : '5%'
-  },
-  {
     key: 'count',
     name: 'Count',
-    width: '20%'
+    width: '10%'
   },
 ]
 
@@ -61,10 +77,10 @@ var getRows = function(start, end) {
   var result = []
   for (var i = start; i < end; i++) {
     result.push({
+      taskComplete : false,
       id: i,
       userStory: 'User Story ' + i,
       developer : developers[i%6],
-      taskComplete : false,
       count: i * 1000
     });
   }
