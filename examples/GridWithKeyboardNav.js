@@ -43,11 +43,11 @@ var component = React.createClass({
       <div>
         <div className="well well-lg" >
           <p>This shows a grid with full keyboard navigation. </p>
-        <div>
+        </div>
         <Grid
         columns={columns}
         length={1000}
-        rows={rows} /></div>
+        rows={rows} />
       </div>);
   }
 });
