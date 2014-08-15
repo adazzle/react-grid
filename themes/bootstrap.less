@@ -26,9 +26,14 @@
   transform: translateY(-50%);
 }
 
+.react-grid-Cell.copied {
+  background: rgba(0, 0, 255, 0.2) !important;
+  -webkit-transition: 0.5s background;
+}
+
 .react-grid-Row {
   &:hover .react-grid-Cell {
-    background-color: darken(@body-bg, 5%);
+  background-color: darken(@body-bg, 5%);
   }
 }
 

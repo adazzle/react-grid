@@ -16,6 +16,7 @@ components.push({id:'Basic', module:require('./basic') });
 components.push({id:'Frozen Columns', module:require('./frozenCols') });
 components.push({id:'Keyboard Nav', module:require('./GridWithKeyboardNav') });
 components.push({id:'Editable Cells', module:require('./EditableCells') });
+components.push({id:'Copyable Cells', module:require('./CopyableCells') });
 
 //creates a simple nav menu and viewer
 var Examples = React.createClass({
