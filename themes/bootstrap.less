@@ -114,19 +114,33 @@
 .react-grid-Cell.selected-draggable {
   border: 2px solid #5292F7;
   background: #eee;
-  overflow : visible !important;
 }
 
-.react-grid-Cell.selected-draggable .cursor{
-  position: absolute;
-  bottom: -5px;
-  right: -4px;
-  background: #5292F7;
-  width: 8px;
-  height: 8px;
-  border: 1px solid #fff;
-  border-right: 0px;
-  border-bottom: 0px;
-  z-index: 10;
-  cursor: crosshair;
+
+.react-grid-Cell.was-dragged-over {
+  border-right: 1px dashed black;
+  border-left: 1px dashed black;
+}
+
+.react-grid-Cell.is-dragged-over {
+  border-right: 1px dashed black;
+  border-left: 1px dashed black;
+  border-bottom: 1px dashed black;
+}
+
+.react-grid-Cell.active-drag-cell{
+  overflow : visible !important;
+  .drag-handle{
+    position: absolute;
+    bottom: -5px;
+    right: -4px;
+    background: #5292F7;
+    width: 8px;
+    height: 8px;
+    border: 1px solid #fff;
+    border-right: 0px;
+    border-bottom: 0px;
+    z-index: 10;
+    cursor: crosshair;
+  }
 }
