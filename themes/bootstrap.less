@@ -110,3 +110,23 @@
 .react-grid-ScrollShim {
   z-index: 10002;
 }
+
+.react-grid-Cell.selected-draggable {
+  border: 2px solid #5292F7;
+  background: #eee;
+  overflow : visible !important;
+}
+
+.react-grid-Cell.selected-draggable .cursor{
+  position: absolute;
+  bottom: -5px;
+  right: -4px;
+  background: #5292F7;
+  width: 8px;
+  height: 8px;
+  border: 1px solid #fff;
+  border-right: 0px;
+  border-bottom: 0px;
+  z-index: 10;
+  cursor: crosshair;
+}
