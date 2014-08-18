@@ -34,7 +34,7 @@ var getRows = function(start, end) {
     });
   }
   return result;
-}
+};
 
 
 var component = React.createClass({
@@ -43,13 +43,15 @@ var component = React.createClass({
     return {rows : getRows(0, 1000)};
   },
 
-  updateCell : function(commit){
+  handleCellDrag : function(e){
       var rows = this.state.rows;
-      var rowToChange = rows[commit.rowIdx];
-      if(rowToChange){
-        rowToChange[commit.cellKey] = commit.value;
-        this.setState({rows:rows});
+      for (var i = e.initialRowIdx; i <= e.lastRowIdx; i++){
+        var rowToChange = rows[i];
+        if(rowToChange){
+          rowToChange[e.cellKey] = e.value;
+        }
       }
+      this.setState({rows:rows});
   },
 
   render: function() {
@@ -65,7 +67,7 @@ var component = React.createClass({
         columns={columns}
         length={1000}
         rows={this.state.rows}
-        onCellChanged={this.updateCell} /></div>
+        onCellsDragged={this.handleCellDrag} /></div>
       </div>);
   }
 });
