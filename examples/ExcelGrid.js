@@ -4,11 +4,14 @@
 var Grid = require('../lib/addons/grids/ExcelGrid');
 var DropDownEditor = require('../lib/addons/editors/DropDownEditor');
 var CheckboxEditor = require('../lib/addons/editors/CheckboxEditor');
+var AutoCompleteEditor = require('../lib/addons/editors/AutoCompleteEditor');
+
 var React = require('react');
 var cx = React.addons.classSet;
 
 'use strict';
 var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
+var epics = ['Unification Of Media', 'Trading Desk', 'Tech Costs', 'Tactical', 'Barter', 'Lego', 'Media Plan', 'Infrastructure'];
 
 var DeveloperDropDown = React.createClass({
 
@@ -67,6 +70,11 @@ var columns = [
     editor : DeveloperDropDown
   },
   {
+    key: 'epic',
+    name: 'Epic',
+    editor : AutoCompleteEditor
+  },
+  {
     key: 'count',
     name: 'Count',
     width: '10%'
@@ -81,6 +89,7 @@ var getRows = function(start, end) {
       id: i,
       userStory: 'User Story ' + i,
       developer : developers[i%6],
+      epic : epics[i%8],
       count: i * 1000
     });
   }
@@ -125,6 +134,7 @@ var component = React.createClass({
             <li>Copy/Paste cells</li>
             <li>Cell Dragdown</li>
           </ul>
+          <AutoCompleteEditor/>
         </div>
         <div>
         <Grid
