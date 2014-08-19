@@ -118,9 +118,13 @@ var component = React.createClass({
     return (
       <div>
         <div className="well well-lg" >
-          <p>This shows a grid with editing capabilities as well as keyboard navigation.</p>
-          <p>A cell can be configured editable by either setting column.editable == true. In this instance, the editor will default to a SimpleTextEditor as in the User Story column</p>
-          <p>Alternatively, you can specify column.editor and pass it a valid React component that either implements the Editor Mixin or wraps one of the default editors. The Developer Column wraps the DropDownEditor and passes its available options as children</p>
+          <h4>Excel Style Grid</h4>
+          <ul>
+            <li>Keyboard navigation</li>
+            <li>Editable cells</li>
+            <li>Copy/Paste cells</li>
+            <li>Cell Dragdown</li>
+          </ul>
         </div>
         <div>
         <Grid
