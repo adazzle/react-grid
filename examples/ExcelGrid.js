@@ -1,7 +1,7 @@
 /**
  * @jsx React.DOM
  */
-var Grid = require('../lib/addons/EditableGrid');
+var Grid = require('../lib/addons/grids/ExcelGrid');
 var DropDownEditor = require('../lib/addons/editors/DropDownEditor');
 var CheckboxEditor = require('../lib/addons/editors/CheckboxEditor');
 var React = require('react');

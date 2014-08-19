@@ -1,7 +1,7 @@
 /**
  * @jsx React.DOM
  */
-var Grid = require('../lib/addons/GridWithKeyboardNav');
+var Grid = require('../lib/addons/grids/GridWithKeyboardNav');
 
 var React = require('react');
 

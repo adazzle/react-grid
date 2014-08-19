@@ -1,7 +1,7 @@
 /**
  * @jsx React.DOM
  */
-var Grid = require('../lib/addons/DraggableCellGrid');
+var Grid = require('../lib/addons/grids/DraggableCellGrid');
 var React = require('react');
 var cx = React.addons.classSet;
 
@@ -58,8 +58,7 @@ var component = React.createClass({
     return (
       <div>
         <div className="well well-lg" >
-          <p>This shows a grid with copy/paste functionlity and keyboard navigation.</p>
-          <p>Hold Ctrl + C to copy a cells contents and Ctrl + V to paste</p>
+          <p>This shows a grid with dragdown to copy functionality and keyboard navigation.</p>
 
         </div>
         <div>

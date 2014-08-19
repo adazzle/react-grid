@@ -1,7 +1,7 @@
 /**
  * @jsx React.DOM
  */
-var Grid = require('../lib/addons/CopyPasteGrid');
+var Grid = require('../lib/addons/grids/CopyPasteGrid');
 var React = require('react');
 var cx = React.addons.classSet;
 
