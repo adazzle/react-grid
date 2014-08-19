@@ -103,6 +103,17 @@ var component = React.createClass({
       }
   },
 
+  handleCellDrag : function(e){
+      var rows = this.state.rows;
+      for (var i = e.initialRowIdx; i <= e.lastRowIdx; i++){
+        var rowToChange = rows[i];
+        if(rowToChange){
+          rowToChange[e.cellKey] = e.value;
+        }
+      }
+      this.setState({rows:rows});
+  },
+
   render: function() {
     return (
       <div>
@@ -116,7 +127,8 @@ var component = React.createClass({
         columns={columns}
         length={1000}
         rows={this.state.rows}
-        onCellChanged={this.updateCell} /></div>
+        onCellChanged={this.updateCell}
+        onCellsDragged={this.handleCellDrag}  /></div>
       </div>);
   }
 });
