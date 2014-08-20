@@ -9,6 +9,7 @@ var Grid = require('../lib/addons/grids/ExcelGrid');
 var DropDownEditor = require('../lib/addons/editors/DropDownEditor');
 var CheckboxEditor = require('../lib/addons/editors/CheckboxEditor');
 var AutoCompleteEditor = require('../lib/addons/editors/AutoCompleteEditor');
+var DateRangeEditor = require('../lib/addons/editors/DateRangeEditor');
 
 'use strict';
 var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
@@ -56,9 +57,9 @@ var columns = [
     editor : <AutoCompleteEditor options={epics} />
   },
   {
-    key: 'count',
-    name: 'Count',
-    width: '10%'
+    key: 'dateRange',
+    name: 'dateRange',
+    editor : <DateRangeEditor/>
   },
 ]
 
@@ -71,7 +72,7 @@ var getRows = function(start, end) {
       userStory: 'User Story ' + i,
       developer : developers[i%6],
       epic : epics[i%8].title,
-      count: i * 1000
+      dateRange: {startDate : '2013-01-01', endDate : '2013-02-01'}
     });
   }
   return result;
