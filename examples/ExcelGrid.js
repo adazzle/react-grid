@@ -11,7 +11,7 @@ var CheckboxEditor = require('../lib/addons/editors/CheckboxEditor');
 var AutoCompleteEditor = require('../lib/addons/editors/AutoCompleteEditor');
 
 'use strict';
-var developersdevelopers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
+var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
 var epics = [{id : 0, title : 'Unification Of Media'}, { id : 1, title : 'Trading Desk'}, { id : 2, title : 'Tech Costs'}, { id : 3, title : 'Tactical'}, { id : 4, title : 'Barter'}, { id : 5, title :'Lego'}, {id : 6, title : 'Media Plan'}, {id : 7, title : 'Infrastructure'}];
 
 var TrueFalseFormatter = React.createClass({
@@ -26,10 +26,6 @@ var TrueFalseFormatter = React.createClass({
     return (<span className={className}></span>)
   }
 });
-
-
-
-var EpicFormatter
 
 var columns = [
 {
@@ -52,12 +48,12 @@ var columns = [
   {
     key: 'developer',
     name: 'Developer',
-    editor : <DropDownEditor options={developers}>
+    editor : <DropDownEditor options={developers} />
   },
   {
     key: 'epic',
     name: 'Epic',
-    editor : <AutoCompleteEditor  options={epics}/>
+    editor : <AutoCompleteEditor options={epics} />
   },
   {
     key: 'count',

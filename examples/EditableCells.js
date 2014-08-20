@@ -10,22 +10,6 @@ var cx = React.addons.classSet;
 'use strict';
 var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
 
-var DeveloperDropDown = React.createClass({
-
-  render : function(){
-    var devs = [];
-    developers.forEach(function(name){
-      devs.push(<option key={name} value={name}>{name}</option>);
-    });
-    return (
-      this.transferPropsTo(<DropDownEditor>
-        {devs}
-      </DropDownEditor>)
-    )
-  }
-});
-
-
 var TrueFalseFormatter = React.createClass({
   render : function(){
     var className = cx({
@@ -64,7 +48,7 @@ var columns = [
   {
     key: 'developer',
     name: 'Developer',
-    editor : DeveloperDropDown
+    editor : <DropDownEditor options={developers} />
   },
   {
     key: 'count',
