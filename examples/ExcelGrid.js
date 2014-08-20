@@ -1,33 +1,18 @@
 /**
  * @jsx React.DOM
  */
+
+var React = require('react');
+var cx = React.addons.classSet;
+var cloneWithProps = React.addons.cloneWithProps;
 var Grid = require('../lib/addons/grids/ExcelGrid');
 var DropDownEditor = require('../lib/addons/editors/DropDownEditor');
 var CheckboxEditor = require('../lib/addons/editors/CheckboxEditor');
 var AutoCompleteEditor = require('../lib/addons/editors/AutoCompleteEditor');
 
-var React = require('react');
-var cx = React.addons.classSet;
-
 'use strict';
-var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
-var epics = ['Unification Of Media', 'Trading Desk', 'Tech Costs', 'Tactical', 'Barter', 'Lego', 'Media Plan', 'Infrastructure'];
-
-var DeveloperDropDown = React.createClass({
-
-  render : function(){
-    var devs = [];
-    developers.forEach(function(name){
-      devs.push(<option key={name} value={name}>{name}</option>);
-    });
-    return (
-      this.transferPropsTo(<DropDownEditor>
-        {devs}
-      </DropDownEditor>)
-    )
-  }
-});
-
+var developersdevelopers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
+var epics = [{id : 0, title : 'Unification Of Media'}, { id : 1, title : 'Trading Desk'}, { id : 2, title : 'Tech Costs'}, { id : 3, title : 'Tactical'}, { id : 4, title : 'Barter'}, { id : 5, title :'Lego'}, {id : 6, title : 'Media Plan'}, {id : 7, title : 'Infrastructure'}];
 
 var TrueFalseFormatter = React.createClass({
   render : function(){
@@ -67,12 +52,12 @@ var columns = [
   {
     key: 'developer',
     name: 'Developer',
-    editor : DeveloperDropDown
+    editor : <DropDownEditor options={developers}>
   },
   {
     key: 'epic',
     name: 'Epic',
-    editor : AutoCompleteEditor
+    editor : <AutoCompleteEditor  options={epics}/>
   },
   {
     key: 'count',
@@ -89,7 +74,7 @@ var getRows = function(start, end) {
       id: i,
       userStory: 'User Story ' + i,
       developer : developers[i%6],
-      epic : epics[i%8],
+      epic : epics[i%8].title,
       count: i * 1000
     });
   }
@@ -134,7 +119,6 @@ var component = React.createClass({
             <li>Copy/Paste cells</li>
             <li>Cell Dragdown</li>
           </ul>
-          <AutoCompleteEditor/>
         </div>
         <div>
         <Grid
