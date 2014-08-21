@@ -131,6 +131,7 @@ var component = React.createClass({
               <li>Autocomplete Editor (Epic column)</li>
               <li>Date Range Editor (Duration column)</li>
             </ul>
+            <li>Editable validation</li>
             <li>Custom Formatters</li>
               <ul>
                 Date Range Formatter (Duration Column)
