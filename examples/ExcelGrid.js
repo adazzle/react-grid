@@ -2,14 +2,15 @@
  * @jsx React.DOM
  */
 
-var React = require('react');
-var cx = React.addons.classSet;
-var cloneWithProps = React.addons.cloneWithProps;
-var Grid = require('../lib/addons/grids/ExcelGrid');
-var DropDownEditor = require('../lib/addons/editors/DropDownEditor');
-var CheckboxEditor = require('../lib/addons/editors/CheckboxEditor');
-var AutoCompleteEditor = require('../lib/addons/editors/AutoCompleteEditor');
-var DateRangeEditor = require('../lib/addons/editors/DateRangeEditor');
+var React               = require('react');
+var Grid                = require('../lib/addons/grids/ExcelGrid');
+var DropDownEditor      = require('../lib/addons/editors/DropDownEditor');
+var CheckboxEditor      = require('../lib/addons/editors/CheckboxEditor');
+var AutoCompleteEditor  = require('../lib/addons/editors/AutoCompleteEditor');
+var DateRangeEditor     = require('../lib/addons/editors/DateRangeEditor');
+var DateRangeFormatter  = require('../lib/addons/formatters/DateRangeFormatter');
+var cx                  = React.addons.classSet;
+var cloneWithProps      = React.addons.cloneWithProps;
 
 'use strict';
 var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
@@ -58,8 +59,10 @@ var columns = [
   },
   {
     key: 'dateRange',
-    name: 'dateRange',
-    editor : <DateRangeEditor/>
+    name: 'Duration',
+    formatter : <DateRangeFormatter/>,
+    editor : <DateRangeEditor/>,
+    width : '15%'
   },
 ]
 
