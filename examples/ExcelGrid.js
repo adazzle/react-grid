@@ -125,6 +125,16 @@ var component = React.createClass({
           <ul>
             <li>Keyboard navigation</li>
             <li>Editable cells</li>
+            <ul>
+              <li>Simple Text Editor (User story column)</li>
+              <li>Drop Down Editor (Developer column)</li>
+              <li>Autocomplete Editor (Epic column)</li>
+              <li>Date Range Editor (Duration column)</li>
+            </ul>
+            <li>Custom Formatters</li>
+              <ul>
+                Date Range Formatter (Duration Column)
+              </ul>
             <li>Copy/Paste cells</li>
             <li>Cell Dragdown</li>
           </ul>
