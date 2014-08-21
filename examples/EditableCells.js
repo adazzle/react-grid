@@ -2,17 +2,13 @@
  * @jsx React.DOM
  */
 var Grid = require('../lib/addons/grids/EditableGrid');
-var DropDownEditor      = require('../lib/addons/editors/DropDownEditor');
-var CheckboxEditor      = require('../lib/addons/editors/CheckboxEditor');
-var AutoCompleteEditor  = require('../lib/addons/editors/AutoCompleteEditor');
-var DateRangeEditor     = require('../lib/addons/editors/DateRangeEditor');
-var DateRangeFormatter  = require('../lib/addons/formatters/DateRangeFormatter');
+var DropDownEditor = require('../lib/addons/editors/DropDownEditor');
+var CheckboxEditor = require('../lib/addons/editors/CheckboxEditor');
 var React = require('react');
 var cx = React.addons.classSet;
 
 'use strict';
 var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
-var epics = [{id : 0, title : 'Unification Of Media'}, { id : 1, title : 'Trading Desk'}, { id : 2, title : 'Tech Costs'}, { id : 3, title : 'Tactical'}, { id : 4, title : 'Barter'}, { id : 5, title :'Lego'}, {id : 6, title : 'Media Plan'}, {id : 7, title : 'Infrastructure'}];
 
 var TrueFalseFormatter = React.createClass({
   render : function(){
@@ -27,22 +23,11 @@ var TrueFalseFormatter = React.createClass({
   }
 });
 
-var dateRanges  = {
-         'Today': [moment(), moment()],
-         'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
-         'Last 7 Days': [moment().subtract('days', 6), moment()],
-         'Last 30 Days': [moment().subtract('days', 29), moment()],
-         'This Month': [moment().startOf('month'), moment().endOf('month')],
-         'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
-      }
+
+
+var EpicFormatter
 
 var columns = [
-{
-  key: 'taskComplete',
-  name: 'Complete',
-  formatter : TrueFalseFormatter,
-  width : '5%'
-},
   {
     key: 'id',
 
@@ -60,16 +45,9 @@ var columns = [
     editor : <DropDownEditor options={developers} />
   },
   {
-    key: 'epic',
-    name: 'Epic',
-    editor : <AutoCompleteEditor options={epics} />
-  },
-  {
-    key: 'dateRange',
-    name: 'Duration',
-    formatter : <DateRangeFormatter/>,
-    editor : <DateRangeEditor ranges={dateRanges}/>,
-    width : '15%'
+    key: 'count',
+    name: 'Count',
+    width: '10%'
   },
 ]
 
@@ -77,12 +55,11 @@ var getRows = function(start, end) {
   var result = []
   for (var i = start; i < end; i++) {
     result.push({
-      taskComplete : false,
       id: i,
-      userStory: 'User Story ' + i,
+      userStory:
+       'User Story ' + i,
       developer : developers[i%6],
-      epic : epics[i%8].title,
-      dateRange: {startDate : '2013-01-01', endDate : '2013-02-01'}
+      count: i * 1000
     });
   }
   return result;

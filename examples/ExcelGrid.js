@@ -16,19 +16,6 @@ var cloneWithProps      = React.addons.cloneWithProps;
 var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
 var epics = [{id : 0, title : 'Unification Of Media'}, { id : 1, title : 'Trading Desk'}, { id : 2, title : 'Tech Costs'}, { id : 3, title : 'Tactical'}, { id : 4, title : 'Barter'}, { id : 5, title :'Lego'}, {id : 6, title : 'Media Plan'}, {id : 7, title : 'Infrastructure'}];
 
-var TrueFalseFormatter = React.createClass({
-  render : function(){
-    var className = cx({
-      'glyphicon' : true,
-      'glyphicon-ok' : this.props.value === true,
-      'glyphicon-remove' : this.props.value === false
-
-    })
-
-    return (<span className={className}></span>)
-  }
-});
-
 var dateRanges  = {
          'Today': [moment(), moment()],
          'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
@@ -39,15 +26,8 @@ var dateRanges  = {
       }
 
 var columns = [
-{
-  key: 'taskComplete',
-  name: 'Complete',
-  formatter : TrueFalseFormatter,
-  width : '5%'
-},
   {
     key: 'id',
-
     name: 'ID',
     width: '5%',
   },
@@ -69,8 +49,8 @@ var columns = [
   {
     key: 'dateRange',
     name: 'Duration',
-    formatter : <DateRangeFormatter/>,
     editor : <DateRangeEditor ranges={dateRanges}/>,
+    formatter : <DateRangeFormatter />,
     width : '15%'
   },
 ]
@@ -79,7 +59,6 @@ var getRows = function(start, end) {
   var result = []
   for (var i = start; i < end; i++) {
     result.push({
-      taskComplete : false,
       id: i,
       userStory: 'User Story ' + i,
       developer : developers[i%6],
