@@ -49,6 +49,11 @@
   overflow : visible !important;
 }
 
+.react-grid-Cell.editing .has-error input{
+  border : 2px red solid !important;
+  border-radius: 2px !important;
+}
+
 .react-grid-Cell.editing input:not([type='checkbox']), select{
   .form-control();
 
@@ -117,6 +122,17 @@
 .react-grid-Cell.selected-draggable {
   border: 1px solid #66afe9;
   background: #eee;
+}
+
+.react-grid-cell .form-control-feedback {
+  color: #a94442;
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  z-index: 1000000;
+  display: block;
+  width: 34px;
+  height: 34px;
 }
 
 
