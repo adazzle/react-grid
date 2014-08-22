@@ -114,6 +114,7 @@ var Mixin = {
   },
 
   componentWillReceiveProps(nextProps) {
+<<<<<<< HEAD
     if (nextProps.columns) {
       if (!sameColumns(this.props.columns, nextProps.columns, this.props.columnEquality)) {
         this.setState(this.getColumnMetrics(nextProps));
@@ -128,6 +129,9 @@ var Mixin = {
         this.setState({columns: nextColumns});
       }
     }
+=======
+      this.setState(this.getColumnMetrics(nextProps));
+>>>>>>> reset column metrics change which breaks keyboard scrolling
   },
 
   getColumnMetrics(props, initial) {
