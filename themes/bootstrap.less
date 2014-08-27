@@ -135,17 +135,12 @@
   height: 34px;
 }
 
-
 .react-grid-Cell.was-dragged-over {
   border-right: 1px dashed black;
   border-left: 1px dashed black;
 }
 
-.react-grid-Cell.is-dragged-over {
-  border-right: 1px dashed black;
-  border-left: 1px dashed black;
-  border-bottom: 1px dashed black;
-}
+
 
 .react-grid-Cell.active-drag-cell{
   overflow : visible !important;
@@ -161,6 +156,21 @@
     border-bottom: 0px;
     z-index: 10;
     cursor: crosshair;
+  }
+}
+
+.react-grid-Cell.is-dragged-over-down {
+  border-right: 1px dashed black;
+  border-left: 1px dashed black;
+  border-bottom: 1px dashed black;
+}
+
+.react-grid-Cell.is-dragged-over-up {
+  border-right: 1px dashed black;
+  border-left: 1px dashed black;
+  border-top: 1px dashed black;
+  .drag-handle{
+    top: -5px;
   }
 }
 
