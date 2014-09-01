@@ -45,7 +45,7 @@ var component = React.createClass({
 
   handleCellDrag : function(e){
       var rows = this.state.rows;
-      for (var i = e.initialRowIdx; i <= e.lastRowIdx; i++){
+      for (var i = e.fromRow; i <= e.toRow; i++){
         var rowToChange = rows[i];
         if(rowToChange){
           rowToChange[e.cellKey] = e.value;
