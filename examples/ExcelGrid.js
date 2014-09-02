@@ -34,17 +34,20 @@ var columns = [
   {
     key: 'userStory',
     name: 'User Story',
-    editable : true
+    editable : true,
+    sortable : true
   },
   {
     key: 'developer',
     name: 'Developer',
-    editor : <DropDownEditor options={developers} />
+    editor : <DropDownEditor options={developers} />,
+    sortable : true
   },
   {
     key: 'epic',
     name: 'Epic',
-    editor : <AutoCompleteEditor options={epics} />
+    editor : <AutoCompleteEditor options={epics} />,
+    sortable : true
   },
   {
     key: 'dateRange',
@@ -96,6 +99,10 @@ var component = React.createClass({
       this.setState({rows:rows});
   },
 
+  cancelSort(){
+    this.render();
+  },
+
   render: function() {
     return (
       <div>
@@ -125,7 +132,7 @@ var component = React.createClass({
         length={1000}
         rows={this.state.rows}
         onCellChanged={this.updateCell}
-        onCellsDragged={this.handleCellDrag}  /></div>
+        onCellsDragged={this.handleCellDrag} /></div>
       </div>);
   }
 });
