@@ -3,13 +3,25 @@ var bundleLogger = require('./bundleLogger');
 var browserify   = require('browserify');
 var handleErrors = require('./handleErrors');
 var source       = require('vinyl-source-stream');
+var exposify     = require('exposify');
 
-function buildBundle(bundleConfig, outFile, outFldr, watch) {
+exposify.config = { react: 'React'};
+
+function buildBundle(bundleConfig, outFile, outFldr, watch, options) {
   var bundleMethod = watch && global.isWatching ? watchify : browserify;
   var bundler = bundleMethod(bundleConfig);
   var bundle = function() {
     // Log when bundling starts
     bundleLogger.start();
+
+    if(options){
+      if(Array.isArray(options.excludes)){
+        options.excludes.forEach(function(toExclude){
+            bundler.exclude(toExclude);
+        })
+      }
+    }
+
 
     return bundler
       .bundle()

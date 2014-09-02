@@ -51,7 +51,12 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "es6-shim": "^0.15.0",
     "es5-shim": "^4.0.1",
-    "jasmine-react": "^1.0.7"
+    "jasmine-react": "^1.0.7",
+    "ron-react-autocomplete": "0.0.2",
+    "react-bootstrap-daterangepicker": "0.0.5",
+    "moment": "^2.8.1",
+    "exposify": "^0.2.0",
+    "browserify-shim": "^3.7.0"
   },
   "browserify": {
     "transform": [
@@ -62,6 +67,9 @@
         }
       ]
     ]
+  },
+  "browserify-shim": {
+    "react": "react"
   },
   "author": "Prometheus Research",
   "license": "MIT",
