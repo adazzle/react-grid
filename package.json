@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/prometheusresearch/react-grid.git"
+    "url": "git://github.com/adazzle/react-grid.git"
   },
   "keywords": [
     "react",
@@ -74,7 +74,7 @@
   "author": "Prometheus Research",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/prometheusresearch/react-grid/issues"
+    "url": "https://github.com/adazzle/react-grid/issues"
   },
-  "homepage": "https://github.com/prometheusresearch/react-grid"
+  "homepage": "https://github.com/adazzle/react-grid"
 }
