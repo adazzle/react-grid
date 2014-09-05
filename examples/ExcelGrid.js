@@ -54,7 +54,8 @@ var columns = [
     name: 'Duration',
     editor : <DateRangeEditor ranges={dateRanges}/>,
     formatter : <DateRangeFormatter />,
-    width : '15%'
+    width : '15%',
+    filterable : false
   },
 ]
 
