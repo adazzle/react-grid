@@ -69,7 +69,8 @@
     ]
   },
   "browserify-shim": {
-    "react": "react"
+    "react": "global:window.React",
+    "react/addons": "global:window.React"
   },
   "author": "Prometheus Research",
   "license": "MIT",
