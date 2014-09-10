@@ -9,7 +9,7 @@
   return require('../lib/addons/grids/ExcelGrid.js');
 });
 
-},{"../lib/addons/grids/ExcelGrid.js":26}],2:[function(require,module,exports){
+},{"../lib/addons/grids/ExcelGrid.js":27}],2:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -58,7 +58,8 @@ var Canvas = React.createClass({displayName: 'Canvas',
           row: row,
           height: rowHeight,
           columns: this.props.columns,
-          cellRenderer: this.props.cellRenderer
+          cellRenderer: this.props.cellRenderer,
+          isSelected : this.isRowSelected(displayStart + idx)
         });}.bind(this));
 
     this._currentRowsLength = rows.length;
@@ -85,10 +86,10 @@ var Canvas = React.createClass({displayName: 'Canvas',
 
     return (
       React.DOM.div({
-        style: style,
-        onScroll: this.onScroll,
-        className: cx("react-grid-Canvas", this.props.className)},
-        React.DOM.div({style: {width: this.props.width, overflow: 'hidden'}},
+        style: style, 
+        onScroll: this.onScroll, 
+        className: cx("react-grid-Canvas", this.props.className)}, 
+        React.DOM.div({style: {width: this.props.width, overflow: 'hidden'}}, 
           rows
         )
       )
@@ -105,7 +106,7 @@ var Canvas = React.createClass({displayName: 'Canvas',
 
   renderPlaceholder:function(key, height) {
     return (
-      React.DOM.div({key: key, style: {height: height}},
+      React.DOM.div({key: key, style: {height: height}}, 
         this.props.columns.map(
           function(column, idx)  {return React.DOM.div({style: {width: column.width}, key: idx});})
       )
@@ -117,6 +118,10 @@ var Canvas = React.createClass({displayName: 'Canvas',
       rowRenderer: Row,
       onRows: emptyFunction
     };
+  },
+
+  isRowSelected:function(rowIdx){
+   return this.props.selectedRows[rowIdx] === true;
   },
 
   getInitialState:function() {
@@ -218,7 +223,7 @@ var Canvas = React.createClass({displayName: 'Canvas',
 module.exports = Canvas;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Row":11,"./ScrollShim":12,"./emptyFunction":35,"./shallowEqual":41}],3:[function(require,module,exports){
+},{"./Row":11,"./ScrollShim":12,"./emptyFunction":37,"./shallowEqual":43}],3:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -240,11 +245,12 @@ var Cell = React.createClass({displayName: 'Cell',
       this.props.column.locked ? 'react-grid-Cell--locked' : null
     );
     return this.transferPropsTo(
-      React.DOM.div({className: className, style: style},
+      React.DOM.div({className: className, style: style}, 
         this.renderCellContent({
-          value: this.props.value,
-          column: this.props.column}
-          ),
+          value: this.props.value, 
+          column: this.props.column, 
+          rowIdx: this.props.rowIdx}
+          ), 
           React.DOM.div({className: "drag-handle", draggable: "true", onDragStart: this.props.handleDragStart}
           )
       )
@@ -506,7 +512,7 @@ function sameColumn(a, b) {
 module.exports = {Mixin:Mixin, calculate:calculate, resizeColumn:resizeColumn, sameColumns:sameColumns, sameColumn:sameColumn};
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./DOMMetrics":5,"./merge":39,"./shallowCloneObject":40}],5:[function(require,module,exports){
+},{"./DOMMetrics":5,"./merge":41,"./shallowCloneObject":42}],5:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -670,7 +676,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./emptyFunction":35,"./invariant":38,"./shallowCloneObject":40}],6:[function(require,module,exports){
+},{"./emptyFunction":37,"./invariant":40,"./shallowCloneObject":42}],6:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -761,7 +767,7 @@ var Draggable = React.createClass({displayName: 'Draggable',
 module.exports = Draggable;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./emptyFunction":35}],7:[function(require,module,exports){
+},{"./emptyFunction":37}],7:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -833,27 +839,28 @@ var Grid = React.createClass({displayName: 'Grid',
   render:function() {
     var headerRows = this.props.headerRows || [{ref : 'row'}];
     return this.transferPropsTo(
-      React.DOM.div({style: this.style, className: "react-grid-Grid"},
+      React.DOM.div({style: this.style, className: "react-grid-Grid"}, 
         Header({
-          ref: "header",
-          columns: this.state.columns,
-          onColumnResize: this.onColumnResize,
-          height: this.props.rowHeight,
-          totalWidth: this.DOMMetrics.gridWidth(),
+          ref: "header", 
+          columns: this.state.columns, 
+          onColumnResize: this.onColumnResize, 
+          height: this.props.rowHeight, 
+          totalWidth: this.DOMMetrics.gridWidth(), 
           headerRows: headerRows}
-          ),
+          ), 
         Viewport({
-          ref: "viewport",
-          width: this.state.columns.width,
-          rowHeight: this.props.rowHeight,
-          rowRenderer: this.props.rowRenderer,
-          cellRenderer: this.props.cellRenderer,
-          rows: this.props.rows,
-          length: this.props.length,
-          columns: this.state.columns,
-          totalWidth: this.DOMMetrics.gridWidth(),
-          onScroll: this.onScroll,
-          onRows: this.props.onRows,
+          ref: "viewport", 
+          width: this.state.columns.width, 
+          rowHeight: this.props.rowHeight, 
+          rowRenderer: this.props.rowRenderer, 
+          cellRenderer: this.props.cellRenderer, 
+          rows: this.props.rows, 
+          selectedRows: this.props.selectedRows, 
+          length: this.props.length, 
+          columns: this.state.columns, 
+          totalWidth: this.DOMMetrics.gridWidth(), 
+          onScroll: this.onScroll, 
+          onRows: this.props.onRows, 
           rowOffsetHeight: this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
           )
       )
@@ -903,7 +910,7 @@ var Header = React.createClass({displayName: 'Header',
 
 
     return this.transferPropsTo(
-      React.DOM.div({style: this.getStyle(), className: className},
+      React.DOM.div({style: this.getStyle(), className: className}, 
         this.renderHeaderRows(null)
       )
     );
@@ -921,15 +928,15 @@ var Header = React.createClass({displayName: 'Header',
       };
 
       headerRows.push(HeaderRow({
-        key: row.ref,
-        ref: row.ref,
-        style: headerRowStyle,
-        onColumnResize: this.onColumnResize,
-        onColumnResizeEnd: this.onColumnResizeEnd,
-        width: state.columns.width,
-        height: row.height || this.props.height,
-        columns: state.columns.columns,
-        resizing: state.column,
+        key: row.ref, 
+        ref: row.ref, 
+        style: headerRowStyle, 
+        onColumnResize: this.onColumnResize, 
+        onColumnResizeEnd: this.onColumnResizeEnd, 
+        width: state.columns.width, 
+        height: row.height || this.props.height, 
+        columns: state.columns.columns, 
+        resizing: state.column, 
         headerCellRenderer: row.headerCellRenderer}
         ))
     }).bind(this));
@@ -997,7 +1004,7 @@ var Header = React.createClass({displayName: 'Header',
 module.exports = Header;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ColumnMetrics":4,"./HeaderRow":10,"./shallowCloneObject":40}],9:[function(require,module,exports){
+},{"./ColumnMetrics":4,"./HeaderRow":10,"./shallowCloneObject":42}],9:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -1023,7 +1030,7 @@ var ResizeHandle = React.createClass({displayName: 'ResizeHandle',
   render:function() {
     return this.transferPropsTo(
       Draggable({
-        className: "react-grid-HeaderCell__resizeHandle",
+        className: "react-grid-HeaderCell__resizeHandle", 
         style: this.style}
         )
     );
@@ -1046,12 +1053,12 @@ var HeaderCell = React.createClass({displayName: 'HeaderCell',
     });
     className = cx(className, this.props.className);
     return (
-      React.DOM.div({className: className, style: this.getStyle()},
-        this.renderCell(null),
+      React.DOM.div({className: className, style: this.getStyle()}, 
+        this.renderCell(null), 
         this.props.column.resizeable ?
           ResizeHandle({
-            onDrag: this.onDrag,
-            onDragStart: this.onDragStart,
+            onDrag: this.onDrag, 
+            onDragStart: this.onDragStart, 
             onDragEnd: this.onDragEnd}
             ) :
           null
@@ -1162,8 +1169,8 @@ var HeaderRow = React.createClass({displayName: 'HeaderRow',
     };
 
     return this.transferPropsTo(
-      React.DOM.div({style: this.getStyle(), className: "react-grid-HeaderRow"},
-        React.DOM.div({style: cellsStyle},
+      React.DOM.div({style: this.getStyle(), className: "react-grid-HeaderRow"}, 
+        React.DOM.div({style: cellsStyle}, 
           this.renderCells(null)
         )
       )
@@ -1178,13 +1185,13 @@ var HeaderRow = React.createClass({displayName: 'HeaderRow',
       var column = this.props.columns[i];
       var cell = (
         HeaderCell({
-          ref: i,
-          key: i,
-          height: this.props.height,
-          column: column,
-          renderer: this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer,
-          resizing: this.props.resizing === column,
-          onResize: this.props.onColumnResize,
+          ref: i, 
+          key: i, 
+          height: this.props.height, 
+          column: column, 
+          renderer: this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer, 
+          resizing: this.props.resizing === column, 
+          onResize: this.props.onColumnResize, 
           onResizeEnd: this.props.onColumnResizeEnd}
           )
       );
@@ -1229,7 +1236,7 @@ var HeaderRow = React.createClass({displayName: 'HeaderRow',
 module.exports = HeaderRow;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./HeaderCell":9,"./getScrollbarSize":36,"./shallowEqual":41}],11:[function(require,module,exports){
+},{"./HeaderCell":9,"./getScrollbarSize":38,"./shallowEqual":43}],11:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -1257,7 +1264,7 @@ var Row = React.createClass({displayName: 'Row',
     };
 
     return this.transferPropsTo(
-      React.DOM.div({className: className, style: style},
+      React.DOM.div({className: className, style: style}, 
         React.isValidComponent(this.props.row) ?
           this.props.row :
           this.renderCells(null)
@@ -1273,13 +1280,13 @@ var Row = React.createClass({displayName: 'Row',
       var column = this.props.columns[i];
       var cell = (
         this.renderCell({
-          ref: i,
-          key: i,
-          idx: i,
-          rowIdx: this.props.idx,
-          value: this.props.row[column.key || i],
-          column: column,
-          height: this.props.height,
+          ref: i, 
+          key: i, 
+          idx: i, 
+          rowIdx: this.props.idx, 
+          value: this.getCellValue(column.key || i), 
+          column: column, 
+          height: this.props.height, 
           formatter: column.formatter}
           )
       );
@@ -1291,6 +1298,14 @@ var Row = React.createClass({displayName: 'Row',
     }
 
     return cells.concat(lockedCells);
+  },
+
+  getCellValue:function(key){
+    if(key === 'select-row'){
+      return this.props.isSelected;
+    }else{
+      return this.props.row[key]
+    }
   },
 
   renderCell:function(props) {
@@ -1530,26 +1545,27 @@ var Viewport = React.createClass({displayName: 'Viewport',
     };
     return (
       React.DOM.div({
-        className: "react-grid-Viewport",
-        style: style},
+        className: "react-grid-Viewport", 
+        style: style}, 
         Canvas({
-          ref: "canvas",
-          totalWidth: this.props.totalWidth,
-          width: this.props.columns.width,
-          rows: this.props.rows,
-          columns: this.props.columns.columns,
-          cellRenderer: this.props.cellRenderer,
-          rowRenderer: this.props.rowRenderer,
+          ref: "canvas", 
+          totalWidth: this.props.totalWidth, 
+          width: this.props.columns.width, 
+          rows: this.props.rows, 
+          selectedRows: this.props.selectedRows, 
+          columns: this.props.columns.columns, 
+          cellRenderer: this.props.cellRenderer, 
+          rowRenderer: this.props.rowRenderer, 
 
-          visibleStart: this.state.visibleStart,
-          visibleEnd: this.state.visibleEnd,
-          displayStart: this.state.displayStart,
-          displayEnd: this.state.displayEnd,
+          visibleStart: this.state.visibleStart, 
+          visibleEnd: this.state.visibleEnd, 
+          displayStart: this.state.displayStart, 
+          displayEnd: this.state.displayEnd, 
 
-          length: this.props.length,
-          height: this.state.height,
-          rowHeight: this.props.rowHeight,
-          onScroll: this.onScroll,
+          length: this.props.length, 
+          height: this.state.height, 
+          rowHeight: this.props.rowHeight, 
+          onScroll: this.onScroll, 
           onRows: this.props.onRows}
           )
       )
@@ -1581,7 +1597,7 @@ var Viewport = React.createClass({displayName: 'Viewport',
 module.exports = Viewport;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Canvas":2,"./DOMMetrics":5,"./getWindowSize":37}],14:[function(require,module,exports){
+},{"./Canvas":2,"./DOMMetrics":5,"./getWindowSize":39}],14:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -1611,11 +1627,11 @@ var ExcelCell = React.createClass({displayName: 'ExcelCell',
         'selected' : this.isSelected() && !this.isCopied() && !this.isActive(),
         'editing' : this.isActive(),
         'copied' : this.isCopied(),
-        'selected-draggable' : this.isSelected() && !this.isActive(),
-        'active-drag-cell' : this.isActiveDragCell(),
+        'selected-draggable' : this.isSelected() && !this.isActive() && this.canEdit(),
+        'active-drag-cell' : this.isActiveDragCell() && this.canEdit(),
         'is-dragged-over-up' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx < this.props.dragged.rowIdx,
         'is-dragged-over-down' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx > this.props.dragged.rowIdx,
-        'was-dragged-over' : this.wasDraggedOver()
+        'was-dragged-over' : this.wasDraggedOver() && this.canEdit()
       });
     }
   },
@@ -1627,13 +1643,13 @@ var ExcelCell = React.createClass({displayName: 'ExcelCell',
   render: function() {
     return this.transferPropsTo(
       BaseCell({
-        className: this.getCellClass(),
-        onKeyDown: this.onKeyDown,
-        onClick: this.onClick,
-        onDoubleClick: this.onDoubleClick,
-        formatter: this.getFormatter(),
-        handleDragStart: this.handleDragStart,
-        onDragEnter: this.handleDragEnter,
+        className: this.getCellClass(), 
+        onKeyDown: this.onKeyDown, 
+        onClick: this.onClick, 
+        onDoubleClick: this.onDoubleClick, 
+        formatter: this.getFormatter(), 
+        handleDragStart: this.handleDragStart, 
+        onDragEnter: this.handleDragEnter, 
         onDragEnd: this.props.handleDragEnd}
       ))
   }
@@ -1643,7 +1659,7 @@ var ExcelCell = React.createClass({displayName: 'ExcelCell',
 module.exports = ExcelCell;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../Cell":3,"../utils/MixinHelper":32,"./mixins/CopyableMixin":17,"./mixins/DraggableMixin":18,"./mixins/EditableMixin":19,"./mixins/KeyboardHandlerMixin":20,"./mixins/SelectableMixin":21}],15:[function(require,module,exports){
+},{"../../Cell":3,"../utils/MixinHelper":34,"./mixins/CopyableMixin":17,"./mixins/DraggableMixin":18,"./mixins/EditableMixin":19,"./mixins/KeyboardHandlerMixin":20,"./mixins/SelectableMixin":21}],15:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -1672,14 +1688,22 @@ var FilterableHeaderCell = React.createClass({displayName: 'FilterableHeaderCell
   },
 
   render: function() {
-    var disabled = this.props.column.filterable === false ? true : false;
     return (
-      React.DOM.div(null,
-        React.DOM.div({className: "form-group"},
-            React.DOM.input({type: "text", disabled: disabled, className: "form-control input-sm", placeholder: "Search", value: this.state.filterTerm, onChange: this.handleChange})
+      React.DOM.div(null, 
+        React.DOM.div({className: "form-group"}, 
+          this.renderInput(null)
         )
       )
     );
+  },
+
+  renderInput : function(){
+    if(this.props.column.filterable === false){
+      return React.DOM.span(null);
+    }else{
+      return (React.DOM.input({type: "text", className: "form-control input-sm", placeholder: "Search", value: this.state.filterTerm, onChange: this.handleChange}))
+    }
+
   }
 });
 
@@ -1718,9 +1742,9 @@ var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
 
     return (
       React.DOM.div({
-        onClick: this.onClick,
-        style: {cursor: 'pointer'}},
-        this.props.column.name,
+        onClick: this.onClick, 
+        style: {cursor: 'pointer'}}, 
+        this.props.column.name, 
         React.DOM.span({className: this.getSortByClass()})
       )
     );
@@ -1774,10 +1798,12 @@ var CopyableMixin = {
   },
 
   onPressKeyWithCtrl:function(e){
-    if(e.keyCode == this.KeyCode_c || e.keyCode == this.KeyCode_C){
-      this.props.handleCopy({value : this.props.value});
-    }else if(e.keyCode == this.KeyCode_v || e.keyCode == this.KeyCode_V){
-      this.props.handlePaste({value : this.props.value});
+    if(this.canEdit()){
+      if(e.keyCode == this.KeyCode_c || e.keyCode == this.KeyCode_C){
+        this.props.handleCopy({value : this.props.value});
+      }else if(e.keyCode == this.KeyCode_v || e.keyCode == this.KeyCode_V){
+        this.props.handlePaste({value : this.props.value});
+      }
     }
   },
 
@@ -1813,7 +1839,7 @@ var DraggableMixin = {
 
   getCellClass : function(){
     return cx({
-      'selected-draggable' : this.isSelected(),
+      'selected-draggable' : this.isSelected() && this.canEdit(),
       'active-drag-cell' : this.isSelected() || this.isDraggedOver(),
       'is-dragged-over-up' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx < this.props.dragged.rowIdx,
       'is-dragged-over-down' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx > this.props.dragged.rowIdx,
@@ -1971,7 +1997,10 @@ var EditableMixin = {
   setActive:function(keyPressed){
     var rowIdx = this.props.rowIdx;
     var idx = this.props.idx;
-    if(this.canEdit() && !this.isActive()){
+    if(this.props.column.key === 'select-row' && this.props.column.onRowSelect){
+      this.props.column.onRowSelect(rowIdx);
+    }
+    else if(this.canEdit() && !this.isActive()){
       this.props.onSetActive({idx: idx, rowIdx: rowIdx, active : true, initialKeyCode : keyPressed});
     }
   },
@@ -2024,7 +2053,7 @@ var EditableMixin = {
 module.exports = EditableMixin;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../editors/SimpleTextEditor":23}],20:[function(require,module,exports){
+},{"../../editors/SimpleTextEditor":24}],20:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -2188,6 +2217,37 @@ module.exports=require(20)
 
 var React                   = (typeof window !== "undefined" ? window.window.React : typeof global !== "undefined" ? global.window.React : null);
 var cx                      = React.addons.classSet;
+
+var CheckBoxEditor = React.createClass({displayName: 'CheckBoxEditor',
+
+
+  PropTypes : {
+    value : React.PropTypes.bool.isRequired
+  },
+
+  render:function(){
+    return (React.DOM.input({type: "checkbox", checked: this.props.value, onChange: this.handleChange}));
+  },
+
+  handleChange:function(e){
+    this.props.column.onRowSelect(this.props.rowIdx)
+  }
+
+});
+
+module.exports = CheckBoxEditor;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],24:[function(require,module,exports){
+(function (global){
+/**
+ * @jsx React.DOM
+ * @copyright Prometheus Research, LLC 2014
+ */
+'use strict';
+
+var React                   = (typeof window !== "undefined" ? window.window.React : typeof global !== "undefined" ? global.window.React : null);
+var cx                      = React.addons.classSet;
 var MixinHelper             = require('../utils/MixinHelper');
 var EditorMixin             = require('./mixins/EditorMixin');
 var TextInputMixin          = require('./mixins/TextInputMixin');
@@ -2213,7 +2273,7 @@ var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
 module.exports = SimpleTextEditor;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../cells/mixins/keyboardHandlerMixin":22,"../utils/MixinHelper":32,"./mixins/EditorMixin":24,"./mixins/TextInputMixin":25}],24:[function(require,module,exports){
+},{"../cells/mixins/keyboardHandlerMixin":22,"../utils/MixinHelper":34,"./mixins/EditorMixin":25,"./mixins/TextInputMixin":26}],25:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -2307,8 +2367,8 @@ var EditorMixin = {
     }
     var editorNode = this.renderEditorNode();
     return (
-      React.DOM.div({className: this.getContainerClass()},
-        editorNode,
+      React.DOM.div({className: this.getContainerClass()}, 
+        editorNode, 
         this.renderStatusIcon()
       )
     )
@@ -2318,7 +2378,7 @@ var EditorMixin = {
 module.exports = EditorMixin;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../utils/isFunction":33}],25:[function(require,module,exports){
+},{"../../utils/isFunction":35}],26:[function(require,module,exports){
 /**
  * @jsx React.DOM
  * @copyright Prometheus Research, LLC 2014
@@ -2378,7 +2438,7 @@ var TextInputMixin = {
 
 module.exports = TextInputMixin;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -2396,117 +2456,85 @@ var DraggableGridMixin    = require('./mixins/DraggableGridMixin');
 var CopyPasteGridMixin    = require('./mixins/CopyPasteGridMixin');
 var EditableGridMixin     = require('./mixins/EditableGridMixin');
 var SortableGridMixin     = require('./mixins/SortableGridMixin');
-var FilterableHeaderCell = require('../cells/headerCells/FilterableHeaderCell');
+var FilterableGridMixin   = require('./mixins/FilterableGridMixin');
+var CheckboxEditor        = require('../editors/CheckboxEditor');
+var MixinHelper           = require('../utils/MixinHelper');
+
+var cloneWithProps = React.addons.cloneWithProps;
 
 var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
 
-  getInitialState : function(){
-    return {canFilter : false, columnFilters : {}};
+  getInitialState:function(){
+    return {selectedRows : []};
   },
 
   getDefaultProps:function() {
     return {
       rowHeight: 35,
-      shouldDisplayToolbar : true
+      shouldDisplayToolbar : true,
+      isRowSelectable : true
     };
   },
 
-  mixins : [SelectableGridMixin, EditableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin],
-
-  filterRows:function(){
-    var rows = this.props.rows;
-    if(this.state.sortColumn){
-      rows = this.sortRows(rows);
+  handleRowSelect:function(row){
+    var selectedRows = this.state.selectedRows;
+    if(selectedRows[row] == null || selectedRows[row] == false){
+      selectedRows[row] = true;
+    }else{
+      selectedRows[row] = false;
     }
-    if(this.hasFilters()){
-      rows = rows.filter(this.isRowDisplayed);
-    }
-    return rows;
+    this.setState({selectedRows : selectedRows});
   },
 
-  hasFilters:function(){
-    var hasFilters = false;
-    Object.keys(this.state.columnFilters).every(function(key){
-      var filter = this.state.columnFilters[key];
-      if(filter != null && filter != undefined && filter != ''){
-        hasFilters = true;
-        return false;
+  mixins : MixinHelper.mix([SelectableGridMixin, EditableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin]),
+
+  overrides : {
+    getColumns : function(){
+    var cols = this.getDecoratedColumns(this.props.columns)
+    if(this.props.isRowSelectable){
+        cols.unshift({
+          key: 'select-row',
+          name: '',
+          formatter : CheckboxEditor,
+          width : '3%',
+          onRowSelect :this.handleRowSelect,
+          filterable : false
+        });
       }
-        return true;
-    }, this);
-    return hasFilters;
-  },
-
-  isRowDisplayed:function(row){
-    var isRowDisplayed = null;
-    Object.keys(this.state.columnFilters).every(function(key){
-      var filter = this.state.columnFilters[key].toLowerCase();
-      var cellValue = row[key].toLowerCase();
-      if(filter != null && filter != undefined && filter != '' && typeof cellValue === 'string'){
-        if(cellValue.indexOf(filter) > -1){
-          isRowDisplayed = true;
-        }else{
-          isRowDisplayed = false;
-          return false;
-        }
-      }
-      return true;
-    }, this);
-    return isRowDisplayed == null ? false : isRowDisplayed;
-  },
-
-  toggleFilter:function(){
-    this.setState({canFilter : !this.state.canFilter});
-  },
-
-  handleAddFilter:function(filter){
-    var columnFilters = this.state.columnFilters;
-    columnFilters[filter.columnKey] = filter.filterTerm;
-    this.setState({columnFilters : columnFilters, selected : null});
-  },
-
-  getHeaderRows:function(){
-    var rows = [{ref:"row", height: this.props.rowHeight}];
-    if(this.state.canFilter === true){
-      rows.push({ref:"filterRow", headerCellRenderer : FilterableHeaderCell({onChange: this.handleAddFilter}), height : 45});
+      return cols;
     }
-    return rows;
-  },
-
-  getRowOffsetHeight:function(){
-    var offsetHeight = 0;
-    this.getHeaderRows().forEach(function(row)  {return offsetHeight += row.height;} );
-    return offsetHeight;
   },
 
   render: function() {
     var cellRenderer = (
       ExcelCell({
-        selected: this.state.selected,
-        copied: this.state.copied,
-        dragged: this.state.dragged,
-        onSelect: this.onSelect,
-        onClick: this.onSelect,
-        onSetActive: this.onSetActive,
-        onCommit: this.onCellChanged,
-        handleCopy: this.handleCopy,
-        handlePaste: this.handlePaste,
-        handleDragStart: this.handleDragStart,
-        handleDragEnter: this.handleDragEnter,
-        handleDragEnd: this.handleDragEnd,
+        selected: this.state.selected, 
+        copied: this.state.copied, 
+        dragged: this.state.dragged, 
+        onSelect: this.onSelect, 
+        onClick: this.onSelect, 
+        onSetActive: this.onSetActive, 
+        onCommit: this.onCellChanged, 
+        handleCopy: this.handleCopy, 
+        handlePaste: this.handlePaste, 
+        handleDragStart: this.handleDragStart, 
+        handleDragEnter: this.handleDragEnter, 
+        handleDragEnd: this.handleDragEnd, 
         handleTerminateDrag: this.handleTerminateDrag}
+
         )
     );
 
     var rows = this.filterRows();
     return(
-      React.DOM.div({className: "container-fluid"},
-        this.renderToolbar(null),
+      React.DOM.div({className: "container-fluid"}, 
+        this.renderToolbar(null), 
         this.transferPropsTo(BaseGrid({
-          headerRows: this.getHeaderRows(),
-          columns: this.getDecoratedColumns(this.props.columns),
-          rows: rows,
-          cellRenderer: cellRenderer,
+          headerRows: this.getHeaderRows(), 
+          columns: this.getColumns(), 
+          rows: rows, 
+          cellRenderer: cellRenderer, 
+          selectedRows: this.state.selectedRows, 
           rowOffsetHeight: this.getRowOffsetHeight()}))
       )
     )
@@ -2514,10 +2542,10 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
 
   renderToolbar:function(){
     if(this.props.shouldDisplayToolbar === true){
-      return(React.DOM.div({className: "navbar navbar-default"},
-        React.DOM.div({className: "navbar-form"},
-          React.DOM.div({className: "form-group"},
-            React.DOM.button({type: "button", className: "btn btn-default", onClick: this.toggleFilter},
+      return(React.DOM.div({className: "navbar navbar-default"}, 
+        React.DOM.div({className: "navbar-form"}, 
+          React.DOM.div({className: "form-group"}, 
+            React.DOM.button({type: "button", className: "btn btn-default", onClick: this.toggleFilter}, 
               React.DOM.span({className: "glyphicon glyphicon-filter"}), " Filter Rows"
             )
           )
@@ -2534,7 +2562,7 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
 module.exports = ExcelGrid;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../Grid":7,"../../merge":39,"../cells/ExcelCell":14,"../cells/headerCells/FilterableHeaderCell":15,"./mixins/CopyPasteGridMixin":27,"./mixins/DraggableGridMixin":28,"./mixins/EditableGridMixin":29,"./mixins/SelectableGridMixin":30,"./mixins/SortableGridMixin":31}],27:[function(require,module,exports){
+},{"../../Grid":7,"../../merge":41,"../cells/ExcelCell":14,"../editors/CheckboxEditor":23,"../utils/MixinHelper":34,"./mixins/CopyPasteGridMixin":28,"./mixins/DraggableGridMixin":29,"./mixins/EditableGridMixin":30,"./mixins/FilterableGridMixin":31,"./mixins/SelectableGridMixin":32,"./mixins/SortableGridMixin":33}],28:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -2555,6 +2583,7 @@ var CopyPasteGridMixin = {
     return {copied : null};
   },
 
+
   handleCopy:function(args){
     var textToCopy = args.value;
     var selected = this.state.selected;
@@ -2564,7 +2593,7 @@ var CopyPasteGridMixin = {
 
   handlePaste:function(){
     var selected = this.state.selected;
-    var cellKey = this.props.columns[selected.idx].key;
+    var cellKey = this.getColumns()[selected.idx].key;
     this.props.onCellChanged({cellKey: cellKey , rowIdx: selected.rowIdx, value : this.state.textToCopy});
     this.setState({copied : null});
   }
@@ -2573,7 +2602,7 @@ var CopyPasteGridMixin = {
 module.exports = CopyPasteGridMixin;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -2635,7 +2664,7 @@ var DraggableGridMixin = {
 module.exports = DraggableGridMixin;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -2674,7 +2703,96 @@ var EditableGridMixin = {
 module.exports = EditableGridMixin;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../../merge":39}],30:[function(require,module,exports){
+},{"../../../merge":41}],31:[function(require,module,exports){
+(function (global){
+/**
+ * @jsx React.DOM
+ * @copyright Prometheus Research, LLC 2014
+ */
+"use strict";
+
+var React               = (typeof window !== "undefined" ? window.window.React : typeof global !== "undefined" ? global.window.React : null);
+var PropTypes           = React.PropTypes;
+var FilterableHeaderCell = require('../../cells/headerCells/FilterableHeaderCell');
+
+var FilterableGridMixin = {
+
+  getInitialState : function(){
+    return {canFilter : false, columnFilters : {}};
+  },
+
+  filterRows:function(){
+      var rows = this.props.rows;
+      if(this.state.sortColumn){
+        rows = this.sortRows(rows);
+      }
+      if(this.hasFilters()){
+        rows = rows.filter(this.isRowDisplayed);
+      }
+      return rows;
+    },
+
+    hasFilters:function(){
+      var hasFilters = false;
+      Object.keys(this.state.columnFilters).every(function(key){
+        var filter = this.state.columnFilters[key];
+        if(filter != null && filter != undefined && filter != ''){
+          hasFilters = true;
+          return false;
+        }
+          return true;
+      }, this);
+      return hasFilters;
+    },
+
+    isRowDisplayed:function(row){
+      var isRowDisplayed = null;
+      Object.keys(this.state.columnFilters).every(function(key){
+        var filter = this.state.columnFilters[key].toLowerCase();
+        var cellValue = row[key].toString().toLowerCase();
+        if(filter != null && filter != undefined && filter != '' && typeof cellValue === 'string'){
+          if(cellValue.indexOf(filter) > -1){
+            isRowDisplayed = true;
+          }else{
+            isRowDisplayed = false;
+            return false;
+          }
+        }
+        return true;
+      }, this);
+      return isRowDisplayed == null ? false : isRowDisplayed;
+    },
+
+    toggleFilter:function(){
+      this.setState({canFilter : !this.state.canFilter});
+    },
+
+    handleAddFilter:function(filter){
+      var columnFilters = this.state.columnFilters;
+      columnFilters[filter.columnKey] = filter.filterTerm;
+      this.setState({columnFilters : columnFilters, selected : null});
+    },
+
+    getHeaderRows:function(){
+      var rows = [{ref:"row", height: this.props.rowHeight}];
+      if(this.state.canFilter === true){
+        rows.push({ref:"filterRow", headerCellRenderer : FilterableHeaderCell({onChange: this.handleAddFilter}), height : 45});
+      }
+      return rows;
+    },
+
+    getRowOffsetHeight:function(){
+      var offsetHeight = 0;
+      this.getHeaderRows().forEach(function(row)  {return offsetHeight += row.height;} );
+      return offsetHeight;
+    }
+
+}
+
+module.exports = FilterableGridMixin;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../../cells/headerCells/FilterableHeaderCell":15}],32:[function(require,module,exports){
 /**
  * @jsx React.DOM
  * @copyright Prometheus Research, LLC 2014
@@ -2682,6 +2800,10 @@ module.exports = EditableGridMixin;
 "use strict";
 
 var SelectableGridMixin = {
+
+  getColumns : function(){
+    return this.props.columns
+  },
 
   getInitialState: function() {
     return {selected: {rowIdx: 0, idx: 0}};
@@ -2693,7 +2815,7 @@ var SelectableGridMixin = {
     if (
       idx >= 0
       && rowIdx >= 0
-      && idx < this.props.columns.length
+      && idx < this.getColumns().length
       && rowIdx < this.props.length
     ) {
       this.setState({selected: selected});
@@ -2703,7 +2825,7 @@ var SelectableGridMixin = {
 
 module.exports = SelectableGridMixin;
 
-},{}],31:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -2785,7 +2907,7 @@ var SortableGridMixin = {
 module.exports = SortableGridMixin;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../../shallowCloneObject":40,"../../cells/headerCells/SortableHeaderCell":16}],32:[function(require,module,exports){
+},{"../../../shallowCloneObject":42,"../../cells/headerCells/SortableHeaderCell":16}],34:[function(require,module,exports){
 
 "use strict";
 
@@ -2934,7 +3056,7 @@ var mixinUtils = {
 }
 module.exports = MixinHelper;
 
-},{"./isFunction":33,"react/lib/keyMirror":44}],33:[function(require,module,exports){
+},{"./isFunction":35,"react/lib/keyMirror":46}],35:[function(require,module,exports){
 
 "use strict";
 
@@ -2945,7 +3067,7 @@ var isFunction = function(functionToCheck){
 
 module.exports = isFunction;
 
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -3004,7 +3126,7 @@ function copyProperties(obj, a, b, c, d, e, f) {
 module.exports = copyProperties;
 
 }).call(this,require('_process'))
-},{"_process":42}],35:[function(require,module,exports){
+},{"_process":44}],37:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -3050,7 +3172,7 @@ copyProperties(emptyFunction, {
 
 module.exports = emptyFunction;
 
-},{"./copyProperties":34}],36:[function(require,module,exports){
+},{"./copyProperties":36}],38:[function(require,module,exports){
 "use strict";
 
 var size;
@@ -3086,7 +3208,7 @@ function getScrollbarSize() {
 
 module.exports = getScrollbarSize;
 
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 /**
  * @jsx React.DOM
  * @copyright Prometheus Research, LLC 2014
@@ -3117,7 +3239,7 @@ function getWindowSize() {
 
 module.exports = getWindowSize;
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -3181,7 +3303,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":42}],39:[function(require,module,exports){
+},{"_process":44}],41:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -3222,7 +3344,7 @@ var merge = function(one, two) {
 
 module.exports = merge;
 
-},{}],40:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 /**
  * @jsx React.DOM
  * @copyright Prometheus Research, LLC 2014
@@ -3241,7 +3363,7 @@ function shallowCloneObject(obj) {
 
 module.exports = shallowCloneObject;
 
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 /**
  * @jsx React.DOM
  * @copyright Prometheus Research, LLC 2014
@@ -3273,7 +3395,7 @@ function shallowEqual(a, b) {
 
 module.exports = shallowEqual;
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -3338,7 +3460,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -3402,7 +3524,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":42}],44:[function(require,module,exports){
+},{"_process":44}],46:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -3464,4 +3586,4 @@ var keyMirror = function(obj) {
 module.exports = keyMirror;
 
 }).call(this,require('_process'))
-},{"./invariant":43,"_process":42}]},{},[1]);
+},{"./invariant":45,"_process":44}]},{},[1]);
