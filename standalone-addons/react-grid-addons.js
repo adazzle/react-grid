@@ -2475,7 +2475,8 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
     return {
       rowHeight: 35,
       shouldDisplayToolbar : true,
-      isRowSelectable : true
+      isRowSelectable : true,
+      minHeight : 350
     };
   },
 
@@ -2538,7 +2539,8 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
           rows: rows, 
           cellRenderer: cellRenderer, 
           selectedRows: this.state.selectedRows, 
-          rowOffsetHeight: this.getRowOffsetHeight()}))
+          rowOffsetHeight: this.getRowOffsetHeight(), 
+          minHeight: this.props.minHeight}))
       )
     )
   },
@@ -2615,9 +2617,14 @@ module.exports = CopyPasteGridMixin;
 
 var React                    = (typeof window !== "undefined" ? window.window.React : typeof global !== "undefined" ? global.window.React : null);
 var PropTypes                = React.PropTypes;
+var MixinHelper              = require('../../utils/MixinHelper');
+var SelectableGridMixin          = require('./SelectableGridMixin');
 
+MixinHelper.addAlias('SelectableGridMixin');
 
 var DraggableGridMixin = {
+
+  mixinDependencies : ['SelectableGridMixin'],
 
   propTypes : {
     onCellsDragged : React.PropTypes.func.isRequired
@@ -2633,7 +2640,7 @@ var DraggableGridMixin = {
     if (
       idx >= 0
       && rowIdx >= 0
-      && idx < this.props.columns.length
+      && idx < this.getColumns().length
       && rowIdx < this.props.length
     ) {
       this.setState({dragged: dragged});
@@ -2651,7 +2658,7 @@ var DraggableGridMixin = {
     var fromRow, toRow;
     var selected = this.state.selected;
     var dragged = this.state.dragged;
-    var cellKey = this.props.columns[this.state.selected.idx].key;
+    var cellKey = this.getColumns()[this.state.selected.idx].key;
     fromRow = selected.rowIdx < dragged.overRowIdx ? selected.rowIdx : dragged.overRowIdx;
     toRow   = selected.rowIdx > dragged.overRowIdx ? selected.rowIdx : dragged.overRowIdx;
     this.props.onCellsDragged({cellKey: cellKey , fromRow: fromRow, toRow : toRow, value : dragged.copiedText});
@@ -2667,7 +2674,7 @@ var DraggableGridMixin = {
 module.exports = DraggableGridMixin;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],30:[function(require,module,exports){
+},{"../../utils/MixinHelper":34,"./SelectableGridMixin":32}],30:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -2965,6 +2972,7 @@ var MixinInterface = {
   componentWillUnmount : SpecPolicy.DEFINE_LIFE_CYCLE_METHOD
 }
 
+var MixinAliasCache = {}
 
 var MixinHelper = {
 
@@ -3015,6 +3023,10 @@ var MixinHelper = {
     }, this);
     results.push(primary);
     return results;
+  },
+
+  addAlias : function(key, object){
+    MixinAliasCache[key] = object;
   }
 
 };
