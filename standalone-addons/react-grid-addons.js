@@ -829,17 +829,19 @@ var Grid = React.createClass({displayName: 'Grid',
     columns: PropTypes.array.isRequired
   },
 
-  style: {
-    overflow: 'hidden',
-    outline: 0,
-    position: 'relative',
-    minHeight: 350
+  getStyle: function(){
+    return{
+      overflow: 'hidden',
+      outline: 0,
+      position: 'relative',
+      minHeight: this.props.minHeight
+    }
   },
 
   render:function() {
     var headerRows = this.props.headerRows || [{ref : 'row'}];
     return this.transferPropsTo(
-      React.DOM.div({style: this.style, className: "react-grid-Grid"}, 
+      React.DOM.div({style: this.getStyle(), className: "react-grid-Grid"}, 
         Header({
           ref: "header", 
           columns: this.state.columns, 
@@ -869,7 +871,8 @@ var Grid = React.createClass({displayName: 'Grid',
 
   getDefaultProps:function() {
     return {
-      rowHeight: 35
+      rowHeight: 35,
+      minHeight: 350
     };
   },
 });

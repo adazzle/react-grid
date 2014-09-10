@@ -22,6 +22,7 @@ gulp.task('bundle', function() {
 
   };
 
+
   return buildBundle(bundleConfig, 'react-grid-addons.js', '.', undefined, {excludes : ['react', 'react/addons']} );
 
 });
