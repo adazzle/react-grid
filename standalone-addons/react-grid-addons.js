@@ -2480,6 +2480,16 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
     };
   },
 
+  handleCheckboxChange : function(e){
+    if(e.currentTarget.checked === true){
+      var selectedRows = this.props.rows.map(function()  {return true;});
+      this.setState({selectedRows : selectedRows});
+    }else{
+      var selectedRows = this.props.rows.map(function()  {return false;});
+      this.setState({selectedRows : selectedRows});
+    }
+  },
+
   handleRowSelect:function(row){
     var selectedRows = this.state.selectedRows;
     if(selectedRows[row] == null || selectedRows[row] == false){
@@ -2502,7 +2512,8 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
           formatter : CheckboxEditor,
           width : '3%',
           onRowSelect :this.handleRowSelect,
-          filterable : false
+          filterable : false,
+          headerRenderer : React.DOM.input({type: "checkbox", onChange: this.handleCheckboxChange})
         });
       }
       return cols;
