@@ -23,15 +23,15 @@ gulp.task('bundle', function() {
   };
 
 
-  return buildBundle(bundleConfig, 'react-grid-addons.js', '.', undefined, {excludes : ['react', 'react/addons']} );
+  return buildBundle(bundleConfig, '../dist/react-grid-addons.js', '.', undefined, {excludes : ['react', 'react/addons']} );
 
 });
 
 
 gulp.task('default', ['bundle', 'styles'],  function() {
 
-  gulp.src('./react-grid-addons.js')
+  gulp.src('../dist/react-grid-addons.js')
   .pipe(uglify())
   .pipe(rename('react-grid-addons.min.js'))
-  .pipe(gulp.dest('.'))
+  .pipe(gulp.dest('../dist'))
 });
