@@ -52,7 +52,7 @@ var Canvas = React.createClass({displayName: 'Canvas',
     var rows = this
         .getRows(displayStart, displayEnd)
         .map(function(row, idx)  {return this.renderRow({
-          key: displayStart + idx,
+          key: row.key,
           ref: idx,
           idx: displayStart + idx,
           row: row,
@@ -1286,7 +1286,7 @@ var Row = React.createClass({displayName: 'Row',
           ref: i, 
           key: i, 
           idx: i, 
-          rowIdx: this.props.idx, 
+          rowIdx: this.props.key, 
           value: this.getCellValue(column.key || i), 
           column: column, 
           height: this.props.height, 
@@ -2747,8 +2747,9 @@ var FilterableGridMixin = {
       if(this.state.sortColumn){
         rows = this.sortRows(rows);
       }
+      
       if(this.hasFilters()){
-        rows = rows.filter(this.isRowDisplayed);
+        rows = rows.map(function(r, i)  {r.key = i;return r;}).filter(this.isRowDisplayed);
       }
       return rows;
     },
