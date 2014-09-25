@@ -1,8 +1,8 @@
 {
   "name": "adazzle-react-grid",
   "version": "0.0.4",
-  "main" : "standalone/react-grid-addons.js"
-  "homepage": "https://github.com/adazzle/react-grid",
+  "main" : "/standalone/react-grid-addons.js"
+  "homepage" : "https://github.com/adazzle/react-grid",
   "authors": [
     "Adazzle"
   ],
