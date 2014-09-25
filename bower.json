@@ -1,5 +1,6 @@
 {
   "name": "adazzle-react-grid",
+  "main" : "./dist/react-grid-addons.js"
   "version": "0.0.5",
   "homepage": "https://github.com/adazzle/react-grid",
   "authors": [
