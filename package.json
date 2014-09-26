@@ -65,10 +65,6 @@
         {
           "es6": true
         }
-      ],
-      [
-        "browserify-shim",
-        {"global": true}
       ]
     ]
   },
