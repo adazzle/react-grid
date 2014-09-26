@@ -52,7 +52,7 @@ var Canvas = React.createClass({displayName: 'Canvas',
     var rows = this
         .getRows(displayStart, displayEnd)
         .map(function(row, idx)  {return this.renderRow({
-          key: row.key,
+          key: displayStart + idx,
           ref: idx,
           idx: displayStart + idx,
           row: row,
@@ -121,7 +121,7 @@ var Canvas = React.createClass({displayName: 'Canvas',
   },
 
   isRowSelected:function(rowIdx){
-   return this.props.selectedRows[rowIdx] === true;
+   return this.props.selectedRows && this.props.selectedRows[rowIdx] === true;
   },
 
   getInitialState:function() {
@@ -1286,7 +1286,8 @@ var Row = React.createClass({displayName: 'Row',
           ref: i, 
           key: i, 
           idx: i, 
-          rowIdx: this.props.key, 
+          rowIdx: this.props.idx, 
+          filterRowIdx: this.props.row.key, 
           value: this.getCellValue(column.key || i), 
           column: column, 
           height: this.props.height, 
@@ -1840,15 +1841,15 @@ var PropTypes      = React.PropTypes;
 
 var DraggableMixin = {
 
-  getCellClass : function(){
-    return cx({
-      'selected-draggable' : this.isSelected() && this.canEdit(),
-      'active-drag-cell' : this.isSelected() || this.isDraggedOver(),
-      'is-dragged-over-up' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx < this.props.dragged.rowIdx,
-      'is-dragged-over-down' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx > this.props.dragged.rowIdx,
-      'was-dragged-over' : this.wasDraggedOver()
-    });
-  },
+getCellClass : function(){
+  return cx({
+    'selected-draggable' : this.isSelected(),
+    'active-drag-cell' : this.isSelected() || this.isDraggedOver(),
+    'is-dragged-over-up' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx < this.props.dragged.rowIdx,
+    'is-dragged-over-down' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx > this.props.dragged.rowIdx,
+    'was-dragged-over' : this.wasDraggedOver()
+  });
+},
 
   getDefaultProps : function(){
     return {
@@ -1973,7 +1974,7 @@ var EditableMixin = {
   onCommit:function(commit){
     var rowIdx = this.props.rowIdx;
     var idx = this.props.idx;
-    this.props.onCommit({cellKey: this.props.column.key, rowIdx: rowIdx, value : commit.value, keyCode : commit.key});
+    this.props.onCommit({cellKey: this.props.column.key, rowIdx: this.props.filterRowIdx || rowIdx, value : commit.value, keyCode : commit.key});
   },
 
   checkFocus: function() {
@@ -2747,7 +2748,7 @@ var FilterableGridMixin = {
       if(this.state.sortColumn){
         rows = this.sortRows(rows);
       }
-      
+
       if(this.hasFilters()){
         rows = rows.map(function(r, i)  {r.key = i;return r;}).filter(this.isRowDisplayed);
       }
