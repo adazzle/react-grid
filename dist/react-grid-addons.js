@@ -259,9 +259,9 @@ var Cell = React.createClass({displayName: 'Cell',
 
   renderCellContent:function(props) {
     if (React.isValidComponent(this.props.formatter)) {
-      return cloneWithProps(this.props.formatter, props);
+      return React.DOM.div({className: "react-grid-Cell__value"}, cloneWithProps(this.props.formatter, props));
     } else {
-      return this.props.formatter(props);
+      return React.DOM.div({className: "react-grid-Cell__value"}, this.props.formatter(props));
     }
   },
 
@@ -292,7 +292,7 @@ var Cell = React.createClass({displayName: 'Cell',
 });
 
 function simpleCellFormatter(props) {
-  return React.DOM.div({className: "react-grid-Cell__value"}, props.value);
+  return props.value;
 }
 
 module.exports = Cell;
@@ -2343,6 +2343,7 @@ var EditorMixin = {
 
   componentDidMount: function() {
     this.checkFocus();
+    this.getInputNode().className += ' editor-main';
   },
 
   checkFocus:function(){
