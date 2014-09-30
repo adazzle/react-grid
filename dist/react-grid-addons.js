@@ -258,11 +258,9 @@ var Cell = React.createClass({displayName: 'Cell',
   },
 
   renderCellContent:function(props) {
-    if (React.isValidComponent(this.props.formatter)) {
-      return React.DOM.div({className: "react-grid-Cell__value"}, cloneWithProps(this.props.formatter, props));
-    } else {
-      return React.DOM.div({className: "react-grid-Cell__value"}, this.props.formatter(props));
-    }
+    var formatter = React.isValidComponent(this.props.formatter) ? cloneWithProps(this.props.formatter, props) : this.props.formatter(props);
+    return (React.DOM.div({className: "react-grid-Cell__value"}, formatter, " ", this.props.cellControls))
+
   },
 
   getDefaultProps:function() {
@@ -1621,6 +1619,24 @@ var PropTypes            = React.PropTypes;
 var cx                   = React.addons.classSet;
 var cloneWithProps       = React.addons.cloneWithProps;
 
+
+var CellControls = React.createClass({displayName: 'CellControls',
+
+  onClickEdit : function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    this.props.onClickEdit();
+  },
+
+  render : function(){
+    return (React.DOM.div({className: "pull-right btn-group"}, 
+              React.DOM.button({type: "button", className: "btn btn-link btn-xs"}, "Show More"), React.DOM.button({onClick: this.onClickEdit, type: "button", className: "btn btn-link btn-xs"}, "Edit")
+            ))
+  }
+
+})
+
+
 var ExcelCell = React.createClass({displayName: 'ExcelCell',
 
   mixins : MixinHelper.mix([KeyboardHandlerMixin, SelectableMixin, EditableMixin, DraggableMixin, CopyableMixin ]),
@@ -1644,6 +1660,10 @@ var ExcelCell = React.createClass({displayName: 'ExcelCell',
     return (this.isSelected() || this.isDraggedOver()) && !this.isActive();
   },
 
+  cellControls : function(){
+
+  },
+
   render: function() {
     return this.transferPropsTo(
       BaseCell({
@@ -1654,7 +1674,8 @@ var ExcelCell = React.createClass({displayName: 'ExcelCell',
         formatter: this.getFormatter(), 
         handleDragStart: this.handleDragStart, 
         onDragEnter: this.handleDragEnter, 
-        onDragEnd: this.props.handleDragEnd}
+        onDragEnd: this.props.handleDragEnd, 
+        cellControls: this.props.column.showCellControls && !this.isActive() ? CellControls({onClickEdit: this.setActive}) : null}
       ))
   }
 

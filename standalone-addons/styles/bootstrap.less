@@ -14,7 +14,8 @@
 
 .react-grid-Cell {
   background-color: @body-bg;
-  padding: @table-cell-padding;
+  padding-left: @table-cell-padding;
+  padding-right: @table-cell-padding;
   border-top: 1px solid @table-border-color;
 }
 
@@ -25,6 +26,16 @@
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.react-grid-Cell__value ul {
+  margin-top: 0;
+  margin-bottom: 0;
+  display:inline-block;
+}
+
+.react-grid-Cell__value .btn-sm{
+  padding : 0
 }
 
 .react-grid-Cell.copied {
@@ -54,7 +65,7 @@
   border-radius: 2px !important;
 }
 
-.react-grid-Cell.editing input:not([type='checkbox']), select{
+.react-grid-Cell input.editor-main, select.editor-main{
   .form-control();
 
 }
@@ -64,9 +75,6 @@
   margin : 0;
   margin-left: auto;
   margin-right: auto;
-  position : relative;
-  top : 50%;
-  transform : translateY(-50%);
 }
 
 .react-grid-HeaderCell input[type='checkbox']{

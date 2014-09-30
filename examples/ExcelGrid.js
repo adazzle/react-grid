@@ -36,7 +36,14 @@ var columns = [
     name: 'User Story',
     editable : true,
     sortable : true,
-    showCellControls : true
+    showCellControls : true,
+    getExpandedHeight : function(value){
+      if(value === 'User Story 1'){
+        return 60;
+      }else{
+        return null;
+      }
+    }
   },
   {
     key: 'developer',
