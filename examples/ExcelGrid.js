@@ -35,7 +35,8 @@ var columns = [
     key: 'userStory',
     name: 'User Story',
     editable : true,
-    sortable : true
+    sortable : true,
+    showCellControls : true
   },
   {
     key: 'developer',
@@ -67,6 +68,7 @@ var getRows = function(start, end) {
       userStory: 'User Story ' + i,
       developer : developers[i%6],
       epic : epics[i%8].title,
+
       dateRange: {startDate : '2013-01-01', endDate : '2013-02-01'}
     });
   }
