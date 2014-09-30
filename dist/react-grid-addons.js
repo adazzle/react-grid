@@ -1705,7 +1705,7 @@ var ExcelCell = React.createClass({displayName: 'ExcelCell',
     var isExpanded = false;
     if(isFunction(this.props.column.getExpandedHeight) && this.props.column.getExpandedHeight(this.props.value) > 0){
       var newHeight = this.props.column.getExpandedHeight(this.props.value);
-      if(newHeight > this.props.height){
+      if(this.props.height >= newHeight){
         isExpanded = true;
       }else{
         isExpanded = false;
