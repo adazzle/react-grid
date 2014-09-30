@@ -59,7 +59,8 @@ var Canvas = React.createClass({displayName: 'Canvas',
           height: rowHeight,
           columns: this.props.columns,
           cellRenderer: this.props.cellRenderer,
-          isSelected : this.isRowSelected(displayStart + idx)
+          isSelected : this.isRowSelected(displayStart + idx),
+          expandedRows : this.props.expandedRows
         });}.bind(this));
 
     this._currentRowsLength = rows.length;
@@ -249,7 +250,8 @@ var Cell = React.createClass({displayName: 'Cell',
         this.renderCellContent({
           value: this.props.value, 
           column: this.props.column, 
-          rowIdx: this.props.rowIdx}
+          rowIdx: this.props.rowIdx, 
+          isExpanded: this.props.isExpanded}
           ), 
           React.DOM.div({className: "drag-handle", draggable: "true", onDragStart: this.props.handleDragStart}
           )
@@ -259,7 +261,8 @@ var Cell = React.createClass({displayName: 'Cell',
 
   renderCellContent:function(props) {
     var formatter = React.isValidComponent(this.props.formatter) ? cloneWithProps(this.props.formatter, props) : this.props.formatter(props);
-    return (React.DOM.div({className: "react-grid-Cell__value"}, formatter, " ", this.props.cellControls))
+    return (React.DOM.div({
+      className: "react-grid-Cell__value"}, formatter, " ", this.props.cellControls))
 
   },
 
@@ -856,6 +859,7 @@ var Grid = React.createClass({displayName: 'Grid',
           cellRenderer: this.props.cellRenderer, 
           rows: this.props.rows, 
           selectedRows: this.props.selectedRows, 
+          expandedRows: this.props.expandedRows, 
           length: this.props.length, 
           columns: this.state.columns, 
           totalWidth: this.DOMMetrics.gridWidth(), 
@@ -1260,7 +1264,7 @@ var Row = React.createClass({displayName: 'Row',
     );
 
     var style = {
-      height: this.props.height,
+      height: this.getRowHeight(),
       overflow: 'hidden'
     };
 
@@ -1288,7 +1292,7 @@ var Row = React.createClass({displayName: 'Row',
           filterRowIdx: this.props.row.key, 
           value: this.getCellValue(column.key || i), 
           column: column, 
-          height: this.props.height, 
+          height: this.getRowHeight(), 
           formatter: column.formatter}
           )
       );
@@ -1300,6 +1304,14 @@ var Row = React.createClass({displayName: 'Row',
     }
 
     return cells.concat(lockedCells);
+  },
+
+  getRowHeight:function(){
+    if(this.props.expandedRows && this.props.expandedRows[this.props.key]){
+      return this.props.expandedRows[this.props.key];
+    }else{
+      return this.props.height;
+    }
   },
 
   getCellValue:function(key){
@@ -1555,6 +1567,7 @@ var Viewport = React.createClass({displayName: 'Viewport',
           width: this.props.columns.width, 
           rows: this.props.rows, 
           selectedRows: this.props.selectedRows, 
+          expandedRows: this.props.expandedRows, 
           columns: this.props.columns.columns, 
           cellRenderer: this.props.cellRenderer, 
           rowRenderer: this.props.rowRenderer, 
@@ -1615,9 +1628,11 @@ var CopyableMixin        = require('./mixins/CopyableMixin');
 var DraggableMixin       = require('./mixins/DraggableMixin');
 var MixinHelper          = require('../utils/MixinHelper');
 var KeyboardHandlerMixin = require('./mixins/KeyboardHandlerMixin');
+var isFunction           = require('../utils/isFunction');
 var PropTypes            = React.PropTypes;
 var cx                   = React.addons.classSet;
 var cloneWithProps       = React.addons.cloneWithProps;
+
 
 
 var CellControls = React.createClass({displayName: 'CellControls',
@@ -1628,9 +1643,35 @@ var CellControls = React.createClass({displayName: 'CellControls',
     this.props.onClickEdit();
   },
 
+  onShowMore : function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    var newHeight = this.props.column.getExpandedHeight(this.props.value);
+    this.props.onShowMore(this.props.rowIdx, newHeight);
+  },
+
+  onShowLess : function(e){
+    e.stopPropagation();
+    e.preventDefault();
+    this.props.onShowLess(this.props.rowIdx);
+  },
+
+  renderShowMoreButton:function(){
+    if(isFunction(this.props.column.getExpandedHeight) && this.props.column.getExpandedHeight(this.props.value) > 0){
+      var newHeight = this.props.column.getExpandedHeight(this.props.value);
+      if(newHeight > this.props.height){
+        return React.DOM.button({type: "button", className: "btn btn-link btn-xs", onClick: this.onShowMore}, "Show More")
+      }else{
+        return React.DOM.button({type: "button", className: "btn btn-link btn-xs", onClick: this.onShowLess}, "Show Less")
+      }
+    }else{
+      return null;
+    }
+  },
+
   render : function(){
     return (React.DOM.div({className: "pull-right btn-group"}, 
-              React.DOM.button({type: "button", className: "btn btn-link btn-xs"}, "Show More"), React.DOM.button({onClick: this.onClickEdit, type: "button", className: "btn btn-link btn-xs"}, "Edit")
+              this.renderShowMoreButton(null), React.DOM.button({onClick: this.onClickEdit, type: "button", className: "btn btn-link btn-xs"}, "Edit")
             ))
   }
 
@@ -1660,8 +1701,17 @@ var ExcelCell = React.createClass({displayName: 'ExcelCell',
     return (this.isSelected() || this.isDraggedOver()) && !this.isActive();
   },
 
-  cellControls : function(){
-
+  isExpanded : function(){
+    var isExpanded = false;
+    if(isFunction(this.props.column.getExpandedHeight) && this.props.column.getExpandedHeight(this.props.value) > 0){
+      var newHeight = this.props.column.getExpandedHeight(this.props.value);
+      if(newHeight > this.props.height){
+        isExpanded = true;
+      }else{
+        isExpanded = false;
+      }
+    }
+    return isExpanded;
   },
 
   render: function() {
@@ -1675,7 +1725,8 @@ var ExcelCell = React.createClass({displayName: 'ExcelCell',
         handleDragStart: this.handleDragStart, 
         onDragEnter: this.handleDragEnter, 
         onDragEnd: this.props.handleDragEnd, 
-        cellControls: this.props.column.showCellControls && !this.isActive() ? CellControls({onClickEdit: this.setActive}) : null}
+        cellControls: this.props.column.showCellControls && !this.isActive() ? CellControls({height: this.props.height, value: this.props.value, rowIdx: this.props.rowIdx, column: this.props.column, onShowMore: this.props.onShowMore, onShowLess: this.props.onShowLess, onClickEdit: this.setActive}) : null, 
+        isExpanded: this.isExpanded()}
       ))
   }
 
@@ -1684,7 +1735,7 @@ var ExcelCell = React.createClass({displayName: 'ExcelCell',
 module.exports = ExcelCell;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../Cell":3,"../utils/MixinHelper":34,"./mixins/CopyableMixin":17,"./mixins/DraggableMixin":18,"./mixins/EditableMixin":19,"./mixins/KeyboardHandlerMixin":20,"./mixins/SelectableMixin":21}],15:[function(require,module,exports){
+},{"../../Cell":3,"../utils/MixinHelper":34,"../utils/isFunction":35,"./mixins/CopyableMixin":17,"./mixins/DraggableMixin":18,"./mixins/EditableMixin":19,"./mixins/KeyboardHandlerMixin":20,"./mixins/SelectableMixin":21}],15:[function(require,module,exports){
 (function (global){
 /**
  * @jsx React.DOM
@@ -2491,7 +2542,7 @@ var cloneWithProps = React.addons.cloneWithProps;
 var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
 
   getInitialState:function(){
-    return {selectedRows : []};
+    return {selectedRows : [], expandedRows : []};
   },
 
   getDefaultProps:function() {
@@ -2521,6 +2572,26 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
       selectedRows[row] = false;
     }
     this.setState({selectedRows : selectedRows});
+  },
+
+  handleShowMore:function(row, newHeight){
+    var expandedRows = this.state.expandedRows;
+    if(expandedRows[row]){
+      if(expandedRows[row]== null || expandedRows[row] < newHeight){
+        expandedRows[row] = newHeight;
+      }
+    }else{
+      expandedRows[row] = newHeight;
+    }
+    this.setState({expandedRows : expandedRows});
+  },
+
+  handleShowLess:function(row){
+    var expandedRows = this.state.expandedRows;
+    if(expandedRows[row]){
+        expandedRows[row] = null;
+    }
+    this.setState({expandedRows : expandedRows});
   },
 
   mixins : MixinHelper.mix([SelectableGridMixin, EditableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin]),
@@ -2558,8 +2629,10 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
         handleDragStart: this.handleDragStart, 
         handleDragEnter: this.handleDragEnter, 
         handleDragEnd: this.handleDragEnd, 
-        handleTerminateDrag: this.handleTerminateDrag}
-
+        handleTerminateDrag: this.handleTerminateDrag, 
+        onShowMore: this.handleShowMore, 
+        onShowLess: this.handleShowLess, 
+        expandedRows: this.state.expandedRows}
         )
     );
 
@@ -2573,6 +2646,7 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
           rows: rows, 
           cellRenderer: cellRenderer, 
           selectedRows: this.state.selectedRows, 
+          expandedRows: this.state.expandedRows, 
           rowOffsetHeight: this.getRowOffsetHeight(), 
           minHeight: this.props.minHeight}))
       )
