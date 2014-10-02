@@ -87,10 +87,10 @@ var Canvas = React.createClass({displayName: 'Canvas',
 
     return (
       React.DOM.div({
-        style: style,
-        onScroll: this.onScroll,
-        className: cx("react-grid-Canvas", this.props.className)},
-        React.DOM.div({style: {width: this.props.width, overflow: 'hidden'}},
+        style: style, 
+        onScroll: this.onScroll, 
+        className: cx("react-grid-Canvas", this.props.className)}, 
+        React.DOM.div({style: {width: this.props.width, overflow: 'hidden'}}, 
           rows
         )
       )
@@ -107,7 +107,7 @@ var Canvas = React.createClass({displayName: 'Canvas',
 
   renderPlaceholder:function(key, height) {
     return (
-      React.DOM.div({key: key, style: {height: height}},
+      React.DOM.div({key: key, style: {height: height}}, 
         this.props.columns.map(
           function(column, idx)  {return React.DOM.div({style: {width: column.width}, key: idx});})
       )
@@ -246,13 +246,13 @@ var Cell = React.createClass({displayName: 'Cell',
       this.props.column.locked ? 'react-grid-Cell--locked' : null
     );
     return this.transferPropsTo(
-      React.DOM.div({className: className, style: style},
+      React.DOM.div({className: className, style: style}, 
         this.renderCellContent({
-          value: this.props.value,
-          column: this.props.column,
-          rowIdx: this.props.rowIdx,
+          value: this.props.value, 
+          column: this.props.column, 
+          rowIdx: this.props.rowIdx, 
           isExpanded: this.props.isExpanded}
-          ),
+          ), 
           React.DOM.div({className: "drag-handle", draggable: "true", onDragStart: this.props.handleDragStart}
           )
       )
@@ -614,11 +614,7 @@ var MetricsComputatorMixin = {
   },
 
   componentDidMount:function() {
-    if(window.addEventListener){
-      window.addEventListener('resize', this.updateMetrics);
-    }else{
-      window.attachEvent('resize', this.updateMetrics);
-    }
+    window.addEventListener('resize', this.updateMetrics);
     this.updateMetrics();
   },
 
@@ -846,29 +842,29 @@ var Grid = React.createClass({displayName: 'Grid',
   render:function() {
     var headerRows = this.props.headerRows || [{ref : 'row'}];
     return this.transferPropsTo(
-      React.DOM.div({style: this.getStyle(), className: "react-grid-Grid"},
+      React.DOM.div({style: this.getStyle(), className: "react-grid-Grid"}, 
         Header({
-          ref: "header",
-          columns: this.state.columns,
-          onColumnResize: this.onColumnResize,
-          height: this.props.rowHeight,
-          totalWidth: this.DOMMetrics.gridWidth(),
+          ref: "header", 
+          columns: this.state.columns, 
+          onColumnResize: this.onColumnResize, 
+          height: this.props.rowHeight, 
+          totalWidth: this.DOMMetrics.gridWidth(), 
           headerRows: headerRows}
-          ),
+          ), 
         Viewport({
-          ref: "viewport",
-          width: this.state.columns.width,
-          rowHeight: this.props.rowHeight,
-          rowRenderer: this.props.rowRenderer,
-          cellRenderer: this.props.cellRenderer,
-          rows: this.props.rows,
-          selectedRows: this.props.selectedRows,
-          expandedRows: this.props.expandedRows,
-          length: this.props.length,
-          columns: this.state.columns,
-          totalWidth: this.DOMMetrics.gridWidth(),
-          onScroll: this.onScroll,
-          onRows: this.props.onRows,
+          ref: "viewport", 
+          width: this.state.columns.width, 
+          rowHeight: this.props.rowHeight, 
+          rowRenderer: this.props.rowRenderer, 
+          cellRenderer: this.props.cellRenderer, 
+          rows: this.props.rows, 
+          selectedRows: this.props.selectedRows, 
+          expandedRows: this.props.expandedRows, 
+          length: this.props.length, 
+          columns: this.state.columns, 
+          totalWidth: this.DOMMetrics.gridWidth(), 
+          onScroll: this.onScroll, 
+          onRows: this.props.onRows, 
           rowOffsetHeight: this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
           )
       )
@@ -919,7 +915,7 @@ var Header = React.createClass({displayName: 'Header',
 
 
     return this.transferPropsTo(
-      React.DOM.div({style: this.getStyle(), className: className},
+      React.DOM.div({style: this.getStyle(), className: className}, 
         this.renderHeaderRows(null)
       )
     );
@@ -937,15 +933,15 @@ var Header = React.createClass({displayName: 'Header',
       };
 
       headerRows.push(HeaderRow({
-        key: row.ref,
-        ref: row.ref,
-        style: headerRowStyle,
-        onColumnResize: this.onColumnResize,
-        onColumnResizeEnd: this.onColumnResizeEnd,
-        width: state.columns.width,
-        height: row.height || this.props.height,
-        columns: state.columns.columns,
-        resizing: state.column,
+        key: row.ref, 
+        ref: row.ref, 
+        style: headerRowStyle, 
+        onColumnResize: this.onColumnResize, 
+        onColumnResizeEnd: this.onColumnResizeEnd, 
+        width: state.columns.width, 
+        height: row.height || this.props.height, 
+        columns: state.columns.columns, 
+        resizing: state.column, 
         headerCellRenderer: row.headerCellRenderer}
         ))
     }).bind(this));
@@ -1039,7 +1035,7 @@ var ResizeHandle = React.createClass({displayName: 'ResizeHandle',
   render:function() {
     return this.transferPropsTo(
       Draggable({
-        className: "react-grid-HeaderCell__resizeHandle",
+        className: "react-grid-HeaderCell__resizeHandle", 
         style: this.style}
         )
     );
@@ -1062,12 +1058,12 @@ var HeaderCell = React.createClass({displayName: 'HeaderCell',
     });
     className = cx(className, this.props.className);
     return (
-      React.DOM.div({className: className, style: this.getStyle()},
-        this.renderCell(null),
+      React.DOM.div({className: className, style: this.getStyle()}, 
+        this.renderCell(null), 
         this.props.column.resizeable ?
           ResizeHandle({
-            onDrag: this.onDrag,
-            onDragStart: this.onDragStart,
+            onDrag: this.onDrag, 
+            onDragStart: this.onDragStart, 
             onDragEnd: this.onDragEnd}
             ) :
           null
@@ -1178,8 +1174,8 @@ var HeaderRow = React.createClass({displayName: 'HeaderRow',
     };
 
     return this.transferPropsTo(
-      React.DOM.div({style: this.getStyle(), className: "react-grid-HeaderRow"},
-        React.DOM.div({style: cellsStyle},
+      React.DOM.div({style: this.getStyle(), className: "react-grid-HeaderRow"}, 
+        React.DOM.div({style: cellsStyle}, 
           this.renderCells(null)
         )
       )
@@ -1194,13 +1190,13 @@ var HeaderRow = React.createClass({displayName: 'HeaderRow',
       var column = this.props.columns[i];
       var cell = (
         HeaderCell({
-          ref: i,
-          key: i,
-          height: this.props.height,
-          column: column,
-          renderer: this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer,
-          resizing: this.props.resizing === column,
-          onResize: this.props.onColumnResize,
+          ref: i, 
+          key: i, 
+          height: this.props.height, 
+          column: column, 
+          renderer: this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer, 
+          resizing: this.props.resizing === column, 
+          onResize: this.props.onColumnResize, 
           onResizeEnd: this.props.onColumnResizeEnd}
           )
       );
@@ -1273,7 +1269,7 @@ var Row = React.createClass({displayName: 'Row',
     };
 
     return this.transferPropsTo(
-      React.DOM.div({className: className, style: style},
+      React.DOM.div({className: className, style: style}, 
         React.isValidComponent(this.props.row) ?
           this.props.row :
           this.renderCells(null)
@@ -1289,14 +1285,14 @@ var Row = React.createClass({displayName: 'Row',
       var column = this.props.columns[i];
       var cell = (
         this.renderCell({
-          ref: i,
-          key: i,
-          idx: i,
-          rowIdx: this.props.idx,
-          filterRowIdx: this.props.row.key,
-          value: this.getCellValue(column.key || i),
-          column: column,
-          height: this.getRowHeight(),
+          ref: i, 
+          key: i, 
+          idx: i, 
+          rowIdx: this.props.idx, 
+          filterRowIdx: this.props.row.key, 
+          value: this.getCellValue(column.key || i), 
+          column: column, 
+          height: this.getRowHeight(), 
           formatter: column.formatter}
           )
       );
@@ -1563,28 +1559,28 @@ var Viewport = React.createClass({displayName: 'Viewport',
     };
     return (
       React.DOM.div({
-        className: "react-grid-Viewport",
-        style: style},
+        className: "react-grid-Viewport", 
+        style: style}, 
         Canvas({
-          ref: "canvas",
-          totalWidth: this.props.totalWidth,
-          width: this.props.columns.width,
-          rows: this.props.rows,
-          selectedRows: this.props.selectedRows,
-          expandedRows: this.props.expandedRows,
-          columns: this.props.columns.columns,
-          cellRenderer: this.props.cellRenderer,
-          rowRenderer: this.props.rowRenderer,
+          ref: "canvas", 
+          totalWidth: this.props.totalWidth, 
+          width: this.props.columns.width, 
+          rows: this.props.rows, 
+          selectedRows: this.props.selectedRows, 
+          expandedRows: this.props.expandedRows, 
+          columns: this.props.columns.columns, 
+          cellRenderer: this.props.cellRenderer, 
+          rowRenderer: this.props.rowRenderer, 
 
-          visibleStart: this.state.visibleStart,
-          visibleEnd: this.state.visibleEnd,
-          displayStart: this.state.displayStart,
-          displayEnd: this.state.displayEnd,
+          visibleStart: this.state.visibleStart, 
+          visibleEnd: this.state.visibleEnd, 
+          displayStart: this.state.displayStart, 
+          displayEnd: this.state.displayEnd, 
 
-          length: this.props.length,
-          height: this.state.height,
-          rowHeight: this.props.rowHeight,
-          onScroll: this.onScroll,
+          length: this.props.length, 
+          height: this.state.height, 
+          rowHeight: this.props.rowHeight, 
+          onScroll: this.onScroll, 
           onRows: this.props.onRows}
           )
       )
@@ -1674,7 +1670,7 @@ var CellControls = React.createClass({displayName: 'CellControls',
   },
 
   render : function(){
-    return (React.DOM.div({className: "pull-right btn-group"},
+    return (React.DOM.div({className: "pull-right btn-group"}, 
               this.renderShowMoreButton(null), React.DOM.button({onClick: this.onClickEdit, type: "button", className: "btn btn-link btn-xs"}, "Edit")
             ))
   }
@@ -1721,15 +1717,15 @@ var ExcelCell = React.createClass({displayName: 'ExcelCell',
   render: function() {
     return this.transferPropsTo(
       BaseCell({
-        className: this.getCellClass(),
-        onKeyDown: this.onKeyDown,
-        onClick: this.onClick,
-        onDoubleClick: this.onDoubleClick,
-        formatter: this.getFormatter(),
-        handleDragStart: this.handleDragStart,
-        onDragEnter: this.handleDragEnter,
-        onDragEnd: this.props.handleDragEnd,
-        cellControls: this.props.column.showCellControls && !this.isActive() ? CellControls({height: this.props.height, value: this.props.value, rowIdx: this.props.rowIdx, column: this.props.column, onShowMore: this.props.onShowMore, onShowLess: this.props.onShowLess, onClickEdit: this.setActive}) : null,
+        className: this.getCellClass(), 
+        onKeyDown: this.onKeyDown, 
+        onClick: this.onClick, 
+        onDoubleClick: this.onDoubleClick, 
+        formatter: this.getFormatter(), 
+        handleDragStart: this.handleDragStart, 
+        onDragEnter: this.handleDragEnter, 
+        onDragEnd: this.props.handleDragEnd, 
+        cellControls: this.props.column.showCellControls && !this.isActive() ? CellControls({height: this.props.height, value: this.props.value, rowIdx: this.props.rowIdx, column: this.props.column, onShowMore: this.props.onShowMore, onShowLess: this.props.onShowLess, onClickEdit: this.setActive}) : null, 
         isExpanded: this.isExpanded()}
       ))
   }
@@ -1769,8 +1765,8 @@ var FilterableHeaderCell = React.createClass({displayName: 'FilterableHeaderCell
 
   render: function() {
     return (
-      React.DOM.div(null,
-        React.DOM.div({className: "form-group"},
+      React.DOM.div(null, 
+        React.DOM.div({className: "form-group"}, 
           this.renderInput(null)
         )
       )
@@ -1822,9 +1818,9 @@ var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
 
     return (
       React.DOM.div({
-        onClick: this.onClick,
-        style: {cursor: 'pointer'}},
-        this.props.column.name,
+        onClick: this.onClick, 
+        style: {cursor: 'pointer'}}, 
+        this.props.column.name, 
         React.DOM.span({className: this.getSortByClass()})
       )
     );
@@ -2448,8 +2444,8 @@ var EditorMixin = {
     }
     var editorNode = this.renderEditorNode();
     return (
-      React.DOM.div({className: this.getContainerClass()},
-        editorNode,
+      React.DOM.div({className: this.getContainerClass()}, 
+        editorNode, 
         this.renderStatusIcon()
       )
     )
@@ -2621,37 +2617,37 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
   render: function() {
     var cellRenderer = (
       ExcelCell({
-        selected: this.state.selected,
-        copied: this.state.copied,
-        dragged: this.state.dragged,
-        onSelect: this.onSelect,
-        onClick: this.onSelect,
-        onSetActive: this.onSetActive,
-        onCommit: this.onCellChanged,
-        handleCopy: this.handleCopy,
-        handlePaste: this.handlePaste,
-        handleDragStart: this.handleDragStart,
-        handleDragEnter: this.handleDragEnter,
-        handleDragEnd: this.handleDragEnd,
-        handleTerminateDrag: this.handleTerminateDrag,
-        onShowMore: this.handleShowMore,
-        onShowLess: this.handleShowLess,
+        selected: this.state.selected, 
+        copied: this.state.copied, 
+        dragged: this.state.dragged, 
+        onSelect: this.onSelect, 
+        onClick: this.onSelect, 
+        onSetActive: this.onSetActive, 
+        onCommit: this.onCellChanged, 
+        handleCopy: this.handleCopy, 
+        handlePaste: this.handlePaste, 
+        handleDragStart: this.handleDragStart, 
+        handleDragEnter: this.handleDragEnter, 
+        handleDragEnd: this.handleDragEnd, 
+        handleTerminateDrag: this.handleTerminateDrag, 
+        onShowMore: this.handleShowMore, 
+        onShowLess: this.handleShowLess, 
         expandedRows: this.state.expandedRows}
         )
     );
 
     var rows = this.filterRows();
     return(
-      React.DOM.div({className: "container-fluid"},
-        this.renderToolbar(null),
+      React.DOM.div({className: "container-fluid"}, 
+        this.renderToolbar(null), 
         this.transferPropsTo(BaseGrid({
-          headerRows: this.getHeaderRows(),
-          columns: this.getColumns(),
-          rows: rows,
-          cellRenderer: cellRenderer,
-          selectedRows: this.state.selectedRows,
-          expandedRows: this.state.expandedRows,
-          rowOffsetHeight: this.getRowOffsetHeight(),
+          headerRows: this.getHeaderRows(), 
+          columns: this.getColumns(), 
+          rows: rows, 
+          cellRenderer: cellRenderer, 
+          selectedRows: this.state.selectedRows, 
+          expandedRows: this.state.expandedRows, 
+          rowOffsetHeight: this.getRowOffsetHeight(), 
           minHeight: this.props.minHeight}))
       )
     )
@@ -2659,10 +2655,10 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
 
   renderToolbar:function(){
     if(this.props.shouldDisplayToolbar === true){
-      return(React.DOM.div({className: "navbar navbar-default"},
-        React.DOM.div({className: "navbar-form"},
-          React.DOM.div({className: "form-group"},
-            React.DOM.button({type: "button", className: "btn btn-default", onClick: this.toggleFilter},
+      return(React.DOM.div({className: "navbar navbar-default"}, 
+        React.DOM.div({className: "navbar-form"}, 
+          React.DOM.div({className: "form-group"}, 
+            React.DOM.button({type: "button", className: "btn btn-default", onClick: this.toggleFilter}, 
               React.DOM.span({className: "glyphicon glyphicon-filter"}), " Filter Rows"
             )
           )
@@ -3099,16 +3095,14 @@ var arePropertyDescriptorsSupported = function () {
  * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
  * @param obj1
  * @param obj2
- * @returns obj3 a new object based on obj1 and obj2
  */
 function IE8_merge(obj1,obj2){
-    var obj3 = {};
-    for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
-    return obj3;
+    for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
+    return obj1;
 }
 //IE 8 does not support Object.assign even with polyfil.
-var merge = arePropertyDescriptorsSupported() ? Object.assign : IE8_merge;
+var merge = arePropertyDescriptorsSupported() ? Object.assign :
+ IE8_merge;
 
 var MixinHelper = {
 
