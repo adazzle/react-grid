@@ -2050,7 +2050,7 @@ var EditableMixin = {
   onCommit:function(commit){
     var rowIdx = this.props.rowIdx;
     var idx = this.props.idx;
-    this.props.onCommit({cellKey: this.props.column.key, rowIdx: this.props.filterRowIdx || rowIdx, value : commit.value, keyCode : commit.key});
+    this.props.onCommit({cellKey: this.props.column.key, rowIdx: this.props.filterRowIdx || rowIdx, value : commit.value, keyCode : commit.key, changed : commit});
   },
 
   checkFocus: function() {
@@ -2545,8 +2545,41 @@ var cloneWithProps = React.addons.cloneWithProps;
 
 var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
 
+  mixins : MixinHelper.mix([SelectableGridMixin, EditableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin]),
+
   getInitialState:function(){
     return {selectedRows : [], expandedRows : []};
+  },
+
+  overrides : {
+    onCellChanged:function(commit){
+      var committed = commit[0];
+      var selected = this.state.selected;
+      selected.active = false;
+      if(commit.keyCode === 'Tab'){
+        selected.idx += 1;
+      }
+      if(committed.changed && committed.changed.expandedHeight){
+        var expandedRows = this.expandRow(committed.rowIdx, committed.changed.expandedHeight);
+      }
+      this.setState({selected : selected, expandedRows : expandedRows});
+      this.props.onCellChanged(committed);
+    },
+    getColumns : function(){
+      var cols = this.getDecoratedColumns(this.props.columns)
+      if(this.props.isRowSelectable){
+          cols.unshift({
+            key: 'select-row',
+            name: '',
+            formatter : CheckboxEditor,
+            width : '3%',
+            onRowSelect :this.handleRowSelect,
+            filterable : false,
+            headerRenderer : React.DOM.input({type: "checkbox", onChange: this.handleCheckboxChange})
+          });
+        }
+        return cols;
+    }
   },
 
   getDefaultProps:function() {
@@ -2578,7 +2611,7 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
     this.setState({selectedRows : selectedRows});
   },
 
-  handleShowMore:function(row, newHeight){
+  expandRow:function(row, newHeight){
     var expandedRows = this.state.expandedRows;
     if(expandedRows[row]){
       if(expandedRows[row]== null || expandedRows[row] < newHeight){
@@ -2587,6 +2620,11 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
     }else{
       expandedRows[row] = newHeight;
     }
+    return expandedRows;
+  },
+
+  handleShowMore:function(row, newHeight){
+    var expandedRows = this.expandRow(row, newHeight);
     this.setState({expandedRows : expandedRows});
   },
 
@@ -2598,24 +2636,12 @@ var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
     this.setState({expandedRows : expandedRows});
   },
 
-  mixins : MixinHelper.mix([SelectableGridMixin, EditableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin]),
+  expandAllRows:function(){
 
-  overrides : {
-    getColumns : function(){
-    var cols = this.getDecoratedColumns(this.props.columns)
-    if(this.props.isRowSelectable){
-        cols.unshift({
-          key: 'select-row',
-          name: '',
-          formatter : CheckboxEditor,
-          width : '3%',
-          onRowSelect :this.handleRowSelect,
-          filterable : false,
-          headerRenderer : React.DOM.input({type: "checkbox", onChange: this.handleCheckboxChange})
-        });
-      }
-      return cols;
-    }
+  },
+
+  collapseAllRows:function(){
+
   },
 
   render: function() {
