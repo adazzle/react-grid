@@ -1,6 +1,6 @@
 {
   "name": "adazzle-react-grid",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Data grid for React",
   "main": "lib/index.js",
   "scripts": {
@@ -65,11 +65,7 @@
         {
           "es6": true
         }
-      ],
-      [
-        "browserify-shim",
-        {"global": true}
-       ]
+      ]
     ]
   },
   "browserify-shim": {
