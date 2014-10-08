@@ -2878,6 +2878,9 @@ var FilterableGridMixin = {
 
       if(this.hasFilters()){
         rows = rows.map(function(r, i)  {r.key = i;return r;}).filter(this.isRowDisplayed);
+        if(this.props.onFilter){
+          this.props.onFilter(rows);
+        }
       }
       return rows;
     },
