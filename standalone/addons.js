@@ -5,5 +5,5 @@
     root.ReactGrid = factory(root.React);
   }
 })(window, function(React) {
-  return require('../lib/addons/grids/ExcelGrid.js');
+  return require('../lib/addons/index.js');
 });
