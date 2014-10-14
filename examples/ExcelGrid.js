@@ -2,13 +2,12 @@
  * @jsx React.DOM
  */
 
-var React               = require('react');
-var Grid                = require('../lib/addons/grids/ExcelGrid');
-var DropDownEditor      = require('../lib/addons/editors/DropDownEditor');
-var CheckboxEditor      = require('../lib/addons/editors/CheckboxEditor');
-var AutoCompleteEditor  = require('../lib/addons/editors/AutoCompleteEditor');
-var DateRangeEditor     = require('../lib/addons/editors/DateRangeEditor');
-var DateRangeFormatter  = require('../lib/addons/formatters/DateRangeFormatter');
+var React                    = require('react');
+var ReactGrid                = require('../lib/addons/');
+var DropDownEditor           = ReactGrid.Editors.DropDownEditor;
+var AutoCompleteEditor  = ReactGrid.Editors.AutoComplete;
+var DateRangeEditor     = ReactGrid.Editors.DateRangeEditor;
+var DateRangeFormatter  = ReactGrid.Formatters.DateRangeFormatter;
 var cx                  = React.addons.classSet;
 var cloneWithProps      = React.addons.cloneWithProps;
 
@@ -137,7 +136,7 @@ var component = React.createClass({
           </ul>
         </div>
         <div>
-        <Grid
+        <ReactGrid 
         columns={columns}
         length={1000}
         rows={this.state.rows}
