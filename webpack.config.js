@@ -1,7 +1,7 @@
 var path = require("path");
 module.exports = {
 	entry: {
-		main : "./standalone/index",
+		main : "./lib/index",
 		withAddons : "./standalone/addons"
 	},
 	output: {
