@@ -4,7 +4,8 @@
   "description": "Data grid for React",
   "main": "lib/index.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "prepublish": "gulp standalone"
   },
   "repository": {
     "type": "git",
@@ -57,7 +58,8 @@
     "moment": "^2.8.1",
     "exposify": "^0.2.0",
     "browserify-shim": "^3.7.0",
-    "webpack": "^1.4.7"
+    "webpack": "^1.4.7",
+    "gulp-react": "^1.0.2"
   },
   "browserify": {
     "transform": [

@@ -5,7 +5,7 @@ module.exports = {
 		withAddons : "./standalone/addons"
 	},
 	output: {
-		path: path.join(__dirname, "./standalone/dist"),
+		path: path.join(__dirname, "./dist"),
 		filename: "reactGrid.[name].js",
 		library: ["ReactGrid", "[name]"],
 		libraryTarget: "umd"
