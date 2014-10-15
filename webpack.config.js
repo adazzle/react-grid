@@ -1,4 +1,6 @@
 var path = require("path");
+var webpack = require('webpack');
+
 module.exports = {
 	entry: {
 		'reactGrid' : "./index",
@@ -16,5 +18,8 @@ module.exports = {
 	 "react": "React",
    "react/addons": "React",
 	 "moment" : "moment"
-	}
+	},
+	plugins: [
+			new webpack.ProvidePlugin({React: "React"})
+		]
 }
