@@ -1,0 +1,148 @@
+/**
+ * @jsx React.DOM
+ */
+
+var React                    = require('react');
+var ReactGrid                = require('../lib/addons/');
+var DropDownEditor           = ReactGrid.Editors.DropDownEditor;
+var AutoCompleteEditor  = ReactGrid.Editors.AutoComplete;
+var DateRangeEditor     = ReactGrid.Editors.DateRangeEditor;
+var DateRangeFormatter  = ReactGrid.Formatters.DateRangeFormatter;
+var cx                  = React.addons.classSet;
+var cloneWithProps      = React.addons.cloneWithProps;
+
+'use strict';
+var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
+var epics = [{id : 0, title : 'Unification Of Media'}, { id : 1, title : 'Trading Desk'}, { id : 2, title : 'Tech Costs'}, { id : 3, title : 'Tactical'}, { id : 4, title : 'Barter'}, { id : 5, title :'Lego'}, {id : 6, title : 'Media Plan'}, {id : 7, title : 'Infrastructure'}];
+
+var dateRanges  = {
+         'Today': [moment(), moment()],
+         'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+         'Last 7 Days': [moment().subtract('days', 6), moment()],
+         'Last 30 Days': [moment().subtract('days', 29), moment()],
+         'This Month': [moment().startOf('month'), moment().endOf('month')],
+         'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+      }
+
+var columns = [
+  {
+    key: 'id',
+    name: 'ID',
+    width: '5%',
+  },
+  {
+    key: 'userStory',
+    name: 'User Story',
+    editable : true,
+    sortable : true,
+    showCellControls : true,
+    getExpandedHeight : function(value){
+      if(value === 'User Story 1'){
+        return 60;
+      }else{
+        return null;
+      }
+    }
+  },
+  {
+    key: 'developer',
+    name: 'Developer',
+    editor : <DropDownEditor options={developers} />,
+    sortable : true
+  },
+  {
+    key: 'epic',
+    name: 'Epic',
+    editor : <AutoCompleteEditor options={epics} />,
+    sortable : true
+  },
+  {
+    key: 'dateRange',
+    name: 'Duration',
+    editor : <DateRangeEditor ranges={dateRanges}/>,
+    formatter : <DateRangeFormatter />,
+    width : '15%',
+    filterable : false
+  },
+]
+
+var getRows = function(start, end) {
+  var result = []
+  for (var i = start; i < end; i++) {
+    result.push({
+      id: i,
+      userStory: 'User Story ' + i,
+      developer : developers[i%6],
+      epic : epics[i%8].title,
+
+      dateRange: {startDate : '2013-01-01', endDate : '2013-02-01'}
+    });
+  }
+  return result;
+}
+
+
+var component = React.createClass({
+
+  getInitialState : function(){
+    return {rows : getRows(0, 1000)};
+  },
+
+  updateCell : function(commit){
+      var rows = this.state.rows;
+      var rowToChange = rows[commit.rowIdx];
+      if(rowToChange){
+        rowToChange[commit.cellKey] = commit.value;
+        this.setState({rows:rows});
+      }
+  },
+
+  handleCellDrag : function(e){
+      var rows = this.state.rows;
+      for (var i = e.fromRow; i <= e.toRow; i++){
+        var rowToChange = rows[i];
+        if(rowToChange){
+          rowToChange[e.cellKey] = e.value;
+        }
+      }
+      this.setState({rows:rows});
+  },
+
+  cancelSort(){
+    this.render();
+  },
+
+  render: function() {
+    return (
+      <div>
+        <div className="well well-lg" >
+          <h4>Excel Style Grid</h4>
+          <ul>
+            <li>Keyboard navigation</li>
+            <li>Editable cells</li>
+            <ul>
+              <li>Simple Text Editor (User story column)</li>
+              <li>Drop Down Editor (Developer column)</li>
+              <li>Autocomplete Editor (Epic column)</li>
+              <li>Date Range Editor (Duration column)</li>
+            </ul>
+            <li>Editable validation</li>
+            <li>Custom Formatters</li>
+              <ul>
+                Date Range Formatter (Duration Column)
+              </ul>
+            <li>Copy/Paste cells</li>
+            <li>Cell Dragdown</li>
+          </ul>
+        </div>
+        <div>
+        <ReactGrid 
+        columns={columns}
+        length={1000}
+        rows={this.state.rows}
+        onCellChanged={this.updateCell}
+        onCellsDragged={this.handleCellDrag} /></div>
+      </div>);
+  }
+});
+module.exports = component;

@@ -12,8 +12,13 @@ if(window) { window.React = window.React || React; }
 var components = [];
 //register our component examples
 //the files need to module.export a react component
-components.push({id:'basic', module:require('./basic') });
-components.push({id:'frozen columns', module:require('./frozenCols') });
+components.push({id:'Basic', module:require('./basic') });
+components.push({id:'Frozen Columns', module:require('./frozenCols') });
+components.push({id:'Keyboard Nav', module:require('./GridWithKeyboardNav') });
+components.push({id:'Editable Cells', module:require('./EditableCells') });
+components.push({id:'Copyable Cells', module:require('./CopyableCells') });
+components.push({id:'Draggable Cells', module:require('./DraggableCells') });
+components.push({id:'Excel Style Grid', module:require('./ExcelGrid') });
 
 //creates a simple nav menu and viewer
 var Examples = React.createClass({

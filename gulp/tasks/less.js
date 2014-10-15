@@ -2,7 +2,7 @@ var gulp = require("gulp");
 var less = require("gulp-less");
 
 // task
-gulp.task('styles', ['clean'], function () {
+gulp.task('styles', function () {
     return gulp.src('./examples/examples.less')
     .pipe(less())
     //compile into our examples folder

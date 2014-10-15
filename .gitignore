@@ -3,6 +3,6 @@ bower_components
 docs/_build
 docs/_static/bundle.js
 olddocs/build
-standalone/react-grid.min.js
-standalone/react-grid.js
+lib-compiled
+dist
 **/build
