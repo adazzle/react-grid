@@ -4,8 +4,8 @@ var gulp        = require('gulp');
 gulp.task('browserSync', ['examples'], function() {
 	browserSync({
 		server: {
-			baseDir: './examples',
-    	index: "examples.html",
+			baseDir: './',
+    	index: "examples/index.html",
 			routes: {
 				"/bower_components": "./bower_components",
 			}

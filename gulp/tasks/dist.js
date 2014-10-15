@@ -8,7 +8,6 @@ var gulp = require('gulp');
 var react = require('gulp-react');
 
 gulp.task('compile-jsx', ['clean'], function () {
-
     return gulp.src('./lib/**')
         .pipe(react({harmony : true}))
         .pipe(gulp.dest('./lib-compiled'));
