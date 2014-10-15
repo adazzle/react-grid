@@ -1,8 +1,10 @@
 var path = require("path");
 module.exports = {
 	entry: {
-		main : "./lib/index",
-		withAddons : "./standalone/addons"
+		main : "./index",
+		withAddons : './addons',
+		editors : "./editors",
+		formatters : './formatters'
 	},
 	output: {
 		path: path.join(__dirname, "./dist"),
