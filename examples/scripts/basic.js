@@ -3,9 +3,8 @@
  */
 (function(){
 
-  var Grid = (typeof window !== "undefined" && window.ReactGrid) ? window.ReactGrid.Grid : require('../lib/Grid');
-
   var React = (typeof window !== "undefined" && window.React) ? window.React : require('react');
+  var Grid = (typeof window !== "undefined" && window.ReactGrid) ? window.ReactGrid.Grid : require('../../index');
 
   function rows(start, end) {
     var rows = [];

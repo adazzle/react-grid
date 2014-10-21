@@ -1,8 +1,9 @@
 /**
  * @jsx React.DOM
  */
-var Grid = require('../lib/addons/grids/DraggableCellGrid');
+
 var React = require('react');
+var Grid = require('../../lib/addons/grids/CopyPasteGrid');
 var cx = React.addons.classSet;
 
 'use strict';
@@ -34,7 +35,7 @@ var getRows = function(start, end) {
     });
   }
   return result;
-};
+}
 
 
 var component = React.createClass({
@@ -43,22 +44,21 @@ var component = React.createClass({
     return {rows : getRows(0, 1000)};
   },
 
-  handleCellDrag : function(e){
+  updateCell : function(commit){
       var rows = this.state.rows;
-      for (var i = e.fromRow; i <= e.toRow; i++){
-        var rowToChange = rows[i];
-        if(rowToChange){
-          rowToChange[e.cellKey] = e.value;
-        }
+      var rowToChange = rows[commit.rowIdx];
+      if(rowToChange){
+        rowToChange[commit.cellKey] = commit.value;
+        this.setState({rows:rows});
       }
-      this.setState({rows:rows});
   },
 
   render: function() {
     return (
       <div>
         <div className="well well-lg" >
-          <p>This shows a grid with dragdown to copy functionality and keyboard navigation.</p>
+          <p>This shows a grid with copy/paste functionlity and keyboard navigation.</p>
+          <p>Hold Ctrl + C to copy a cells contents and Ctrl + V to paste</p>
 
         </div>
         <div>
@@ -66,7 +66,7 @@ var component = React.createClass({
         columns={columns}
         length={1000}
         rows={this.state.rows}
-        onCellsDragged={this.handleCellDrag} /></div>
+        onCellChanged={this.updateCell} /></div>
       </div>);
   }
 });

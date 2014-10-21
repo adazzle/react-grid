@@ -12,13 +12,13 @@ if(window) { window.React = window.React || React; }
 var components = [];
 //register our component examples
 //the files need to module.export a react component
-components.push({id:'Basic', module:require('./basic') });
-components.push({id:'Frozen Columns', module:require('./frozenCols') });
-components.push({id:'Keyboard Nav', module:require('./GridWithKeyboardNav') });
-components.push({id:'Editable Cells', module:require('./EditableCells') });
-components.push({id:'Copyable Cells', module:require('./CopyableCells') });
-components.push({id:'Draggable Cells', module:require('./DraggableCells') });
-components.push({id:'Excel Style Grid', module:require('./ExcelGrid') });
+components.push({id:'Basic', module:require('./scripts/basic') });
+components.push({id:'Frozen Columns', module:require('./scripts/frozenCols') });
+components.push({id:'Keyboard Nav', module:require('./scripts/GridWithKeyboardNav') });
+components.push({id:'Editable Cells', module:require('./scripts/EditableCells') });
+components.push({id:'Copyable Cells', module:require('./scripts/CopyableCells') });
+components.push({id:'Draggable Cells', module:require('./scripts/DraggableCells') });
+components.push({id:'Excel Style Grid', module:require('./scripts/ExcelGrid') });
 
 //creates a simple nav menu and viewer
 var Examples = React.createClass({
@@ -36,6 +36,15 @@ var Examples = React.createClass({
                 <Menu onMenuClick={this.onMenuClick} />
               </div>
             </nav>
+            <div className="container-fluid">
+            <div clasName="page-header">
+              <h1>React Grid Examples</h1>
+              <p>Unless otherwise stated these examples are all compiled using webpack and referencing the lib-compiled folder,
+                which is the js-compiled folder that would be available when downloading ReactGrid from npm. For examples using standalone library, please see the <a href="./examples/dist-basic.html">ReactGrid.js</a> and <a href="./examples/dist-addons.html">ReactGrid.WithAddons.js</a> examples</p>
+            </div>
+            </div>
+
+
             {detail}
           </div>)
  },
@@ -49,7 +58,10 @@ var Menu = React.createClass({
        module: comp.module,
        onClick: this.props.onMenuClick
      }));
-   return (<ul className="nav navbar-nav">{children}</ul>);
+   return (<ul className="nav navbar-nav">{children}
+   <li ><a href="./examples/dist-basic.html">Dist- ReactGrid.js</a></li>
+   <li ><a href="./examples/dist-addons.html">Dist - ReactGrid.WithAddons.js</a></li>
+   </ul>);
  },
 });
 
