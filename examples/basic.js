@@ -1,47 +1,54 @@
 /**
  * @jsx React.DOM
  */
-var Grid = require('../lib/Grid');
+(function(){
 
-var React = require('react');
+  var Grid = (typeof window !== "undefined" && window.ReactGrid) ? window.ReactGrid.Grid : require('../lib/Grid');
 
-'use strict';
+  var React = (typeof window !== "undefined" && window.React) ? window.React : require('react');
 
-function rows(start, end) {
-  var rows = [];
-  for (var i = start; i < end; i++) {
-    rows.push([i, 'Name ' + i, 'Surname ' + i]);
+  function rows(start, end) {
+    var rows = [];
+    for (var i = start; i < end; i++) {
+      rows.push([i, 'Name ' + i, 'Surname ' + i]);
+    }
+    return rows;
   }
-  return rows;
-}
 
-var columns = [
-  {
-    name: '№',
-    width: '10%',
-    key: 0
-  },
-  {
-    name: 'Name',
-    width: '40%',
-    resizeable: true,
-    key: 1
-  },
-  {
-    name: 'Surname',
-    width: '50%',
-    resizeable: true,
-    key: 2
-  }
-];
+  var columns = [
+    {
+      name: '№',
+      width: '10%',
+      key: 0
+    },
+    {
+      name: 'Name',
+      width: '40%',
+      resizeable: true,
+      key: 1
+    },
+    {
+      name: 'Surname',
+      width: '50%',
+      resizeable: true,
+      key: 2
+    }
+  ];
 
-var component = React.createClass({
-  render: function() {
-    return (<Grid
-      columns={columns}
-      length={30000}
-      rows={rows}
-      rowHeight={40}/>);
+var component = React.createClass({displayName: 'component',
+    render: function() {
+      return (Grid({
+        columns: columns,
+        length: 30000,
+        rows: rows,
+        rowHeight: 40}));
+    }
+  });
+
+  if(typeof module != 'undefined' && module.exports){
+    module.exports = component;
+  }else{
+    this.BasicGrid = component;
   }
-});
-module.exports = component;
+
+}).call(this);

@@ -8,46 +8,10 @@
 
     <script type="text/javascript" src="./build/lib.js"></script>
     <script type="text/javascript" src="../dist/ReactGrid.Grid.js"></script>
-    <script type="text/javascript">
-    function rows(start, end) {
-            var rows = [];
-            for (var i = start; i < end; i++) {
-              rows.push([i, 'Name ' + i, 'Surname ' + i]);
-            }
-            return rows;
-          }
+    <script type="text/javascript" src="./basic.js"></script>
 
-          var columns = [
-            {
-              name: '№',
-              width: '10%',
-              key: 0
-            },
-            {
-              name: 'Name',
-              width: '40%',
-              resizeable: true,
-              key: 1
-            },
-            {
-              name: 'Surname',
-              width: '50%',
-              resizeable: true,
-              key: 2
-            }
-          ];
-
-               var Grid = React.createClass({displayName: 'Grid',
-            render: function() {
-              return (ReactGrid.Grid({
-                columns: columns,
-                length: 30000,
-                rows: rows,
-                rowHeight: 40}));
-            }
-          });
-
-          React.renderComponent(Grid(null), document.body);
+    <script>
+      React.renderComponent(BasicGrid(null), document.body);
     </script>
 
   </body>

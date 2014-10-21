@@ -2,9 +2,8 @@ var gulp      = require("gulp");
 var gutil     = require("gulp-util");
 var webpack   = require("webpack");
 var webpackConfig = require("../../webpack.config.js");
-
-
-var gulp = require('gulp');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
 var react = require('gulp-react');
 
 gulp.task('compile-jsx', ['clean'], function () {
@@ -21,6 +20,9 @@ gulp.task("dist", ['compile-jsx'], function(callback) {
         gutil.log("[standalone]", stats.toString({
             // output options
         }));
+
+        gulp.src('./dist/*.js').pipe(uglify()).pipe(rename({suffix: '.min'})).pipe(gulp.dest('./dist'));
+
         callback();
     });
 });

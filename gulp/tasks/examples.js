@@ -4,7 +4,7 @@ var webpackConfig = require("../../examples/webpack.config.js");
 var webpack   = require("webpack");
 var gutil     = require("gulp-util");
 
-gulp.task('script-deps', ['build'], function() {
+gulp.task('script-deps', ['styles'], function() {
 	return gulp.src([
 		'node_modules/react/dist/react-with-addons.js',
 		'node_modules/jquery/dist/jquery.min.js',
