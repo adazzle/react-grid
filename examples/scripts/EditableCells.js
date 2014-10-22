@@ -1,13 +1,14 @@
 /**
  * @jsx React.DOM
  */
-var Grid = require('../lib/addons/grids/EditableGrid');
-var DropDownEditor = require('../lib/addons/editors/DropDownEditor');
-var CheckboxEditor = require('../lib/addons/editors/CheckboxEditor');
+
 var React = require('react');
+var Grid = require('../../lib/addons/grids/EditableGrid')
+var DropDownEditor = require('../../lib/addons/editors/DropDownEditor');
+var CheckboxEditor = require('../../lib/addons/editors/CheckboxEditor');
 var cx = React.addons.classSet;
 
-'use strict';
+
 var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
 
 var TrueFalseFormatter = React.createClass({
@@ -98,4 +99,5 @@ var component = React.createClass({
       </div>);
   }
 });
+
 module.exports = component;

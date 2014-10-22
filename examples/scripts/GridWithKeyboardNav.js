@@ -1,7 +1,7 @@
 /**
  * @jsx React.DOM
  */
-var Grid = require('../lib/addons/grids/GridWithKeyboardNav');
+var Grid = require('../../lib/addons/grids/GridWithKeyboardNav');
 
 var React = require('react');
 
@@ -37,6 +37,8 @@ var rows = function(start, end) {
 }
 
 
+
+
 var component = React.createClass({
   render: function() {
     return (
@@ -47,7 +49,7 @@ var component = React.createClass({
         <Grid
         columns={columns}
         length={1000}
-        rows={rows} />
+        rows={rows}/>
       </div>);
   }
 });

@@ -1,11 +1,11 @@
 /**
  * @jsx React.DOM
  */
-var Grid = require('../lib/Grid');
+
+
+var Grid = require('../../lib/Grid');
 
 var React = require('react');
-
-'use strict';
 
 function rows(start, end) {
   var rows = [];
@@ -53,4 +53,6 @@ var component = React.createClass({
       </div>);
   }
 });
+
+
 module.exports = component;
