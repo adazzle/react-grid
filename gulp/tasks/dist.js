@@ -14,7 +14,7 @@ gulp.task('compile-jsx', ['clean'], function () {
         .pipe(gulp.dest('./lib-compiled'));
 });
 
-gulp.task("standalone", ['compile-jsx'], function(callback) {
+gulp.task("dist", ['compile-jsx'], function(callback) {
 
     // run webpack
     webpack(Object.create(webpackConfig), function(err, stats) {
