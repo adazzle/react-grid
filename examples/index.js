@@ -21,6 +21,7 @@ components.push({id:'Editable Cells', module:require('./scripts/EditableCells') 
 components.push({id:'Copyable Cells', module:require('./scripts/CopyableCells') });
 components.push({id:'Draggable Cells', module:require('./scripts/DraggableCells') });
 components.push({id:'Excel Style Grid', module:require('./scripts/ExcelGrid') });
+components.push({id:'Immutable Data', module:require('./scripts/ImmutableData') });
 
 //creates a simple nav menu and viewer
 var Examples = React.createClass({
