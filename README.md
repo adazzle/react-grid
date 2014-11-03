@@ -16,7 +16,7 @@ Or if you'd like to use bower, it's as easy as:
 bower adazzle-react-grid --save
 ```
 
-### Useage
+### Usage
 React Grid comes in two flavours. A basic uneditable data grid as well as a more advanced datagrid that attempts to provide a rich excel like experience with filtering, sorting, copy/paste, cell drag down, custom editors and formatters. 
 
 To use the basic grid, just include the following files
