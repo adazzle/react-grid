@@ -3,9 +3,7 @@ var bundleLogger = require('./bundleLogger');
 var browserify   = require('browserify');
 var handleErrors = require('./handleErrors');
 var source       = require('vinyl-source-stream');
-var exposify     = require('exposify');
 
-exposify.config = { react: 'React'};
 
 function buildBundle(bundleConfig, outFile, outFldr, watch, options) {
   var bundleMethod = watch && global.isWatching ? watchify : browserify;
