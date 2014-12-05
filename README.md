@@ -1,5 +1,5 @@
-# React Grid
-==================================
+React Grid
+============
 >Data grid for [React][].
 
 [![Coverage Status](https://img.shields.io/coveralls/adazzle/react-grid.svg)](https://coveralls.io/r/adazzle/react-grid)
