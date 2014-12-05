@@ -2,7 +2,7 @@ React Grid
 ============
 >Data grid for [React][].
 
-[![Build Status](https://ci.appveyor.com/api/projects/status/neil0n85qtoi8cue?svg=true)] [![Coverage Status](https://img.shields.io/coveralls/adazzle/react-grid.svg)](https://coveralls.io/r/adazzle/react-grid)
+![Build Status](https://ci.appveyor.com/api/projects/status/neil0n85qtoi8cue?svg=true) [![Coverage Status](https://img.shields.io/coveralls/adazzle/react-grid.svg)](https://coveralls.io/r/adazzle/react-grid)
 
 
 
