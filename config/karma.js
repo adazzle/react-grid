@@ -11,22 +11,21 @@
 
 'use strict';
 
-var webpackConfig = require('../webpack.config.js')(/* release */ false);
+var webpackConfig = require('../webpack.config.js');
+var RewirePlugin = require("rewire-webpack");
+var path = require('path');
 
 module.exports = function (config) {
   config.set({
 
-    basePath: '../',
+    basePath: __dirname,
 
     files: [
-    'node_modules/es5-shim/es5-shim.js',
-    'node_modules/es5-shim/es5-sham.js',
-    'node_modules/es6-shim/es6-shim.js',
-    'test/**/*.spec.js'
+      '../test/Grid.spec.js'
     ],
 
     preprocessors: {
-      'src/js/**': ['webpack']
+      '../test/Grid.spec.js': ['webpack']
     },
 
     webpack: {
@@ -38,34 +37,30 @@ module.exports = function (config) {
         exclude: /node_modules/,
         loader: 'istanbul-instrumenter'
       } ]
-    }
+    },
+    plugins: [
+    new RewirePlugin()
+    ]
   },
 
   browserNoActivityTimeout: 100000,
 
-  coverageReporter: {
-    // specify a common output directory
-    dir: 'build/reports/coverage',
-    reporters: [
-    // reporters not supporting the `file` property
-    { type: 'html', subdir: 'report-html' },
-    { type: 'lcov', subdir: 'report-lcov' },
-    // reporters supporting the `file` property, use `subdir` to directly
-    // output them in the `dir` directory
-    { type: 'cobertura', subdir: '.', file: 'cobertura.txt' },
-    { type: 'lcovonly', subdir: '.', file: 'report-lcovonly.txt' },
-    { type: 'teamcity', subdir: '.', file: 'teamcity.txt' },
-    { type: 'text', subdir: '.', file: 'text.txt' },
-    { type: 'text-summary', subdir: '.', file: 'text-summary.txt' },
-    ]
-  },
-
   // coverage reporter generates the coverage
   reporters: ['junit', 'progress', 'coverage'],
 
+  coverageReporter: {
+    // specify a common output directory
+    dir: '../test/reports/coverage',
+    reporters: [
+    // reporters not supporting the `file` property
+    { type: 'html', subdir: 'report-html' },
+    { type: 'lcov', subdir: 'report-lcov' }
+    ]
+  },
+
   // the default configuration
   junitReporter: {
-    outputFile: 'test-results.xml',
+    outputFile: '../test/reports/test-results.xml',
     suite: ''
   },
 

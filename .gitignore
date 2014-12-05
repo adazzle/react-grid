@@ -6,3 +6,4 @@ olddocs/build
 lib-compiled
 dist
 **/build
+test/reports
