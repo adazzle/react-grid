@@ -155,7 +155,7 @@ Example code
     return result;
   }
 
-  React.renderComponent(
+  React.render(
     <Grid columns={columns} rows={rows} length={1000} />,
     document.getElementById('example'))
 

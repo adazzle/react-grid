@@ -52,7 +52,7 @@ Custom column formatters
   }
 
 
-  React.renderComponent(
+  React.render(
     <ReactGrid
       columns={columns}
       length={30000}

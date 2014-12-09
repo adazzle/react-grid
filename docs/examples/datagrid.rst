@@ -131,7 +131,7 @@ Datagrid
 
 .. jsx::
 
-  React.renderComponent(
+  React.render(
     <DataGrid
       url="/react-grid/scripts/data.js"
       columns={columns}

@@ -63,11 +63,11 @@ also provide ``length`` property:
     return result;
   }
 
-Now simply invoke ``React.renderComponent(..)``:
+Now simply invoke ``React.render(..)``:
 
 .. jsx::
 
-  React.renderComponent(
+  React.render(
     <ReactGrid columns={columns} rows={rows} length={1000} />,
     document.getElementById('example'))
 

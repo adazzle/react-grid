@@ -120,7 +120,7 @@ Sortable grid
     return rows;
   }
 
-  React.renderComponent(
+  React.render(
     <SortableGrid
       columns={columns}
       length={100000}

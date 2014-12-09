@@ -47,7 +47,7 @@ Locked columns
     return rows;
   }
 
-  React.renderComponent(
+  React.render(
     <ReactGrid
       columns={columns}
       length={30000}
