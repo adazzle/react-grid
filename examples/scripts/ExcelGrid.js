@@ -224,7 +224,7 @@
   }
 
 
- var component = React.createClass({displayName: 'component',
+ var Component = React.createClass({displayName: 'component',
 
     getInitialState : function(){
       return {rows : getRows(0, 1000)};
@@ -289,9 +289,9 @@
   });
 
   if(typeof module !== 'undefined' && module.exports){
-    module.exports = component;
+    module.exports = Component;
   }else{
-    this.ExcelGrid = component;
+    this.ExcelGrid = Component;
   }
 
 

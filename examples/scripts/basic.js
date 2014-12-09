@@ -34,7 +34,7 @@
     }
   ];
 
-var component = React.createClass({displayName: 'component',
+var Component = React.createClass({displayName: 'Component',
     render: function() {
       return (Grid({
         columns: columns,
@@ -45,9 +45,9 @@ var component = React.createClass({displayName: 'component',
   });
 
   if(typeof module != 'undefined' && module.exports){
-    module.exports = component;
+    module.exports = Component;
   }else{
-    this.BasicGrid = component;
+    this.BasicGrid = Component;
   }
 
 }).call(this);

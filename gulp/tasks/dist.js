@@ -2,8 +2,6 @@ var gulp      = require("gulp");
 var gutil     = require("gulp-util");
 var webpack   = require("webpack");
 var webpackConfig = require("../../webpack.config.js");
-
-
 var gulp = require('gulp');
 var react = require('gulp-react');
 
