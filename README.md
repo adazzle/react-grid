@@ -1,6 +1,64 @@
-# React Grid
+React Grid
+============
+>Data grid for [React][].
 
-Data grid for [React][].
+![Build Status](https://ci.appveyor.com/api/projects/status/neil0n85qtoi8cue?svg=true) [![Coverage Status](https://img.shields.io/coveralls/adazzle/react-grid.svg)](https://coveralls.io/r/adazzle/react-grid)
+
+
+
+### Installation
+
+React Grid is available via npm. 
+
+```sh
+npm install adazzle-react-grid --save
+```
+
+Or if you'd like to use bower, it's as easy as:
+
+```sh
+bower adazzle-react-grid --save
+```
+
+### Usage
+React Grid comes in two flavours. A basic uneditable data grid as well as a more advanced datagrid that attempts to provide a rich excel like experience with filtering, sorting, copy/paste, cell drag down, custom editors and formatters. 
+
+To use the basic grid, just include the following files
+
+```html
+<!-- The core React library -->
+<script src="http://fb.me/react-0.11.0.js"></script>
+<!-- basic React Grid component -->
+<script src="adazzle-react-grid/dist/ReactGrid.Grid.js"></script>
+```
+
+or if using CommonJs
+
+```js
+var Grid = require('adazzle-react-grid');
+```
+
+To use the advanced features, add these files to your page
+```html
+<!-- The core React library -->
+<script src="http://fb.me/react-0.11.0.js"></script>
+<!-- advanced ReactGrid component -->
+<script src="adazzle-react-grid/dist/ReactGrid.Grid.WithAddons.js"></script>
+<!-- optional collection of editors for React Grid-->
+<script src="adazzle-react-grid/dist/ReactGrid.Grid.Editors.js"></script>
+<!-- optional collection of formatters for React Grid-->
+<script src="adazzle-react-grid/dist/ReactGrid.Grid.Formatters.js"></script>
+```
+
+or if using CommonJs
+
+```js
+var ExcelGrid = require('adazzle-react-grid/addons');
+var GridEditors = require('adazzle-react-grid/editors');
+var GridFormatters = require('adazzle-react-grid/formatters');
+```
+
+
 
 ### Building Your Copy of React Grid
 

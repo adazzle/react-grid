@@ -83,10 +83,11 @@ var Menu = React.createClass({
        module: comp.module,
        onClick: this.props.onMenuClick
      }));
-   return (<ul className="nav navbar-nav">{children}
-   <li ><a href="./examples/dist-basic.html">Dist- ReactGrid.js</a></li>
-   <li ><a href="./examples/dist-addons.html">Dist - ReactGrid.WithAddons.js</a></li>
-   </ul>);
+   return (
+     <ul className="nav navbar-nav">{children}
+        <li ><a href="./examples/dist-basic.html">Dist- ReactGrid.js</a></li>
+        <li ><a href="./examples/dist-addons.html">Dist - ReactGrid.WithAddons.js</a></li>
+     </ul>);
  },
 });
 
