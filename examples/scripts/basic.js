@@ -34,13 +34,14 @@
     }
   ];
 
-var Component = React.createClass({displayName: 'Component',
+var Component = React.createClass({
+
     render: function() {
-      return (Grid({
-        columns: columns,
-        length: 30000,
-        rows: rows,
-        rowHeight: 40}));
+      return (<Grid
+        columns={columns}
+        length={30000}
+        rows={rows}
+        rowHeight={40}/>)
     }
   });
 

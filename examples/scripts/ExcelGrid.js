@@ -49,22 +49,22 @@
     {
       key: 'developer',
       name: 'Developer',
-      editor : DropDownEditor({options: developers}),
+      editor : <DropDownEditor options={developers}/>,
       width : 200,
       sortable : true
     },
     {
       key: 'epic',
       name: 'Epic',
-      editor : AutoCompleteEditor({options: epics}),
+      editor : <AutoCompleteEditor options={epics}/>,
       width : 200,
       sortable : true
     },
     {
       key: 'dateRange',
       name: 'Duration',
-      editor : DateRangeEditor({ranges: dateRanges}),
-      formatter : DateRangeFormatter(null),
+      editor : <DateRangeEditor ranges={dateRanges}/>,
+      formatter : <DateRangeFormatter/>,
       width : 200,
       filterable : false
     },

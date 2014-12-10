@@ -47,7 +47,7 @@
     "gulp-util": "^3.0.0",
     "istanbul-instrumenter-loader": "^0.1.2",
     "jasmine-react": "^1.0.7",
-    "jsx-loader": "^0.11.2",
+    "jsx-loader": "^0.12.2",
     "karma": "^0.12.28",
     "karma-chrome-launcher": "^0.1.4",
     "karma-cli": "0.0.4",
