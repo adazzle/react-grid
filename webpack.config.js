@@ -3,24 +3,23 @@ var webpack = require('webpack');
 var release = false;
 
 module.exports = {
-	entry: {
-		'Grid' : "./index",
-		'WithAddons' : './addons',
-		'Editors' : "./editors",
-		'Formatters' : './formatters'
-	},
-	output: {
-		path: path.join(__dirname, "./dist"),
-		filename: "ReactGrid.[name].js",
-		library: ["ReactGrid", "[name]"],
-		libraryTarget: "umd"
-	},
-	externals: {
-	 "react": "React",
-   "react/addons": "React",
-	 "moment" : "moment"
-	},
-
+		entry: {
+			'Grid' : "./index",
+			'WithAddons' : './addons',
+			'Editors' : "./editors",
+			'Formatters' : './formatters'
+		},
+		output: {
+			path: path.join(__dirname, "./dist"),
+			filename: "ReactGrid.[name].js",
+			library: ["ReactGrid", "[name]"],
+			libraryTarget: "umd"
+		},
+		externals: {
+	 		"react": "React",
+   		"react/addons": "React",
+	 		"moment" : "moment"
+		},
 		stats: {
 			colors: true,
 			reasons: !release
@@ -40,7 +39,6 @@ module.exports = {
 		resolve: {
 			extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx']
 		},
-
 		module: {
 			preLoaders: [
 			{

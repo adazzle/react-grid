@@ -34,20 +34,21 @@
     }
   ];
 
-var component = React.createClass({displayName: 'component',
+var Component = React.createClass({
+
     render: function() {
-      return (Grid({
-        columns: columns,
-        length: 30000,
-        rows: rows,
-        rowHeight: 40}));
+      return (<Grid
+        columns={columns}
+        length={30000}
+        rows={rows}
+        rowHeight={40}/>)
     }
   });
 
   if(typeof module != 'undefined' && module.exports){
-    module.exports = component;
+    module.exports = Component;
   }else{
-    this.BasicGrid = component;
+    this.BasicGrid = Component;
   }
 
 }).call(this);

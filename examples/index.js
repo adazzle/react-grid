@@ -21,15 +21,19 @@ components.push({id:'Editable Cells', module:require('./scripts/EditableCells') 
 components.push({id:'Copyable Cells', module:require('./scripts/CopyableCells') });
 components.push({id:'Draggable Cells', module:require('./scripts/DraggableCells') });
 components.push({id:'Excel Style Grid', module:require('./scripts/ExcelGrid') });
+components.push({id:'Immutable Data', module:require('./scripts/ImmutableData') });
 
 //creates a simple nav menu and viewer
 var Examples = React.createClass({
- onMenuClick: function(component) {
-   this.setState({exampleToShow: component});
+
+ onMenuClick: function(Component) {
+   this.setState({exampleToShow: <Component/>});
  },
+
  getInitialState: function(){
    return { exampleToShow: null, perfOn : false };
  },
+
  renderPerfTools : function(){
    var startClass = this.state.perfOn === true ? 'btn btn-danger' : 'btn btn-default';
    return (<div >
@@ -40,10 +44,12 @@ var Examples = React.createClass({
                 </span>
             </div>)
  },
+
  startPerf: function(){
    Perf.start();
    this.setState({perfOn : true});
  },
+
  stopPerf: function(){
    Perf.stop();
    //Perf.printDOM();
@@ -52,8 +58,9 @@ var Examples = React.createClass({
   // Perf.printExclusive();
    this.setState({perfOn : false});
  },
+
  render: function() {
-   var detail =this.state.exampleToShow ? this.state.exampleToShow({}) : '';
+   var detail =this.state.exampleToShow ? this.state.exampleToShow : '';
    var perfTools = this.state.exampleToShow ? this.renderPerfTools() : '';
   return (<div>
             <nav className="navbar navbar-inverse navbar-static-top" role="navigation">
@@ -72,16 +79,17 @@ var Examples = React.createClass({
           </div>
           </div>)
  },
+
 });
 //loops the components and puts out a menu item, wired to pass up the component
 var Menu = React.createClass({
  render: function() {
    var children = components.map((comp, idx) =>
-     MenuItem({
-       id: comp.id,
-       module: comp.module,
-       onClick: this.props.onMenuClick
-     }));
+     <MenuItem
+       key={idx}
+       id={comp.id}
+       module={comp.module}
+       onClick={this.props.onMenuClick}/>);
    return (
      <ul className="nav navbar-nav">{children}
         <li ><a href="./examples/dist-basic.html">Dist- ReactGrid.js</a></li>
@@ -100,4 +108,4 @@ var MenuItem = React.createClass({
 
  });
 
- React.renderComponent(<Examples />, document.body);
+ React.render(<Examples />, document.body);

@@ -36,13 +36,13 @@ var columns = [
   },
 ];
 
-var component = React.createClass({
+var Component = React.createClass({
   render: function() {
     return (
       <div>
         <div className="well well-lg" style={{width:"80%"}}>
           <p>This shows a grid with fixed width columns and the first column frozen.</p>
-          <p>In this example, we set the width of the grid's container div to 1000px, but have columns of 1200px, so you will always see the horizontal scrollbar.</p>
+          <p>In this example, we set the width of the grids container div to 1000px, but have columns of 1200px, so you will always see the horizontal scrollbar.</p>
           <p>Alternatively, leave off the width on your container and the grid will use 100% of the window width, meaning your scrollbar will depend on your screen dimensions</p>
         </div>
         <div style={{width:1000}}><Grid
@@ -55,4 +55,4 @@ var component = React.createClass({
 });
 
 
-module.exports = component;
+module.exports = Component;

@@ -65,7 +65,7 @@ var getGrid = function(args) {
   return Grid({columns:args.columns, rows: args.rows, length: args.dataLength, height: args.height});
 };
 var renderGrid = function(args) {
-    return React.renderComponent(getGrid(args),
+    return React.render(getGrid(args),
       document.getElementById(args.containerId));
 };
 module.exports = {

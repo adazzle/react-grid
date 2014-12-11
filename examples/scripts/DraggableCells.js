@@ -38,7 +38,7 @@ var getRows = function(start, end) {
 };
 
 
-var component = React.createClass({
+var Component = React.createClass({
 
   getInitialState : function(){
     return {rows : getRows(0, 1000)};
@@ -71,4 +71,4 @@ var component = React.createClass({
       </div>);
   }
 });
-module.exports = component;
+module.exports = Component;

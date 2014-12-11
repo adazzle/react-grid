@@ -18,13 +18,13 @@
   var epics = [{id : 0, title : 'Unification Of Media'}, { id : 1, title : 'Trading Desk'}, { id : 2, title : 'Tech Costs'}, { id : 3, title : 'Tactical'}, { id : 4, title : 'Barter'}, { id : 5, title :'Lego'}, {id : 6, title : 'Media Plan'}, {id : 7, title : 'Infrastructure'}];
 
   var dateRanges  = {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
+    'Today': [moment(), moment()],
+    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+    'This Month': [moment().startOf('month'), moment().endOf('month')],
+    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+  }
 
   var columns = [
     {
@@ -256,18 +256,35 @@
 
     render: function() {
       return (
-        <div>
-          <div className="well well-lg" >
-            <ReactGrid
-              columns={columns}
-              length={1000}
-              rows={this.state.rows}
-              onCellChanged={this.updateCell}
-              onCellsDragged={this.handleCellDrag}
-              />
-            </div>
-        </div>
-      );
+        React.DOM.div(null,
+          React.DOM.div({className: "well well-lg"},
+            React.DOM.h4(null, "Excel Style Grid"),
+            React.DOM.ul(null,
+              React.DOM.li(null, "Keyboard navigation"),
+              React.DOM.li(null, "Editable cells"),
+              React.DOM.ul(null,
+                React.DOM.li(null, "Simple Text Editor (User story column)"),
+                React.DOM.li(null, "Drop Down Editor (Developer column)"),
+                React.DOM.li(null, "Autocomplete Editor (Epic column)"),
+                React.DOM.li(null, "Date Range Editor (Duration column)")
+              ),
+              React.DOM.li(null, "Editable validation"),
+              React.DOM.li(null, "Custom Formatters"),
+                React.DOM.ul(null,
+                  "Date Range Formatter (Duration Column)"
+                ),
+              React.DOM.li(null, "Copy/Paste cells"),
+              React.DOM.li(null, "Cell Dragdown")
+            )
+          ),
+          React.DOM.div(null,
+          ReactGrid({
+          columns: columns,
+          length: 1000,
+          rows: this.state.rows,
+          onCellChanged: this.updateCell,
+          onCellsDragged: this.handleCellDrag}))
+        ));
     }
   });
 

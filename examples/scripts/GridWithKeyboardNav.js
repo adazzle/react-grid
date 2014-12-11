@@ -39,7 +39,7 @@ var rows = function(start, end) {
 
 
 
-var component = React.createClass({
+var Component = React.createClass({
   render: function() {
     return (
       <div>
@@ -53,4 +53,4 @@ var component = React.createClass({
       </div>);
   }
 });
-module.exports = component;
+module.exports = Component;
