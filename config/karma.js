@@ -14,6 +14,9 @@
 var webpackConfig = require('../webpack.config.js');
 var RewirePlugin = require("rewire-webpack");
 var path = require('path');
+var argv = require('minimist')(process.argv.slice(2));
+var RELEASE = !!argv.release;
+
 
 module.exports = function (config) {
   config.set({
@@ -21,6 +24,9 @@ module.exports = function (config) {
     basePath: __dirname,
 
     files: [
+      '../node_modules/es5-shim/es5-shim.js',
+      '../node_modules/es5-shim/es5-sham.js',
+      '../node_modules/es6-shim/es6-shim.js',
       '../test/Grid.spec.js'
     ],
 
@@ -32,18 +38,18 @@ module.exports = function (config) {
       cache: true,
       module: {
         loaders: webpackConfig.module.loaders,
-        postLoaders: [ { // << add subject as webpack's postloader
+        postLoaders: RELEASE === true ? [ { // Do coverage for postloader
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loader: 'istanbul-instrumenter'
-      } ]
+      } ] : []
     },
     plugins: [
     new RewirePlugin()
     ]
   },
 
-  browserNoActivityTimeout: 100000,
+  browserNoActivityTimeout: 1000000,
 
   // coverage reporter generates the coverage
   reporters: ['junit', 'progress', 'coverage'],
@@ -53,8 +59,8 @@ module.exports = function (config) {
     dir: '../test/reports/coverage',
     reporters: [
     // reporters not supporting the `file` property
-    { type: 'html', subdir: 'report-html' },
-    { type: 'lcov', subdir: 'report-lcov' }
+      { type: 'html', subdir: 'report-html' },
+      { type: 'lcov', subdir: 'report-lcov' }
     ]
   },
 
