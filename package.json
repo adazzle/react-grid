@@ -1,6 +1,6 @@
 {
   "name": "adazzle-react-grid",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Data grid for React",
   "main": "lib/index.js",
   "scripts": {
