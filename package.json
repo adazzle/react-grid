@@ -1,10 +1,11 @@
 {
   "name": "adazzle-react-grid",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Data grid for React",
   "main": "lib/index.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "prepublish" : "gulp dist"
   },
   "repository": {
     "type": "git",
