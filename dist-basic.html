@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="build/examples.css">
+  </head>
+  <body>
+
+    <div id="sandbox"></div>
+
+    <script type="text/javascript" src="./build/lib.js"></script>
+    <script type="text/javascript" src="../dist/ReactGrid.Grid.js"></script>
+    <script type="text/javascript" src="./scripts/basic.js"></script>
+
+    <div class="container-fluid">
+      <div class="page-header">
+        <h1>Basic Example <small> using ReactGrid.js</small></h1>
+      </div>
+      <div id="container">
+
+      </div>
+    </div>
+
+    <script>
+      React.render(BasicGrid(null), document.getElementById('container'));
+    </script>
+
+  </body>
+
+</html>
