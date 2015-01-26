@@ -10,21 +10,21 @@
 
 	<link rel="shortcut icon" href="examples/assets/images/gt_favicon.png">
 
-	<link rel="stylesheet" media="screen" href="examples/http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+	<link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="examples/assets/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 	<!-- Custom styles for our template -->
 	<link rel="stylesheet" href="examples/assets/css/bootstrap-theme.css" media="screen" >
 	<link rel="stylesheet" href="examples/assets/css/main.css">
+	<link rel="stylesheet" href="examples/build/reactGrid.css">
 
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 	<script src="examples/assets/js/html5shiv.js"></script>
 	<script src="examples/assets/js/respond.min.js"></script>
 	<![endif]-->
-	<script src="examples/build/src.js"></script>
-	<script src="examples/build/app.js"></script>
+
 
 </head>
 
@@ -109,11 +109,9 @@
 	<!-- container -->
 	<div class="container">
 
-		<h2 class="text-center top-space">Example</h2>
-		<br>
-
+		<h3 class="text-center top-space">Example</h3>
 		<div class="row">
-			<div id="excel-example" class="col-sm-6 ">
+			<div id="excel-example" class="col-md-12 ">
 
 			</div>
 		</div> <!-- /row -->
@@ -233,10 +231,10 @@
 
 
 	<!-- JavaScript srcs are placed at the end of the document so the pages load faster -->
-	<script src="examples/http://ajax.googleapis.com/ajax/srcs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="examples/http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-	<script src="examples/assets/js/headroom.min.js"></script>
-	<script src="examples/assets/js/jQuery.headroom.min.js"></script>
-	<script src="examples/assets/js/template.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.js"></script>
+	<script src="examples/build/libs.js"></script>
+	<script src="examples/build/reactGrid.Grid.js"></script>
+	<script src="examples/build/reactGrid.Addons.js"></script>
+	<script src="examples/build/index.js"></script>
 </body>
 </html>

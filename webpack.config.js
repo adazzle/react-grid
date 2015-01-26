@@ -2,18 +2,17 @@ var path = require("path");
 var webpack = require('webpack');
 var release = false;
 var path = require("path");
-var webpack = require('webpack');
 
 module.exports = {
 	entry: {
-		'ReactGrid' : './src/index',
-		'ReactGrid.Addons' : './src/addons/index'
+		'Grid' : './src/index',
+		'Addons' : './src/addons/index'
 	},
 	output: {
 		path: path.join(__dirname, "./dist"),
-		filename: "[name].js",
-		srcrary: ["ReactGrid", "[name]"],
-		srcraryTarget: "umd"
+		filename: "ReactGrid.[name].js",
+		library: ["ReactGrid", "[name]"],
+		libraryTarget: "umd"
 	},
 	externals: {
 		"react": "React",

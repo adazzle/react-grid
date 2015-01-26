@@ -78,8 +78,12 @@ getCellClass : function(){
   },
 
   isDraggedCellChanging(nextProps){
-    return (nextProps.dragged && this.props.idx === nextProps.dragged.idx)
-    || (this.props.dragged && this.props.idx === this.props.dragged.idx);
+    if(this.props.dragged){
+      return (nextProps.dragged && this.props.idx === nextProps.dragged.idx)
+      || (this.props.dragged && this.props.idx === this.props.dragged.idx);
+    }else{
+      return false;
+    }
   },
 
   componentDidUpdate(){

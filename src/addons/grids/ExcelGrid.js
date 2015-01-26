@@ -147,7 +147,7 @@ var ExcelGrid = React.createClass({
     var rows = this.filterRows();
 
     return(
-      <div className="container-fluid">
+      <div>
         {this.renderToolbar}
         {(<BaseGrid
           ref="base"
