@@ -13,7 +13,7 @@ var React      = require('react');
 var SpecPolicy = keyMirror({
   /**
    * These methods are React Lifecycle methods and should be mixed into any components
-   * according to their default behviour as specified in React library
+   * according to their default behviour as specified in React srcrary
    */
   DEFINE_LIFE_CYCLE_METHOD : null,
   /**

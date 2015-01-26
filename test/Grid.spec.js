@@ -1,8 +1,8 @@
 'use strict';
 var React = require('react/addons');
 var rewire = require('rewire');
-var Grid =  rewire('../lib/addons/grids/ExcelGrid.js');
-var BaseGrid = require('../lib/Grid');
+var Grid =  rewire('../src/addons/grids/ExcelGrid.js');
+var BaseGrid = require('../src/Grid');
 var TestUtils = React.addons.TestUtils;
 var rewireModule = require("./rewireModule");
 

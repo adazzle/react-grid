@@ -14,7 +14,7 @@ gulp.task('script-deps', ['build'], function() {
 		'node_modules/moment/min/moment.min.js',
 
 	])
-	.pipe(concat('lib.js'))
+	.pipe(concat('src.js'))
 	.pipe(gulp.dest('./examples/build'))
 });
 

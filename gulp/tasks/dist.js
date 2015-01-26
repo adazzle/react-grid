@@ -7,9 +7,9 @@ var react = require('gulp-react');
 
 gulp.task('compile-jsx', ['clean'], function () {
 
-    return gulp.src('./lib/**')
+    return gulp.src('./src/**')
         .pipe(react({harmony : true}))
-        .pipe(gulp.dest('./lib-compiled'));
+        .pipe(gulp.dest('./lib'));
 });
 
 gulp.task("dist",function(callback) {

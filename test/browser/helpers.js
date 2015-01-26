@@ -1,5 +1,5 @@
-var mergeInto = require("../../lib/mergeInto");
-var Grid = require('../../lib/Grid');
+var mergeInto = require("../../src/mergeInto");
+var Grid = require('../../src/Grid');
 var React = require('react');
 
 var data = [];

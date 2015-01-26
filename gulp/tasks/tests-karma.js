@@ -1,7 +1,7 @@
 var es6 = require('es6-shim');
 var gulp = require('gulp');
 var karma = require('karma').server;
-var merge = require('../../lib/merge');
+var merge = require('../../src/merge');
 
 
 //one could also externalize common config into a separate file,

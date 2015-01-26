@@ -1,11 +1,6 @@
-bower_components
-docs/_build
-docs/_static/bundle.js
-olddocs/build
-lib
+src
 **/build
 webpack.config.js
-Makefile
 LICENSE
 .eslintrc
 test

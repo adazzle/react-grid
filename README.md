@@ -26,7 +26,7 @@ React Grid comes in two flavours. A basic uneditable data grid as well as a more
 To use the basic grid, just include the following files
 
 ```html
-<!-- The core React library -->
+<!-- The core React srcrary -->
 <script src="http://fb.me/react-0.11.0.js"></script>
 <!-- basic React Grid component -->
 <script src="adazzle-react-grid/dist/ReactGrid.Grid.js"></script>
@@ -40,7 +40,7 @@ var Grid = require('adazzle-react-grid');
 
 To use the advanced features, add these files to your page
 ```html
-<!-- The core React library -->
+<!-- The core React srcrary -->
 <script src="http://fb.me/react-0.11.0.js"></script>
 <!-- advanced ReactGrid component -->
 <script src="adazzle-react-grid/dist/ReactGrid.Grid.WithAddons.js"></script>
@@ -62,7 +62,7 @@ var GridFormatters = require('adazzle-react-grid/formatters');
 
 ### Building Your Copy of React Grid
 
-The process to build `reactGrid.js` is built entirely on top of node.js, using many libraries you may already be familiar with.
+The process to build `reactGrid.js` is built entirely on top of node.js, using many srcraries you may already be familiar with.
 
 #### Prerequisites
 
@@ -85,7 +85,7 @@ We use gulp to automate many tasks. Look in ```gulp/tasks``` folder to see full 
 ```sh
 # Build examples folder, fire up server and open exmaples page
 gulp
-# Build reactGrid library in UMD format in dist folder 
+# Build reactGrid srcrary in UMD format in dist folder 
 gulp dist
 # Build and run tests in your browser
 gulp tests-launch 

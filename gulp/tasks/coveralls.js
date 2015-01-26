@@ -13,7 +13,7 @@ function submitToCoveralls(fileName, callback) {
 
   var coveralls = require('coveralls');
 
-  // Override coveralls option processing until it handles use as a library better (TODO)
+  // Override coveralls option processing until it handles use as a srcrary better (TODO)
   coveralls.getOptions = coveralls.getBaseOptions;
   console.log(coveralls.getBaseOptions);
 
