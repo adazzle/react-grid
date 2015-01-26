@@ -67,120 +67,7 @@
       formatter : <DateRangeFormatter/>,
       width : 200,
       filterable : false
-    },
-    {
-      key: 'flight1',
-      width : 200,
-      name: 'flight1'
-    },
-    {
-      key: 'flight2',
-      width : 200,
-      name: 'flight2'
-    },
-    {
-      key: 'flight3',
-      width : 200,
-      name: 'flight3'
-    },
-    {
-      key: 'flight4',
-      width : 200,
-      name: 'flight4'
-    },
-    {
-      key: 'flight5',
-      width : 200,
-      name: 'flight5'
-    },
-    {
-      key: 'flight6',
-      width : 200,
-      name: 'flight6'
-    },
-    {
-      key: 'flight7',
-      width : 200,
-      name: 'flight7'
-    },
-    {
-      key: 'flight7',
-      width : 200,
-      name: 'flight7'
-    },
-    {
-      key: 'flight8',
-      width : 200,
-      name: 'flight8'
-    },
-    {
-      key: 'flight9',
-      width : 200,
-      name: 'flight9'
-    },
-    {
-      key: 'flight10',
-      width : 200,
-      name: 'flight10'
-    },
-    {
-      key: 'flight11',
-      width : 200,
-      name: 'flight11'
-    },
-    {
-      key: 'flight12',
-      width : 200,
-      name: 'flight12'
-    },
-    {
-      key: 'flight13',
-      width : 200,
-      name: 'flight13'
-    },
-    {
-      key: 'flight14',
-      width : 200,
-      name: 'flight14'
-    },{
-      key: 'flight15',
-      width : 200,
-      name: 'flight15'
-    },
-    {
-      key: 'flight16',
-      width : 200,
-      name: 'flight16'
-    },{
-      key: 'flight17',
-      width : 200,
-      name: 'flight17'
-    },
-    {
-      key: 'flight18',
-      width : 200,
-      name: 'flight18'
-    },
-    {
-      key: 'flight19',
-      width : 200,
-      name: 'flight19'
-    },
-    {
-      key: 'flight20',
-      width : 200,
-      name: 'flight20'
-    },
-    {
-      key: 'flight21',
-      width : 200,
-      name: 'flight21'
-    },{
-      key: 'flight22',
-      width : 200,
-      name: 'flight22'
     }
-
 
   ]
 
@@ -193,31 +80,7 @@
         developer : developers[i%6],
         epic : epics[i%8].title,
 
-        dateRange: {startDate : '2013-01-01', endDate : '2013-02-01'},
-        flight1: '',
-        flight2: '1',
-        flight3: '2',
-        flight4: '3',
-        flight5: '4',
-        flight6: 'fdgfdgdfg',
-        flight7: '5',
-        flight8: 'bnm',
-        flight9: '6',
-        flight10: 'khjkhjk',
-        flight11: 'tryyr',
-        flight12: 'bvnbvn',
-        flight13: 'vbnvbn',
-        flight14: ',kj,j',
-        flight15: 'tyu',
-        flight16: 'rty',
-        flight17: 'wer',
-        flight18: 'wqe',
-        flight19: 'sdf',
-
-        flight20: 'vbn',
-        flight21: 'hgj',
-        flight22: 'rty',
-        flight23: 'rty'
+        dateRange: {startDate : '2013-01-01', endDate : '2013-02-01'}
       });
     }
     return result;

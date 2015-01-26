@@ -6,7 +6,7 @@ gulp.task('browserSync', ['examples'], function() {
 	browserSync({
 		server: {
 			baseDir: './',
-    	index: "examples/index2.html",
+    	index: "examples/index.html",
 			routes: {
 				"/bower_components": "./bower_components",
 			}

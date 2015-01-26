@@ -69,7 +69,7 @@
     "rewire-webpack": "^1.0.0",
     "sinon": "^1.9.1",
     "vinyl-source-stream": "^0.1.1",
-    "webpack": "^1.4.7"
+    "webpack": "^1.5.3"
   },
   "author": "Prometheus Research",
   "license": "MIT",
