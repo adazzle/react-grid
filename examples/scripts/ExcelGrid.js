@@ -4,6 +4,7 @@
 (function(){
   var Grid                = ReactGrid.Grid;
   var Editors             = ReactGrid.Addons.Editors;
+  var Toolbar             = ReactGrid.Addons.Toolbar;
   var AutoCompleteEditor  = Editors.AutoComplete;
   var DropDownEditor      = Editors.DropDownEditor;
   var cx                  = React.addons.classSet;
@@ -15,13 +16,15 @@
   var columns = [
     {
       key: 'id',
-      name: 'ID'
+      name: 'ID',
+      width : 80
     },
     {
       key: 'userStory',
       name: 'User Story',
       editable : true,
       sortable : true,
+      resizeable : true,
       showCellControls : true,
       getExpandedHeight : function(value){
         if(value === 'User Story 1'){
@@ -35,7 +38,8 @@
       key: 'developer',
       name: 'Developer',
       editor : <DropDownEditor options={developers}/>,
-      sortable : true
+      sortable : true,
+      resizeable : true
     },
     {
       key: 'epic',
@@ -86,23 +90,30 @@
         this.setState({rows:rows});
     },
 
+    handleAddRow : function(e){
+      var newRow = {
+        id: e.newRowIndex,
+        userStory: '',
+        developer : '',
+        epic : ''};
+        var rows = React.addons.update(this.state.rows, {$push : [newRow]});
+        this.setState({rows : rows});
+    },
+
     cancelSort:function(){
       this.render();
     },
 
     render: function() {
       return (
-        <div>
-          <div className="well well-lg" >
             <Grid
               columns={columns}
-              length={1000}
+              length={this.state.rows.length}
               rows={this.state.rows}
               onCellChanged={this.updateCell}
               onCellsDragged={this.handleCellDrag}
+              toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
               />
-            </div>
-        </div>
       );
     }
   });

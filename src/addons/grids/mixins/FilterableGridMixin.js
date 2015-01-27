@@ -60,7 +60,7 @@ var FilterableGridMixin = {
       return isRowDisplayed == null ? false : isRowDisplayed;
     },
 
-    toggleFilter(){
+    onToggleFilter(){
       this.setState({canFilter : !this.state.canFilter});
     },
 

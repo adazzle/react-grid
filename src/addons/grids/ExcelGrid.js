@@ -53,7 +53,8 @@ var ExcelGrid = React.createClass({
             formatter : <CheckboxEditor/>,
             onRowSelect :this.handleRowSelect,
             filterable : false,
-            headerRenderer : <input type="checkbox" onChange={this.handleCheckboxChange} />
+            headerRenderer : <input type="checkbox" onChange={this.handleCheckboxChange} />,
+            width : 60
           });
         }
         return cols;
@@ -63,7 +64,6 @@ var ExcelGrid = React.createClass({
   getDefaultProps() {
     return {
       rowHeight: 35,
-      shouldDisplayToolbar : true,
       isRowSelectable : true,
       minHeight : 350
     };
@@ -101,6 +101,10 @@ var ExcelGrid = React.createClass({
     return expandedRows;
   },
 
+  addRow(){
+
+  },
+
   handleShowMore(row, newHeight){
     var expandedRows = this.expandRow(row, newHeight);
     this.setState({expandedRows : expandedRows});
@@ -120,6 +124,18 @@ var ExcelGrid = React.createClass({
 
   collapseAllRows(){
 
+  },
+
+  onAfterAddRow:function(numberOfRows){
+    this.setState({selected : {idx : 1, rowIdx : numberOfRows - 2}});
+    //cheeky
+    this.refs.base.refs.viewport.refs.canvas.getDOMNode().scrollTop = numberOfRows * this.props.rowHeight;
+  },
+
+  componentWillReceiveProps:function(nextProps){
+    if(nextProps.rows.length  === this.props.rows.length + 1){
+      this.onAfterAddRow(nextProps.rows.length + 1);
+    }
   },
 
   render: function() {
@@ -145,10 +161,11 @@ var ExcelGrid = React.createClass({
     );
 
     var rows = this.filterRows();
-
+    var toolbar = this.renderToolbar();
     return(
-      <div>
-        {this.renderToolbar}
+      <div className="react-grid-Container">
+        {toolbar}
+        <div className="react-grid-Main">
         {(<BaseGrid
           ref="base"
           {...this.props}
@@ -161,21 +178,15 @@ var ExcelGrid = React.createClass({
           expandedRows={this.state.expandedRows}
           rowOffsetHeight={this.getRowOffsetHeight()}
           minHeight={this.props.minHeight} />)}
+        </div>
       </div>
     )
   },
 
   renderToolbar(){
-    if(this.props.shouldDisplayToolbar === true){
-      return(<div className="navbar navbar-default">
-        <div className="navbar-form">
-          <div className="form-group">
-            <button type="button" className="btn btn-default" onClick={this.toggleFilter}>
-              <span className="glyphicon glyphicon-filter"></span> Filter Rows
-            </button>
-          </div>
-        </div>
-      </div>)
+    var Toolbar = this.props.toolbar;
+    if(React.isValidElement(Toolbar)){
+      return( React.addons.cloneWithProps(Toolbar, {onToggleFilter : this.onToggleFilter, rows : this.props.rows}));
     }
 
   }
