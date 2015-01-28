@@ -21,7 +21,7 @@ var SelectableGridMixin = {
       idx >= 0
       && rowIdx >= 0
       && idx < this.getColumns().length
-      && rowIdx < this.props.length
+      && rowIdx < this.props.rows.length
     ) {
       if(this.props.onSelect){
         this.props.onSelect({selected: selected});

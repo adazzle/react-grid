@@ -30,7 +30,7 @@ var DraggableGridMixin = {
       idx >= 0
       && rowIdx >= 0
       && idx < this.getColumns().length
-      && rowIdx < this.props.length
+      && rowIdx < this.props.rows.length
     ) {
       this.setState({dragged: dragged});
     }

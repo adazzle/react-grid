@@ -108,7 +108,6 @@
       return (
             <Grid
               columns={columns}
-              length={this.state.rows.length}
               rows={this.state.rows}
               onCellChanged={this.updateCell}
               onCellsDragged={this.handleCellDrag}
