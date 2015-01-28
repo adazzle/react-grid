@@ -64,7 +64,7 @@ var EditableMixin = MixinHelper.createDependency({
       var rowIdx = this.props.rowIdx;
       var idx = this.props.idx;
       var cellKey = this.props.column.key;
-      this.props.onCommit({cellKey: cellKey, rowIdx: this.props.filterRowIdx || rowIdx, value : commit.value, keyCode : commit.key, changed : commit});
+      this.props.onCommit({cellKey: cellKey, rowIdx: this.props.filterRowIdx || rowIdx, updated : commit.updated, keyCode : commit.key});
     },
 
     checkFocus: function() {

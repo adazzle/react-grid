@@ -30,7 +30,7 @@ var ExcelGrid = React.createClass({
   },
 
   overrides : {
-    onCellChanged(commit){
+    onCellCommit(commit){
       var committed = commit[0];
       var selected = Object.assign({}, this.state.selected);
       selected.active = false;
@@ -42,7 +42,7 @@ var ExcelGrid = React.createClass({
         expandedRows = this.expandRow(committed.rowIdx, committed.changed.expandedHeight);
       }
       this.setState({selected : selected, expandedRows : expandedRows});
-      this.props.onCellChanged(committed);
+      this.props.onRowUpdated(committed);
     },
     getColumns : function(){
       var cols = this.getDecoratedColumns(this.props.columns)
@@ -147,7 +147,7 @@ var ExcelGrid = React.createClass({
         onSelect={this.onSelect}
         onClick={this.onSelect}
         onSetActive={this.onSetActive}
-        onCommit={this.onCellChanged}
+        onCommit={this.onCellCommit}
         handleCopy={this.handleCopy}
         handlePaste={this.handlePaste}
         handleDragStart={this.handleDragStart}

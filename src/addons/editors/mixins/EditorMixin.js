@@ -40,7 +40,7 @@ var EditorMixin = {
     var rowDataChanged = {};
     rowDataChanged[this.props.column.key] = value;
     if(this.isNewValueValid(value)){
-      this.props.onCommit({value : value, key : args.key, rowDataChanged : rowDataChanged});
+      this.props.onCommit({updated : rowDataChanged, key : args.key});
     }
   },
 

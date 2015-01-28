@@ -70,13 +70,12 @@
       return {rows : getRows(0, 1000)};
     },
 
-    updateCell : function(commit){
-        var rows = this.state.rows;
-        var rowToChange = rows[commit.rowIdx];
-        if(rowToChange){
-          rowToChange[commit.cellKey] = commit.value;
-          this.setState({rows:rows});
-        }
+    onRowUpdated : function(commit){
+      //merge the updated row values with the existing row
+      var rows = this.state.rows;
+      var updatedRow = React.addons.update(rows[commit.rowIdx], {$merge : commit.updated});
+      rows[commit.rowIdx] = updatedRow;
+      this.setState({rows:rows});
     },
 
     handleCellDrag : function(e){
@@ -100,16 +99,12 @@
         this.setState({rows : rows});
     },
 
-    cancelSort:function(){
-      this.render();
-    },
-
     render: function() {
       return (
             <Grid
               columns={columns}
               rows={this.state.rows}
-              onCellChanged={this.updateCell}
+              onRowUpdated={this.onRowUpdated}
               onCellsDragged={this.handleCellDrag}
               toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
               />

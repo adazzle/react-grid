@@ -11,17 +11,17 @@ var merge               = require('../../../merge');
 var EditableGridMixin = {
 
   propTypes : {
-    onCellChanged : React.PropTypes.func.isRequired
+    onRowUpdated : React.PropTypes.func.isRequired
   },
 
-  onCellChanged(commit){
+  onCellCommit(commit){
     var selected = this.state.selected;
     selected.active = false;
     if(commit.keyCode === 'Tab'){
       selected.idx += 1;
     }
     this.setState({selected : selected});
-    this.props.onCellChanged(commit);
+    this.props.onRowUpdate(commit);
   },
 
   onSetActive(activeCell) {
