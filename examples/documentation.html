@@ -82,6 +82,7 @@
 			</div>
 			<div class="col-md-9">
 				<h1 id="js-getting-started" class="page-header">Documentation</h1>
+				<div class="docs-section">
 				<h2>Getting Started </h2>
 				<h3 id="js-installation">Installation</h3>
 				<h4>Using Common JS</h4>
@@ -135,6 +136,25 @@
 					<p>Now simply invoke React.renderComponent(..):</p>
 
 					<pre>React.renderComponent(<ReactGrid columns={columns} rows={rows} />, document.getElementById('example'))</pre>
+
+				</div>
+					<div class="docs-section">
+						<h1 id="js-api-refernce">API Reference</h1>
+						<h2>Grid Events</h2>
+						<h3>onRowUpdated</h3>
+						<div class="code-block function">
+								<pre><span class="nx">onRowUpdated</span><span class="p">(</span><span class="nx">e</span> <span class="nx">:RowUpdateEvent</span><span class="p">)</span></pre>
+						</div>
+
+						<div class="code-block flow">
+							<pre>/* @flow */<br/><code>type RowUpdateEvent = {rowIdx: number; updated: object, callKey: string, keyCode: string};</code></pre>
+						</div>
+
+						<h3>onRowUpdated</h3>
+						<div class="code-block"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">onRowUpdated</span><span class="p">(</span><span class="nx">object</span> <span class="nx">nextProps</span><span class="p">,</span> <span class="nx">object</span> <span class="nx">nextState</span><span class="p">)</span>
+						</code></pre></div>
+					</div>
+
 			</div>
 		</div>
 	</div>

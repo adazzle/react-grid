@@ -411,3 +411,76 @@ img.pull-left {
 .top-space {
 	margin-top : 60px
 }
+
+.docs-section{
+	margin-bottom : 60px
+}
+
+
+.code-block .javascript .err {
+	background-color: transparent;
+	color: inherit
+}
+
+.code-block {
+	position: relative;
+	margin-bottom: 14px;
+	padding: 30px 14px 14px;
+	border: none;
+	border-radius: 0;
+	overflow: auto
+}
+
+.code-block pre {
+	padding: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	background-color: transparent;
+	border: 0
+}
+
+.code-block pre code {
+	display: block;
+	background: none;
+	padding: 0
+}
+
+.code-block pre .lineno {
+	display: inline-block;
+	width: 22px;
+	padding-right: 5px;
+	margin-right: 10px;
+	color: #bebec5;
+	text-align: right
+}
+
+.code-block:after {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	padding: 3px 7px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #c2c0bc;
+	background-color: #f1ede4;
+
+}
+
+.code-block.function:after{
+	content: "Function Definition"
+}
+
+.code-block.flow:after {
+	content: "Flow interface definitions"
+}
+
+.code-block.function{
+	color: #333333;
+	background: #f8f5ec;
+}
+
+.code-block.flow{
+	color: blue;
+	background-color : rgba(226, 141, 49, 0.1);
+}
