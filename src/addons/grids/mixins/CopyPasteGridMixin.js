@@ -10,7 +10,7 @@ var PropTypes           = React.PropTypes;
 var CopyPasteGridMixin = {
 
   propTypes : {
-    onCellChanged : React.PropTypes.func.isRequired
+    onCellCopyPaste : React.PropTypes.func
   },
 
   getInitialState: function() {

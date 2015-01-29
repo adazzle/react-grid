@@ -101,7 +101,7 @@
 				<h4>Using Distribution Scripts</h4>
 				<p>If you prefer not to use a module system, you can reference the distribution scripts directly in your html pages. First you need to download the scripts. This can be done in 3 ways, either download directly from github source, using npm as above or using bower <br/><kbd>bower install adazzle/react-grid --save</kbd></p>
 				<div class="code-block js">
-				<pre>&lt;script src="//fb.me/react-0.12.0.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="react-grid/dist/reactGrid.Grid.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="react-grid/dist/reactGrid.Addons.js"&gt;&lt;/script&gt;"</pre>
+				<pre>&lt;script src="//fb.me/react-0.12.0.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="react-grid/dist/reactGrid.Grid.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="react-grid/dist/reactGrid.Addons.js"&gt;&lt;/script&gt;</pre>
 			</div>
 				<h3 id="js-basic-example">A Simple Example</h3>
 				<p>The columns is a column specification, it provides information to grid on how to extract data for each of the column and how column should be represented and its features:</p>
@@ -125,7 +125,7 @@
 	}
 ]</pre>
 				</div>
-					<p>The rows property can be an array or a function which returns a slice of data given the specified range. If we specify rows as a function, we should also provide length property:</p>
+					<p>The rows property should be an array of objects whose property names match the key property of each column</p>
 					<div class="code-block js">
 <pre>var rows = function(start, end) {
 	var result = []
@@ -139,11 +139,12 @@
 	return result;
 };</pre>
 				</div>
-					<p>Now simply invoke React.renderComponent(..):</p>
+					<p>Now simply invoke React.render(..) on the ReactGrid component</p>
 					<div class="code-block js">
-						<pre>React.renderComponent(&lt;ReactGrid columns={columns} rows={rows} /&gt;, document.getElementById('example'))</pre>
+						<pre>React.render(&lt;ReactGrid columns={columns} rows={rows} /&gt;, document.getElementById('example'))</pre>
 					</div>
 				</div>
+
 					<div class="docs-section">
 						<h1 id="js-api-refernce">API Reference</h1>
 						<h2>Grid Events</h2>
@@ -164,6 +165,15 @@
 
 					<div class="code-block flow">
 						<pre>/* @flow */<br/><code>type CellDragEvent = {rowIdx: number; fromRow: number, toRow: number, value: any};</code></pre>
+					</div>
+
+					<h3>onCellCopyPaste</h3>
+					<div class="code-block function">
+						<pre><span class="nx">onCellCopyPaste</span><span class="p">(</span><span class="nx">e</span> <span class="nx">:CellCopyPasteEvent</span><span class="p">)</span></pre>
+					</div>
+
+					<div class="code-block flow">
+						<pre>/* @flow */<br/><code>type CellCopyPasteEvent = {rowIdx: number; value : any; fromRow: number; toRow: number; cellKey: string};</code></pre>
 					</div>
 
 
