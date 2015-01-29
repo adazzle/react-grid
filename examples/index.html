@@ -18,6 +18,7 @@
 	<link rel="stylesheet" href="assets/css/bootstrap-theme.css" media="screen" >
 	<link rel="stylesheet" href="assets/css/main.css">
 	<link rel="stylesheet" href="build/reactGrid.css">
+	<script src="https://code.jquery.com/jquery-1.11.2.min.js"/>
 
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
@@ -31,24 +32,8 @@
 <body class="home" id="#">
 
 	<!-- Fixed navbar -->
-	<div class="navbar navbar-fixed-top headroom" >
-		<div class="container">
-			<div class="navbar-header">
-				<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0; width: 149px; height: 149px;" src="http://aral.github.com/fork-me-on-github-retina-ribbons/right-green@2x.png" alt="Fork me on GitHub"></a>
-				<!-- Button for smallest screens -->
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-				<a class="navbar-brand" href="index.html"><i class="fa fa-table fa-2"></i> React Grid</a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav pull-right">
-					<li class="active"><a href="/index.html#">Home</a></li>
-					<li><a href="documentaion.html">Quick Start</a></li>
-					<li><a href="documentation.html">Documentation</a></li>
-					<li><a href="contact.html">Demo</a></li>
+	<div id="navbarContainer">
 
-				</ul>
-			</div><!--/.nav-collapse -->
-		</div>
 	</div>
 	<!-- /.navbar -->
 
@@ -58,7 +43,7 @@
 				<div class="row">
 					<h1 class="lead">React Grid </h1>
 					<p class="tagline">Excel-like grid component built with React</p>
-					<p><a class="btn btn-default btn-lg" href="demo" role="button">DEMO</a> <a class="btn btn-action btn-lg" href="https://github.com/adazzle/react-grid">DOWNLOAD NOW</a></p>
+					<p><a class="btn btn-default btn-lg" href="#demo" role="button">DEMO</a> <a class="btn btn-action btn-lg" href="https://github.com/adazzle/react-grid">DOWNLOAD NOW</a></p>
 				</div>
 			</div>
 	</header>
@@ -233,12 +218,13 @@ var rows = getRows(0,1000);
 
 
 
-
-	<!-- JavaScript srcs are placed at the end of the document so the pages load faster -->
+		<!-- JavaScript srcs are placed at the end of the document so the pages load faster -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.js"></script>
+	<script src="build/shared.js"></script>
 	<script src="build/libs.js"></script>
 	<script src="build/reactGrid.Grid.js"></script>
 	<script src="build/reactGrid.Addons.js"></script>
 	<script src="build/index.js"></script>
+	<script src="assets/js/dropdown.js"></script>
 </body>
 </html>

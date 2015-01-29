@@ -37,24 +37,8 @@
 <body class="home" data-spy="scroll" data-target=".bs-docs-sidebar">
 
 	<!-- Fixed navbar -->
-	<div class="navbar navbar-fixed-top headroom" >
-		<div class="container">
-			<div class="navbar-header">
-				<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0; width: 149px; height: 149px;" src="http://aral.github.com/fork-me-on-github-retina-ribbons/right-green@2x.png" alt="Fork me on GitHub"></a>
-				<!-- Button for smallest screens -->
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-				<a class="navbar-brand" href="examples/index.html"><i class="fa fa-table fa-2"></i> React Grid</a>
-			</div>
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav pull-right">
-					<li class="active"><a href=".">Home</a></li>
-					<li><a href="documentation.html">Quick Start</a></li>
-					<li><a href="documentation.html">Documentation</a></li>
-					<li><a href="contact.html">Demo</a></li>
+	<div id="navbarContainer">
 
-				</ul>
-			</div><!--/.nav-collapse -->
-		</div>
 	</div>
 	<!-- /.navbar -->
 
@@ -182,7 +166,10 @@
 			</div>
 		</div>
 	</div>
-
-
+	<!-- JavaScript srcs are placed at the end of the document so the pages load faster -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.js"></script>
+	<script src="build/shared.js"></script>
+	<script src="build/index.js"></script>
+	<script src="assets/js/dropdown.js"></script>
 </body>
 </html>

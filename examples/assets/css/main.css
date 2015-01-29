@@ -493,3 +493,12 @@ img.pull-left {
 	color: blue;
 	background-color : rgba(226, 141, 49, 0.1);
 }
+
+.github-ribbon {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: 0;
+	width: 149px;
+	height: 149px;
+}

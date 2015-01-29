@@ -6,11 +6,12 @@ var path = require("path");
 
 webpackConfig = {
 	entry: {
-		'index' : './examples/index.js'
+		'index' : './examples/index.js',
+		'shared' : './examples/shared.js'
 	},
 	output: {
 		path: path.join(__dirname, "../../examples/build"),
-		filename: "index.js"
+		filename: "[name].js"
 	},
 	module: {
 		loaders: [

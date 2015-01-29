@@ -70,7 +70,7 @@
       return {rows : getRows(0, 1000)};
     },
 
-    onRowUpdated : function(commit){
+    handleRowUpdated : function(commit){
       //merge the updated row values with the existing row
       var rows = this.state.rows;
       var updatedRow = React.addons.update(rows[commit.rowIdx], {$merge : commit.updated});
