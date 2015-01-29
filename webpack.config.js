@@ -21,7 +21,7 @@ module.exports = {
 	},
 	module: {
 		loaders: [
-		{ test: /\.js$/, loader: 'jsx-loader?harmony' } // loaders can take parameters as a querystring
+		{ test: /\.js$/, loader: 'jsx-loader?stripTypes&harmony' } // loaders can take parameters as a querystring
 		]
 	},
 	plugins: [
