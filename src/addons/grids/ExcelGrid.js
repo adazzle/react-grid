@@ -1,3 +1,4 @@
+/* @flow */
 /**
  * @jsx React.DOM
  * @copyright Prometheus Research, LLC 2014
@@ -30,7 +31,7 @@ var ExcelGrid = React.createClass({
   },
 
   overrides : {
-    onCellCommit(commit){
+    onCellCommit(commit: RowUpdateEvent){
       var committed = commit[0];
       var selected = Object.assign({}, this.state.selected);
       selected.active = false;
