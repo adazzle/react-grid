@@ -19,7 +19,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<script src="assets/js/affix.js"></script>
 	<script src="assets/js/scrollspy.js"></script>
-	<!-- Custom styles for our template -->
+	<!-- Custom styles for our template -->here
 	<link rel="stylesheet" href="assets/css/bootstrap-theme.css" media="screen" >
 	<link rel="stylesheet" href="assets/css/main.css">
 	<link rel="stylesheet" href="build/reactGrid.css">
@@ -90,53 +90,59 @@
 				<p><kbd>npm install react --save</kbd></p>
 				<p><kbd>npm install adazzle/react-grid --save</kbd></p>
 				<p>Once downloaded, require both React and React Grid and you should be good to go</p>
+				<div class="code-block js">
 				<pre>var React = require('react'); </br>var ReactGrid = require('react-grid');</pre>
+			</div>
 				<p>If you want to use extra features such as built in editors, formatters, toolbars and other plugins, you need to require the addons module as well</p>
+				<div class="code-block js">
 				<pre>var ReactGridAddons = require('react-grid/addons');</pre>
+			</div>
 				<br/>
 				<h4>Using Distribution Scripts</h4>
 				<p>If you prefer not to use a module system, you can reference the distribution scripts directly in your html pages. First you need to download the scripts. This can be done in 3 ways, either download directly from github source, using npm as above or using bower <br/><kbd>bower install adazzle/react-grid --save</kbd></p>
+				<div class="code-block js">
 				<pre>&lt;script src="//fb.me/react-0.12.0.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="react-grid/dist/reactGrid.Grid.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="react-grid/dist/reactGrid.Addons.js"&gt;&lt;/script&gt;"</pre>
-
+			</div>
 				<h3 id="js-basic-example">A Simple Example</h3>
 				<p>The columns is a column specification, it provides information to grid on how to extract data for each of the column and how column should be represented and its features:</p>
-				<pre>
-					var columns = [
-					{
-						key: 'id',
-						name: 'ID',
-						width: '20%',
-						resizeable: true
-					},
-					{
-						key: 'title',
-						name: 'Title'
-					},
-					{
-						key: 'count',
-						name: 'Count',
-						width: '20%'
-					},
-					]</pre>
+				<div class="code-block js">
 
+<pre>var columns = [
+	{
+		key: 'id',
+		name: 'ID',
+		width: '20%',
+		resizeable: true
+	},
+	{
+		key: 'title',
+		name: 'Title'
+	},
+	{
+		key: 'count',
+		name: 'Count',
+		width: '20%'
+	}
+]</pre>
+				</div>
 					<p>The rows property can be an array or a function which returns a slice of data given the specified range. If we specify rows as a function, we should also provide length property:</p>
-
-					<pre>var rows = function(start, end) {
-						var result = []
-						for (var i = start; i < end; i++) {
-							result.push({
-								id: i,
-								title: 'Title ' + i,
-								count: i * 1000
-							});
-						}
-						return result;
-					}</pre>
-
+					<div class="code-block js">
+<pre>var rows = function(start, end) {
+	var result = []
+	for (var i = start; i < end; i++) {
+		result.push({
+			id: i,
+			title: 'Title ' + i,
+			count: i * 1000
+		});
+	}
+	return result;
+};</pre>
+				</div>
 					<p>Now simply invoke React.renderComponent(..):</p>
-
-					<pre>React.renderComponent(<ReactGrid columns={columns} rows={rows} />, document.getElementById('example'))</pre>
-
+					<div class="code-block js">
+						<pre>React.renderComponent(&lt;ReactGrid columns={columns} rows={rows} /&gt;, document.getElementById('example'))</pre>
+					</div>
 				</div>
 					<div class="docs-section">
 						<h1 id="js-api-refernce">API Reference</h1>
@@ -147,13 +153,21 @@
 						</div>
 
 						<div class="code-block flow">
-							<pre>/* @flow */<br/><code>type RowUpdateEvent = {rowIdx: number; updated: object, callKey: string, keyCode: string};</code></pre>
+							<pre>/* @flow */<br/><code>type RowUpdateEvent = {rowIdx: number; updated: object; cellKey: string; keyCode: string};</code></pre>
 						</div>
 
-						<h3>onRowUpdated</h3>
-						<div class="code-block"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">onRowUpdated</span><span class="p">(</span><span class="nx">object</span> <span class="nx">nextProps</span><span class="p">,</span> <span class="nx">object</span> <span class="nx">nextState</span><span class="p">)</span>
-						</code></pre></div>
+
+					<h3>onCellsDragged</h3>
+					<div class="code-block function">
+						<pre><span class="nx">onCellsDragged</span><span class="p">(</span><span class="nx">e</span> <span class="nx">:CellDragEvent</span><span class="p">)</span></pre>
 					</div>
+
+					<div class="code-block flow">
+						<pre>/* @flow */<br/><code>type CellDragEvent = {rowIdx: number; fromRow: number, toRow: number, value: any};</code></pre>
+					</div>
+
+
+				</div>
 
 			</div>
 		</div>
