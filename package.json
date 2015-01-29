@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "gulp test",
-    "prepublish" : "gulp dist"
+    "prepublish": "gulp dist"
   },
   "repository": {
     "type": "git",
@@ -16,11 +16,12 @@
     "grid"
   ],
   "dependencies": {
-    "react": "^0.12.1",
-    "reactify": "^0.17.1",
     "es5-shim": "^4.0.3",
     "immutable": "^3.0.0",
     "jquery": "^2.1.1",
+    "object-assign": "^2.0.0",
+    "react": "^0.12.1",
+    "reactify": "^0.17.1",
     "ron-react-autocomplete": "1.0.3"
   },
   "devDependencies": {

@@ -4,6 +4,9 @@
 var keyMirror  = require('react/lib/keyMirror');
 var isFunction = require('./isFunction')
 var React      = require('react');
+if (!Object.assign) {
+  Object.assign = require('object-assign');
+}
 
 /**
  * Policies that describe methods in Adazzle React Mixins
@@ -55,27 +58,7 @@ var MixinInterface = {
 }
 
 var MixinAliasCache = {};
-var arePropertyDescriptorsSupported = function () {
-    try {
-      Object.defineProperty({}, 'x', {});
-      return true;
-    } catch (e) { /* this is IE 8. */
-      return false;
-    }
-  };
 
-/**
- * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
- * @param obj1
- * @param obj2
- */
-function IE8_merge(obj1,obj2){
-    for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
-    return obj1;
-}
-//IE 8 does not support Object.assign even with polyfil.
-var merge = arePropertyDescriptorsSupported() ? Object.assign :
- IE8_merge;
 
 var Mixin = function(base, dependsOn){
   this.base = base;
@@ -134,7 +117,7 @@ var MixinHelper = {
 
     var dependencies = mixinUtils.getUniqueDependencies(mixins);
     for (var d in dependencies){
-      merge(primary, MixinAliasCache[dependencies[d]]);
+      Object.assign(primary, MixinAliasCache[dependencies[d]]);
     }
     wrapEachMethodInObject(primary, results);
 
@@ -144,14 +127,14 @@ var MixinHelper = {
       //check if mixin was created using Mixin Helper
       //If it is then merge the properties object
       if(obj instanceof Mixin){
-        merge(clone, obj.base);
+        Object.assign(clone, obj.base);
       }else{
-        merge(clone, obj);
+        Object.assign(clone, obj);
       }
 
       wrapEachMethodInObject(clone, results);
 
-      merge(primary, clone);
+      Object.assign(primary, clone);
     }, this);
 
     results.push(primary);

@@ -23,9 +23,7 @@ webpackConfig = {
 gulp.task('script-deps',  function() {
 
 	return gulp.src([
-		'node_modules/es5-shim/es5-shim.js',
-		'node_modules/es5-shim/es5-sham.js',
-		'node_modules/es6-shim/es6-shim.js'
+		'node_modules/es5-shim/es5-shim.js'
 	])
 	.pipe(concat('libs.js'))
 	.pipe(gulp.dest('./examples/build'))
