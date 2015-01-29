@@ -89,6 +89,12 @@
         this.setState({rows:rows});
     },
 
+    handleCellCopyPaste : function(e){
+      var rows = this.state.rows;
+      rows[e.toRow][e.cellKey] = e.value;
+      this.setState({rows:rows});
+    },
+
     handleAddRow : function(e){
       var newRow = {
         id: e.newRowIndex,
@@ -98,14 +104,14 @@
         var rows = React.addons.update(this.state.rows, {$push : [newRow]});
         this.setState({rows : rows});
     },
-
     render: function() {
       return (
             <Grid
               columns={columns}
               rows={this.state.rows}
-              onRowUpdated={this.onRowUpdated}
+              onRowUpdated={this.handleRowUpdated}
               onCellsDragged={this.handleCellDrag}
+              onCellCopyPaste={this.handleCellCopyPaste}
               toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
               />
       );
