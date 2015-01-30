@@ -5,3 +5,6 @@ LICENSE
 .eslintrc
 test
 gulp
+examples
+coveralls.yml
+gulpfile.js

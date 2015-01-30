@@ -3,8 +3,8 @@
  */
 (function(){
   var Grid                = ReactGrid.Grid;
-  var Editors             = ReactGrid.Addons.Editors;
-  var Toolbar             = ReactGrid.Addons.Toolbar;
+  var Editors             = ReactGrid.GridAddons.Editors;
+  var Toolbar             = ReactGrid.GridAddons.Toolbar;
   var AutoCompleteEditor  = Editors.AutoComplete;
   var DropDownEditor      = Editors.DropDownEditor;
   var cx                  = React.addons.classSet;
@@ -107,6 +107,7 @@
     render: function() {
       return (
             <Grid
+              enableCellSelect={true}
               columns={columns}
               rows={this.state.rows}
               onRowUpdated={this.handleRowUpdated}
