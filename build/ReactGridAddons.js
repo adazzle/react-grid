@@ -300,7 +300,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var formatters = {
-	  DateRangeFormatter : __webpack_require__(15)
+	  DateRangeFormatter : __webpack_require__(27)
 	}
 
 	module.exports = formatters;
@@ -340,10 +340,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                   = __webpack_require__(9);
 	var cx                      = React.addons.classSet;
-	var MixinHelper             = __webpack_require__(27);
+	var MixinHelper             = __webpack_require__(26);
 	var EditorMixin             = __webpack_require__(2);
 	var TextInputMixin          = __webpack_require__(3);
-	var ReactAutocomplete       = __webpack_require__(42);
+	var ReactAutocomplete       = __webpack_require__(41);
 	var keyboardHandlerMixin    = __webpack_require__(29);
 
 	var optionPropType = React.PropTypes.shape({
@@ -474,7 +474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                   = __webpack_require__(9);
 	var cx                      = React.addons.classSet;
-	var MixinHelper             = __webpack_require__(27);
+	var MixinHelper             = __webpack_require__(26);
 	var keyboardHandlerMixin    = __webpack_require__(29);
 	var EditorMixin             = __webpack_require__(2);
 	var cloneWithProps          = React.addons.cloneWithProps;
@@ -535,7 +535,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                   = __webpack_require__(9);
 	var cx                      = React.addons.classSet;
-	var MixinHelper             = __webpack_require__(27);
+	var MixinHelper             = __webpack_require__(26);
 	var EditorMixin             = __webpack_require__(2);
 	var TextInputMixin          = __webpack_require__(3);
 	var keyboardHandlerMixin    = __webpack_require__(29);
@@ -561,56 +561,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React          = __webpack_require__(9);
-	var cx             = React.addons.classSet;
-	var moment         = __webpack_require__(28);
-	var PropTypes = React.PropTypes;
-
-	var DateRangeFormatter = React.createClass({displayName: 'DateRangeFormatter',
-
-	  propTypes : {
-	      value : PropTypes.shape({
-	      startDate : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-	      endDate   : PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-	    }).isRequired
-	  },
-
-	  getDefaultProps:function(){
-	    return {
-	      inputFormat : 'YYYY-MM-DD',
-	      displayFormat : 'YYYY-MM-DD',
-	      value : {startDate : null, endDate : null}
-	    }
-	  },
-
-	  formatDate:function(date){
-	    if(moment.isMoment(date)){
-	      return date.format(this.props.displayFormat);
-	    }else{
-	      return moment(date, this.props.inputFormat).format(this.props.displayFormat);
-	    }
-	  },
-
-	  render:function(){
-	    var startDate = this.props.value.startDate;
-	    var endDate = this.props.value.endDate;
-	    return (React.createElement("span", null, startDate, " to ", endDate));
-	  }
-	});
-
-	module.exports = DateRangeFormatter;
-
-
-/***/ },
+/* 15 */,
 /* 16 */,
 /* 17 */,
 /* 18 */,
@@ -621,14 +572,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 23 */,
 /* 24 */,
 /* 25 */,
-/* 26 */,
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
 	"use strict";
 
-	var keyMirror  = __webpack_require__(41);
+	var keyMirror  = __webpack_require__(47);
 	var isFunction = __webpack_require__(11)
 	var React      = __webpack_require__(9);
 	if (!Object.assign) {
@@ -857,6 +807,56 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React          = __webpack_require__(9);
+	var cx             = React.addons.classSet;
+	var moment         = __webpack_require__(28);
+	var PropTypes = React.PropTypes;
+
+	var DateRangeFormatter = React.createClass({displayName: 'DateRangeFormatter',
+
+	  propTypes : {
+	      value : PropTypes.shape({
+	      startDate : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+	      endDate   : PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+	    }).isRequired
+	  },
+
+	  getDefaultProps:function(){
+	    return {
+	      inputFormat : 'YYYY-MM-DD',
+	      displayFormat : 'YYYY-MM-DD',
+	      value : {startDate : null, endDate : null}
+	    }
+	  },
+
+	  formatDate:function(date){
+	    if(moment.isMoment(date)){
+	      return date.format(this.props.displayFormat);
+	    }else{
+	      return moment(date, this.props.inputFormat).format(this.props.displayFormat);
+	    }
+	  },
+
+	  render:function(){
+	    var startDate = this.props.value.startDate;
+	    var endDate = this.props.value.endDate;
+	    return (React.createElement("span", null, startDate, " to ", endDate));
+	  }
+	});
+
+	module.exports = DateRangeFormatter;
+
+
+/***/ },
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -971,64 +971,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule keyMirror
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var invariant = __webpack_require__(53);
-
-	/**
-	 * Constructs an enumeration with keys equal to their value.
-	 *
-	 * For example:
-	 *
-	 *   var COLORS = keyMirror({blue: null, red: null});
-	 *   var myColor = COLORS.blue;
-	 *   var isColorValid = !!COLORS[myColor];
-	 *
-	 * The last line could not be performed if the values of the generated enum were
-	 * not equal to their keys.
-	 *
-	 *   Input:  {key1: val1, key2: val2}
-	 *   Output: {key1: key1, key2: key2}
-	 *
-	 * @param {object} obj
-	 * @return {object}
-	 */
-	var keyMirror = function(obj) {
-	  var ret = {};
-	  var key;
-	  ("production" !== process.env.NODE_ENV ? invariant(
-	    obj instanceof Object && !Array.isArray(obj),
-	    'keyMirror(...): Argument must be an object.'
-	  ) : invariant(obj instanceof Object && !Array.isArray(obj)));
-	  for (key in obj) {
-	    if (!obj.hasOwnProperty(key)) {
-	      continue;
-	    }
-	    ret[key] = key;
-	  }
-	  return ret;
-	};
-
-	module.exports = keyMirror;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
-
-/***/ },
-/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -1487,11 +1429,69 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 42 */,
 /* 43 */,
 /* 44 */,
 /* 45 */,
 /* 46 */,
-/* 47 */,
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule keyMirror
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var invariant = __webpack_require__(53);
+
+	/**
+	 * Constructs an enumeration with keys equal to their value.
+	 *
+	 * For example:
+	 *
+	 *   var COLORS = keyMirror({blue: null, red: null});
+	 *   var myColor = COLORS.blue;
+	 *   var isColorValid = !!COLORS[myColor];
+	 *
+	 * The last line could not be performed if the values of the generated enum were
+	 * not equal to their keys.
+	 *
+	 *   Input:  {key1: val1, key2: val2}
+	 *   Output: {key1: key1, key2: key2}
+	 *
+	 * @param {object} obj
+	 * @return {object}
+	 */
+	var keyMirror = function(obj) {
+	  var ret = {};
+	  var key;
+	  ("production" !== process.env.NODE_ENV ? invariant(
+	    obj instanceof Object && !Array.isArray(obj),
+	    'keyMirror(...): Argument must be an object.'
+	  ) : invariant(obj instanceof Object && !Array.isArray(obj)));
+	  for (key in obj) {
+	    if (!obj.hasOwnProperty(key)) {
+	      continue;
+	    }
+	    ret[key] = key;
+	  }
+	  return ret;
+	};
+
+	module.exports = keyMirror;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
+
+/***/ },
 /* 48 */,
 /* 49 */,
 /* 50 */,
