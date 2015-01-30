@@ -11,7 +11,7 @@ var merge               = require('../../../merge');
 var EditableGridMixin = {
 
   propTypes : {
-    onRowUpdated : React.PropTypes.func.isRequired
+    onRowUpdated : React.PropTypes.func
   },
 
   onCellCommit(commit){

@@ -502,3 +502,16 @@ img.pull-left {
 	width: 149px;
 	height: 149px;
 }
+
+code.tab1{
+	margin-left:3px;
+}
+code.tab2{
+	margin-left:6px;
+}
+code.tab3{
+	margin-left:9px;
+}
+code.tab4{
+	margin-left:12px;
+}

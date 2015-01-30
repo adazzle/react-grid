@@ -5,12 +5,13 @@ var basicExample = require('./scripts/exampleBasic');
 var editableExample = require('./scripts/exampleEditable');
 
 var App = React.createClass({
+
+  
+
   render: function () {
     return (
       <div>
-      <ol>
-        HELLO I AM AN EXAMPLE
-      </ol>
+      <h1 className="page-header">React Grid Examples</h1>
       <RouteHandler/>
       </div>
     );

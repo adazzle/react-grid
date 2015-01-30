@@ -16,7 +16,7 @@ var DraggableGridMixin = {
   mixinDependencies : ['SelectableGridMixin'],
 
   propTypes : {
-    onCellsDragged : React.PropTypes.func.isRequired
+    onCellsDragged : React.PropTypes.func
   },
 
   getInitialState: function() {

@@ -47,7 +47,7 @@ var ExcelGrid = React.createClass({
     },
     getColumns : function(){
       var cols = this.getDecoratedColumns(this.props.columns)
-      if(this.props.isRowSelectable){
+      if(this.props.enableRowSelect){
           cols.unshift({
             key: 'select-row',
             name: '',
@@ -65,7 +65,7 @@ var ExcelGrid = React.createClass({
   getDefaultProps() {
     return {
       rowHeight: 35,
-      isRowSelectable : true,
+      enableRowSelect : false,
       minHeight : 350
     };
   },

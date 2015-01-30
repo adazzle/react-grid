@@ -1,5 +1,6 @@
 var ReactGrid = require('../build/ReactGrid.Grid');
 var getRows   = require('./getRows');
+var QuickStartDescription = require('./components/QuickStartDescription')
 
 var columns = [
 {
@@ -19,7 +20,12 @@ var columns = [
 module.exports = React.createClass({
 
   render:function(){
-    return(<ReactGrid rows={getRows(0,100)} columns={columns}/>)
+    return(
+      <div>
+        <QuickStartDescription/>
+        <ReactGrid rows={getRows(0,100)} columns={columns}/>
+      </div>
+      )
   }
 
 });
