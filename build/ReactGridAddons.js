@@ -113,7 +113,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	var React                   = __webpack_require__(9);
 	var cx                      = React.addons.classSet;
-	var isFunction = __webpack_require__(23);
+	var isFunction = __webpack_require__(11);
 
 	var EditorMixin = {
 
@@ -286,9 +286,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Editors = {
-	  AutoComplete     : __webpack_require__(24),
-	  DropDownEditor   : __webpack_require__(25),
-	  SimpleTextEditor : __webpack_require__(26)
+	  AutoComplete     : __webpack_require__(12),
+	  DropDownEditor   : __webpack_require__(13),
+	  SimpleTextEditor : __webpack_require__(14)
 
 	}
 
@@ -314,10 +314,253 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */,
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	"use strict";
+
+	var isFunction = function(functionToCheck){
+	    var getType = {};
+	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	}
+
+	module.exports = isFunction;
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React                   = __webpack_require__(9);
+	var cx                      = React.addons.classSet;
+	var MixinHelper             = __webpack_require__(26);
+	var EditorMixin             = __webpack_require__(2);
+	var TextInputMixin          = __webpack_require__(3);
+	var ReactAutocomplete       = __webpack_require__(41);
+	var keyboardHandlerMixin    = __webpack_require__(31);
+
+	var optionPropType = React.PropTypes.shape({
+	      id    :   React.PropTypes.required,
+	      title :   React.PropTypes.string
+	    });
+
+	var AutoCompleteEditor = React.createClass({displayName: 'AutoCompleteEditor',
+
+	  propTypes : {
+	    options : React.PropTypes.arrayOf(optionPropType)
+	  },
+
+	  mixins : MixinHelper.mix([keyboardHandlerMixin, EditorMixin, TextInputMixin]),
+
+	  overrides : {
+	      checkFocus : function(){
+	          this.setTextInputFocus();
+	      },
+	      getInputNode:function(){
+	        return this.getSearchComponent().getDOMNode();
+	      },
+	      onPressEnter:function(args){
+	        var e = args[0];
+	        this.handleEnter(e);
+	      },
+	      onPressTab:function(args){
+	        var e = args[0];
+	        this.handleTab(e);
+	      }
+	  },
+
+	  handleTab:function(e){
+	    e.stopPropagation();
+	    e.preventDefault();
+	    if(!this.isFocusedOnSuggestion()){
+	      this.handleChange(null, 'Tab');
+	    }else{
+	      this.handleChange(this.getFocusedSuggestion(), 'Tab');
+	    }
+	  },
+
+	  handleEnter:function(e){
+	    e.stopPropagation();
+	    e.preventDefault();
+	    if(!this.isFocusedOnSuggestion()){
+	      this.props.onCommit({value : this.refs.autoComplete.state.searchTerm, key : 'Enter'});
+	    }
+	  },
+
+	  getSearchComponent:function(){
+	    return this.refs.autoComplete.refs.search;
+	  },
+
+	  isFocusedOnSuggestion:function(){
+	    var autoComplete = this.refs.autoComplete;
+	    return autoComplete.state.focusedValue != null;
+	  },
+
+	  getFocusedSuggestion:function(){
+	    return this.refs.autoComplete.state.focusedValue;
+	  },
+
+	  onPressArrowDown:function(e){
+	    //prevent event propogation. this disables downwards cell navigation
+	    e.stopPropagation();
+	    e.preventDefault();
+	  },
+
+	  onPressArrowUp:function(e){
+	    //prevent event propogation. this disables upwards cell navigation
+	    e.stopPropagation();
+	  },
+
+	  getLabel:function(result) {
+	    var label = this.props.label != null ? this.props.label : 'title';
+	    if (typeof label === "function") {
+	      return label(result);
+	    } else if (typeof label === "string") {
+	      return result[label];
+	    }
+	  },
+
+	  handleChange:function(item, key){
+	    var rowDataChanged = {};
+	    var value = this.props.value;
+	    if(item!=null){
+	      value = this.getLabel(item);
+	      if(this.props.valueParams){
+	        value = this.constuctValueFromParams(item, this.props.valueParams);
+	      }
+	      rowDataChanged[this.props.column.key] = value;
+	    }
+	    key = key ? key : 'Enter';
+	    this.props.onCommit({value : value, key : key, rowDataChanged : rowDataChanged});
+	  },
+
+	  constuctValueFromParams:function(obj, props) {
+	    var ret = [];
+	    for (var i = 0, ii = props.length; i < ii; i++) {
+	      ret.push(obj[props[i]]);
+	    }
+	    return ret.join('|');
+	  },
+
+	  renderEditorNode:function(){
+	    var val = {title : this.getDefaultValue()};
+	    var label = this.props.label != null ? this.props.label : 'title';
+	    return (React.createElement("div", {style: this.getStyle(), onKeyDown: this.onKeyDown}, 
+	              React.createElement(ReactAutocomplete, {search: this.props.search, ref: "autoComplete", label: label, resultIdentifier: this.props.resultIdentifier, options: this.props.options, value: val, onChange: this.handleChange})
+	            ));
+	  }
+
+	});
+
+	module.exports = AutoCompleteEditor;
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React                   = __webpack_require__(9);
+	var cx                      = React.addons.classSet;
+	var MixinHelper             = __webpack_require__(26);
+	var keyboardHandlerMixin    = __webpack_require__(31);
+	var EditorMixin             = __webpack_require__(2);
+	var cloneWithProps          = React.addons.cloneWithProps;
+
+	var DropDownEditor = React.createClass({displayName: 'DropDownEditor',
+
+	  mixins : [keyboardHandlerMixin, EditorMixin],
+
+	  overrides : {
+	    getInputNode : function(){
+	      return this.refs.select.getDOMNode();
+	    }
+	  },
+
+	  propTypes : {
+	    options : React.PropTypes.array.isRequired
+	  },
+
+	  renderEditorNode:function(){
+	    return (
+	      React.createElement("select", {ref: "select", style: this.getStyle(), defaultValue: this.props.value, onChange: this.onChange}, 
+	        this.renderOptions()
+	      ));
+	  },
+
+	  renderOptions:function(){
+	    var options = [];
+	    this.props.options.forEach(function(name){
+	      options.push(React.createElement("option", {key: name, value: name}, name));
+	    }, this);
+	    return options;
+	  },
+
+
+	  onChange:function(e){
+	    this.props.onCommit({value : e.currentTarget.value});
+	  },
+
+	  onClick:function(e){
+	    e.stopPropagation();
+	    e.preventDefault();
+	  }
+
+	});
+
+	module.exports = DropDownEditor;
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React                   = __webpack_require__(9);
+	var cx                      = React.addons.classSet;
+	var MixinHelper             = __webpack_require__(26);
+	var EditorMixin             = __webpack_require__(2);
+	var TextInputMixin          = __webpack_require__(3);
+	var keyboardHandlerMixin    = __webpack_require__(31);
+
+	var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
+
+	  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
+
+	  overrides : {
+	      checkFocus : function(){
+	          this.setTextInputFocus();
+	      }
+	  },
+
+	  renderEditorNode:function(){
+	    return (React.createElement("input", {type: "text", onBlur: this.commit, className: "form-control", defaultValue: this.getDefaultValue(), style: this.getStyle(), onKeyDown: this.onKeyDown}));
+	  }
+
+
+	});
+
+	module.exports = SimpleTextEditor;
+
+
+/***/ },
 /* 15 */,
 /* 16 */,
 /* 17 */,
@@ -325,14 +568,18 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 19 */,
 /* 20 */,
 /* 21 */,
-/* 22 */
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
 	"use strict";
 
-	var keyMirror  = __webpack_require__(41);
-	var isFunction = __webpack_require__(23)
+	var keyMirror  = __webpack_require__(42);
+	var isFunction = __webpack_require__(11)
 	var React      = __webpack_require__(9);
 	if (!Object.assign) {
 	  Object.assign = __webpack_require__(40);
@@ -560,253 +807,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	"use strict";
-
-	var isFunction = function(functionToCheck){
-	    var getType = {};
-	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-	}
-
-	module.exports = isFunction;
-
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React                   = __webpack_require__(9);
-	var cx                      = React.addons.classSet;
-	var MixinHelper             = __webpack_require__(22);
-	var EditorMixin             = __webpack_require__(2);
-	var TextInputMixin          = __webpack_require__(3);
-	var ReactAutocomplete       = __webpack_require__(42);
-	var keyboardHandlerMixin    = __webpack_require__(33);
-
-	var optionPropType = React.PropTypes.shape({
-	      id    :   React.PropTypes.required,
-	      title :   React.PropTypes.string
-	    });
-
-	var AutoCompleteEditor = React.createClass({displayName: 'AutoCompleteEditor',
-
-	  propTypes : {
-	    options : React.PropTypes.arrayOf(optionPropType)
-	  },
-
-	  mixins : MixinHelper.mix([keyboardHandlerMixin, EditorMixin, TextInputMixin]),
-
-	  overrides : {
-	      checkFocus : function(){
-	          this.setTextInputFocus();
-	      },
-	      getInputNode:function(){
-	        return this.getSearchComponent().getDOMNode();
-	      },
-	      onPressEnter:function(args){
-	        var e = args[0];
-	        this.handleEnter(e);
-	      },
-	      onPressTab:function(args){
-	        var e = args[0];
-	        this.handleTab(e);
-	      }
-	  },
-
-	  handleTab:function(e){
-	    e.stopPropagation();
-	    e.preventDefault();
-	    if(!this.isFocusedOnSuggestion()){
-	      this.handleChange(null, 'Tab');
-	    }else{
-	      this.handleChange(this.getFocusedSuggestion(), 'Tab');
-	    }
-	  },
-
-	  handleEnter:function(e){
-	    e.stopPropagation();
-	    e.preventDefault();
-	    if(!this.isFocusedOnSuggestion()){
-	      this.props.onCommit({value : this.refs.autoComplete.state.searchTerm, key : 'Enter'});
-	    }
-	  },
-
-	  getSearchComponent:function(){
-	    return this.refs.autoComplete.refs.search;
-	  },
-
-	  isFocusedOnSuggestion:function(){
-	    var autoComplete = this.refs.autoComplete;
-	    return autoComplete.state.focusedValue != null;
-	  },
-
-	  getFocusedSuggestion:function(){
-	    return this.refs.autoComplete.state.focusedValue;
-	  },
-
-	  onPressArrowDown:function(e){
-	    //prevent event propogation. this disables downwards cell navigation
-	    e.stopPropagation();
-	    e.preventDefault();
-	  },
-
-	  onPressArrowUp:function(e){
-	    //prevent event propogation. this disables upwards cell navigation
-	    e.stopPropagation();
-	  },
-
-	  getLabel:function(result) {
-	    var label = this.props.label != null ? this.props.label : 'title';
-	    if (typeof label === "function") {
-	      return label(result);
-	    } else if (typeof label === "string") {
-	      return result[label];
-	    }
-	  },
-
-	  handleChange:function(item, key){
-	    var rowDataChanged = {};
-	    var value = this.props.value;
-	    if(item!=null){
-	      value = this.getLabel(item);
-	      if(this.props.valueParams){
-	        value = this.constuctValueFromParams(item, this.props.valueParams);
-	      }
-	      rowDataChanged[this.props.column.key] = value;
-	    }
-	    key = key ? key : 'Enter';
-	    this.props.onCommit({value : value, key : key, rowDataChanged : rowDataChanged});
-	  },
-
-	  constuctValueFromParams:function(obj, props) {
-	    var ret = [];
-	    for (var i = 0, ii = props.length; i < ii; i++) {
-	      ret.push(obj[props[i]]);
-	    }
-	    return ret.join('|');
-	  },
-
-	  renderEditorNode:function(){
-	    var val = {title : this.getDefaultValue()};
-	    var label = this.props.label != null ? this.props.label : 'title';
-	    return (React.createElement("div", {style: this.getStyle(), onKeyDown: this.onKeyDown}, 
-	              React.createElement(ReactAutocomplete, {search: this.props.search, ref: "autoComplete", label: label, resultIdentifier: this.props.resultIdentifier, options: this.props.options, value: val, onChange: this.handleChange})
-	            ));
-	  }
-
-	});
-
-	module.exports = AutoCompleteEditor;
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React                   = __webpack_require__(9);
-	var cx                      = React.addons.classSet;
-	var MixinHelper             = __webpack_require__(22);
-	var keyboardHandlerMixin    = __webpack_require__(33);
-	var EditorMixin             = __webpack_require__(2);
-	var cloneWithProps          = React.addons.cloneWithProps;
-
-	var DropDownEditor = React.createClass({displayName: 'DropDownEditor',
-
-	  mixins : [keyboardHandlerMixin, EditorMixin],
-
-	  overrides : {
-	    getInputNode : function(){
-	      return this.refs.select.getDOMNode();
-	    }
-	  },
-
-	  propTypes : {
-	    options : React.PropTypes.array.isRequired
-	  },
-
-	  renderEditorNode:function(){
-	    return (
-	      React.createElement("select", {ref: "select", style: this.getStyle(), defaultValue: this.props.value, onChange: this.onChange}, 
-	        this.renderOptions()
-	      ));
-	  },
-
-	  renderOptions:function(){
-	    var options = [];
-	    this.props.options.forEach(function(name){
-	      options.push(React.createElement("option", {key: name, value: name}, name));
-	    }, this);
-	    return options;
-	  },
-
-
-	  onChange:function(e){
-	    this.props.onCommit({value : e.currentTarget.value});
-	  },
-
-	  onClick:function(e){
-	    e.stopPropagation();
-	    e.preventDefault();
-	  }
-
-	});
-
-	module.exports = DropDownEditor;
-
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React                   = __webpack_require__(9);
-	var cx                      = React.addons.classSet;
-	var MixinHelper             = __webpack_require__(22);
-	var EditorMixin             = __webpack_require__(2);
-	var TextInputMixin          = __webpack_require__(3);
-	var keyboardHandlerMixin    = __webpack_require__(33);
-
-	var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
-
-	  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
-
-	  overrides : {
-	      checkFocus : function(){
-	          this.setTextInputFocus();
-	      }
-	  },
-
-	  renderEditorNode:function(){
-	    return (React.createElement("input", {type: "text", onBlur: this.commit, className: "form-control", defaultValue: this.getDefaultValue(), style: this.getStyle(), onKeyDown: this.onKeyDown}));
-	  }
-
-
-	});
-
-	module.exports = SimpleTextEditor;
-
-
-/***/ },
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -865,9 +865,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ },
 /* 29 */,
 /* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -932,6 +930,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 32 */,
+/* 33 */,
 /* 34 */,
 /* 35 */,
 /* 36 */,
@@ -971,64 +971,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule keyMirror
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var invariant = __webpack_require__(53);
-
-	/**
-	 * Constructs an enumeration with keys equal to their value.
-	 *
-	 * For example:
-	 *
-	 *   var COLORS = keyMirror({blue: null, red: null});
-	 *   var myColor = COLORS.blue;
-	 *   var isColorValid = !!COLORS[myColor];
-	 *
-	 * The last line could not be performed if the values of the generated enum were
-	 * not equal to their keys.
-	 *
-	 *   Input:  {key1: val1, key2: val2}
-	 *   Output: {key1: key1, key2: key2}
-	 *
-	 * @param {object} obj
-	 * @return {object}
-	 */
-	var keyMirror = function(obj) {
-	  var ret = {};
-	  var key;
-	  ("production" !== process.env.NODE_ENV ? invariant(
-	    obj instanceof Object && !Array.isArray(obj),
-	    'keyMirror(...): Argument must be an object.'
-	  ) : invariant(obj instanceof Object && !Array.isArray(obj)));
-	  for (key in obj) {
-	    if (!obj.hasOwnProperty(key)) {
-	      continue;
-	    }
-	    ret[key] = key;
-	  }
-	  return ret;
-	};
-
-	module.exports = keyMirror;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
-
-/***/ },
-/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -1485,6 +1427,64 @@ return /******/ (function(modules) { // webpackBootstrap
 	/******/ ])
 	});
 
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule keyMirror
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var invariant = __webpack_require__(53);
+
+	/**
+	 * Constructs an enumeration with keys equal to their value.
+	 *
+	 * For example:
+	 *
+	 *   var COLORS = keyMirror({blue: null, red: null});
+	 *   var myColor = COLORS.blue;
+	 *   var isColorValid = !!COLORS[myColor];
+	 *
+	 * The last line could not be performed if the values of the generated enum were
+	 * not equal to their keys.
+	 *
+	 *   Input:  {key1: val1, key2: val2}
+	 *   Output: {key1: key1, key2: key2}
+	 *
+	 * @param {object} obj
+	 * @return {object}
+	 */
+	var keyMirror = function(obj) {
+	  var ret = {};
+	  var key;
+	  ("production" !== process.env.NODE_ENV ? invariant(
+	    obj instanceof Object && !Array.isArray(obj),
+	    'keyMirror(...): Argument must be an object.'
+	  ) : invariant(obj instanceof Object && !Array.isArray(obj)));
+	  for (key in obj) {
+	    if (!obj.hasOwnProperty(key)) {
+	      continue;
+	    }
+	    ret[key] = key;
+	  }
+	  return ret;
+	};
+
+	module.exports = keyMirror;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
 
 /***/ },
 /* 43 */,
