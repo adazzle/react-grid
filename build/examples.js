@@ -782,8 +782,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		"use strict";
 
 		var $__0=   __webpack_require__(9),PropTypes=$__0.PropTypes,isValidElement=$__0.isValidElement;
-		var shallowCloneObject            = __webpack_require__(28);
-		var DOMMetrics                    = __webpack_require__(29);
+		var shallowCloneObject            = __webpack_require__(38);
+		var DOMMetrics                    = __webpack_require__(30);
 		var merge                         = __webpack_require__(14);
 
 		/**
@@ -1004,10 +1004,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		var React                = __webpack_require__(9);
 		var PropTypes            = React.PropTypes;
-		var Header               = __webpack_require__(30);
-		var Viewport             = __webpack_require__(31);
+		var Header               = __webpack_require__(28);
+		var Viewport             = __webpack_require__(29);
 		var ColumnMetrics        = __webpack_require__(10);
-		var DOMMetrics           = __webpack_require__(29);
+		var DOMMetrics           = __webpack_require__(30);
 
 
 		var GridScrollMixin = {
@@ -1619,8 +1619,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		var React               = __webpack_require__(9);
 		var PropTypes           = React.PropTypes;
-		var SortableHeaderCell  = __webpack_require__(39);
-		var shallowCloneObject  = __webpack_require__(28);
+		var SortableHeaderCell  = __webpack_require__(37);
+		var shallowCloneObject  = __webpack_require__(38);
 
 		var DEFINE_SORT = {
 		  ASC : 'ASC',
@@ -1703,7 +1703,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		var React               = __webpack_require__(9);
 		var PropTypes           = React.PropTypes;
-		var FilterableHeaderCell = __webpack_require__(38);
+		var FilterableHeaderCell = __webpack_require__(39);
 
 		var FilterableGridMixin = {
 
@@ -1830,7 +1830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		
 		"use strict";
 
-		var keyMirror  = __webpack_require__(42);
+		var keyMirror  = __webpack_require__(41);
 		var isFunction = __webpack_require__(23)
 		var React      = __webpack_require__(9);
 		if (!Object.assign) {
@@ -2121,206 +2121,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * @jsx React.DOM
 		 * @copyright Prometheus Research, LLC 2014
 		 */
-		'use strict';
-
-		function shallowCloneObject(obj) {
-		  var result = {};
-		  for (var k in obj) {
-		    if (obj.hasOwnProperty(k)) {
-		      result[k] = obj[k];
-		    }
-		  }
-		  return result;
-		}
-
-		module.exports = shallowCloneObject;
-
-
-	/***/ },
-	/* 29 */
-	/***/ function(module, exports, __webpack_require__) {
-
-		/**
-		 * @jsx React.DOM
-		 * @copyright Prometheus Research, LLC 2014
-		 */
-		'use strict';
-
-		var React               = __webpack_require__(9);
-		var emptyFunction       = __webpack_require__(43);
-		var shallowCloneObject  = __webpack_require__(28);
-		var invariant           = __webpack_require__(44);
-
-		var contextTypes = {
-		  metricsComputator: React.PropTypes.object
-		};
-
-		var MetricsComputatorMixin = {
-
-		  childContextTypes: contextTypes,
-
-		  getChildContext:function() {
-		    return {metricsComputator: this};
-		  },
-
-		  getMetricImpl:function(name) {
-		    return this._DOMMetrics.metrics[name].value;
-		  },
-
-		  registerMetricsImpl:function(component, metrics) {
-		    var getters = {};
-		    var s = this._DOMMetrics;
-
-		    for (var name in metrics) {
-		      invariant(
-		          s.metrics[name] === undefined,
-		          'DOM metric ' + name + ' is already defined'
-		      );
-		      s.metrics[name] = {component:component, computator: metrics[name].bind(component)};
-		      getters[name] = this.getMetricImpl.bind(null, name);
-		    }
-
-		    if (s.components.indexOf(component) === -1) {
-		      s.components.push(component);
-		    }
-
-		    return getters;
-		  },
-
-		  unregisterMetricsFor:function(component) {
-		    var s = this._DOMMetrics;
-		    var idx = s.components.indexOf(component);
-
-		    if (idx > -1) {
-		      s.components.splice(idx, 1);
-
-		      var name;
-		      var metricsToDelete = {};
-
-		      for (name in s.metrics) {
-		        if (s.metrics[name].component === component) {
-		          metricsToDelete[name] = true;
-		        }
-		      }
-
-		      for (name in metricsToDelete) {
-		        delete s.metrics[name];
-		      }
-		    }
-		  },
-
-		  updateMetrics:function() {
-		    var s = this._DOMMetrics;
-
-		    var needUpdate = false;
-
-		    for (var name in s.metrics) {
-		      var newMetric = s.metrics[name].computator();
-		      if (newMetric !== s.metrics[name].value) {
-		        needUpdate = true;
-		      }
-		      s.metrics[name].value = newMetric;
-		    }
-
-		    if (needUpdate) {
-		      for (var i = 0, len = s.components.length; i < len; i++) {
-		        if (s.components[i].metricsUpdated) {
-		          s.components[i].metricsUpdated();
-		        }
-		      }
-		    }
-		  },
-
-		  componentWillMount:function() {
-		    this._DOMMetrics = {
-		      metrics: {},
-		      components: []
-		    };
-		  },
-
-		  componentDidMount:function() {
-		    if(window.addEventListener){
-		      window.addEventListener('resize', this.updateMetrics);
-		    }else{
-		      window.attachEvent('resize', this.updateMetrics);
-		    }
-		    this.updateMetrics();
-		  },
-
-		  componentWillUnmount:function() {
-		    window.removeEventListener('resize', this.updateMetrics);
-		  }
-
-		};
-
-		var MetricsMixin = {
-
-		  contextTypes: contextTypes,
-
-		  componentWillMount:function() {
-		    if (this.DOMMetrics) {
-		      this._DOMMetricsDefs = shallowCloneObject(this.DOMMetrics);
-
-		      this.DOMMetrics = {};
-		      for (var name in this._DOMMetricsDefs) {
-		        this.DOMMetrics[name] = emptyFunction;
-		      }
-		    }
-		  },
-
-		  componentDidMount:function() {
-		    if (this.DOMMetrics) {
-		      this.DOMMetrics = this.registerMetrics(this._DOMMetricsDefs);
-		    }
-		  },
-
-		  componentWillUnmount:function() {
-		    if (!this.registerMetricsImpl) {
-		      return this.context.metricsComputator.unregisterMetricsFor(this);
-		    }
-		    if (this.hasOwnProperty('DOMMetrics')) {
-		        delete this.DOMMetrics;
-		    }
-		  },
-
-		  registerMetrics:function(metrics) {
-		    if (this.registerMetricsImpl) {
-		      return this.registerMetricsImpl(this, metrics);
-		    } else {
-		      return this.context.metricsComputator.registerMetricsImpl(this, metrics);
-		    }
-		  },
-
-		  getMetric:function(name) {
-		    if (this.getMetricImpl) {
-		      return this.getMetricImpl(name);
-		    } else {
-		      return this.context.metricsComputator.getMetricImpl(name);
-		    }
-		  }
-		};
-
-		module.exports = {
-		  MetricsComputatorMixin:MetricsComputatorMixin,
-		  MetricsMixin:MetricsMixin
-		};
-
-
-	/***/ },
-	/* 30 */
-	/***/ function(module, exports, __webpack_require__) {
-
-		/**
-		 * @jsx React.DOM
-		 * @copyright Prometheus Research, LLC 2014
-		 */
 		"use strict";
 
 		var React               = __webpack_require__(9);
 		var cx                  = React.addons.classSet;
-		var shallowCloneObject  = __webpack_require__(28);
+		var shallowCloneObject  = __webpack_require__(38);
 		var ColumnMetrics       = __webpack_require__(10);
-		var HeaderRow           = __webpack_require__(45);
+		var HeaderRow           = __webpack_require__(44);
 		var ColumnMetrics = __webpack_require__(10);
 
 		var Header = React.createClass({displayName: 'Header',
@@ -2445,7 +2252,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/***/ },
-	/* 31 */
+	/* 29 */
 	/***/ function(module, exports, __webpack_require__) {
 
 		/**
@@ -2455,9 +2262,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		'use strict';
 
 		var React             = __webpack_require__(9);
-		var getWindowSize     = __webpack_require__(46);
-		var DOMMetrics        = __webpack_require__(29);
-		var Canvas            = __webpack_require__(47);
+		var getWindowSize     = __webpack_require__(42);
+		var DOMMetrics        = __webpack_require__(30);
+		var Canvas            = __webpack_require__(43);
 
 		var min   = Math.min;
 		var max   = Math.max;
@@ -2629,6 +2436,177 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/***/ },
+	/* 30 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		/**
+		 * @jsx React.DOM
+		 * @copyright Prometheus Research, LLC 2014
+		 */
+		'use strict';
+
+		var React               = __webpack_require__(9);
+		var emptyFunction       = __webpack_require__(45);
+		var shallowCloneObject  = __webpack_require__(38);
+		var invariant           = __webpack_require__(46);
+
+		var contextTypes = {
+		  metricsComputator: React.PropTypes.object
+		};
+
+		var MetricsComputatorMixin = {
+
+		  childContextTypes: contextTypes,
+
+		  getChildContext:function() {
+		    return {metricsComputator: this};
+		  },
+
+		  getMetricImpl:function(name) {
+		    return this._DOMMetrics.metrics[name].value;
+		  },
+
+		  registerMetricsImpl:function(component, metrics) {
+		    var getters = {};
+		    var s = this._DOMMetrics;
+
+		    for (var name in metrics) {
+		      invariant(
+		          s.metrics[name] === undefined,
+		          'DOM metric ' + name + ' is already defined'
+		      );
+		      s.metrics[name] = {component:component, computator: metrics[name].bind(component)};
+		      getters[name] = this.getMetricImpl.bind(null, name);
+		    }
+
+		    if (s.components.indexOf(component) === -1) {
+		      s.components.push(component);
+		    }
+
+		    return getters;
+		  },
+
+		  unregisterMetricsFor:function(component) {
+		    var s = this._DOMMetrics;
+		    var idx = s.components.indexOf(component);
+
+		    if (idx > -1) {
+		      s.components.splice(idx, 1);
+
+		      var name;
+		      var metricsToDelete = {};
+
+		      for (name in s.metrics) {
+		        if (s.metrics[name].component === component) {
+		          metricsToDelete[name] = true;
+		        }
+		      }
+
+		      for (name in metricsToDelete) {
+		        delete s.metrics[name];
+		      }
+		    }
+		  },
+
+		  updateMetrics:function() {
+		    var s = this._DOMMetrics;
+
+		    var needUpdate = false;
+
+		    for (var name in s.metrics) {
+		      var newMetric = s.metrics[name].computator();
+		      if (newMetric !== s.metrics[name].value) {
+		        needUpdate = true;
+		      }
+		      s.metrics[name].value = newMetric;
+		    }
+
+		    if (needUpdate) {
+		      for (var i = 0, len = s.components.length; i < len; i++) {
+		        if (s.components[i].metricsUpdated) {
+		          s.components[i].metricsUpdated();
+		        }
+		      }
+		    }
+		  },
+
+		  componentWillMount:function() {
+		    this._DOMMetrics = {
+		      metrics: {},
+		      components: []
+		    };
+		  },
+
+		  componentDidMount:function() {
+		    if(window.addEventListener){
+		      window.addEventListener('resize', this.updateMetrics);
+		    }else{
+		      window.attachEvent('resize', this.updateMetrics);
+		    }
+		    this.updateMetrics();
+		  },
+
+		  componentWillUnmount:function() {
+		    window.removeEventListener('resize', this.updateMetrics);
+		  }
+
+		};
+
+		var MetricsMixin = {
+
+		  contextTypes: contextTypes,
+
+		  componentWillMount:function() {
+		    if (this.DOMMetrics) {
+		      this._DOMMetricsDefs = shallowCloneObject(this.DOMMetrics);
+
+		      this.DOMMetrics = {};
+		      for (var name in this._DOMMetricsDefs) {
+		        this.DOMMetrics[name] = emptyFunction;
+		      }
+		    }
+		  },
+
+		  componentDidMount:function() {
+		    if (this.DOMMetrics) {
+		      this.DOMMetrics = this.registerMetrics(this._DOMMetricsDefs);
+		    }
+		  },
+
+		  componentWillUnmount:function() {
+		    if (!this.registerMetricsImpl) {
+		      return this.context.metricsComputator.unregisterMetricsFor(this);
+		    }
+		    if (this.hasOwnProperty('DOMMetrics')) {
+		        delete this.DOMMetrics;
+		    }
+		  },
+
+		  registerMetrics:function(metrics) {
+		    if (this.registerMetricsImpl) {
+		      return this.registerMetricsImpl(this, metrics);
+		    } else {
+		      return this.context.metricsComputator.registerMetricsImpl(this, metrics);
+		    }
+		  },
+
+		  getMetric:function(name) {
+		    if (this.getMetricImpl) {
+		      return this.getMetricImpl(name);
+		    } else {
+		      return this.context.metricsComputator.getMetricImpl(name);
+		    }
+		  }
+		};
+
+		module.exports = {
+		  MetricsComputatorMixin:MetricsComputatorMixin,
+		  MetricsMixin:MetricsMixin
+		};
+
+
+	/***/ },
+	/* 31 */,
 	/* 32 */
 	/***/ function(module, exports, __webpack_require__) {
 
@@ -3115,8 +3093,76 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/***/ },
-	/* 37 */,
+	/* 37 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		/**
+		 * @jsx React.DOM
+		 * @copyright Prometheus Research, LLC 2014
+		 */
+		'use strict';
+
+		var React              = __webpack_require__(9);
+		var cx             = React.addons.classSet;
+
+		var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
+
+		  onClick: function() {
+		    this.props.column.sortBy(
+		      this.props.column,
+		      this.props.column.sorted);
+		  },
+
+		  getSortByClass : function(){
+		    var sorted = this.props.column.sorted;
+		    return cx({
+		      'pull-right' : true,
+		      'glyphicon glyphicon-arrow-up' : sorted === 'ASC',
+		      'glyphicon glyphicon-arrow-down' : sorted === 'DESC'
+		    });
+		  },
+
+		  render: function() {
+
+		    return (
+		      React.createElement("div", {
+		        onClick: this.onClick, 
+		        style: {cursor: 'pointer'}}, 
+		        this.props.column.name, 
+		        React.createElement("span", {className: this.getSortByClass()})
+		      )
+		    );
+		  }
+		});
+
+		module.exports = SortableHeaderCell;
+
+
+	/***/ },
 	/* 38 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		/**
+		 * @jsx React.DOM
+		 * @copyright Prometheus Research, LLC 2014
+		 */
+		'use strict';
+
+		function shallowCloneObject(obj) {
+		  var result = {};
+		  for (var k in obj) {
+		    if (obj.hasOwnProperty(k)) {
+		      result[k] = obj[k];
+		    }
+		  }
+		  return result;
+		}
+
+		module.exports = shallowCloneObject;
+
+
+	/***/ },
+	/* 39 */
 	/***/ function(module, exports, __webpack_require__) {
 
 		/**
@@ -3169,52 +3215,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/***/ },
-	/* 39 */
-	/***/ function(module, exports, __webpack_require__) {
-
-		/**
-		 * @jsx React.DOM
-		 * @copyright Prometheus Research, LLC 2014
-		 */
-		'use strict';
-
-		var React              = __webpack_require__(9);
-		var cx             = React.addons.classSet;
-
-		var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
-
-		  onClick: function() {
-		    this.props.column.sortBy(
-		      this.props.column,
-		      this.props.column.sorted);
-		  },
-
-		  getSortByClass : function(){
-		    var sorted = this.props.column.sorted;
-		    return cx({
-		      'pull-right' : true,
-		      'glyphicon glyphicon-arrow-up' : sorted === 'ASC',
-		      'glyphicon glyphicon-arrow-down' : sorted === 'DESC'
-		    });
-		  },
-
-		  render: function() {
-
-		    return (
-		      React.createElement("div", {
-		        onClick: this.onClick, 
-		        style: {cursor: 'pointer'}}, 
-		        this.props.column.name, 
-		        React.createElement("span", {className: this.getSortByClass()})
-		      )
-		    );
-		  }
-		});
-
-		module.exports = SortableHeaderCell;
-
-
-	/***/ },
 	/* 40 */
 	/***/ function(module, exports, __webpack_require__) {
 
@@ -3247,8 +3247,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/***/ },
-	/* 41 */,
-	/* 42 */
+	/* 41 */
 	/***/ function(module, exports, __webpack_require__) {
 
 		/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -3306,227 +3305,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
 
 	/***/ },
-	/* 43 */
-	/***/ function(module, exports, __webpack_require__) {
-
-		/**
-		 * Copyright 2013-2014 Facebook, Inc.
-		 *
-		 * Licensed under the Apache License, Version 2.0 (the "License");
-		 * you may not use this file except in compliance with the License.
-		 * You may obtain a copy of the License at
-		 *
-		 * http://www.apache.org/licenses/LICENSE-2.0
-		 *
-		 * Unless required by applicable law or agreed to in writing, software
-		 * distributed under the License is distributed on an "AS IS" BASIS,
-		 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-		 * See the License for the specific language governing permissions and
-		 * limitations under the License.
-		 *
-		 * @providesModule emptyFunction
-		 */
-		'use strict';
-
-		var copyProperties = __webpack_require__(48);
-
-		function makeEmptyFunction(arg) {
-		  return function() {
-		    return arg;
-		  };
-		}
-
-		/**
-		 * This function accepts and discards inputs; it has no side effects. This is
-		 * primarily useful idiomatically for overridable function endpoints which
-		 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-		 */
-		function emptyFunction() {}
-
-		copyProperties(emptyFunction, {
-		  thatReturns: makeEmptyFunction,
-		  thatReturnsFalse: makeEmptyFunction(false),
-		  thatReturnsTrue: makeEmptyFunction(true),
-		  thatReturnsNull: makeEmptyFunction(null),
-		  thatReturnsThis: function() { return this; },
-		  thatReturnsArgument: function(arg) { return arg; }
-		});
-
-		module.exports = emptyFunction;
-
-
-	/***/ },
-	/* 44 */
-	/***/ function(module, exports, __webpack_require__) {
-
-		/* WEBPACK VAR INJECTION */(function(process) {/**
-		 * Copyright 2013-2014 Facebook, Inc.
-		 *
-		 * Licensed under the Apache License, Version 2.0 (the "License");
-		 * you may not use this file except in compliance with the License.
-		 * You may obtain a copy of the License at
-		 *
-		 * http://www.apache.org/licenses/LICENSE-2.0
-		 *
-		 * Unless required by applicable law or agreed to in writing, software
-		 * distributed under the License is distributed on an "AS IS" BASIS,
-		 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-		 * See the License for the specific language governing permissions and
-		 * limitations under the License.
-		 *
-		 * @providesModule invariant
-		 */
-
-		"use strict";
-
-		/**
-		 * Use invariant() to assert state which your program assumes to be true.
-		 *
-		 * Provide sprintf-style format (only %s is supported) and arguments
-		 * to provide information about what broke and what you were
-		 * expecting.
-		 *
-		 * The invariant message will be stripped in production, but the invariant
-		 * will remain to ensure logic does not differ in production.
-		 */
-
-		var invariant = function(condition, format, a, b, c, d, e, f) {
-		  if (process.env.NODE_ENV) {
-		    if (format === undefined) {
-		      throw new Error('invariant requires an error message argument');
-		    }
-		  }
-
-		  if (!condition) {
-		    var error;
-		    if (format === undefined) {
-		      error = new Error(
-		        'Minified exception occurred; use the non-minified dev environment ' +
-		        'for the full error message and additional helpful warnings.'
-		      );
-		    } else {
-		      var args = [a, b, c, d, e, f];
-		      var argIndex = 0;
-		      error = new Error(
-		        'Invariant Violation: ' +
-		        format.replace(/%s/g, function() { return args[argIndex++]; })
-		      );
-		    }
-
-		    error.framesToPop = 1; // we don't care about invariant's own frame
-		    throw error;
-		  }
-		};
-
-		module.exports = invariant;
-		
-		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
-
-	/***/ },
-	/* 45 */
-	/***/ function(module, exports, __webpack_require__) {
-
-		/**
-		 * @jsx React.DOM
-		 * @copyright Prometheus Research, LLC 2014
-		 */
-		"use strict";
-
-		var React             = __webpack_require__(9);
-		var PropTypes         = React.PropTypes;
-		var shallowEqual      = __webpack_require__(49);
-		var HeaderCell        = __webpack_require__(50);
-		var getScrollbarSize  = __webpack_require__(51);
-
-		var HeaderRow = React.createClass({displayName: 'HeaderRow',
-
-		  propTypes: {
-		    width: PropTypes.number,
-		    height: PropTypes.number.isRequired,
-		    columns: PropTypes.array.isRequired,
-		    onColumnResize: PropTypes.func
-		  },
-
-		  render:function() {
-		    var cellsStyle = {
-		      width: this.props.width ? (this.props.width + getScrollbarSize()) : '100%',
-		      height: this.props.height,
-		      whiteSpace: 'nowrap',
-		      overflowX: 'hidden',
-		      overflowY: 'hidden'
-		    };
-
-		    var cells = this.getCells();
-		    return (
-		      React.createElement("div", React.__spread({},  this.props, {style: this.getStyle(), className: "react-grid-HeaderRow"}), 
-		        React.createElement("div", {style: cellsStyle}, 
-		          cells
-		        )
-		      )
-		    );
-		  },
-
-		  getCells:function() {
-		    var cells = [];
-		    var lockedCells = [];
-
-		    for (var i = 0, len = this.props.columns.length; i < len; i++) {
-		      var column = this.props.columns[i];
-		      var cell = (
-		        React.createElement(HeaderCell, {
-		          ref: i, 
-		          key: i, 
-		          height: this.props.height, 
-		          column: column, 
-		          renderer: this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer, 
-		          resizing: this.props.resizing === column, 
-		          onResize: this.props.onColumnResize, 
-		          onResizeEnd: this.props.onColumnResizeEnd}
-		          )
-		      );
-		      if (column.locked) {
-		        lockedCells.push(cell);
-		      } else {
-		        cells.push(cell);
-		      }
-		    }
-
-		    return cells.concat(lockedCells);
-		  },
-
-		  setScrollLeft:function(scrollLeft) {
-		    for (var i = 0, len = this.props.columns.length; i < len; i++) {
-		      if (this.props.columns[i].locked) {
-		        this.refs[i].setScrollLeft(scrollLeft);
-		      }
-		    }
-		  },
-
-		  shouldComponentUpdate:function(nextProps) {
-		    return (
-		      nextProps.width !== this.props.width
-		      || nextProps.height !== this.props.height
-		      || nextProps.columns !== this.props.columns
-		      || !shallowEqual(nextProps.style, this.props.style)
-		    );
-		  },
-
-		  getStyle:function() {
-		    return {
-		      overflow: 'hidden',
-		      width: '100%',
-		      height: this.props.height,
-		      position: 'absolute'
-		    };
-		  }
-
-		});
-
-		module.exports = HeaderRow;
-
-
-	/***/ },
-	/* 46 */
+	/* 42 */
 	/***/ function(module, exports, __webpack_require__) {
 
 		/**
@@ -3561,7 +3340,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/***/ },
-	/* 47 */
+	/* 43 */
 	/***/ function(module, exports, __webpack_require__) {
 
 		/**
@@ -3574,9 +3353,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		var cx             = React.addons.classSet;
 		var PropTypes      = React.PropTypes;
 		var cloneWithProps = React.addons.cloneWithProps;
-		var shallowEqual   = __webpack_require__(49);
-		var emptyFunction  = __webpack_require__(43);
-		var ScrollShim     = __webpack_require__(52);
+		var shallowEqual   = __webpack_require__(48);
+		var emptyFunction  = __webpack_require__(45);
+		var ScrollShim     = __webpack_require__(49);
 		var Row            = __webpack_require__(5);
 
 		var Canvas = React.createClass({displayName: 'Canvas',
@@ -3778,7 +3557,160 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/***/ },
-	/* 48 */
+	/* 44 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		/**
+		 * @jsx React.DOM
+		 * @copyright Prometheus Research, LLC 2014
+		 */
+		"use strict";
+
+		var React             = __webpack_require__(9);
+		var PropTypes         = React.PropTypes;
+		var shallowEqual      = __webpack_require__(48);
+		var HeaderCell        = __webpack_require__(50);
+		var getScrollbarSize  = __webpack_require__(51);
+
+		var HeaderRow = React.createClass({displayName: 'HeaderRow',
+
+		  propTypes: {
+		    width: PropTypes.number,
+		    height: PropTypes.number.isRequired,
+		    columns: PropTypes.array.isRequired,
+		    onColumnResize: PropTypes.func
+		  },
+
+		  render:function() {
+		    var cellsStyle = {
+		      width: this.props.width ? (this.props.width + getScrollbarSize()) : '100%',
+		      height: this.props.height,
+		      whiteSpace: 'nowrap',
+		      overflowX: 'hidden',
+		      overflowY: 'hidden'
+		    };
+
+		    var cells = this.getCells();
+		    return (
+		      React.createElement("div", React.__spread({},  this.props, {style: this.getStyle(), className: "react-grid-HeaderRow"}), 
+		        React.createElement("div", {style: cellsStyle}, 
+		          cells
+		        )
+		      )
+		    );
+		  },
+
+		  getCells:function() {
+		    var cells = [];
+		    var lockedCells = [];
+
+		    for (var i = 0, len = this.props.columns.length; i < len; i++) {
+		      var column = this.props.columns[i];
+		      var cell = (
+		        React.createElement(HeaderCell, {
+		          ref: i, 
+		          key: i, 
+		          height: this.props.height, 
+		          column: column, 
+		          renderer: this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer, 
+		          resizing: this.props.resizing === column, 
+		          onResize: this.props.onColumnResize, 
+		          onResizeEnd: this.props.onColumnResizeEnd}
+		          )
+		      );
+		      if (column.locked) {
+		        lockedCells.push(cell);
+		      } else {
+		        cells.push(cell);
+		      }
+		    }
+
+		    return cells.concat(lockedCells);
+		  },
+
+		  setScrollLeft:function(scrollLeft) {
+		    for (var i = 0, len = this.props.columns.length; i < len; i++) {
+		      if (this.props.columns[i].locked) {
+		        this.refs[i].setScrollLeft(scrollLeft);
+		      }
+		    }
+		  },
+
+		  shouldComponentUpdate:function(nextProps) {
+		    return (
+		      nextProps.width !== this.props.width
+		      || nextProps.height !== this.props.height
+		      || nextProps.columns !== this.props.columns
+		      || !shallowEqual(nextProps.style, this.props.style)
+		    );
+		  },
+
+		  getStyle:function() {
+		    return {
+		      overflow: 'hidden',
+		      width: '100%',
+		      height: this.props.height,
+		      position: 'absolute'
+		    };
+		  }
+
+		});
+
+		module.exports = HeaderRow;
+
+
+	/***/ },
+	/* 45 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		/**
+		 * Copyright 2013-2014 Facebook, Inc.
+		 *
+		 * Licensed under the Apache License, Version 2.0 (the "License");
+		 * you may not use this file except in compliance with the License.
+		 * You may obtain a copy of the License at
+		 *
+		 * http://www.apache.org/licenses/LICENSE-2.0
+		 *
+		 * Unless required by applicable law or agreed to in writing, software
+		 * distributed under the License is distributed on an "AS IS" BASIS,
+		 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		 * See the License for the specific language governing permissions and
+		 * limitations under the License.
+		 *
+		 * @providesModule emptyFunction
+		 */
+		'use strict';
+
+		var copyProperties = __webpack_require__(52);
+
+		function makeEmptyFunction(arg) {
+		  return function() {
+		    return arg;
+		  };
+		}
+
+		/**
+		 * This function accepts and discards inputs; it has no side effects. This is
+		 * primarily useful idiomatically for overridable function endpoints which
+		 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+		 */
+		function emptyFunction() {}
+
+		copyProperties(emptyFunction, {
+		  thatReturns: makeEmptyFunction,
+		  thatReturnsFalse: makeEmptyFunction(false),
+		  thatReturnsTrue: makeEmptyFunction(true),
+		  thatReturnsNull: makeEmptyFunction(null),
+		  thatReturnsThis: function() { return this; },
+		  thatReturnsArgument: function(arg) { return arg; }
+		});
+
+		module.exports = emptyFunction;
+
+
+	/***/ },
+	/* 46 */
 	/***/ function(module, exports, __webpack_require__) {
 
 		/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -3796,51 +3728,57 @@ return /******/ (function(modules) { // webpackBootstrap
 		 * See the License for the specific language governing permissions and
 		 * limitations under the License.
 		 *
-		 * @providesModule copyProperties
+		 * @providesModule invariant
 		 */
-		'use strict';
+
+		"use strict";
 
 		/**
-		 * Copy properties from one or more objects (up to 5) into the first object.
-		 * This is a shallow copy. It mutates the first object and also returns it.
+		 * Use invariant() to assert state which your program assumes to be true.
 		 *
-		 * NOTE: `arguments` has a very significant performance penalty, which is why
-		 * we don't support unlimited arguments.
+		 * Provide sprintf-style format (only %s is supported) and arguments
+		 * to provide information about what broke and what you were
+		 * expecting.
+		 *
+		 * The invariant message will be stripped in production, but the invariant
+		 * will remain to ensure logic does not differ in production.
 		 */
-		function copyProperties(obj, a, b, c, d, e, f) {
-		  obj = obj || {};
 
+		var invariant = function(condition, format, a, b, c, d, e, f) {
 		  if (process.env.NODE_ENV) {
-		    if (f) {
-		      throw new Error('Too many arguments passed to copyProperties');
+		    if (format === undefined) {
+		      throw new Error('invariant requires an error message argument');
 		    }
 		  }
 
-		  var args = [a, b, c, d, e];
-		  var ii = 0, v;
-		  while (args[ii]) {
-		    v = args[ii++];
-		    for (var k in v) {
-		      obj[k] = v[k];
+		  if (!condition) {
+		    var error;
+		    if (format === undefined) {
+		      error = new Error(
+		        'Minified exception occurred; use the non-minified dev environment ' +
+		        'for the full error message and additional helpful warnings.'
+		      );
+		    } else {
+		      var args = [a, b, c, d, e, f];
+		      var argIndex = 0;
+		      error = new Error(
+		        'Invariant Violation: ' +
+		        format.replace(/%s/g, function() { return args[argIndex++]; })
+		      );
 		    }
 
-		    // IE ignores toString in object iteration.. See:
-		    // webreflection.blogspot.com/2007/07/quick-fix-internet-explorer-and.html
-		    if (v.hasOwnProperty && v.hasOwnProperty('toString') &&
-		        (typeof v.toString != 'undefined') && (obj.toString !== v.toString)) {
-		      obj.toString = v.toString;
-		    }
+		    error.framesToPop = 1; // we don't care about invariant's own frame
+		    throw error;
 		  }
+		};
 
-		  return obj;
-		}
-
-		module.exports = copyProperties;
+		module.exports = invariant;
 		
 		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
 
 	/***/ },
-	/* 49 */
+	/* 47 */,
+	/* 48 */
 	/***/ function(module, exports, __webpack_require__) {
 
 		/**
@@ -3873,6 +3811,60 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		module.exports = shallowEqual;
+
+
+	/***/ },
+	/* 49 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		/**
+		 * @jsx React.DOM
+		 * @copyright Prometheus Research, LLC 2014
+		 */
+		'use strict';
+
+		var ScrollShim = {
+
+		  appendScrollShim:function() {
+		    if (!this._scrollShim) {
+		      var size = this._scrollShimSize();
+		      var shim = document.createElement('div');
+		      shim.classList.add('react-grid-ScrollShim');
+		      shim.style.position = 'absolute';
+		      shim.style.top = 0;
+		      shim.style.left = 0;
+		      shim.style.width = (size.width + "px");
+		      shim.style.height = (size.height + "px");
+		      this.getDOMNode().appendChild(shim);
+		      this._scrollShim = shim;
+		    }
+		    this._scheduleRemoveScrollShim();
+		  },
+
+		  _scrollShimSize:function() {
+		    return {
+		      width: this.props.width,
+		      height: this.props.length * this.props.rowHeight
+		    };
+		  },
+
+		  _scheduleRemoveScrollShim:function() {
+		    if (this._scheduleRemoveScrollShimTimer) {
+		      clearTimeout(this._scheduleRemoveScrollShimTimer);
+		    }
+		    this._scheduleRemoveScrollShimTimer = setTimeout(
+		      this._removeScrollShim, 200);
+		  },
+
+		  _removeScrollShim:function() {
+		    if (this._scrollShim) {
+		      this._scrollShim.parentNode.removeChild(this._scrollShim);
+		      this._scrollShim = undefined;
+		    }
+		  }
+		};
+
+		module.exports = ScrollShim;
 
 
 	/***/ },
@@ -4053,55 +4045,63 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* 52 */
 	/***/ function(module, exports, __webpack_require__) {
 
-		/**
-		 * @jsx React.DOM
-		 * @copyright Prometheus Research, LLC 2014
+		/* WEBPACK VAR INJECTION */(function(process) {/**
+		 * Copyright 2013-2014 Facebook, Inc.
+		 *
+		 * Licensed under the Apache License, Version 2.0 (the "License");
+		 * you may not use this file except in compliance with the License.
+		 * You may obtain a copy of the License at
+		 *
+		 * http://www.apache.org/licenses/LICENSE-2.0
+		 *
+		 * Unless required by applicable law or agreed to in writing, software
+		 * distributed under the License is distributed on an "AS IS" BASIS,
+		 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		 * See the License for the specific language governing permissions and
+		 * limitations under the License.
+		 *
+		 * @providesModule copyProperties
 		 */
 		'use strict';
 
-		var ScrollShim = {
+		/**
+		 * Copy properties from one or more objects (up to 5) into the first object.
+		 * This is a shallow copy. It mutates the first object and also returns it.
+		 *
+		 * NOTE: `arguments` has a very significant performance penalty, which is why
+		 * we don't support unlimited arguments.
+		 */
+		function copyProperties(obj, a, b, c, d, e, f) {
+		  obj = obj || {};
 
-		  appendScrollShim:function() {
-		    if (!this._scrollShim) {
-		      var size = this._scrollShimSize();
-		      var shim = document.createElement('div');
-		      shim.classList.add('react-grid-ScrollShim');
-		      shim.style.position = 'absolute';
-		      shim.style.top = 0;
-		      shim.style.left = 0;
-		      shim.style.width = (size.width + "px");
-		      shim.style.height = (size.height + "px");
-		      this.getDOMNode().appendChild(shim);
-		      this._scrollShim = shim;
-		    }
-		    this._scheduleRemoveScrollShim();
-		  },
-
-		  _scrollShimSize:function() {
-		    return {
-		      width: this.props.width,
-		      height: this.props.length * this.props.rowHeight
-		    };
-		  },
-
-		  _scheduleRemoveScrollShim:function() {
-		    if (this._scheduleRemoveScrollShimTimer) {
-		      clearTimeout(this._scheduleRemoveScrollShimTimer);
-		    }
-		    this._scheduleRemoveScrollShimTimer = setTimeout(
-		      this._removeScrollShim, 200);
-		  },
-
-		  _removeScrollShim:function() {
-		    if (this._scrollShim) {
-		      this._scrollShim.parentNode.removeChild(this._scrollShim);
-		      this._scrollShim = undefined;
+		  if (process.env.NODE_ENV) {
+		    if (f) {
+		      throw new Error('Too many arguments passed to copyProperties');
 		    }
 		  }
-		};
 
-		module.exports = ScrollShim;
+		  var args = [a, b, c, d, e];
+		  var ii = 0, v;
+		  while (args[ii]) {
+		    v = args[ii++];
+		    for (var k in v) {
+		      obj[k] = v[k];
+		    }
 
+		    // IE ignores toString in object iteration.. See:
+		    // webreflection.blogspot.com/2007/07/quick-fix-internet-explorer-and.html
+		    if (v.hasOwnProperty && v.hasOwnProperty('toString') &&
+		        (typeof v.toString != 'undefined') && (obj.toString !== v.toString)) {
+		      obj.toString = v.toString;
+		    }
+		  }
+
+		  return obj;
+		}
+
+		module.exports = copyProperties;
+		
+		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
 
 	/***/ },
 	/* 53 */
@@ -4267,7 +4267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		var React         = __webpack_require__(9);
 		var PropTypes     = React.PropTypes;
-		var emptyFunction = __webpack_require__(43);
+		var emptyFunction = __webpack_require__(45);
 
 		var Draggable = React.createClass({displayName: 'Draggable',
 
