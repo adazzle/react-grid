@@ -116,7 +116,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	var React                   = __webpack_require__(9);
 	var cx                      = React.addons.classSet;
-	var isFunction = __webpack_require__(23);
+	var isFunction = __webpack_require__(26);
 
 	var EditorMixin = {
 
@@ -286,9 +286,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Editors = {
-	  AutoComplete     : __webpack_require__(24),
-	  DropDownEditor   : __webpack_require__(25),
-	  SimpleTextEditor : __webpack_require__(26)
+	  AutoComplete     : __webpack_require__(23),
+	  DropDownEditor   : __webpack_require__(24),
+	  SimpleTextEditor : __webpack_require__(25)
 
 	}
 
@@ -332,7 +332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 
 	var keyMirror  = __webpack_require__(41);
-	var isFunction = __webpack_require__(23)
+	var isFunction = __webpack_require__(26)
 	var React      = __webpack_require__(9);
 	if (!Object.assign) {
 	  Object.assign = __webpack_require__(40);
@@ -563,21 +563,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
-	"use strict";
-
-	var isFunction = function(functionToCheck){
-	    var getType = {};
-	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-	}
-
-	module.exports = isFunction;
-
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/**
 	 * @jsx React.DOM
 	 * @copyright Prometheus Research, LLC 2014
@@ -709,7 +694,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -770,7 +755,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -804,6 +789,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	module.exports = SimpleTextEditor;
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	"use strict";
+
+	var isFunction = function(functionToCheck){
+	    var getType = {};
+	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	}
+
+	module.exports = isFunction;
 
 
 /***/ },
