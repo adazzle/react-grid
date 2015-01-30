@@ -1,4 +1,4 @@
-var ReactGrid = require('../build/ReactGrid.Grid');
+var ReactGrid = require('../build/ReactGrid');
 var getRows   = require('./getRows');
 var RowsDescription = require('./components/RowsDescription')
 var HightlightMixin = require('./highlightMixin');
