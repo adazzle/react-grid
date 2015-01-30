@@ -1619,7 +1619,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		var React               = __webpack_require__(9);
 		var PropTypes           = React.PropTypes;
-		var SortableHeaderCell  = __webpack_require__(38);
+		var SortableHeaderCell  = __webpack_require__(39);
 		var shallowCloneObject  = __webpack_require__(29);
 
 		var DEFINE_SORT = {
@@ -1703,7 +1703,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		var React               = __webpack_require__(9);
 		var PropTypes           = React.PropTypes;
-		var FilterableHeaderCell = __webpack_require__(39);
+		var FilterableHeaderCell = __webpack_require__(38);
 
 		var FilterableGridMixin = {
 
@@ -3128,52 +3128,6 @@ return /******/ (function(modules) { // webpackBootstrap
 		var React              = __webpack_require__(9);
 		var cx             = React.addons.classSet;
 
-		var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
-
-		  onClick: function() {
-		    this.props.column.sortBy(
-		      this.props.column,
-		      this.props.column.sorted);
-		  },
-
-		  getSortByClass : function(){
-		    var sorted = this.props.column.sorted;
-		    return cx({
-		      'pull-right' : true,
-		      'glyphicon glyphicon-arrow-up' : sorted === 'ASC',
-		      'glyphicon glyphicon-arrow-down' : sorted === 'DESC'
-		    });
-		  },
-
-		  render: function() {
-
-		    return (
-		      React.createElement("div", {
-		        onClick: this.onClick, 
-		        style: {cursor: 'pointer'}}, 
-		        this.props.column.name, 
-		        React.createElement("span", {className: this.getSortByClass()})
-		      )
-		    );
-		  }
-		});
-
-		module.exports = SortableHeaderCell;
-
-
-	/***/ },
-	/* 39 */
-	/***/ function(module, exports, __webpack_require__) {
-
-		/**
-		 * @jsx React.DOM
-		 * @copyright Prometheus Research, LLC 2014
-		 */
-		'use strict';
-
-		var React              = __webpack_require__(9);
-		var cx             = React.addons.classSet;
-
 		var FilterableHeaderCell = React.createClass({displayName: 'FilterableHeaderCell',
 
 		  getInitialState:function(){
@@ -3212,6 +3166,52 @@ return /******/ (function(modules) { // webpackBootstrap
 		});
 
 		module.exports = FilterableHeaderCell;
+
+
+	/***/ },
+	/* 39 */
+	/***/ function(module, exports, __webpack_require__) {
+
+		/**
+		 * @jsx React.DOM
+		 * @copyright Prometheus Research, LLC 2014
+		 */
+		'use strict';
+
+		var React              = __webpack_require__(9);
+		var cx             = React.addons.classSet;
+
+		var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
+
+		  onClick: function() {
+		    this.props.column.sortBy(
+		      this.props.column,
+		      this.props.column.sorted);
+		  },
+
+		  getSortByClass : function(){
+		    var sorted = this.props.column.sorted;
+		    return cx({
+		      'pull-right' : true,
+		      'glyphicon glyphicon-arrow-up' : sorted === 'ASC',
+		      'glyphicon glyphicon-arrow-down' : sorted === 'DESC'
+		    });
+		  },
+
+		  render: function() {
+
+		    return (
+		      React.createElement("div", {
+		        onClick: this.onClick, 
+		        style: {cursor: 'pointer'}}, 
+		        this.props.column.name, 
+		        React.createElement("span", {className: this.getSortByClass()})
+		      )
+		    );
+		  }
+		});
+
+		module.exports = SortableHeaderCell;
 
 
 	/***/ },
@@ -3328,7 +3328,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		 */
 		'use strict';
 
-		var copyProperties = __webpack_require__(51);
+		var copyProperties = __webpack_require__(48);
 
 		function makeEmptyFunction(arg) {
 		  return function() {
@@ -3434,9 +3434,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		var React             = __webpack_require__(9);
 		var PropTypes         = React.PropTypes;
-		var shallowEqual      = __webpack_require__(48);
-		var HeaderCell        = __webpack_require__(49);
-		var getScrollbarSize  = __webpack_require__(50);
+		var shallowEqual      = __webpack_require__(49);
+		var HeaderCell        = __webpack_require__(50);
+		var getScrollbarSize  = __webpack_require__(51);
 
 		var HeaderRow = React.createClass({displayName: 'HeaderRow',
 
@@ -3574,7 +3574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		var cx             = React.addons.classSet;
 		var PropTypes      = React.PropTypes;
 		var cloneWithProps = React.addons.cloneWithProps;
-		var shallowEqual   = __webpack_require__(48);
+		var shallowEqual   = __webpack_require__(49);
 		var emptyFunction  = __webpack_require__(43);
 		var ScrollShim     = __webpack_require__(52);
 		var Row            = __webpack_require__(2);
@@ -3781,6 +3781,68 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* 48 */
 	/***/ function(module, exports, __webpack_require__) {
 
+		/* WEBPACK VAR INJECTION */(function(process) {/**
+		 * Copyright 2013-2014 Facebook, Inc.
+		 *
+		 * Licensed under the Apache License, Version 2.0 (the "License");
+		 * you may not use this file except in compliance with the License.
+		 * You may obtain a copy of the License at
+		 *
+		 * http://www.apache.org/licenses/LICENSE-2.0
+		 *
+		 * Unless required by applicable law or agreed to in writing, software
+		 * distributed under the License is distributed on an "AS IS" BASIS,
+		 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		 * See the License for the specific language governing permissions and
+		 * limitations under the License.
+		 *
+		 * @providesModule copyProperties
+		 */
+		'use strict';
+
+		/**
+		 * Copy properties from one or more objects (up to 5) into the first object.
+		 * This is a shallow copy. It mutates the first object and also returns it.
+		 *
+		 * NOTE: `arguments` has a very significant performance penalty, which is why
+		 * we don't support unlimited arguments.
+		 */
+		function copyProperties(obj, a, b, c, d, e, f) {
+		  obj = obj || {};
+
+		  if (process.env.NODE_ENV) {
+		    if (f) {
+		      throw new Error('Too many arguments passed to copyProperties');
+		    }
+		  }
+
+		  var args = [a, b, c, d, e];
+		  var ii = 0, v;
+		  while (args[ii]) {
+		    v = args[ii++];
+		    for (var k in v) {
+		      obj[k] = v[k];
+		    }
+
+		    // IE ignores toString in object iteration.. See:
+		    // webreflection.blogspot.com/2007/07/quick-fix-internet-explorer-and.html
+		    if (v.hasOwnProperty && v.hasOwnProperty('toString') &&
+		        (typeof v.toString != 'undefined') && (obj.toString !== v.toString)) {
+		      obj.toString = v.toString;
+		    }
+		  }
+
+		  return obj;
+		}
+
+		module.exports = copyProperties;
+		
+		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
+
+	/***/ },
+	/* 49 */
+	/***/ function(module, exports, __webpack_require__) {
+
 		/**
 		 * @jsx React.DOM
 		 * @copyright Prometheus Research, LLC 2014
@@ -3814,7 +3876,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/***/ },
-	/* 49 */
+	/* 50 */
 	/***/ function(module, exports, __webpack_require__) {
 
 		/**
@@ -3948,7 +4010,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	/***/ },
-	/* 50 */
+	/* 51 */
 	/***/ function(module, exports, __webpack_require__) {
 
 		"use strict";
@@ -3986,68 +4048,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		module.exports = getScrollbarSize;
 
-
-	/***/ },
-	/* 51 */
-	/***/ function(module, exports, __webpack_require__) {
-
-		/* WEBPACK VAR INJECTION */(function(process) {/**
-		 * Copyright 2013-2014 Facebook, Inc.
-		 *
-		 * Licensed under the Apache License, Version 2.0 (the "License");
-		 * you may not use this file except in compliance with the License.
-		 * You may obtain a copy of the License at
-		 *
-		 * http://www.apache.org/licenses/LICENSE-2.0
-		 *
-		 * Unless required by applicable law or agreed to in writing, software
-		 * distributed under the License is distributed on an "AS IS" BASIS,
-		 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-		 * See the License for the specific language governing permissions and
-		 * limitations under the License.
-		 *
-		 * @providesModule copyProperties
-		 */
-		'use strict';
-
-		/**
-		 * Copy properties from one or more objects (up to 5) into the first object.
-		 * This is a shallow copy. It mutates the first object and also returns it.
-		 *
-		 * NOTE: `arguments` has a very significant performance penalty, which is why
-		 * we don't support unlimited arguments.
-		 */
-		function copyProperties(obj, a, b, c, d, e, f) {
-		  obj = obj || {};
-
-		  if (process.env.NODE_ENV) {
-		    if (f) {
-		      throw new Error('Too many arguments passed to copyProperties');
-		    }
-		  }
-
-		  var args = [a, b, c, d, e];
-		  var ii = 0, v;
-		  while (args[ii]) {
-		    v = args[ii++];
-		    for (var k in v) {
-		      obj[k] = v[k];
-		    }
-
-		    // IE ignores toString in object iteration.. See:
-		    // webreflection.blogspot.com/2007/07/quick-fix-internet-explorer-and.html
-		    if (v.hasOwnProperty && v.hasOwnProperty('toString') &&
-		        (typeof v.toString != 'undefined') && (obj.toString !== v.toString)) {
-		      obj.toString = v.toString;
-		    }
-		  }
-
-		  return obj;
-		}
-
-		module.exports = copyProperties;
-		
-		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
 
 	/***/ },
 	/* 52 */
