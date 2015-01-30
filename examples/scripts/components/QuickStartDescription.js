@@ -8,7 +8,7 @@ module.exports = React.createClass({
   render : function(){
     return(
       <div>
-      <h3 id="js-basic-example">A Simple Example</h3>
+      <h3 id="js-basic-example">{this.props.title}</h3>
       <p>In order to display a simple uneditable grid, all that is required is to pass an array of columns and rows as props to ReactGrid. The columns is a column specification, it provides information to grid on how to extract data for each of the column and how column should be represented and its features:</p>
       <div className="code-block js">
       <pre>

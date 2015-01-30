@@ -22,7 +22,7 @@ module.exports = React.createClass({
   render:function(){
     return(
       <div>
-        <QuickStartDescription/>
+        <QuickStartDescription title="A Simple Example"/>
         <ReactGrid rows={getRows(0,100)} columns={columns}/>
       </div>
       )
