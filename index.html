@@ -19,10 +19,7 @@
 	<link rel="stylesheet" href="assets/css/main.css">
 	<link rel="stylesheet" href="build/reactGrid.css">
 	<script src="https://code.jquery.com/jquery-1.11.2.min.js"/>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.js"></script>
-	<script src="build/libs.js"></script>
-	<script src="build/reactGrid.js"></script>
-	<script src="build/reactGridAddons.js"></script>
+
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 	<script src="examples/assets/js/html5shiv.js"></script>
@@ -110,7 +107,7 @@
 					<h4>Using Distribution Scripts</h4>
 					<p>If you prefer not to use a module system, you can reference the distribution scripts directly in your html pages. First you need to download the scripts. This can be done in 3 ways, either download directly from github source, using npm as above or using bower <br/><kbd>bower install adazzle/react-grid --save</kbd></p>
 					<div class="code-block js">
-						<pre>&lt;script src="//fb.me/react-0.12.0.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="react-grid/dist/reactGrid.Grid.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="react-grid/dist/reactGrid.Addons.js"&gt;&lt;/script&gt;"</pre>
+						<pre>&lt;script src="//fb.me/react-0.12.0.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="react-grid/dist/reactGrid.Grid.js"&gt;&lt;/script&gt;<br/>&lt;script type="text/javascript" src="react-grid/dist/ReactGrid.GridAddons.js"&gt;&lt;/script&gt;"</pre>
 					</div>
 					<h3 id="js-basic-example">A Simple Example</h3>
 					<p>The columns is a column specification, it provides information to grid on how to extract data for each of the column and how column should be represented and its features:</p>
@@ -215,9 +212,14 @@ var rows = getRows(0,1000);
 
 
 
+
+		<!-- JavaScript srcs are placed at the end of the document so the pages load faster -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.js"></script>
 	<script src="build/shared.js"></script>
+	<script src="build/libs.js"></script>
+	<script src="build/reactGrid.min.js"></script>
+	<script src="build/reactGridAddons.min.js"></script>
 	<script src="build/index.js"></script>
 	<script src="assets/js/dropdown.js"></script>
-
 </body>
 </html>
