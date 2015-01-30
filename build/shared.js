@@ -73,10 +73,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      React.createElement("div", {className: "navbar navbar-fixed-top headroom"}, 
 	        React.createElement("div", {className: "container"}, 
 	          React.createElement("div", {className: "navbar-header"}, 
-	          React.createElement("a", {href: "https://github.com/you"}, React.createElement("img", {className: "github-ribbon", src: "http://aral.github.com/fork-me-on-github-retina-ribbons/right-green@2x.png", alt: "Fork me on GitHub"})), 
+	          React.createElement("a", {href: "https://github.com/adazzle/react-grid/fork"}, React.createElement("img", {className: "github-ribbon", src: "http://aral.github.com/fork-me-on-github-retina-ribbons/right-green@2x.png", alt: "Fork me on GitHub"})), 
 
 	            React.createElement("button", {type: "button", className: "navbar-toggle", 'data-toggle': "collapse", 'data-target': ".navbar-collapse"}, React.createElement("span", {className: "icon-bar"}), " ", React.createElement("span", {className: "icon-bar"}), " ", React.createElement("span", {className: "icon-bar"}), " "), 
-	            React.createElement("a", {className: "navbar-brand", href: "/index.html#"}, React.createElement("i", {className: "fa fa-table fa-2"}), " React Grid")
+	            React.createElement("a", {className: "navbar-brand", href: "index.html#"}, React.createElement("i", {className: "fa fa-table fa-2"}), " React Grid")
 	          ), 
 	          React.createElement("div", {className: "navbar-collapse collapse"}, 
 	            React.createElement("ul", {className: "nav navbar-nav pull-right"}, 
