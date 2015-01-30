@@ -80,7 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          ), 
 	          React.createElement("div", {className: "navbar-collapse collapse"}, 
 	            React.createElement("ul", {className: "nav navbar-nav pull-right"}, 
-	              React.createElement("li", {className: "active"}, React.createElement("a", {href: "/index.html#"}, "Home")), 
+	              React.createElement("li", {className: "active"}, React.createElement("a", {href: "index.html#"}, "Home")), 
 	              React.createElement("li", null, React.createElement("a", {href: "documentation.html"}, "Documentation")), 
 	              React.createElement("li", {className: "dropdown"}, 
 	                React.createElement("a", {href: "#", className: "dropdown-toggle", 'data-toggle': "dropdown"}, "Examples ", React.createElement("b", {className: "caret"})), 
