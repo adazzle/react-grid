@@ -19,12 +19,8 @@ module.exports = React.createClass({
               <li className="dropdown">
                 <a href="#" className="dropdown-toggle" data-toggle="dropdown">Examples <b className="caret"></b></a>
                   <ul className="dropdown-menu">
-                    <li><a href="/examples.html#/basic">Basic Use</a></li>
-                    <li><a href="/examples.html#/editable">Editable Grid</a></li>
-                      <li><a href="sidebar-right.html">Using Editors</a></li>
-                      <li><a href="sidebar-right.html">Custom Editors</a></li>
-                      <li><a href="sidebar-right.html">Copy & Paste</a></li>
-                      <li><a href="sidebar-right.html">Cell Dragdown</a></li>
+                    <li><a href="examples.html#/basic">Basic Use</a></li>
+                    <li><a href="examples.html#/editable">Editable Grid</a></li>
                     </ul>
                 </li>
             </ul>

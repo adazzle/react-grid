@@ -85,12 +85,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	              React.createElement("li", {className: "dropdown"}, 
 	                React.createElement("a", {href: "#", className: "dropdown-toggle", 'data-toggle': "dropdown"}, "Examples ", React.createElement("b", {className: "caret"})), 
 	                  React.createElement("ul", {className: "dropdown-menu"}, 
-	                    React.createElement("li", null, React.createElement("a", {href: "/examples.html#/basic"}, "Basic Use")), 
-	                    React.createElement("li", null, React.createElement("a", {href: "/examples.html#/editable"}, "Editable Grid")), 
-	                      React.createElement("li", null, React.createElement("a", {href: "sidebar-right.html"}, "Using Editors")), 
-	                      React.createElement("li", null, React.createElement("a", {href: "sidebar-right.html"}, "Custom Editors")), 
-	                      React.createElement("li", null, React.createElement("a", {href: "sidebar-right.html"}, "Copy & Paste")), 
-	                      React.createElement("li", null, React.createElement("a", {href: "sidebar-right.html"}, "Cell Dragdown"))
+	                    React.createElement("li", null, React.createElement("a", {href: "examples.html#/basic"}, "Basic Use")), 
+	                    React.createElement("li", null, React.createElement("a", {href: "examples.html#/editable"}, "Editable Grid"))
 	                    )
 	                )
 	            )
