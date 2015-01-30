@@ -107,6 +107,7 @@
     render: function() {
       return (
             <Grid
+              enableCellSelect={true}
               columns={columns}
               rows={this.state.rows}
               onRowUpdated={this.handleRowUpdated}

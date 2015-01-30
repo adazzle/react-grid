@@ -173,6 +173,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    render: function() {
 	      return (
 	            React.createElement(Grid, {
+	              enableCellSelect: true, 
 	              columns: columns, 
 	              rows: this.state.rows, 
 	              onRowUpdated: this.handleRowUpdated, 
