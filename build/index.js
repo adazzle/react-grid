@@ -55,7 +55,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	
 	var ExcelGrid = __webpack_require__(5);
 	React.render(React.createElement(ExcelGrid, null), document.getElementById('excel-example'));
 
