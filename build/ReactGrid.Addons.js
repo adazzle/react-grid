@@ -590,7 +590,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var EditorMixin             = __webpack_require__(5);
 	var TextInputMixin          = __webpack_require__(6);
 	var ReactAutocomplete       = __webpack_require__(42);
-	var keyboardHandlerMixin    = __webpack_require__(37);
+	var keyboardHandlerMixin    = __webpack_require__(36);
 
 	var optionPropType = React.PropTypes.shape({
 	      id    :   React.PropTypes.required,
@@ -721,7 +721,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React                   = __webpack_require__(9);
 	var cx                      = React.addons.classSet;
 	var MixinHelper             = __webpack_require__(22);
-	var keyboardHandlerMixin    = __webpack_require__(37);
+	var keyboardHandlerMixin    = __webpack_require__(36);
 	var EditorMixin             = __webpack_require__(5);
 	var cloneWithProps          = React.addons.cloneWithProps;
 
@@ -784,7 +784,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var MixinHelper             = __webpack_require__(22);
 	var EditorMixin             = __webpack_require__(5);
 	var TextInputMixin          = __webpack_require__(6);
-	var keyboardHandlerMixin    = __webpack_require__(37);
+	var keyboardHandlerMixin    = __webpack_require__(36);
 
 	var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
 
@@ -870,8 +870,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 33 */,
 /* 34 */,
 /* 35 */,
-/* 36 */,
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -936,6 +935,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 37 */,
 /* 38 */,
 /* 39 */,
 /* 40 */
