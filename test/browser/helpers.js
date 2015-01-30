@@ -1,6 +1,6 @@
 var mergeInto = require("../../src/mergeInto");
 var Grid = require('../../src/Grid');
-var React = require('react');
+var React = require('react/addons');
 
 var data = [];
 for (var i = 0; i < 2000; i++) {

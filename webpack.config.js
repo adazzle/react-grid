@@ -15,16 +15,17 @@ module.exports = {
 		libraryTarget: "umd"
 	},
 	externals: {
-		"react": "React",
-		"react/addons": "React",
+		"react/addons": {
+			root : 'React',
+			commonjs : 'react/addons',
+			commonjs2 : 'react/addons',
+			amd : 'react/addons'
+		},
 		"moment" : "moment"
 	},
 	module: {
 		loaders: [
 		{ test: /\.js$/, loader: 'jsx-loader?stripTypes&harmony' } // loaders can take parameters as a querystring
 		]
-	},
-	plugins: [
-	new webpack.ProvidePlugin({React: "React"})
-	]
+	}
 }

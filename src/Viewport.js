@@ -4,7 +4,7 @@
  */
 'use strict';
 
-var React             = require('react');
+var React             = require('react/addons');
 var getWindowSize     = require('./getWindowSize');
 var DOMMetrics        = require('./DOMMetrics');
 var Canvas            = require('./Canvas');

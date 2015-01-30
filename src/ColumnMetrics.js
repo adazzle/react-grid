@@ -4,7 +4,7 @@
  */
 "use strict";
 
-var {PropTypes, isValidElement} = require('react');
+var {PropTypes, isValidElement} = require('react/addons');
 var shallowCloneObject            = require('./shallowCloneObject');
 var DOMMetrics                    = require('./DOMMetrics');
 var merge                         = require('./merge');

@@ -7,17 +7,34 @@ var path = require("path");
 webpackConfig = {
 	entry: {
 		'index' : './examples/index.js',
-		'shared' : './examples/shared.js'
+		'shared' : './examples/shared.js',
+		'examples' : './examples/examples.js'
 	},
 	output: {
 		path: path.join(__dirname, "../../examples/build"),
-		filename: "[name].js"
+		filename: "[name].js",
+		libraryTarget: "umd"
+	},
+	externals: {
+		"react/addons": {
+			root : 'React',
+			commonjs : 'react/addons',
+			commonjs2 : 'react/addons',
+			amd : 'react/addons'
+		},
+		"moment" : "moment"
 	},
 	module: {
 		loaders: [
 		{ test: /\.js$/, loader: 'jsx-loader?stripTypes&harmony' } // loaders can take parameters as a querystring
 		]
-	}
+	},
+	plugins: [
+	new webpack.optimize.DedupePlugin(),
+
+	new webpack.optimize.OccurenceOrderPlugin(),
+	new webpack.optimize.AggressiveMergingPlugin()
+	]
 }
 
 

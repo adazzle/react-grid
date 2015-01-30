@@ -1,4 +1,4 @@
-var ReactGrid = require('./build/ReactGrid.Grid');
+var ReactGrid = require('../build/ReactGrid.Grid');
 var getRows   = require('./getRows');
 
 var columns = [

@@ -3,7 +3,7 @@
 
 var keyMirror  = require('react/lib/keyMirror');
 var isFunction = require('./isFunction')
-var React      = require('react');
+var React      = require('react/addons');
 if (!Object.assign) {
   Object.assign = require('object-assign');
 }
