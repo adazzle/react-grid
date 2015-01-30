@@ -7,7 +7,7 @@
 		exports["GridAddons"] = factory(require("react/addons"), require("moment"));
 	else
 		root["ReactGrid"] = root["ReactGrid"] || {}, root["ReactGrid"]["GridAddons"] = factory(root["React"], root["moment"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_28__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_30__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -116,7 +116,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	var React                   = __webpack_require__(9);
 	var cx                      = React.addons.classSet;
-	var isFunction = __webpack_require__(23);
+	var isFunction = __webpack_require__(26);
 
 	var EditorMixin = {
 
@@ -286,9 +286,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Editors = {
-	  AutoComplete     : __webpack_require__(24),
-	  DropDownEditor   : __webpack_require__(25),
-	  SimpleTextEditor : __webpack_require__(26)
+	  AutoComplete     : __webpack_require__(23),
+	  DropDownEditor   : __webpack_require__(24),
+	  SimpleTextEditor : __webpack_require__(25)
 
 	}
 
@@ -332,7 +332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 
 	var keyMirror  = __webpack_require__(41);
-	var isFunction = __webpack_require__(23)
+	var isFunction = __webpack_require__(26)
 	var React      = __webpack_require__(9);
 	if (!Object.assign) {
 	  Object.assign = __webpack_require__(40);
@@ -563,21 +563,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
-	"use strict";
-
-	var isFunction = function(functionToCheck){
-	    var getType = {};
-	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-	}
-
-	module.exports = isFunction;
-
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/**
 	 * @jsx React.DOM
 	 * @copyright Prometheus Research, LLC 2014
@@ -589,7 +574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var MixinHelper             = __webpack_require__(22);
 	var EditorMixin             = __webpack_require__(5);
 	var TextInputMixin          = __webpack_require__(6);
-	var ReactAutocomplete       = __webpack_require__(42);
+	var ReactAutocomplete       = __webpack_require__(44);
 	var keyboardHandlerMixin    = __webpack_require__(35);
 
 	var optionPropType = React.PropTypes.shape({
@@ -709,7 +694,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -770,7 +755,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -807,6 +792,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	"use strict";
+
+	var isFunction = function(functionToCheck){
+	    var getType = {};
+	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	}
+
+	module.exports = isFunction;
+
+
+/***/ },
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -818,7 +818,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React          = __webpack_require__(9);
 	var cx             = React.addons.classSet;
-	var moment         = __webpack_require__(28);
+	var moment         = __webpack_require__(30);
 	var PropTypes = React.PropTypes;
 
 	var DateRangeFormatter = React.createClass({displayName: 'DateRangeFormatter',
@@ -857,14 +857,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 28 */
+/* 28 */,
+/* 29 */,
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_28__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_30__;
 
 /***/ },
-/* 29 */,
-/* 30 */,
 /* 31 */,
 /* 32 */,
 /* 33 */,
@@ -987,7 +987,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	var invariant = __webpack_require__(53);
+	var invariant = __webpack_require__(52);
 
 	/**
 	 * Constructs an enumeration with keys equal to their value.
@@ -1028,7 +1028,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
 
 /***/ },
-/* 42 */
+/* 42 */,
+/* 43 */,
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -1487,8 +1489,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 43 */,
-/* 44 */,
 /* 45 */,
 /* 46 */,
 /* 47 */,
@@ -1496,8 +1496,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 49 */,
 /* 50 */,
 /* 51 */,
-/* 52 */,
-/* 53 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1557,6 +1556,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
 
 /***/ },
+/* 53 */,
 /* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
