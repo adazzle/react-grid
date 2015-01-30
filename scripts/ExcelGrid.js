@@ -2,42 +2,30 @@
  * @jsx React.DOM
  */
 (function(){
-  var React = (typeof window !== "undefined" && window.React) ? window.React : require('react');
-  var ReactGrid = (typeof window !== "undefined" && window.ReactGrid) ? window.ReactGrid.WithAddons : require('../../addons');
-  var Editors =  (typeof window !== "undefined" && window.ReactGrid) ? window.ReactGrid.Editors : require('../../editors');
-  var Formatters = (typeof window !== "undefined" && window.ReactGrid) ? window.ReactGrid.Formatters : require('../../formatters');
-  var CheckboxEditor      = Editors.CheckboxEditor;
+  var Grid                = ReactGrid.Grid;
+  var Editors             = ReactGrid.Addons.Editors;
+  var Toolbar             = ReactGrid.Addons.Toolbar;
   var AutoCompleteEditor  = Editors.AutoComplete;
-  var DateRangeEditor     = Editors.DateRangeEditor;
   var DropDownEditor      = Editors.DropDownEditor;
-  var DateRangeFormatter  = Formatters.DateRangeFormatter;
   var cx                  = React.addons.classSet;
   var cloneWithProps      = React.addons.cloneWithProps;
 
   var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
   var epics = [{id : 0, title : 'Unification Of Media'}, { id : 1, title : 'Trading Desk'}, { id : 2, title : 'Tech Costs'}, { id : 3, title : 'Tactical'}, { id : 4, title : 'Barter'}, { id : 5, title :'Lego'}, {id : 6, title : 'Media Plan'}, {id : 7, title : 'Infrastructure'}];
 
-  var dateRanges  = {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-
   var columns = [
     {
       key: 'id',
       name: 'ID',
+      width : 80
     },
     {
       key: 'userStory',
       name: 'User Story',
       editable : true,
       sortable : true,
+      resizeable : true,
       showCellControls : true,
-      width : 200,
       getExpandedHeight : function(value){
         if(value === 'User Story 1'){
           return 60;
@@ -50,137 +38,15 @@
       key: 'developer',
       name: 'Developer',
       editor : <DropDownEditor options={developers}/>,
-      width : 200,
-      sortable : true
+      sortable : true,
+      resizeable : true
     },
     {
       key: 'epic',
       name: 'Epic',
       editor : <AutoCompleteEditor options={epics}/>,
-      width : 200,
       sortable : true
-    },
-    {
-      key: 'dateRange',
-      name: 'Duration',
-      editor : <DateRangeEditor ranges={dateRanges}/>,
-      formatter : <DateRangeFormatter/>,
-      width : 200,
-      filterable : false
-    },
-    {
-      key: 'flight1',
-      width : 200,
-      name: 'flight1'
-    },
-    {
-      key: 'flight2',
-      width : 200,
-      name: 'flight2'
-    },
-    {
-      key: 'flight3',
-      width : 200,
-      name: 'flight3'
-    },
-    {
-      key: 'flight4',
-      width : 200,
-      name: 'flight4'
-    },
-    {
-      key: 'flight5',
-      width : 200,
-      name: 'flight5'
-    },
-    {
-      key: 'flight6',
-      width : 200,
-      name: 'flight6'
-    },
-    {
-      key: 'flight7',
-      width : 200,
-      name: 'flight7'
-    },
-    {
-      key: 'flight7',
-      width : 200,
-      name: 'flight7'
-    },
-    {
-      key: 'flight8',
-      width : 200,
-      name: 'flight8'
-    },
-    {
-      key: 'flight9',
-      width : 200,
-      name: 'flight9'
-    },
-    {
-      key: 'flight10',
-      width : 200,
-      name: 'flight10'
-    },
-    {
-      key: 'flight11',
-      width : 200,
-      name: 'flight11'
-    },
-    {
-      key: 'flight12',
-      width : 200,
-      name: 'flight12'
-    },
-    {
-      key: 'flight13',
-      width : 200,
-      name: 'flight13'
-    },
-    {
-      key: 'flight14',
-      width : 200,
-      name: 'flight14'
-    },{
-      key: 'flight15',
-      width : 200,
-      name: 'flight15'
-    },
-    {
-      key: 'flight16',
-      width : 200,
-      name: 'flight16'
-    },{
-      key: 'flight17',
-      width : 200,
-      name: 'flight17'
-    },
-    {
-      key: 'flight18',
-      width : 200,
-      name: 'flight18'
-    },
-    {
-      key: 'flight19',
-      width : 200,
-      name: 'flight19'
-    },
-    {
-      key: 'flight20',
-      width : 200,
-      name: 'flight20'
-    },
-    {
-      key: 'flight21',
-      width : 200,
-      name: 'flight21'
-    },{
-      key: 'flight22',
-      width : 200,
-      name: 'flight22'
     }
-
 
   ]
 
@@ -191,33 +57,7 @@
         id: i,
         userStory: 'User Story ' + i,
         developer : developers[i%6],
-        epic : epics[i%8].title,
-
-        dateRange: {startDate : '2013-01-01', endDate : '2013-02-01'},
-        flight1: '',
-        flight2: '1',
-        flight3: '2',
-        flight4: '3',
-        flight5: '4',
-        flight6: 'fdgfdgdfg',
-        flight7: '5',
-        flight8: 'bnm',
-        flight9: '6',
-        flight10: 'khjkhjk',
-        flight11: 'tryyr',
-        flight12: 'bvnbvn',
-        flight13: 'vbnvbn',
-        flight14: ',kj,j',
-        flight15: 'tyu',
-        flight16: 'rty',
-        flight17: 'wer',
-        flight18: 'wqe',
-        flight19: 'sdf',
-
-        flight20: 'vbn',
-        flight21: 'hgj',
-        flight22: 'rty',
-        flight23: 'rty'
+        epic : epics[i%8].title
       });
     }
     return result;
@@ -230,13 +70,12 @@
       return {rows : getRows(0, 1000)};
     },
 
-    updateCell : function(commit){
-        var rows = this.state.rows;
-        var rowToChange = rows[commit.rowIdx];
-        if(rowToChange){
-          rowToChange[commit.cellKey] = commit.value;
-          this.setState({rows:rows});
-        }
+    handleRowUpdated : function(commit){
+      //merge the updated row values with the existing row
+      var rows = this.state.rows;
+      var updatedRow = React.addons.update(rows[commit.rowIdx], {$merge : commit.updated});
+      rows[commit.rowIdx] = updatedRow;
+      this.setState({rows:rows});
     },
 
     handleCellDrag : function(e){
@@ -250,23 +89,31 @@
         this.setState({rows:rows});
     },
 
-    cancelSort:function(){
-      this.render();
+    handleCellCopyPaste : function(e){
+      var rows = this.state.rows;
+      rows[e.toRow][e.cellKey] = e.value;
+      this.setState({rows:rows});
     },
 
+    handleAddRow : function(e){
+      var newRow = {
+        id: e.newRowIndex,
+        userStory: '',
+        developer : '',
+        epic : ''};
+        var rows = React.addons.update(this.state.rows, {$push : [newRow]});
+        this.setState({rows : rows});
+    },
     render: function() {
       return (
-        <div>
-          <div className="well well-lg" >
-            <ReactGrid
+            <Grid
               columns={columns}
-              length={1000}
               rows={this.state.rows}
-              onCellChanged={this.updateCell}
+              onRowUpdated={this.handleRowUpdated}
               onCellsDragged={this.handleCellDrag}
+              onCellCopyPaste={this.handleCellCopyPaste}
+              toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
               />
-            </div>
-        </div>
       );
     }
   });
