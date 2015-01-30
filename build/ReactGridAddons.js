@@ -7,7 +7,7 @@
 		exports["GridAddons"] = factory(require("react/addons"), require("moment"));
 	else
 		root["ReactGrid"] = root["ReactGrid"] || {}, root["ReactGrid"]["GridAddons"] = factory(root["React"], root["moment"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_31__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_37__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -57,16 +57,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = {
 	  Editors : __webpack_require__(7),
 	  Formatters : __webpack_require__(8),
-	  Toolbar : __webpack_require__(1),
+	  Toolbar : __webpack_require__(4),
 	  Mixins : {
-	    EditorMixin : __webpack_require__(2),
-	    TextInputMixin : __webpack_require__(3)
+	    EditorMixin : __webpack_require__(5),
+	    TextInputMixin : __webpack_require__(6)
 	  }
 	}
 
 
 /***/ },
-/* 1 */
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -103,7 +106,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 2 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -215,7 +218,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 3 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -279,9 +282,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 4 */,
-/* 5 */,
-/* 6 */,
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -587,9 +587,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React                   = __webpack_require__(9);
 	var cx                      = React.addons.classSet;
 	var MixinHelper             = __webpack_require__(22);
-	var EditorMixin             = __webpack_require__(2);
-	var TextInputMixin          = __webpack_require__(3);
-	var ReactAutocomplete       = __webpack_require__(47);
+	var EditorMixin             = __webpack_require__(5);
+	var TextInputMixin          = __webpack_require__(6);
+	var ReactAutocomplete       = __webpack_require__(42);
 	var keyboardHandlerMixin    = __webpack_require__(36);
 
 	var optionPropType = React.PropTypes.shape({
@@ -722,7 +722,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cx                      = React.addons.classSet;
 	var MixinHelper             = __webpack_require__(22);
 	var keyboardHandlerMixin    = __webpack_require__(36);
-	var EditorMixin             = __webpack_require__(2);
+	var EditorMixin             = __webpack_require__(5);
 	var cloneWithProps          = React.addons.cloneWithProps;
 
 	var DropDownEditor = React.createClass({displayName: 'DropDownEditor',
@@ -782,8 +782,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React                   = __webpack_require__(9);
 	var cx                      = React.addons.classSet;
 	var MixinHelper             = __webpack_require__(22);
-	var EditorMixin             = __webpack_require__(2);
-	var TextInputMixin          = __webpack_require__(3);
+	var EditorMixin             = __webpack_require__(5);
+	var TextInputMixin          = __webpack_require__(6);
 	var keyboardHandlerMixin    = __webpack_require__(36);
 
 	var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
@@ -818,7 +818,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React          = __webpack_require__(9);
 	var cx             = React.addons.classSet;
-	var moment         = __webpack_require__(31);
+	var moment         = __webpack_require__(37);
 	var PropTypes = React.PropTypes;
 
 	var DateRangeFormatter = React.createClass({displayName: 'DateRangeFormatter',
@@ -860,12 +860,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 28 */,
 /* 29 */,
 /* 30 */,
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_31__;
-
-/***/ },
+/* 31 */,
 /* 32 */,
 /* 33 */,
 /* 34 */,
@@ -935,7 +930,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 37 */,
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_37__;
+
+/***/ },
 /* 38 */,
 /* 39 */,
 /* 40 */
@@ -1028,12 +1028,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)))
 
 /***/ },
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -1492,6 +1487,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
 /* 48 */,
 /* 49 */,
 /* 50 */,
