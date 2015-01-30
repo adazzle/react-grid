@@ -2,10 +2,10 @@
 var gridHelpers = require('../browser/helpers.js');
 var React = require('react/addons');
 var ReactTests = React.addons.TestUtils;
-var  Grid = require('../../lib/Grid');
-var  Viewport = require('../../lib/Viewport');
-var  Canvas = require('../../lib/Canvas');
-var  Header = require('../../lib/Header');
+var  Grid = require('../../src/Grid');
+var  Viewport = require('../../src/Viewport');
+var  Canvas = require('../../src/Canvas');
+var  Header = require('../../src/Header');
 
 describe("Viewport scroll tests", function() {
   beforeEach(function() {

@@ -1,1 +1,1 @@
-module.exports = require("./lib-compiled/index");
+module.exports = require("./src/index");
