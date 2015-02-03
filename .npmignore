@@ -8,3 +8,4 @@ gulp
 examples
 coveralls.yml
 gulpfile.js
+config
