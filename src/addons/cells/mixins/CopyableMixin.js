@@ -4,13 +4,13 @@
  */
 'use strict';
 
-var React          = require('react/addons');
-var cx             = React.addons.classSet;
-var cloneWithProps = React.addons.cloneWithProps;
-var PropTypes      = React.PropTypes;
-var SimpleTextEditor = require('../../editors/SimpleTextEditor');
-var MixinHelper      = require('../../utils/MixinHelper');
-var SelectableMixin  = require('./SelectableMixin');
+var React                = require('react/addons');
+var cx                   = React.addons.classSet;
+var cloneWithProps       = React.addons.cloneWithProps;
+var PropTypes            = React.PropTypes;
+var SimpleTextEditor     = require('../../editors/SimpleTextEditor');
+var MixinHelper          = require('../../utils/MixinHelper');
+var SelectableMixin      = require('./SelectableMixin');
 var KeyboardHandlerMixin = require('./KeyboardHandlerMixin');
 
 var CopyableMixin = MixinHelper.createDependency({
