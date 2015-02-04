@@ -9,7 +9,7 @@
   "description": "Excel-like grid component built with React, with editors, keyboard navigation, copy & paste, and the like",
   "license": "MIT",
   "ignore": [
-    "**/.*",
+    "gulp",
     "node_modules",
     "bower_components",
     "test",
