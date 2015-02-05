@@ -1,5 +1,7 @@
 var gulp = require('gulp');
 var react = require('gulp-react');
+
+process.env.FLOW_BIN = './flow/flow.exe'; // need to set this prioer to loading flowtype
 var flow = require('gulp-flowtype'); //using custom version till https://github.com/charliedowler/gulp-flowtype/pull/15 is done
 
 gulp.task('flow', function() {
@@ -10,7 +12,6 @@ gulp.task('flow', function() {
         declarations: './flow/lib',
         killFlow: false,
         beep: true,
-        flowBin: './flow/flow.exe',
         generalErrorRegEx: /./
     }));
 });
