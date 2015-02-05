@@ -1,3 +1,4 @@
+/* @flow */
 var Editors = {
   EditorMixin     : require('./EditorMixin'),
   TextInputMixin  : require('./TextInputMixin')

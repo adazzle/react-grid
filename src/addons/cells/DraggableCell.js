@@ -1,6 +1,7 @@
 /**
  * @jsx React.DOM
  * @copyright Prometheus Research, LLC 2014
+ * @flow
  */
 'use strict';
 
@@ -21,7 +22,7 @@ var DraggableCell = React.createClass({
   render: function() {
     return (
       <BaseCell
-        {...this.props} 
+        {...this.props}
         className={this.getCellClass()}
         onKeyDown={this.onKeyDown}
         onClick={this.onClick}

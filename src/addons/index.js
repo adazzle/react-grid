@@ -1,3 +1,4 @@
+/* @flow */
 module.exports = {
   Editors    : require('./editors'),
   Formatters : require('./formatters'),

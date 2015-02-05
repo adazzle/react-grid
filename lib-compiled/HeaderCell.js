@@ -1,0 +1,128 @@
+/**
+ * @jsx React.DOM
+ * @copyright Prometheus Research, LLC 2014
+ */
+"use strict";
+
+var React       = require('react/addons');
+var cx          = React.addons.classSet;
+var Draggable   = require('./Draggable');
+var PropTypes   = React.PropTypes;
+
+var ResizeHandle = React.createClass({displayName: "ResizeHandle",
+
+  style: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 6,
+    height: '100%'
+  },
+
+  render:function() {
+    return (
+      React.createElement(Draggable, React.__spread({},  this.props, 
+        {className: "react-grid-HeaderCell__resizeHandle", 
+        style: this.style})
+        )
+    );
+  }
+});
+
+var HeaderCell = React.createClass({displayName: "HeaderCell",
+
+  propTypes: {
+    renderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
+    column: PropTypes.object.isRequired,
+    onResize: PropTypes.func
+  },
+
+  render:function() {
+    var className = cx({
+      'react-grid-HeaderCell': true,
+      'react-grid-HeaderCell--resizing': this.state.resizing,
+      'react-grid-HeaderCell--locked': this.props.column.locked
+    });
+    className = cx(className, this.props.className);
+    var cell = this.getCell();
+    return (
+      React.createElement("div", {className: className, style: this.getStyle()}, 
+        cell, 
+        this.props.column.resizeable ?
+          React.createElement(ResizeHandle, {
+            onDrag: this.onDrag, 
+            onDragStart: this.onDragStart, 
+            onDragEnd: this.onDragEnd}
+            ) :
+          null
+      )
+    );
+  },
+
+  getCell:function() {
+    if (React.isValidElement(this.props.renderer)) {
+      return React.addons.cloneWithProps(this.props.renderer, {column : this.props.column});
+    } else {
+      return this.props.renderer({column: this.props.column});
+    }
+  },
+
+  getDefaultProps:function() {
+    return {
+      renderer: simpleCellRenderer
+    };
+  },
+
+  getInitialState:function() {
+    return {resizing: false};
+  },
+
+  setScrollLeft:function(scrollLeft) {
+    var node = this.getDOMNode();
+    node.style.webkitTransform = ("translate3d(" + scrollLeft + "px, 0px, 0px)");
+    node.style.transform = ("translate3d(" + scrollLeft + "px, 0px, 0px)");
+  },
+
+  getStyle:function() {
+    return {
+      width: this.props.column.width,
+      left: this.props.column.left,
+      display: 'inline-block',
+      position: 'absolute',
+      overflow: 'hidden',
+      height: this.props.height,
+      margin: 0,
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap'
+    };
+  },
+
+  onDragStart:function() {
+    this.setState({resizing: true});
+  },
+
+  onDrag:function(e) {
+    var width = this.getWidthFromMouseEvent(e);
+    if (width > 0 && this.props.onResize) {
+      this.props.onResize(this.props.column, width);
+    }
+  },
+
+  onDragEnd:function(e) {
+    var width = this.getWidthFromMouseEvent(e);
+    this.props.onResizeEnd(this.props.column, width);
+    this.setState({resizing: false});
+  },
+
+  getWidthFromMouseEvent:function(e) {
+    var right = e.pageX;
+    var left = this.getDOMNode().getBoundingClientRect().left;
+    return right - left;
+  }
+});
+
+function simpleCellRenderer(props) {
+  return React.createElement("div", {className: "rex-widget-HeaderCell__value"}, props.column.name);
+}
+
+module.exports = HeaderCell;

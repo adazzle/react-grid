@@ -14,6 +14,7 @@
  * limitations under the License.
  *
  * @providesModule copyProperties
+ * @flow
  */
 'use strict';
 

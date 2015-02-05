@@ -14,6 +14,7 @@
  * limitations under the License.
  *
  * @providesModule emptyFunction
+ * @flow
  */
 'use strict';
 

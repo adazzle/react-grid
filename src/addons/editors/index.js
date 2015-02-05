@@ -1,3 +1,4 @@
+/* @flow */
 var Editors = {
   AutoComplete     : require('./AutoCompleteEditor'),
   DropDownEditor   : require('./DropDownEditor'),

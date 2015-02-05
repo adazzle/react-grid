@@ -56,7 +56,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 *@flow *
 	 */
 	'use strict';
 
@@ -67,6 +67,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Grid;
 	module.exports.Row = Row;
 	module.exports.Cell = Cell;
+	var test = 2 * 'a';
 
 
 /***/ },
@@ -97,7 +98,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var cloneWithProps = React.addons.cloneWithProps;
 
-	var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
+	var ExcelGrid = React.createClass({displayName: "ExcelGrid",
 
 	  mixins : [SelectableGridMixin, EditableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
 
@@ -291,7 +292,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cloneWithProps = React.addons.cloneWithProps;
 	var ColumnMetrics    = __webpack_require__(11);
 
-	var Row = React.createClass({displayName: 'Row',
+	var Row = React.createClass({displayName: "Row",
 
 	  render:function() {
 	    var className = cx(
@@ -428,7 +429,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cx             = React.addons.classSet;
 	var cloneWithProps = React.addons.cloneWithProps;
 
-	var Cell = React.createClass({displayName: 'Cell',
+	var Cell = React.createClass({displayName: "Cell",
 
 	  render:function() {
 	    var style = this.getStyle();
@@ -1017,7 +1018,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	var Grid = React.createClass({displayName: 'Grid',
+	var Grid = React.createClass({displayName: "Grid",
 	  mixins: [
 	    GridScrollMixin,
 	    ColumnMetrics.Mixin,
@@ -1106,7 +1107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-	var CellControls = React.createClass({displayName: 'CellControls',
+	var CellControls = React.createClass({displayName: "CellControls",
 
 	  onClickEdit : function(e){
 	    e.stopPropagation();
@@ -1154,7 +1155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})
 
 
-	var ExcelCell = React.createClass({displayName: 'ExcelCell',
+	var ExcelCell = React.createClass({displayName: "ExcelCell",
 
 	  mixins : [EditableMixin, CopyableMixin, DraggableMixin],
 
@@ -1237,7 +1238,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cx             = React.addons.classSet;
 	var BaseRow       = __webpack_require__(2);
 	var ColumnMetrics = __webpack_require__(11);
-	var ExcelRow = React.createClass({displayName: 'ExcelRow',
+	var ExcelRow = React.createClass({displayName: "ExcelRow",
 
 	  render:function() {
 	    var row = React.addons.update(this.props.row,  {$merge : {'select-row' : this.props.isSelected}});
@@ -1592,7 +1593,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(10);
 	var PropTypes           = React.PropTypes;
-	var SortableHeaderCell  = __webpack_require__(36);
+	var SortableHeaderCell  = __webpack_require__(37);
 	var shallowCloneObject  = __webpack_require__(28);
 
 	var DEFINE_SORT = {
@@ -1676,7 +1677,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(10);
 	var PropTypes           = React.PropTypes;
-	var FilterableHeaderCell = __webpack_require__(37);
+	var FilterableHeaderCell = __webpack_require__(36);
 
 	var FilterableGridMixin = {
 
@@ -1772,7 +1773,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React                   = __webpack_require__(10);
 	var cx                      = React.addons.classSet;
 
-	var CheckBoxEditor = React.createClass({displayName: 'CheckBoxEditor',
+	var CheckBoxEditor = React.createClass({displayName: "CheckBoxEditor",
 
 
 	  PropTypes : {
@@ -1803,7 +1804,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	"use strict";
 
-	var keyMirror  = __webpack_require__(41);
+	var keyMirror  = __webpack_require__(44);
 	var isFunction = __webpack_require__(24)
 	var React      = __webpack_require__(10);
 	if (!Object.assign) {
@@ -2065,7 +2066,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var TextInputMixin          = __webpack_require__(6);
 	var keyboardHandlerMixin    = __webpack_require__(9);
 
-	var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
+	var SimpleTextEditor = React.createClass({displayName: "SimpleTextEditor",
 
 	  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
 
@@ -2292,10 +2293,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cx                  = React.addons.classSet;
 	var shallowCloneObject  = __webpack_require__(28);
 	var ColumnMetrics       = __webpack_require__(11);
-	var HeaderRow           = __webpack_require__(42);
+	var HeaderRow           = __webpack_require__(41);
 	var ColumnMetrics = __webpack_require__(11);
 
-	var Header = React.createClass({displayName: 'Header',
+	var Header = React.createClass({displayName: "Header",
 
 	  propTypes: {
 	    columns: React.PropTypes.object.isRequired,
@@ -2427,9 +2428,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React             = __webpack_require__(10);
-	var getWindowSize     = __webpack_require__(44);
+	var getWindowSize     = __webpack_require__(42);
 	var DOMMetrics        = __webpack_require__(29);
-	var Canvas            = __webpack_require__(45);
+	var Canvas            = __webpack_require__(43);
 
 	var min   = Math.min;
 	var max   = Math.max;
@@ -2532,7 +2533,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	var Viewport = React.createClass({displayName: 'Viewport',
+	var Viewport = React.createClass({displayName: "Viewport",
 	  mixins: [ViewportScroll],
 
 	  render:function() {
@@ -3034,53 +3035,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React              = __webpack_require__(10);
 	var cx             = React.addons.classSet;
 
-	var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
-
-	  onClick: function() {
-	    this.props.column.sortBy(
-	      this.props.column,
-	      this.props.column.sorted);
-	  },
-
-	  getSortByClass : function(){
-	    var sorted = this.props.column.sorted;
-	    return cx({
-	      'pull-right' : true,
-	      'glyphicon glyphicon-arrow-up' : sorted === 'ASC',
-	      'glyphicon glyphicon-arrow-down' : sorted === 'DESC'
-	    });
-	  },
-
-	  render: function() {
-
-	    return (
-	      React.createElement("div", {
-	        onClick: this.onClick, 
-	        style: {cursor: 'pointer'}}, 
-	        this.props.column.name, 
-	        React.createElement("span", {className: this.getSortByClass()})
-	      )
-	    );
-	  }
-	});
-
-	module.exports = SortableHeaderCell;
-
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React              = __webpack_require__(10);
-	var cx             = React.addons.classSet;
-
-	var FilterableHeaderCell = React.createClass({displayName: 'FilterableHeaderCell',
+	var FilterableHeaderCell = React.createClass({displayName: "FilterableHeaderCell",
 
 	  getInitialState:function(){
 	    return {filterTerm : ''}
@@ -3118,6 +3073,52 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	module.exports = FilterableHeaderCell;
+
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React              = __webpack_require__(10);
+	var cx             = React.addons.classSet;
+
+	var SortableHeaderCell = React.createClass({displayName: "SortableHeaderCell",
+
+	  onClick: function() {
+	    this.props.column.sortBy(
+	      this.props.column,
+	      this.props.column.sorted);
+	  },
+
+	  getSortByClass : function(){
+	    var sorted = this.props.column.sorted;
+	    return cx({
+	      'pull-right' : true,
+	      'glyphicon glyphicon-arrow-up' : sorted === 'ASC',
+	      'glyphicon glyphicon-arrow-down' : sorted === 'DESC'
+	    });
+	  },
+
+	  render: function() {
+
+	    return (
+	      React.createElement("div", {
+	        onClick: this.onClick, 
+	        style: {cursor: 'pointer'}}, 
+	        this.props.column.name, 
+	        React.createElement("span", {className: this.getSortByClass()})
+	      )
+	    );
+	  }
+	});
+
+	module.exports = SortableHeaderCell;
 
 
 /***/ },
@@ -3267,68 +3268,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = invariant;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
 
 /***/ },
 /* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule keyMirror
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var invariant = __webpack_require__(51);
-
-	/**
-	 * Constructs an enumeration with keys equal to their value.
-	 *
-	 * For example:
-	 *
-	 *   var COLORS = keyMirror({blue: null, red: null});
-	 *   var myColor = COLORS.blue;
-	 *   var isColorValid = !!COLORS[myColor];
-	 *
-	 * The last line could not be performed if the values of the generated enum were
-	 * not equal to their keys.
-	 *
-	 *   Input:  {key1: val1, key2: val2}
-	 *   Output: {key1: key1, key2: key2}
-	 *
-	 * @param {object} obj
-	 * @return {object}
-	 */
-	var keyMirror = function(obj) {
-	  var ret = {};
-	  var key;
-	  ("production" !== process.env.NODE_ENV ? invariant(
-	    obj instanceof Object && !Array.isArray(obj),
-	    'keyMirror(...): Argument must be an object.'
-	  ) : invariant(obj instanceof Object && !Array.isArray(obj)));
-	  for (key in obj) {
-	    if (!obj.hasOwnProperty(key)) {
-	      continue;
-	    }
-	    ret[key] = key;
-	  }
-	  return ret;
-	};
-
-	module.exports = keyMirror;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
-
-/***/ },
-/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3340,10 +3283,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React             = __webpack_require__(10);
 	var PropTypes         = React.PropTypes;
 	var shallowEqual      = __webpack_require__(47);
-	var HeaderCell        = __webpack_require__(48);
-	var getScrollbarSize  = __webpack_require__(49);
+	var HeaderCell        = __webpack_require__(49);
+	var getScrollbarSize  = __webpack_require__(50);
 
-	var HeaderRow = React.createClass({displayName: 'HeaderRow',
+	var HeaderRow = React.createClass({displayName: "HeaderRow",
 
 	  propTypes: {
 	    width: PropTypes.number,
@@ -3431,8 +3374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 43 */,
-/* 44 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3467,7 +3409,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 45 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3482,10 +3424,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cloneWithProps = React.addons.cloneWithProps;
 	var shallowEqual   = __webpack_require__(47);
 	var emptyFunction  = __webpack_require__(39);
-	var ScrollShim     = __webpack_require__(50);
+	var ScrollShim     = __webpack_require__(48);
 	var Row            = __webpack_require__(2);
 
-	var Canvas = React.createClass({displayName: 'Canvas',
+	var Canvas = React.createClass({displayName: "Canvas",
 	  mixins: [ScrollShim],
 
 	  propTypes: {
@@ -3684,6 +3626,65 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule keyMirror
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var invariant = __webpack_require__(52);
+
+	/**
+	 * Constructs an enumeration with keys equal to their value.
+	 *
+	 * For example:
+	 *
+	 *   var COLORS = keyMirror({blue: null, red: null});
+	 *   var myColor = COLORS.blue;
+	 *   var isColorValid = !!COLORS[myColor];
+	 *
+	 * The last line could not be performed if the values of the generated enum were
+	 * not equal to their keys.
+	 *
+	 *   Input:  {key1: val1, key2: val2}
+	 *   Output: {key1: key1, key2: key2}
+	 *
+	 * @param {object} obj
+	 * @return {object}
+	 */
+	var keyMirror = function(obj) {
+	  var ret = {};
+	  var key;
+	  ("production" !== process.env.NODE_ENV ? invariant(
+	    obj instanceof Object && !Array.isArray(obj),
+	    'keyMirror(...): Argument must be an object.'
+	  ) : invariant(obj instanceof Object && !Array.isArray(obj)));
+	  for (key in obj) {
+	    if (!obj.hasOwnProperty(key)) {
+	      continue;
+	    }
+	    ret[key] = key;
+	  }
+	  return ret;
+	};
+
+	module.exports = keyMirror;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
+
+/***/ },
+/* 45 */,
 /* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -3743,7 +3744,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = copyProperties;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
 
 /***/ },
 /* 47 */
@@ -3789,6 +3790,60 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @jsx React.DOM
 	 * @copyright Prometheus Research, LLC 2014
 	 */
+	'use strict';
+
+	var ScrollShim = {
+
+	  appendScrollShim:function() {
+	    if (!this._scrollShim) {
+	      var size = this._scrollShimSize();
+	      var shim = document.createElement('div');
+	      shim.classList.add('react-grid-ScrollShim');
+	      shim.style.position = 'absolute';
+	      shim.style.top = 0;
+	      shim.style.left = 0;
+	      shim.style.width = (size.width + "px");
+	      shim.style.height = (size.height + "px");
+	      this.getDOMNode().appendChild(shim);
+	      this._scrollShim = shim;
+	    }
+	    this._scheduleRemoveScrollShim();
+	  },
+
+	  _scrollShimSize:function() {
+	    return {
+	      width: this.props.width,
+	      height: this.props.length * this.props.rowHeight
+	    };
+	  },
+
+	  _scheduleRemoveScrollShim:function() {
+	    if (this._scheduleRemoveScrollShimTimer) {
+	      clearTimeout(this._scheduleRemoveScrollShimTimer);
+	    }
+	    this._scheduleRemoveScrollShimTimer = setTimeout(
+	      this._removeScrollShim, 200);
+	  },
+
+	  _removeScrollShim:function() {
+	    if (this._scrollShim) {
+	      this._scrollShim.parentNode.removeChild(this._scrollShim);
+	      this._scrollShim = undefined;
+	    }
+	  }
+	};
+
+	module.exports = ScrollShim;
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
 	"use strict";
 
 	var React       = __webpack_require__(10);
@@ -3796,7 +3851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Draggable   = __webpack_require__(53);
 	var PropTypes   = React.PropTypes;
 
-	var ResizeHandle = React.createClass({displayName: 'ResizeHandle',
+	var ResizeHandle = React.createClass({displayName: "ResizeHandle",
 
 	  style: {
 	    position: 'absolute',
@@ -3816,7 +3871,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var HeaderCell = React.createClass({displayName: 'HeaderCell',
+	var HeaderCell = React.createClass({displayName: "HeaderCell",
 
 	  propTypes: {
 	    renderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
@@ -3916,7 +3971,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3956,121 +4011,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var ScrollShim = {
-
-	  appendScrollShim:function() {
-	    if (!this._scrollShim) {
-	      var size = this._scrollShimSize();
-	      var shim = document.createElement('div');
-	      shim.classList.add('react-grid-ScrollShim');
-	      shim.style.position = 'absolute';
-	      shim.style.top = 0;
-	      shim.style.left = 0;
-	      shim.style.width = (size.width + "px");
-	      shim.style.height = (size.height + "px");
-	      this.getDOMNode().appendChild(shim);
-	      this._scrollShim = shim;
-	    }
-	    this._scheduleRemoveScrollShim();
-	  },
-
-	  _scrollShimSize:function() {
-	    return {
-	      width: this.props.width,
-	      height: this.props.length * this.props.rowHeight
-	    };
-	  },
-
-	  _scheduleRemoveScrollShim:function() {
-	    if (this._scheduleRemoveScrollShimTimer) {
-	      clearTimeout(this._scheduleRemoveScrollShimTimer);
-	    }
-	    this._scheduleRemoveScrollShimTimer = setTimeout(
-	      this._removeScrollShim, 200);
-	  },
-
-	  _removeScrollShim:function() {
-	    if (this._scrollShim) {
-	      this._scrollShim.parentNode.removeChild(this._scrollShim);
-	      this._scrollShim = undefined;
-	    }
-	  }
-	};
-
-	module.exports = ScrollShim;
-
-
-/***/ },
 /* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
-	 */
-
-	"use strict";
-
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-
-	var invariant = function(condition, format, a, b, c, d, e, f) {
-	  if ("production" !== process.env.NODE_ENV) {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  }
-
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error(
-	        'Minified exception occurred; use the non-minified dev environment ' +
-	        'for the full error message and additional helpful warnings.'
-	      );
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error(
-	        'Invariant Violation: ' +
-	        format.replace(/%s/g, function() { return args[argIndex++]; })
-	      );
-	    }
-
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	};
-
-	module.exports = invariant;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
-
-/***/ },
-/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// shim for using process in browser
@@ -4162,6 +4103,66 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule invariant
+	 */
+
+	"use strict";
+
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+
+	var invariant = function(condition, format, a, b, c, d, e, f) {
+	  if ("production" !== process.env.NODE_ENV) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error(
+	        'Minified exception occurred; use the non-minified dev environment ' +
+	        'for the full error message and additional helpful warnings.'
+	      );
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(
+	        'Invariant Violation: ' +
+	        format.replace(/%s/g, function() { return args[argIndex++]; })
+	      );
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+
+	module.exports = invariant;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
+
+/***/ },
 /* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4175,7 +4176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var PropTypes     = React.PropTypes;
 	var emptyFunction = __webpack_require__(39);
 
-	var Draggable = React.createClass({displayName: 'Draggable',
+	var Draggable = React.createClass({displayName: "Draggable",
 
 	  propTypes: {
 	    onDragStart: PropTypes.func,

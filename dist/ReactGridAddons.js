@@ -80,7 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React                   = __webpack_require__(10);
-	var Toolbar = React.createClass({displayName: 'Toolbar',
+	var Toolbar = React.createClass({displayName: "Toolbar",
 
 	  onAddRow:function(){
 	    if(this.props.onAddRow){
@@ -397,7 +397,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	"use strict";
 
-	var keyMirror  = __webpack_require__(41);
+	var keyMirror  = __webpack_require__(44);
 	var isFunction = __webpack_require__(24)
 	var React      = __webpack_require__(10);
 	if (!Object.assign) {
@@ -655,7 +655,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var MixinHelper             = __webpack_require__(23);
 	var EditorMixin             = __webpack_require__(5);
 	var TextInputMixin          = __webpack_require__(6);
-	var ReactAutocomplete       = __webpack_require__(43);
+	var ReactAutocomplete       = __webpack_require__(45);
 	var keyboardHandlerMixin    = __webpack_require__(9);
 
 	var optionPropType = React.PropTypes.shape({
@@ -663,7 +663,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      title :   React.PropTypes.string
 	    });
 
-	var AutoCompleteEditor = React.createClass({displayName: 'AutoCompleteEditor',
+	var AutoCompleteEditor = React.createClass({displayName: "AutoCompleteEditor",
 
 	  propTypes : {
 	    options : React.PropTypes.arrayOf(optionPropType)
@@ -791,7 +791,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var EditorMixin             = __webpack_require__(5);
 	var cloneWithProps          = React.addons.cloneWithProps;
 
-	var DropDownEditor = React.createClass({displayName: 'DropDownEditor',
+	var DropDownEditor = React.createClass({displayName: "DropDownEditor",
 
 	  mixins : [keyboardHandlerMixin, EditorMixin],
 
@@ -852,7 +852,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var TextInputMixin          = __webpack_require__(6);
 	var keyboardHandlerMixin    = __webpack_require__(9);
 
-	var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
+	var SimpleTextEditor = React.createClass({displayName: "SimpleTextEditor",
 
 	  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
 
@@ -917,7 +917,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ },
 /* 39 */,
 /* 40 */,
-/* 41 */
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -934,7 +937,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	var invariant = __webpack_require__(51);
+	var invariant = __webpack_require__(52);
 
 	/**
 	 * Constructs an enumeration with keys equal to their value.
@@ -972,11 +975,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = keyMirror;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
 
 /***/ },
-/* 42 */,
-/* 43 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -1435,74 +1437,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 44 */,
-/* 45 */,
 /* 46 */,
 /* 47 */,
 /* 48 */,
 /* 49 */,
 /* 50 */,
 /* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
-	 */
-
-	"use strict";
-
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-
-	var invariant = function(condition, format, a, b, c, d, e, f) {
-	  if ("production" !== process.env.NODE_ENV) {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  }
-
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error(
-	        'Minified exception occurred; use the non-minified dev environment ' +
-	        'for the full error message and additional helpful warnings.'
-	      );
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error(
-	        'Invariant Violation: ' +
-	        format.replace(/%s/g, function() { return args[argIndex++]; })
-	      );
-	    }
-
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	};
-
-	module.exports = invariant;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
-
-/***/ },
-/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// shim for using process in browser
@@ -1592,6 +1532,66 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new Error('process.chdir is not supported');
 	};
 
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule invariant
+	 */
+
+	"use strict";
+
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+
+	var invariant = function(condition, format, a, b, c, d, e, f) {
+	  if ("production" !== process.env.NODE_ENV) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error(
+	        'Minified exception occurred; use the non-minified dev environment ' +
+	        'for the full error message and additional helpful warnings.'
+	      );
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(
+	        'Invariant Violation: ' +
+	        format.replace(/%s/g, function() { return args[argIndex++]; })
+	      );
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+
+	module.exports = invariant;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
 
 /***/ }
 /******/ ])
