@@ -1,17 +1,19 @@
 var gulp = require('gulp');
-var react = require('gulp-react');
+var execFile = require('child_process').execFile;
 
-process.env.FLOW_BIN = './flow/flow.exe'; // need to set this prioer to loading flowtype
-var flow = require('gulp-flowtype'); //using custom version till https://github.com/charliedowler/gulp-flowtype/pull/15 is done
-
-gulp.task('flow', function() {
-  return gulp.src('./src/**.js')
-    .pipe(flow({
-        all: false,
-        weak: false,
-        declarations: './flow/lib',
-        killFlow: false,
-        beep: true,
-        generalErrorRegEx: /./
-    }));
+gulp.task('flow', function(done) {
+  execFile('./flow/flow.exe', ['check','--lib','./flow/lib','--strip-root','./flow'],function (err, stdout, stderr) {
+    if(err) console.log('Error:' + err);
+    if(stdout) console.log(stdout);
+  });
+//flow not picking up our files.. NO idea why, so using a manual task above
+  // return gulp.src('./flow')
+  //   .pipe(flow({
+  //       all: false,
+  //       weak: false,
+  //       declarations: './flow/lib',
+  //       killFlow: false,
+  //       beep: true,
+  //       generalErrorRegEx: /./
+  //   }));
 });
