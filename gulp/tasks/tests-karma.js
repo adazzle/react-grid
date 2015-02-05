@@ -17,7 +17,7 @@ var karmaCommonConf = {
 /**
  * Run test once and exit
  */
-gulp.task('tests',['tests-build'], function (done) {
+gulp.task('tests',['build'], function (done) {
   var conf = merge({autoWatch: false, singleRun: true}, karmaCommonConf);
   karma.start(conf, done);
 });
