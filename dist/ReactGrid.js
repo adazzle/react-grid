@@ -77,7 +77,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* @flow */
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -282,7 +282,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -421,7 +421,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -502,7 +502,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 	var React                   = __webpack_require__(10);
@@ -614,7 +614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -680,7 +680,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 
 	'use strict';
@@ -751,7 +751,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -972,7 +972,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -1088,7 +1088,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -1230,7 +1230,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -1383,7 +1383,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -1435,7 +1435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -1504,7 +1504,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -1546,7 +1546,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -1587,7 +1587,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -1671,7 +1671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -1766,7 +1766,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -2055,7 +2055,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -2092,7 +2092,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -2115,7 +2115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -2285,7 +2285,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -2423,7 +2423,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -2607,7 +2607,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -2706,7 +2706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -2851,7 +2851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -2922,7 +2922,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -3028,7 +3028,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -3081,7 +3081,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -3276,7 +3276,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -3379,7 +3379,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -3414,7 +3414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -3752,7 +3752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -3788,7 +3788,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 
@@ -3842,7 +3842,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	"use strict";
 
@@ -4168,7 +4168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
+	 
 	 */
 	'use strict';
 

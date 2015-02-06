@@ -75,7 +75,8 @@
     "vinyl-source-stream": "^0.1.1",
     "webpack": "^1.5.3",
     "gh-pages": "^0.2.0",
-    "gulp-flowtype": "^0.4.1"
+    "gulp-flowtype": "^0.4.1",
+    "flow-bin": "~0.1.2"
   },
   "author": "Adazzle",
   "license": "MIT",

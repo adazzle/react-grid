@@ -139,7 +139,7 @@ var ExcelGrid = React.createClass({
     }
   },
 
-  render: function() {
+  render: function(): any {
     var cellRenderer = (
       <ExcelCell
         selected={this.state.selected}
