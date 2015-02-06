@@ -1,7 +1,7 @@
 /**
  * @jsx React.DOM
  
- * @flow
+
  */
 'use strict';
 var React                   = require('react/addons');

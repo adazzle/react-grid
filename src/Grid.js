@@ -1,62 +1,27 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
  */
 "use strict";
 
 var React                = require('react/addons');
 var PropTypes            = React.PropTypes;
-var Header               = require('./Header');
-var Viewport             = require('./Viewport');
-var ColumnMetrics        = require('./ColumnMetrics');
-var DOMMetrics           = require('./DOMMetrics');
-
-
-var GridScrollMixin = {
-
-  componentDidMount() {
-    this._scrollLeft = this.refs.viewport.getScroll().scrollLeft;
-    this._onScroll();
-  },
-
-  componentDidUpdate() {
-    this._onScroll();
-  },
-
-  componentWillMount() {
-    this._scrollLeft = undefined;
-  },
-
-  componentWillUnmount() {
-    this._scrollLeft = undefined;
-  },
-
-  onScroll({scrollLeft}) {
-    if (this._scrollLeft !== scrollLeft) {
-      this._scrollLeft = scrollLeft;
-      this._onScroll();
-    }
-  },
-
-  _onScroll() {
-    if (this._scrollLeft !== undefined) {
-      this.refs.header.setScrollLeft(this._scrollLeft);
-      this.refs.viewport.setScrollLeft(this._scrollLeft);
-    }
-  }
-};
+Object.assign = require('object-assign');
+var FixedDataTable = require('fixed-data-table');
+var Table = FixedDataTable.Table;
+var Column = FixedDataTable.Column;
 
 var Grid = React.createClass({
-  mixins: [
-    GridScrollMixin,
-    ColumnMetrics.Mixin,
-    DOMMetrics.MetricsComputatorMixin
-  ],
+
 
   propTypes: {
     rows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]).isRequired,
-    columns: PropTypes.array.isRequired
+    columns: PropTypes.arrayOf(React.PropTypes.shape({
+      key: React.PropTypes.string.isRequired,
+      name: React.PropTypes.string.isRequired,
+      width: React.PropTypes.number.isRequired,
+      cellRenderer: React.PropTypes.func,
+    })).isRequired
   },
 
   getStyle: function(){
@@ -68,35 +33,57 @@ var Grid = React.createClass({
     }
   },
 
+  rowGetter: function (rowIndex) {
+    return this.props.rows[rowIndex];
+  },
   render() {
-    var headerRows = this.props.headerRows || [{ref : 'row'}];
+var columns = this.props.columns.map((col) => {
+  var colProps =  {
+    label: col.name,
+    width: col.width || 100,
+    dataKey: col.key
+  }
+  if(col.cellRenderer) {colProps.cellRenderer = col.cellRenderer}
+  return new Column(colProps);;
+});
     return (
-      <div {...this.props} style={this.getStyle()} className="react-grid-Grid">
-        <Header
-          ref="header"
-          columns={this.state.columns}
-          onColumnResize={this.onColumnResize}
-          height={this.props.rowHeight}
-          totalWidth={this.DOMMetrics.gridWidth()}
-          headerRows={headerRows}
-          />
-        <Viewport
-          ref="viewport"
-          width={this.state.columns.width}
-          rowHeight={this.props.rowHeight}
-          rowRenderer={this.props.rowRenderer}
-          cellRenderer={this.props.cellRenderer}
-          rows={this.props.rows}
-          selectedRows={this.props.selectedRows}
-          expandedRows={this.props.expandedRows}
-          length={this.props.length}
-          columns={this.state.columns}
-          totalWidth={this.DOMMetrics.gridWidth()}
-          onScroll={this.onScroll}
-          onRows={this.props.onRows}
-          rowOffsetHeight={this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
-          />
-      </div>
+
+      <Table
+        {...this.props}
+        rowHeight={50}
+        rowGetter={this.rowGetter}
+        rowsCount={this.props.rows.length}
+        width={500}
+        height={500}
+        headerHeight={50}>
+        {columns}
+      </Table>
+      // <div {...this.props} style={this.getStyle()} className="react-grid-Grid">
+      //   <Header
+      //     ref="header"
+      //     columns={this.state.columns}
+      //     onColumnResize={this.onColumnResize}
+      //     height={this.props.rowHeight}
+      //     totalWidth={this.DOMMetrics.gridWidth()}
+      //     headerRows={headerRows}
+      //     />
+      //   <Viewport
+      //     ref="viewport"
+      //     width={this.state.columns.width}
+      //     rowHeight={this.props.rowHeight}
+      //     rowRenderer={this.props.rowRenderer}
+      //     cellRenderer={this.props.cellRenderer}
+      //     rows={this.props.rows}
+      //     selectedRows={this.props.selectedRows}
+      //     expandedRows={this.props.expandedRows}
+      //     length={this.props.length}
+      //     columns={this.state.columns}
+      //     totalWidth={this.DOMMetrics.gridWidth()}
+      //     onScroll={this.onScroll}
+      //     onRows={this.props.onRows}
+      //     rowOffsetHeight={this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
+      //     />
+      // </div>
     );
   },
 

@@ -187,7 +187,7 @@ var ExcelGrid = React.createClass({
   renderToolbar(){
     var Toolbar = this.props.toolbar;
     if(React.isValidElement(Toolbar)){
-      return( React.addons.cloneWithProps(Toolbar, {onToggleFilter : this.onToggleFilter, rows : this.props.rows}));
+      return(<Toolbar {...this.props} onToggleFilter={this.onToggleFilter} rows={this.props.rows}/>);
     }
 
   }

@@ -54,6 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* @flow */
 	module.exports = {
 	  Editors    : __webpack_require__(7),
 	  Formatters : __webpack_require__(8),
@@ -75,7 +76,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	* @jsx React.DOM
-	
+
+	* @flow
 	*/
 	'use strict';
 
@@ -113,6 +115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @jsx React.DOM
 	 
+
 	 */
 	'use strict';
 	var React                   = __webpack_require__(10);
@@ -225,6 +228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @jsx React.DOM
 	 
+
 	 */
 	'use strict';
 
@@ -286,6 +290,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* @flow */
 	var Editors = {
 	  AutoComplete     : __webpack_require__(25),
 	  DropDownEditor   : __webpack_require__(26),
@@ -300,6 +305,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* @flow */
 	var formatters = {
 
 	}
@@ -314,6 +320,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @jsx React.DOM
 	 
+
 	 */
 
 	'use strict';
@@ -394,10 +401,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
+	/* @flow */
 	"use strict";
 
-	var keyMirror  = __webpack_require__(44);
+	var keyMirror  = __webpack_require__(32);
 	var isFunction = __webpack_require__(24)
 	var React      = __webpack_require__(10);
 	if (!Object.assign) {
@@ -506,14 +513,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {array} A new array of mixins, the first object being an object of containing all custom methods wrapped
 	   * Subsequent object in array will be any extracted lifecycle methods which should be treated as standard
 	   */
-	  mix : function(mixins){
+	  mix : function(mixins            )            {
 
 	    var results = [];
 	    var primary = {};
 
 	    var dependencies = mixinUtils.getUniqueDependencies(mixins);
-	    for (var d in dependencies){
-	      Object.assign(primary, MixinAliasCache[dependencies[d]]);
+	    for (var i=0, ii=dependencies.length;i < ii; i++){
+	      Object.assign(primary, MixinAliasCache[dependencies[i]]);
 	    }
 	    wrapEachMethodInObject(primary, results);
 
@@ -540,7 +547,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 
-	  createDependency : function(deps){
+	  createDependency : function(deps     )            {
 	    var dependencyList = [];
 	    for (var d in deps){
 	      if(deps[d] instanceof Mixin){
@@ -556,7 +563,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return new Dependency(uniqueDependencyList);
 	  },
 
-	  addAlias : function(key, object){
+	  addAlias : function(key                 , object     ){
 	    MixinAliasCache[key] = object;
 	  }
 
@@ -610,7 +617,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.overrides[methodName].call(this, args);
 	  },
 
-	  getUniqueDependencies : function(mixins){
+	  getUniqueDependencies : function(mixins)                    {
 	    var deps = [];
 	    mixins.forEach(function(m){
 	      if(m instanceof Mixin){
@@ -629,10 +636,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
+	/* @flow */
 	"use strict";
 
-	var isFunction = function(functionToCheck){
+	var isFunction = function(functionToCheck     )         {
 	    var getType = {};
 	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
 	}
@@ -647,6 +654,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @jsx React.DOM
 	 
+
 	 */
 	'use strict';
 
@@ -655,7 +663,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var MixinHelper             = __webpack_require__(23);
 	var EditorMixin             = __webpack_require__(5);
 	var TextInputMixin          = __webpack_require__(6);
-	var ReactAutocomplete       = __webpack_require__(45);
+	var ReactAutocomplete       = __webpack_require__(42);
 	var keyboardHandlerMixin    = __webpack_require__(9);
 
 	var optionPropType = React.PropTypes.shape({
@@ -781,6 +789,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @jsx React.DOM
 	 
+
 	 */
 	'use strict';
 
@@ -842,6 +851,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @jsx React.DOM
 	 
+
 	 */
 	'use strict';
 
@@ -877,7 +887,64 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 29 */,
 /* 30 */,
 /* 31 */,
-/* 32 */,
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule keyMirror
+	 * @typechecks static-only
+	 */
+
+	"use strict";
+
+	var invariant = __webpack_require__(44);
+
+	/**
+	 * Constructs an enumeration with keys equal to their value.
+	 *
+	 * For example:
+	 *
+	 *   var COLORS = keyMirror({blue: null, red: null});
+	 *   var myColor = COLORS.blue;
+	 *   var isColorValid = !!COLORS[myColor];
+	 *
+	 * The last line could not be performed if the values of the generated enum were
+	 * not equal to their keys.
+	 *
+	 *   Input:  {key1: val1, key2: val2}
+	 *   Output: {key1: key1, key2: key2}
+	 *
+	 * @param {object} obj
+	 * @return {object}
+	 */
+	var keyMirror = function(obj) {
+	  var ret = {};
+	  var key;
+	  ("production" !== process.env.NODE_ENV ? invariant(
+	    obj instanceof Object && !Array.isArray(obj),
+	    'keyMirror(...): Argument must be an object.'
+	  ) : invariant(obj instanceof Object && !Array.isArray(obj)));
+	  for (key in obj) {
+	    if (!obj.hasOwnProperty(key)) {
+	      continue;
+	    }
+	    ret[key] = key;
+	  }
+	  return ret;
+	};
+
+	module.exports = keyMirror;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(45)))
+
+/***/ },
 /* 33 */,
 /* 34 */,
 /* 35 */,
@@ -918,67 +985,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 39 */,
 /* 40 */,
 /* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule keyMirror
-	 * @typechecks static-only
-	 */
-
-	"use strict";
-
-	var invariant = __webpack_require__(52);
-
-	/**
-	 * Constructs an enumeration with keys equal to their value.
-	 *
-	 * For example:
-	 *
-	 *   var COLORS = keyMirror({blue: null, red: null});
-	 *   var myColor = COLORS.blue;
-	 *   var isColorValid = !!COLORS[myColor];
-	 *
-	 * The last line could not be performed if the values of the generated enum were
-	 * not equal to their keys.
-	 *
-	 *   Input:  {key1: val1, key2: val2}
-	 *   Output: {key1: key1, key2: key2}
-	 *
-	 * @param {object} obj
-	 * @return {object}
-	 */
-	var keyMirror = function(obj) {
-	  var ret = {};
-	  var key;
-	  ("production" !== process.env.NODE_ENV ? invariant(
-	    obj instanceof Object && !Array.isArray(obj),
-	    'keyMirror(...): Argument must be an object.'
-	  ) : invariant(obj instanceof Object && !Array.isArray(obj)));
-	  for (key in obj) {
-	    if (!obj.hasOwnProperty(key)) {
-	      continue;
-	    }
-	    ret[key] = key;
-	  }
-	  return ret;
-	};
-
-	module.exports = keyMirror;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
-
-/***/ },
-/* 45 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -1437,12 +1444,68 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */
+/* 43 */,
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule invariant
+	 */
+
+	"use strict";
+
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+
+	var invariant = function(condition, format, a, b, c, d, e, f) {
+	  if ("production" !== process.env.NODE_ENV) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error(
+	        'Minified exception occurred; use the non-minified dev environment ' +
+	        'for the full error message and additional helpful warnings.'
+	      );
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(
+	        'Invariant Violation: ' +
+	        format.replace(/%s/g, function() { return args[argIndex++]; })
+	      );
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+
+	module.exports = invariant;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(45)))
+
+/***/ },
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// shim for using process in browser
@@ -1532,66 +1595,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new Error('process.chdir is not supported');
 	};
 
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
-	 */
-
-	"use strict";
-
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-
-	var invariant = function(condition, format, a, b, c, d, e, f) {
-	  if ("production" !== process.env.NODE_ENV) {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  }
-
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error(
-	        'Minified exception occurred; use the non-minified dev environment ' +
-	        'for the full error message and additional helpful warnings.'
-	      );
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error(
-	        'Invariant Violation: ' +
-	        format.replace(/%s/g, function() { return args[argIndex++]; })
-	      );
-	    }
-
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	};
-
-	module.exports = invariant;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
 
 /***/ }
 /******/ ])
