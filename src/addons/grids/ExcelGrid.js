@@ -1,11 +1,11 @@
 /* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
  */
 "use strict";
 
-var React                 = require('react/addons');
+var React                 = require('react');
 var PropTypes             = React.PropTypes;
 var BaseGrid              = require('../../Grid');
 var ExcelCell             = require('../cells/ExcelCell');
@@ -20,7 +20,6 @@ var FilterableGridMixin   = require('./mixins/FilterableGridMixin');
 var CheckboxEditor        = require('../editors/CheckboxEditor');
 var MixinHelper           = require('../utils/MixinHelper');
 
-var cloneWithProps = React.addons.cloneWithProps;
 
 var ExcelGrid = React.createClass({
 
