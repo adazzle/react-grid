@@ -1,7 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 

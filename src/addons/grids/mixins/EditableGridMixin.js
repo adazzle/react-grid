@@ -1,7 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 "use strict";
 
@@ -15,7 +16,7 @@ var EditableGridMixin = {
     onRowUpdated : React.PropTypes.func
   },
 
-  onCellCommit(commit){
+  onCellCommit(commit: {keyCode: string | number}){
     var selected = this.state.selected;
     selected.active = false;
     if(commit.keyCode === 'Tab'){
@@ -25,7 +26,7 @@ var EditableGridMixin = {
     this.props.onRowUpdate(commit);
   },
 
-  onSetActive(activeCell) {
+  onSetActive(activeCell: any) {
     var selected = merge(this.state.selected, activeCell);
     this.setState({selected: selected});
   }

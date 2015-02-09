@@ -1,7 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 
@@ -16,11 +17,11 @@ var SelectableCell = React.createClass({
 
   mixins : [SelectableMixin],
 
-  getCellClass : function(){
+  getCellClass : function(): ?string{
     return this.isSelected() ? 'selected' : null;
   },
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: any, nextState: any): boolean {
     return this.props.column.width !== nextProps.column.width
     || this.props.value !== nextProps.value
     || this.props.height !== nextProps.height
@@ -28,7 +29,7 @@ var SelectableCell = React.createClass({
     || this.isCellSelectionChanging(nextProps);
   },
 
-  render: function() {
+  render: function(): ?ReactElement {
     return (
       <BaseCell
         {...this.props}

@@ -1,7 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 
@@ -12,12 +13,15 @@ var EditorMixin             = require('./mixins/EditorMixin');
 var TextInputMixin          = require('./mixins/TextInputMixin');
 var keyboardHandlerMixin    = require('../cells/mixins/KeyboardHandlerMixin');
 var DateRangeFilter         = require('./widgets/DateRangeFilter');
+var Moment                  = require('moment');
+
+type DateRangeValue = { startDate: Date; endDate: Date};
 
 var DateRangeEditor = React.createClass({
 
   mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
 
-  getDefaultProps(){
+  getDefaultProps(): {format: string; ranges: Array<Date>}{
     return {
       format   : "YYYY-MM-DD",
       ranges   : []
@@ -30,10 +34,10 @@ var DateRangeEditor = React.createClass({
       checkFocus : function(){
           this.setTextInputFocus();
       },
-      getInputNode(){
+      getInputNode(): HTMLElement{
         return this.refs.datepicker.getDOMNode();
       },
-      getValue(){
+      getValue(): DateRangeValue{
         var dateToParse = this.getInputNode().value;
         var dateRanges = dateToParse.split(this.rangeSeparatorChar);
         if(dateRanges.length !== 2){
@@ -43,22 +47,22 @@ var DateRangeEditor = React.createClass({
       }
   },
 
-  isDateValid(date){
-    return moment(date, this.props.format, true).isValid();
+  isDateValid(date: Date): boolean{
+    return Moment(date, this.props.format, true).isValid();
   },
 
-  validate(value){
+  validate(value: DateRangeValue): boolean{
     return this.isDateValid(value.startDate)
     && this.isDateValid(value.endDate)
-    && (moment(value.startDate, this.props.format).isBefore(value.endDate)
-    || moment(value.startDate, this.props.format).isSame(value.endDate));
+    && (Moment(value.startDate, this.props.format).isBefore(value.endDate)
+    || Moment(value.startDate, this.props.format).isSame(value.endDate));
   },
 
-  handleDateFilterApply(startDate, endDate){
+  handleDateFilterApply(startDate: string, endDate: string){
     this.commit({value : {startDate : startDate, endDate : endDate}});
   },
 
-  renderEditorNode(){
+  renderEditorNode(): ?ReactElement{
     return (
       <div style={this.getStyle()} onKeyDown={this.onKeyDown}>
         <DateRangeFilter ref="datepicker" onApply={this.handleDateFilterApply}  format={this.props.format} ranges={this.props.ranges} startDate={this.props.value.startDate} endDate={this.props.value.endDate} />

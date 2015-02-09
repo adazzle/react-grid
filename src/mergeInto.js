@@ -15,7 +15,7 @@
  *
  * @providesModule mergeInto
  * @typechecks static-only
- * @flow
+
  */
 
 "use strict";

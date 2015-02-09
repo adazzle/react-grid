@@ -1,7 +1,8 @@
+/* TODO@flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 var React                   = require('react/addons');
@@ -14,29 +15,29 @@ var EditorMixin = {
     onCommit : React.PropTypes.func.isRequired
   },
 
-  getStyle(){
+  getStyle(): { height: number} {
     return {
       height : this.props.height - 1
     }
   },
 
-  getInitialState(){
+  getInitialState(): {isInvalid: boolean }{
     return {isInvalid : false}
   },
 
-  onPressEnter(e){
+  onPressEnter(e: Event){
     e.stopPropagation();
     e.preventDefault();
     this.commit({key : 'Enter'});
   },
 
-  onPressTab(e){
+  onPressTab(e: Event){
     e.stopPropagation();
     e.preventDefault();
     this.commit({key : 'Tab'});
   },
 
-  commit(args){
+  commit(args: {key: string}){
     var value = this.getValue();
     var rowDataChanged = {};
     rowDataChanged[this.props.column.key] = value;
@@ -45,7 +46,7 @@ var EditorMixin = {
     }
   },
 
-  isNewValueValid(value){
+  isNewValueValid(value: string): boolean{
     if(isFunction(this.validate)){
       var isValid = this.validate(value);
       this.setState({isInvalid : !isValid});
@@ -55,11 +56,11 @@ var EditorMixin = {
     }
   },
 
-  getValue(){
+  getValue(): string{
       return this.getInputNode().value;
   },
 
-  setValue(value){
+  setValue(value: string){
       this.getInputNode().value = value;
   },
 
@@ -74,23 +75,23 @@ var EditorMixin = {
     this.getInputNode().focus();
   },
 
-  getInputNode(){
+  getInputNode(): HTMLElement{
     return this.getDOMNode().getElementsByTagName("input")[0];
   },
 
-  getContainerClass(){
+  getContainerClass(): string{
     return cx({
       'has-error' : this.state.isInvalid === true
     })
   },
 
-  renderStatusIcon(){
+  renderStatusIcon(): ?ReactElement{
     if(this.state.isInvalid === true){
       return <span className="glyphicon glyphicon-remove form-control-feedback"></span>
     }
   },
 
-  render(){
+  render(): ?ReactElement{
     if(!isFunction(this.renderEditorNode)){
         throw "Editor Mixin Error : " + this.displayName + " component must implement method renderEditorNode";
     }

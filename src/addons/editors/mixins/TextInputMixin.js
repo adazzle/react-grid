@@ -1,23 +1,24 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 
 var TextInputMixin = {
 
-  onPressArrowLeft(e){
+  onPressArrowLeft(e: Event){
     //prevent event propogation. this disables left cell navigation
     e.stopPropagation();
   },
 
-  onPressArrowRight(e){
+  onPressArrowRight(e: Event){
     //prevent event propogation. this disables right cell navigation
     e.stopPropagation();
   },
 
-  getDefaultValue(){
+  getDefaultValue(): string{
     var keyCode = this.props.initialKeyCode;
     if(keyCode === 'Delete' || keyCode === 'Backspace'){
       return '';
@@ -38,7 +39,7 @@ var TextInputMixin = {
       input.setSelectionRange(txtLength, txtLength);
     }else if(input.createTextRange){
       var fieldRange = input.createTextRange();
-      fieldRange.moveStart('character', txt.value.length);
+      fieldRange.moveStart('character', input.value.length);
       fieldRange.collapse();
       fieldRange.select();
     }

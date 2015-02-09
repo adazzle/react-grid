@@ -1,7 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 
@@ -22,30 +23,30 @@ var cloneWithProps       = React.addons.cloneWithProps;
 
 var CellControls = React.createClass({
 
-  onClickEdit : function(e){
+  onClickEdit : function(e: Event){
     e.stopPropagation();
     e.preventDefault();
     this.props.onClickEdit();
   },
 
-  onShowMore : function(e){
+  onShowMore : function(e: Event){
     e.stopPropagation();
     e.preventDefault();
     var newHeight = this.props.column.getExpandedHeight(this.props.value);
     this.props.onShowMore(this.props.rowIdx, newHeight);
   },
 
-  onShowLess : function(e){
+  onShowLess : function(e: Event){
     e.stopPropagation();
     e.preventDefault();
     this.props.onShowLess(this.props.rowIdx);
   },
 
-  shouldComponentUpdate(nextProps, nextState){
+  shouldComponentUpdate(nextProps: any, nextState: any){
     return this.props.height != nextProps.height;
   },
 
-  renderShowMoreButton(){
+  renderShowMoreButton(): ?ReactElement {
     if(isFunction(this.props.column.getExpandedHeight) && this.props.column.getExpandedHeight(this.props.value) > 0){
       var newHeight = this.props.column.getExpandedHeight(this.props.value);
       if(newHeight > this.props.height){
@@ -58,7 +59,7 @@ var CellControls = React.createClass({
     }
   },
 
-  render : function(){
+  render : function(): ?ReactElement {
     return (<div className="pull-right btn-group">
               {this.renderShowMoreButton}
               <button onClick={this.onClickEdit} type="button" className="btn btn-link btn-xs">Edit</button>
@@ -73,7 +74,7 @@ var ExcelCell = React.createClass({
   mixins : [EditableMixin, CopyableMixin, DraggableMixin],
 
   overrides : {
-    getCellClass : function(){
+    getCellClass : function(): string{
       return cx({
         'selected' : this.isSelected() && !this.isCopied() && !this.isActive(),
         'editing' : this.isActive(),
@@ -87,11 +88,11 @@ var ExcelCell = React.createClass({
     }
   },
 
-  isActiveDragCell : function(){
+  isActiveDragCell : function(): boolean{
     return (this.isSelected() || this.isDraggedOver()) && !this.isActive();
   },
 
-  isExpanded : function(){
+  isExpanded : function(): boolean{
     var isExpanded = false;
     if(isFunction(this.props.column.getExpandedHeight) && this.props.column.getExpandedHeight(this.props.value) > 0){
       var newHeight = this.props.column.getExpandedHeight(this.props.value);
@@ -105,7 +106,7 @@ var ExcelCell = React.createClass({
   },
 
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: any, nextState: any): boolean {
     return this.props.column.width !== nextProps.column.width
     || this.props.value !== nextProps.value
     || this.props.height !== nextProps.height
@@ -115,7 +116,7 @@ var ExcelCell = React.createClass({
   },
 
 
-  render: function() {
+  render: function(): ?ReactElement {
     return (
       <BaseCell
         {...this.props}

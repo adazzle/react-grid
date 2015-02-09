@@ -1,7 +1,6 @@
+/* TODO@flow */
 /**
  * @jsx React.DOM
- 
- * @flow
  */
 'use strict';
 
@@ -30,20 +29,20 @@ var AutoCompleteEditor = React.createClass({
       checkFocus : function(){
           this.setTextInputFocus();
       },
-      getInputNode(){
+      getInputNode(): HTMLElement {
         return this.getSearchComponent().getDOMNode();
       },
-      onPressEnter(args){
+      onPressEnter(args: any){
         var e = args[0];
         this.handleEnter(e);
       },
-      onPressTab(args){
+      onPressTab(args: any){
         var e = args[0];
         this.handleTab(e);
       }
   },
 
-  handleTab(e){
+  handleTab(e: ReactEvent){
     e.stopPropagation();
     e.preventDefault();
     if(!this.isFocusedOnSuggestion()){
@@ -53,7 +52,7 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  handleEnter(e){
+  handleEnter(e: ReactEvent){
     e.stopPropagation();
     e.preventDefault();
     if(!this.isFocusedOnSuggestion()){
@@ -61,31 +60,31 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  getSearchComponent(){
+  getSearchComponent(): ?ReactElement{
     return this.refs.autoComplete.refs.search;
   },
 
-  isFocusedOnSuggestion(){
+  isFocusedOnSuggestion(): boolean{
     var autoComplete = this.refs.autoComplete;
     return autoComplete.state.focusedValue != null;
   },
 
-  getFocusedSuggestion(){
+  getFocusedSuggestion(): string{
     return this.refs.autoComplete.state.focusedValue;
   },
 
-  onPressArrowDown(e){
+  onPressArrowDown(e: ReactEvent){
     //prevent event propogation. this disables downwards cell navigation
     e.stopPropagation();
     e.preventDefault();
   },
 
-  onPressArrowUp(e){
+  onPressArrowUp(e: ReactEvent){
     //prevent event propogation. this disables upwards cell navigation
     e.stopPropagation();
   },
 
-  getLabel(result) {
+  getLabel(result: string | Array<{[key:string]: string }>): string {
     var label = this.props.label != null ? this.props.label : 'title';
     if (typeof label === "function") {
       return label(result);
@@ -94,7 +93,7 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  handleChange(item, key){
+  handleChange(item: key, key: string) {
     var rowDataChanged = {};
     var value = this.props.value;
     if(item!=null){
@@ -108,7 +107,7 @@ var AutoCompleteEditor = React.createClass({
     this.props.onCommit({value : value, key : key, rowDataChanged : rowDataChanged});
   },
 
-  constuctValueFromParams(obj, props) {
+  constuctValueFromParams(obj: any, props: Array<any>): string {
     var ret = [];
     for (var i = 0, ii = props.length; i < ii; i++) {
       ret.push(obj[props[i]]);
@@ -116,7 +115,7 @@ var AutoCompleteEditor = React.createClass({
     return ret.join('|');
   },
 
-  renderEditorNode(){
+  renderEditorNode(): ?ReactElement {
     var val = {title : this.getDefaultValue()};
     var label = this.props.label != null ? this.props.label : 'title';
     return (<div style={this.getStyle()} onKeyDown={this.onKeyDown}>

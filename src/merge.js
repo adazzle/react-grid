@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * @providesModule merge
- * @flow
+
  */
 
 "use strict";

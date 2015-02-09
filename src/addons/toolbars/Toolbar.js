@@ -1,7 +1,7 @@
+/* @flow */
 /**
 * @jsx React.DOM
 
-* @flow
 */
 'use strict';
 
@@ -14,7 +14,7 @@ var Toolbar = React.createClass({
     }
   },
 
-  render(){
+  render(): ?ReactElement{
     return (
       <div className="react-grid-Toolbar">
         <div className="tools">

@@ -1,7 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 
@@ -17,7 +18,7 @@ var DropDownEditor = React.createClass({
   mixins : [keyboardHandlerMixin, EditorMixin],
 
   overrides : {
-    getInputNode : function(){
+    getInputNode : function(): HTMLElement {
       return this.refs.select.getDOMNode();
     }
   },
@@ -26,14 +27,14 @@ var DropDownEditor = React.createClass({
     options : React.PropTypes.array.isRequired
   },
 
-  renderEditorNode(){
+  renderEditorNode(): ?ReactElement{
     return (
       <select ref="select" style={this.getStyle()} defaultValue={this.props.value} onChange={this.onChange} >
         {this.renderOptions()}
       </select>);
   },
 
-  renderOptions(){
+  renderOptions(): Array<ReactElement>{
     var options = [];
     this.props.options.forEach(function(name){
       options.push(<option key={name} value={name}  >{name}</option>);
@@ -42,11 +43,11 @@ var DropDownEditor = React.createClass({
   },
 
 
-  onChange(e){
+  onChange(e: Event){
     this.props.onCommit({value : e.currentTarget.value});
   },
 
-  onClick(e){
+  onClick(e: Event){
     e.stopPropagation();
     e.preventDefault();
   }

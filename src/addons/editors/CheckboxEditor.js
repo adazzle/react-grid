@@ -1,7 +1,6 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
  */
 'use strict';
 
@@ -15,15 +14,15 @@ var CheckBoxEditor = React.createClass({
     value : React.PropTypes.bool.isRequired
   },
 
-  render(){
+  render(): ?ReactElement{
     return (<input className="react-grid-CheckBox" type="checkbox" checked={this.props.value} onChange={this.handleChange} />);
   },
 
-  handleChange(e){
+  handleChange(e: Event){
     this.props.column.onRowSelect(this.props.rowIdx)
   },
 
-  shouldComponentUpdate(nextProps, nextState){
+  shouldComponentUpdate(nextProps: any, nextState: any): boolean{
     return this.props.value != nextProps.value;
   }
 

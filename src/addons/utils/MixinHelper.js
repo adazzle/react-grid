@@ -1,4 +1,4 @@
-/* @flow */
+/* TODO@flow */
 "use strict";
 
 var keyMirror  = require('react/lib/keyMirror');

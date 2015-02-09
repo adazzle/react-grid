@@ -1,7 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 
@@ -21,14 +22,14 @@ var EditableCell = React.createClass({
 
   mixins : [EditableMixin],
 
-  getCellClass : function(){
+  getCellClass : function(): string{
       return cx({
       'editing' : this.isActive(),
       'selected' : this.isSelected() && !this.isActive()
       });
   },
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: any, nextState: any): boolean {
     return this.props.column.width !== nextProps.column.width
     || this.props.value !== nextProps.value
     || this.props.height !== nextProps.height
@@ -36,7 +37,7 @@ var EditableCell = React.createClass({
     || this.isCellSelectionChanging(nextProps);
   },
 
-  render: function() {
+  render: function(): ?ReactElement {
     return (
       <BaseCell
         {...this.props}

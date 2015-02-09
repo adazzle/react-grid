@@ -1,7 +1,8 @@
+/* TODO@flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 
@@ -10,22 +11,22 @@ var cx             = React.addons.classSet;
 
 var FilterableHeaderCell = React.createClass({
 
-  getInitialState(){
+  getInitialState(): {filterTerm: string}{
     return {filterTerm : ''}
   },
 
-  handleChange(e){
+  handleChange(e: Event){
     e.preventDefault();
     e.stopPropagation();
     this.setState({filterTerm : e.currentTarget.value});
     this.props.onChange({filterTerm : e.currentTarget.value, columnKey : this.props.column.key});
   },
 
-  componentDidUpdate(){
+  componentDidUpdate(): boolean{
     this.getDOMNode().focus();
   },
 
-  render: function() {
+  render: function(): ?ReactElement {
     return (
       <div>
         <div className="form-group">
@@ -35,7 +36,7 @@ var FilterableHeaderCell = React.createClass({
     );
   },
 
-  renderInput : function(){
+  renderInput : function(): ?ReactElement {
     if(this.props.column.filterable === false){
       return <span/>;
     }else{

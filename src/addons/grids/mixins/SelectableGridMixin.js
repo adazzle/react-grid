@@ -1,23 +1,21 @@
-/**
- * @jsx React.DOM
- 
- * @flow
- */
+/* @flow */
 "use strict";
+var ExcelRow = require('../../rows/ExcelRow');
 
+type selectedType = {rowIdx: number; idx: number }
 var SelectableGridMixin = {
 
-  getDefaultProps() {
+  getDefaultProps(): {enableCellSelect: boolean} {
     return {
       enableCellSelect : false,
     };
   },
 
-  getColumns : function(){
+  getColumns : function(): Array<ExcelColumn> {
     return this.props.columns
   },
 
-  getInitialState: function() {
+  getInitialState: function(): {selected: selectedType } {
     if(this.props.enableCellSelect){
       return {selected: {rowIdx: 0, idx: 0}};
     }else{
@@ -25,7 +23,7 @@ var SelectableGridMixin = {
     }
   },
 
-  onSelect: function(selected) {
+  onSelect: function(selected: selectedType) {
     if(this.props.enableCellSelect){
       var idx = selected.idx;
       var rowIdx = selected.rowIdx;

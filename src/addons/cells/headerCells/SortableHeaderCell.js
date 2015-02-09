@@ -1,7 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 
@@ -25,7 +26,7 @@ var SortableHeaderCell = React.createClass({
     });
   },
 
-  render: function() {
+  render: function(): ?ReactElement {
 
     return (
       <div

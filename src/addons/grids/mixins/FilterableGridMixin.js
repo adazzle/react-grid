@@ -1,21 +1,23 @@
+/* TODO@flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 "use strict";
 
 var React               = require('react/addons');
 var PropTypes           = React.PropTypes;
 var FilterableHeaderCell = require('../../cells/headerCells/FilterableHeaderCell');
+var ExcelRow = require('../../rows/ExcelRow');
 
 var FilterableGridMixin = {
 
-  getInitialState : function(){
+  getInitialState : function(): {canFilter: boolean; columnFilters: any}{
     return {canFilter : false, columnFilters : {}};
   },
 
-  filterRows(){
+  filterRows(): Array<ExcelRow>{
       var rows = this.props.rows;
       if(this.state.sortColumn){
         rows = this.sortRows(rows);
@@ -30,7 +32,7 @@ var FilterableGridMixin = {
       return rows;
     },
 
-    hasFilters(){
+    hasFilters(): boolean{
       var hasFilters = false;
       Object.keys(this.state.columnFilters).every(function(key){
         var filter = this.state.columnFilters[key];
@@ -43,7 +45,7 @@ var FilterableGridMixin = {
       return hasFilters;
     },
 
-    isRowDisplayed(row){
+    isRowDisplayed(row: ExcelRow): boolean{
       var isRowDisplayed = null;
       Object.keys(this.state.columnFilters).every(function(key){
         var filter = this.state.columnFilters[key].toLowerCase();
@@ -65,13 +67,13 @@ var FilterableGridMixin = {
       this.setState({canFilter : !this.state.canFilter});
     },
 
-    handleAddFilter(filter){
+    handleAddFilter(filter: {columnKey: string; filterTerm: string }){
       var columnFilters = this.state.columnFilters;
       columnFilters[filter.columnKey] = filter.filterTerm;
       this.setState({columnFilters : columnFilters, selected : null});
     },
 
-    getHeaderRows(){
+    getHeaderRows(): Array<ReactElement> {
       var rows = [{ref:"row", height: this.props.rowHeight}];
       if(this.state.canFilter === true){
         rows.push({ref:"filterRow", headerCellRenderer : <FilterableHeaderCell onChange={this.handleAddFilter}/>, height : 45});
@@ -79,7 +81,7 @@ var FilterableGridMixin = {
       return rows;
     },
 
-    getRowOffsetHeight(){
+    getRowOffsetHeight(): number{
       var offsetHeight = 0;
       this.getHeaderRows().forEach((row) => offsetHeight += row.height );
       return offsetHeight;

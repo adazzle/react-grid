@@ -1,7 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 'use strict';
 
@@ -11,7 +12,7 @@ var BaseRow       = require('../../Row');
 var ColumnMetrics = require('../../ColumnMetrics');
 var ExcelRow = React.createClass({
 
-  render() {
+  render(): ?ReactElement {
     var row = React.addons.update(this.props.row,  {$merge : {'select-row' : this.props.isSelected}});
 
     return (
@@ -22,7 +23,7 @@ var ExcelRow = React.createClass({
       );
   },
 
-  getRowHeight(props){
+  getRowHeight(props: any): number | ReactElement{
     if(props.expandedRows && props.expandedRows[props.key]){
       return props.expandedRows[props.key];
     }else{
@@ -30,7 +31,7 @@ var ExcelRow = React.createClass({
     }
   },
 
-  hasRowHeightChanged(props){
+  hasRowHeightChanged(props: any): boolean{
     if(props.expandedRows){
       if(typeof props.expandedRows[props.key] !== 'undefined'){
         return this.props.height !== props.expandedRows[props.key]
@@ -42,7 +43,7 @@ var ExcelRow = React.createClass({
     }
   },
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: any): boolean {
     return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
       this.doesRowContainSelectedCell()          ||
       this.doesRowContainSelectedCell(nextProps) ||
@@ -52,7 +53,7 @@ var ExcelRow = React.createClass({
       this.hasRowHeightChanged(nextProps);
   },
 
-  doesRowContainSelectedCell(propsToCheck){
+  doesRowContainSelectedCell(propsToCheck: any = this.props): boolean{
     var props = propsToCheck || this.props;
     var cell = cell || props.cellRenderer;
     if(cell.props && cell.props.selected && cell.props.selected.rowIdx === props.idx){
@@ -62,7 +63,7 @@ var ExcelRow = React.createClass({
     }
   },
 
-  willRowBeDraggedOver(props){
+  willRowBeDraggedOver(props: any): boolean{
     if(props.cellRenderer.props){
       var dragged = props.cellRenderer.props.dragged;
       return  dragged != null && (dragged.rowIdx || dragged.complete === true);
@@ -72,7 +73,7 @@ var ExcelRow = React.createClass({
 
   },
 
-  hasRowBeenCopied(){
+  hasRowBeenCopied(): boolean{
     if(this.props.cellRenderer.props){
       var cell = this.props.cellRenderer;
       return cell.props.copied != null && cell.props.copied.rowIdx === this.props.idx;
@@ -82,7 +83,7 @@ var ExcelRow = React.createClass({
 
   },
 
-  setScrollLeft(scrollLeft) {
+  setScrollLeft(scrollLeft: number) {
     for (var i = 0, len = this.props.columns.length; i < len; i++) {
       if (this.props.columns[i].locked) {
         this.refs[i].setScrollLeft(scrollLeft);

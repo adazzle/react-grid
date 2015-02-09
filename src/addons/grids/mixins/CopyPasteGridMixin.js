@@ -1,7 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
- * @flow
+
+
  */
 "use strict";
 
@@ -14,12 +15,12 @@ var CopyPasteGridMixin = {
     onCellCopyPaste : React.PropTypes.func
   },
 
-  getInitialState: function() {
+  getInitialState: function(): any {
     return {copied : null};
   },
 
 
-  handleCopy(args){
+  handleCopy(args: {value: string}){
     var textToCopy = args.value;
     var selected = this.state.selected;
     var copied = {idx : selected.idx, rowIdx : selected.rowIdx};
