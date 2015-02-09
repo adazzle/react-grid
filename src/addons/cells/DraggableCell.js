@@ -19,7 +19,7 @@ var DraggableCell = React.createClass({
 
 
   propTypes : {
-    handleDragEnd : React.PropTypes.func.isRequired
+    handleDragEnd : React.PropTypes.func
   },
   mixins : [DraggableMixin],
 

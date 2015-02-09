@@ -89,7 +89,7 @@ var ExcelCell = React.createClass({
     column : React.PropTypes.shape(ExcelColumn).isRequired,
     value : React.PropTypes.any.isRequired,
     height : React.PropTypes.number.isRequired,
-    handleDragEnd : React.PropTypes.func.isRequired,
+    handleDragEnd : React.PropTypes.func,
     onShowMore : React.PropTypes.func,
     onShowLess : React.PropTypes.func,
     onCommit: React.PropTypes.func.isRequired

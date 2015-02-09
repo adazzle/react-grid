@@ -11,6 +11,15 @@ var cx             = React.addons.classSet;
 var BaseRow       = require('../../Row');
 var ColumnMetrics = require('../../ColumnMetrics');
 var ExcelColumn = require('../grids/ExcelColumn');
+
+type cellProps = {
+  props: {
+    selected: {rowIdx: number};
+    dragged: {complete: bool; rowIdx: number};
+    copied: { rowIdx: number};
+  }
+};
+
 var ExcelRow = React.createClass({
   propTypes: {
     row : React.PropTypes.shape(ExcelRow).isRequired,
@@ -63,34 +72,35 @@ var ExcelRow = React.createClass({
       this.doesRowContainSelectedCell(this.props)          ||
       this.doesRowContainSelectedCell(nextProps) ||
       this.willRowBeDraggedOver(nextProps)       ||
-      this.hasRowBeenCopied()                    ||
+      this.hasRowBeenCopied(this.props)          ||
+      this.hasRowBeenCopied(nextProps)           ||
       nextProps.row !== this.props.row           ||
       this.hasRowHeightChanged(nextProps);
   },
 
-  doesRowContainSelectedCell(props: {cellRenderer: {props: {selected: bool; rowIdx: number}}}): boolean{
+  doesRowContainSelectedCell(props: {cellRenderer: cellProps}): boolean{
     var cell = props.cellRenderer;
-    if(cell.props && cell.props.selected && cell.props.selected.rowIdx === props.idx){
+    if(cell.props && cell.props.selected && cell.props.selected.rowIdx === this.props.idx){
       return true;
     }else{
       return false;
     }
   },
 
-  willRowBeDraggedOver(props: {cellRenderer: {props: {dragged: bool; rowIdx: number}}}): boolean{
+  willRowBeDraggedOver(props: {cellRenderer: cellProps}): boolean{
     if(props.cellRenderer.props){
       var dragged = props.cellRenderer.props.dragged;
-      return  dragged != null && (dragged.rowIdx || dragged.complete === true);
+      return  dragged != null && (dragged.rowIdx != null || dragged.complete === true);
     }else{
       return false;
     }
 
   },
 
-  hasRowBeenCopied(): boolean{
+  hasRowBeenCopied(props: {cellRenderer: cellProps}): boolean{
     if(this.props.cellRenderer.props){
       var cell = this.props.cellRenderer;
-      return cell.props.copied != null && cell.props.copied.rowIdx === this.props.idx;
+      return cell.props.copied && cell.props.copied.rowIdx === this.props.idx;
     }else{
       return false;
     }

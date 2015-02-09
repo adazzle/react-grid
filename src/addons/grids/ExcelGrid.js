@@ -179,6 +179,7 @@ var ExcelGrid = React.createClass({
         value={props.value}
 
         {...cellRenderCtx}
+        onCommit={cellRenderCtx.onCommit}
         />
     );
   });
