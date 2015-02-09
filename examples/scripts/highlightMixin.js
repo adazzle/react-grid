@@ -1,3 +1,5 @@
+/* TODO@flow */
+
 module.exports = {
   componentDidMount : function(){
     this.highlight();

@@ -45,7 +45,7 @@ var ExcelRow = React.createClass({
 
   shouldComponentUpdate(nextProps: any): boolean {
     return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
-      this.doesRowContainSelectedCell()          ||
+      this.doesRowContainSelectedCell(this.props)          ||
       this.doesRowContainSelectedCell(nextProps) ||
       this.willRowBeDraggedOver(nextProps)       ||
       this.hasRowBeenCopied()                    ||
@@ -53,9 +53,8 @@ var ExcelRow = React.createClass({
       this.hasRowHeightChanged(nextProps);
   },
 
-  doesRowContainSelectedCell(propsToCheck: ?any = null): boolean{
-    var props = propsToCheck || this.props;
-    var cell = cell || props.cellRenderer;
+  doesRowContainSelectedCell(props: any): boolean{
+    var cell = props.cellRenderer;
     if(cell.props && cell.props.selected && cell.props.selected.rowIdx === props.idx){
       return true;
     }else{

@@ -1,7 +1,10 @@
+/* @flow */
 /**
  * @jsx React.DOM
  */
-(function(){
+(function(root: any){
+  var React = require('react/addons');
+  var ReactGrid = require('../build/ReactGrid');
   var Grid                = ReactGrid.Grid;
   var Editors             = ReactGrid.GridAddons.Editors;
   var Toolbar             = ReactGrid.GridAddons.Toolbar;
@@ -104,7 +107,7 @@
         var rows = React.addons.update(this.state.rows, {$push : [newRow]});
         this.setState({rows : rows});
     },
-    render: function() {
+    render: function(): ?ReactElement {
       return (
             <Grid
               enableCellSelect={true}
@@ -122,8 +125,8 @@
   if(typeof module !== 'undefined' && module.exports){
     module.exports = Component;
   }else{
-    this.ExcelGrid = Component;
+    root.ExcelGrid = Component;
   }
 
 
-}).call(this);
+})(this);

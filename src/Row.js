@@ -1,6 +1,6 @@
 /**
  * @jsx React.DOM
- 
+
 
  */
 'use strict';
@@ -92,11 +92,11 @@ var Row = React.createClass({
 
   shouldComponentUpdate(nextProps) {
     return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
-      this.doesRowContainSelectedCell()          ||
-      this.doesRowContainSelectedCell(nextProps) ||
-      this.willRowBeDraggedOver(nextProps)       ||
-      this.hasRowBeenCopied()                    ||
-      nextProps.row !== this.props.row           ||
+      this.doesRowContainSelectedCell(this.props) ||
+      this.doesRowContainSelectedCell(nextProps)  ||
+      this.willRowBeDraggedOver(nextProps)        ||
+      this.hasRowBeenCopied()                     ||
+      nextProps.row !== this.props.row            ||
       nextProps.height !== this.props.height;
   },
 

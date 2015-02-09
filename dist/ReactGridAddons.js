@@ -54,6 +54,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* @flow */
 	module.exports = {
 	  Editors    : __webpack_require__(7),
 	  Formatters : __webpack_require__(8),
@@ -73,9 +74,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* @flow */
 	/**
 	* @jsx React.DOM
-	
+
 	*/
 	'use strict';
 
@@ -88,7 +90,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
-	  render:function(){
+	  render:function()               {
 	    return (
 	      React.createElement("div", {className: "react-grid-Toolbar"}, 
 	        React.createElement("div", {className: "tools"}, 
@@ -110,9 +112,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* TODO@flow */
 	/**
 	 * @jsx React.DOM
-	 
+
+
 	 */
 	'use strict';
 	var React                   = __webpack_require__(10);
@@ -125,29 +129,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    onCommit : React.PropTypes.func.isRequired
 	  },
 
-	  getStyle:function(){
+	  getStyle:function()                    {
 	    return {
 	      height : this.props.height - 1
 	    }
 	  },
 
-	  getInitialState:function(){
+	  getInitialState:function()                       {
 	    return {isInvalid : false}
 	  },
 
-	  onPressEnter:function(e){
+	  onPressEnter:function(e       ){
 	    e.stopPropagation();
 	    e.preventDefault();
 	    this.commit({key : 'Enter'});
 	  },
 
-	  onPressTab:function(e){
+	  onPressTab:function(e       ){
 	    e.stopPropagation();
 	    e.preventDefault();
 	    this.commit({key : 'Tab'});
 	  },
 
-	  commit:function(args){
+	  commit:function(args               ){
 	    var value = this.getValue();
 	    var rowDataChanged = {};
 	    rowDataChanged[this.props.column.key] = value;
@@ -156,7 +160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
-	  isNewValueValid:function(value){
+	  isNewValueValid:function(value        )         {
 	    if(isFunction(this.validate)){
 	      var isValid = this.validate(value);
 	      this.setState({isInvalid : !isValid});
@@ -166,11 +170,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
-	  getValue:function(){
+	  getValue:function()        {
 	      return this.getInputNode().value;
 	  },
 
-	  setValue:function(value){
+	  setValue:function(value        ){
 	      this.getInputNode().value = value;
 	  },
 
@@ -185,23 +189,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.getInputNode().focus();
 	  },
 
-	  getInputNode:function(){
+	  getInputNode:function()             {
 	    return this.getDOMNode().getElementsByTagName("input")[0];
 	  },
 
-	  getContainerClass:function(){
+	  getContainerClass:function()        {
 	    return cx({
 	      'has-error' : this.state.isInvalid === true
 	    })
 	  },
 
-	  renderStatusIcon:function(){
+	  renderStatusIcon:function()               {
 	    if(this.state.isInvalid === true){
 	      return React.createElement("span", {className: "glyphicon glyphicon-remove form-control-feedback"})
 	    }
 	  },
 
-	  render:function(){
+	  render:function()               {
 	    if(!isFunction(this.renderEditorNode)){
 	        throw "Editor Mixin Error : " + this.displayName + " component must implement method renderEditorNode";
 	    }
@@ -222,25 +226,27 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* TODO@flow */
 	/**
 	 * @jsx React.DOM
-	 
+
+
 	 */
 	'use strict';
 
 	var TextInputMixin = {
 
-	  onPressArrowLeft:function(e){
+	  onPressArrowLeft:function(e       ){
 	    //prevent event propogation. this disables left cell navigation
 	    e.stopPropagation();
 	  },
 
-	  onPressArrowRight:function(e){
+	  onPressArrowRight:function(e       ){
 	    //prevent event propogation. this disables right cell navigation
 	    e.stopPropagation();
 	  },
 
-	  getDefaultValue:function(){
+	  getDefaultValue:function()        {
 	    var keyCode = this.props.initialKeyCode;
 	    if(keyCode === 'Delete' || keyCode === 'Backspace'){
 	      return '';
@@ -261,7 +267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      input.setSelectionRange(txtLength, txtLength);
 	    }else if(input.createTextRange){
 	      var fieldRange = input.createTextRange();
-	      fieldRange.moveStart('character', txt.value.length);
+	      fieldRange.moveStart('character', input.value.length);
 	      fieldRange.collapse();
 	      fieldRange.select();
 	    }
@@ -286,6 +292,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* @flow */
 	var Editors = {
 	  AutoComplete     : __webpack_require__(25),
 	  DropDownEditor   : __webpack_require__(26),
@@ -300,6 +307,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* @flow */
 	var formatters = {
 
 	}
@@ -311,9 +319,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* TODO@flow */
 	/**
 	 * @jsx React.DOM
-	 
+
+
 	 */
 
 	'use strict';
@@ -325,7 +335,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var KeyboardHandlerMixin = {
 
-	  onKeyDown:function(e){
+	  onKeyDown:function(e       ){
 	    if(this.isCtrlKeyHeldDown(e)){
 	      this.checkAndCall('onPressKeyWithCtrl', e);
 	    }
@@ -340,7 +350,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  //taken from http://stackoverflow.com/questions/12467240/determine-if-javascript-e-keycode-is-a-printable-non-control-character
-	  isKeyPrintable:function(keycode){
+	  isKeyPrintable:function(keycode        ){
 	    var valid =
 	        (keycode > 47 && keycode < 58)   || // number keys
 	        keycode == 32 || keycode == 13   || // spacebar & return key(s) (if you want to allow carriage returns)
@@ -352,15 +362,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return valid;
 	  },
 
-	  isKeyIdentified:function(key){
+	  isKeyIdentified:function(key        )         {
 	    return key !== "Unidentified";
 	  },
 
-	  isCtrlKeyHeldDown:function(e){
+	  isCtrlKeyHeldDown:function(e       )         {
 	    return e.ctrlKey === true && e.key !== "Control";
 	  },
 
-	  checkAndCall:function(methodName, args){
+	  checkAndCall:function(methodName        , args     ){
 	    if(typeof this[methodName] === 'function'){
 	      this[methodName](args);
 	    }
@@ -394,14 +404,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
+	/* TODO@flow */
 	"use strict";
 
-	var keyMirror  = __webpack_require__(44);
+	var keyMirror  = __webpack_require__(39);
 	var isFunction = __webpack_require__(24)
 	var React      = __webpack_require__(10);
 	if (!Object.assign) {
-	  Object.assign = __webpack_require__(38);
+	  Object.assign = __webpack_require__(40);
 	}
 
 	/**
@@ -506,14 +516,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {array} A new array of mixins, the first object being an object of containing all custom methods wrapped
 	   * Subsequent object in array will be any extracted lifecycle methods which should be treated as standard
 	   */
-	  mix : function(mixins){
+	  mix : function(mixins            )            {
 
 	    var results = [];
 	    var primary = {};
 
 	    var dependencies = mixinUtils.getUniqueDependencies(mixins);
-	    for (var d in dependencies){
-	      Object.assign(primary, MixinAliasCache[dependencies[d]]);
+	    for (var i=0, ii=dependencies.length;i < ii; i++){
+	      Object.assign(primary, MixinAliasCache[dependencies[i]]);
 	    }
 	    wrapEachMethodInObject(primary, results);
 
@@ -540,7 +550,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 
-	  createDependency : function(deps){
+	  createDependency : function(deps     )            {
 	    var dependencyList = [];
 	    for (var d in deps){
 	      if(deps[d] instanceof Mixin){
@@ -556,7 +566,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return new Dependency(uniqueDependencyList);
 	  },
 
-	  addAlias : function(key, object){
+	  addAlias : function(key                 , object     ){
 	    MixinAliasCache[key] = object;
 	  }
 
@@ -610,7 +620,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.overrides[methodName].call(this, args);
 	  },
 
-	  getUniqueDependencies : function(mixins){
+	  getUniqueDependencies : function(mixins)                    {
 	    var deps = [];
 	    mixins.forEach(function(m){
 	      if(m instanceof Mixin){
@@ -629,10 +639,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
+	/* @flow */
 	"use strict";
 
-	var isFunction = function(functionToCheck){
+	var isFunction = function(functionToCheck     )         {
 	    var getType = {};
 	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
 	}
@@ -644,9 +654,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* TODO@flow */
 	/**
 	 * @jsx React.DOM
-	 
 	 */
 	'use strict';
 
@@ -655,7 +665,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var MixinHelper             = __webpack_require__(23);
 	var EditorMixin             = __webpack_require__(5);
 	var TextInputMixin          = __webpack_require__(6);
-	var ReactAutocomplete       = __webpack_require__(45);
+	var ReactAutocomplete       = __webpack_require__(43);
 	var keyboardHandlerMixin    = __webpack_require__(9);
 
 	var optionPropType = React.PropTypes.shape({
@@ -675,20 +685,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	      checkFocus : function(){
 	          this.setTextInputFocus();
 	      },
-	      getInputNode:function(){
+	      getInputNode:function()              {
 	        return this.getSearchComponent().getDOMNode();
 	      },
-	      onPressEnter:function(args){
+	      onPressEnter:function(args     ){
 	        var e = args[0];
 	        this.handleEnter(e);
 	      },
-	      onPressTab:function(args){
+	      onPressTab:function(args     ){
 	        var e = args[0];
 	        this.handleTab(e);
 	      }
 	  },
 
-	  handleTab:function(e){
+	  handleTab:function(e            ){
 	    e.stopPropagation();
 	    e.preventDefault();
 	    if(!this.isFocusedOnSuggestion()){
@@ -698,7 +708,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
-	  handleEnter:function(e){
+	  handleEnter:function(e            ){
 	    e.stopPropagation();
 	    e.preventDefault();
 	    if(!this.isFocusedOnSuggestion()){
@@ -706,31 +716,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
-	  getSearchComponent:function(){
+	  getSearchComponent:function()               {
 	    return this.refs.autoComplete.refs.search;
 	  },
 
-	  isFocusedOnSuggestion:function(){
+	  isFocusedOnSuggestion:function()         {
 	    var autoComplete = this.refs.autoComplete;
 	    return autoComplete.state.focusedValue != null;
 	  },
 
-	  getFocusedSuggestion:function(){
+	  getFocusedSuggestion:function()        {
 	    return this.refs.autoComplete.state.focusedValue;
 	  },
 
-	  onPressArrowDown:function(e){
+	  onPressArrowDown:function(e            ){
 	    //prevent event propogation. this disables downwards cell navigation
 	    e.stopPropagation();
 	    e.preventDefault();
 	  },
 
-	  onPressArrowUp:function(e){
+	  onPressArrowUp:function(e            ){
 	    //prevent event propogation. this disables upwards cell navigation
 	    e.stopPropagation();
 	  },
 
-	  getLabel:function(result) {
+	  getLabel:function(result                                         )         {
 	    var label = this.props.label != null ? this.props.label : 'title';
 	    if (typeof label === "function") {
 	      return label(result);
@@ -739,7 +749,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
-	  handleChange:function(item, key){
+	  handleChange:function(item     , key        ) {
 	    var rowDataChanged = {};
 	    var value = this.props.value;
 	    if(item!=null){
@@ -753,7 +763,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.props.onCommit({value : value, key : key, rowDataChanged : rowDataChanged});
 	  },
 
-	  constuctValueFromParams:function(obj, props) {
+	  constuctValueFromParams:function(obj     , props            )         {
 	    var ret = [];
 	    for (var i = 0, ii = props.length; i < ii; i++) {
 	      ret.push(obj[props[i]]);
@@ -761,7 +771,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return ret.join('|');
 	  },
 
-	  renderEditorNode:function(){
+	  renderEditorNode:function()                {
 	    var val = {title : this.getDefaultValue()};
 	    var label = this.props.label != null ? this.props.label : 'title';
 	    return (React.createElement("div", {style: this.getStyle(), onKeyDown: this.onKeyDown}, 
@@ -778,9 +788,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* @flow */
 	/**
 	 * @jsx React.DOM
-	 
+
+
 	 */
 	'use strict';
 
@@ -796,7 +808,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  mixins : [keyboardHandlerMixin, EditorMixin],
 
 	  overrides : {
-	    getInputNode : function(){
+	    getInputNode : function()              {
 	      return this.refs.select.getDOMNode();
 	    }
 	  },
@@ -805,14 +817,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    options : React.PropTypes.array.isRequired
 	  },
 
-	  renderEditorNode:function(){
+	  renderEditorNode:function()              {
 	    return (
 	      React.createElement("select", {ref: "select", style: this.getStyle(), defaultValue: this.props.value, onChange: this.onChange}, 
 	        this.renderOptions()
 	      ));
 	  },
 
-	  renderOptions:function(){
+	  renderOptions:function()                     {
 	    var options = [];
 	    this.props.options.forEach(function(name){
 	      options.push(React.createElement("option", {key: name, value: name}, name));
@@ -821,11 +833,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 
-	  onChange:function(e){
+	  onChange:function(e     ){ //having to use any to access currentTarget.value which isnt a property of an event
 	    this.props.onCommit({value : e.currentTarget.value});
 	  },
 
-	  onClick:function(e){
+	  onClick:function(e       ){
 	    e.stopPropagation();
 	    e.preventDefault();
 	  }
@@ -839,9 +851,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* @flow */
 	/**
 	 * @jsx React.DOM
-	 
+
+
 	 */
 	'use strict';
 
@@ -862,7 +876,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	  },
 
-	  renderEditorNode:function(){
+	  renderEditorNode:function()               {
 	    return (React.createElement("input", {type: "text", onBlur: this.commit, className: "form-control", defaultValue: this.getDefaultValue(), style: this.getStyle(), onKeyDown: this.onKeyDown}));
 	  }
 
@@ -883,44 +897,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 35 */,
 /* 36 */,
 /* 37 */,
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	function ToObject(val) {
-		if (val == null) {
-			throw new TypeError('Object.assign cannot be called with null or undefined');
-		}
-
-		return Object(val);
-	}
-
-	module.exports = Object.assign || function (target, source) {
-		var from;
-		var keys;
-		var to = ToObject(target);
-
-		for (var s = 1; s < arguments.length; s++) {
-			from = arguments[s];
-			keys = Object.keys(Object(from));
-
-			for (var i = 0; i < keys.length; i++) {
-				to[keys[i]] = from[keys[i]];
-			}
-		}
-
-		return to;
-	};
-
-
-/***/ },
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */
+/* 38 */,
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -937,7 +915,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	var invariant = __webpack_require__(52);
+	var invariant = __webpack_require__(48);
 
 	/**
 	 * Constructs an enumeration with keys equal to their value.
@@ -975,10 +953,44 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = keyMirror;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(49)))
 
 /***/ },
-/* 45 */
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function ToObject(val) {
+		if (val == null) {
+			throw new TypeError('Object.assign cannot be called with null or undefined');
+		}
+
+		return Object(val);
+	}
+
+	module.exports = Object.assign || function (target, source) {
+		var from;
+		var keys;
+		var to = ToObject(target);
+
+		for (var s = 1; s < arguments.length; s++) {
+			from = arguments[s];
+			keys = Object.keys(Object(from));
+
+			for (var i = 0; i < keys.length; i++) {
+				to[keys[i]] = from[keys[i]];
+			}
+		}
+
+		return to;
+	};
+
+
+/***/ },
+/* 41 */,
+/* 42 */,
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -1437,12 +1449,71 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 44 */,
+/* 45 */,
 /* 46 */,
 /* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule invariant
+	 */
+
+	"use strict";
+
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+
+	var invariant = function(condition, format, a, b, c, d, e, f) {
+	  if ("production" !== process.env.NODE_ENV) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error(
+	        'Minified exception occurred; use the non-minified dev environment ' +
+	        'for the full error message and additional helpful warnings.'
+	      );
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(
+	        'Invariant Violation: ' +
+	        format.replace(/%s/g, function() { return args[argIndex++]; })
+	      );
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+
+	module.exports = invariant;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(49)))
+
+/***/ },
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// shim for using process in browser
@@ -1532,66 +1603,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new Error('process.chdir is not supported');
 	};
 
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
-	 */
-
-	"use strict";
-
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-
-	var invariant = function(condition, format, a, b, c, d, e, f) {
-	  if ("production" !== process.env.NODE_ENV) {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  }
-
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error(
-	        'Minified exception occurred; use the non-minified dev environment ' +
-	        'for the full error message and additional helpful warnings.'
-	      );
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error(
-	        'Invariant Violation: ' +
-	        format.replace(/%s/g, function() { return args[argIndex++]; })
-	      );
-	    }
-
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	};
-
-	module.exports = invariant;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
 
 /***/ }
 /******/ ])
