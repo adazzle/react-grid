@@ -11,6 +11,11 @@ var cx             = React.addons.classSet;
 
 var FilterableHeaderCell = React.createClass({
 
+  propTypes: {
+    onChange: React.PropTypes.func.isRequired,
+    column: Rect.PropTypes.shape(ExcelColumn)
+  },
+
   getInitialState(): {filterTerm: string}{
     return {filterTerm : ''}
   },

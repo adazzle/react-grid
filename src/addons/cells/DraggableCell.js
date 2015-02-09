@@ -18,6 +18,9 @@ var DraggableMixin       = require('./mixins/DraggableMixin');
 var DraggableCell = React.createClass({
 
 
+  propTypes : {
+    handleDragEnd : React.PropTypes.func.isRequired
+  },
   mixins : [DraggableMixin],
 
   render: function() {

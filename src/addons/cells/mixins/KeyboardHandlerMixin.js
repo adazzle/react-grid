@@ -14,6 +14,9 @@ var hasPerfStarted = false;
 
 var KeyboardHandlerMixin = {
 
+  propTypes : {
+  },
+  
   onKeyDown(e: Event){
     if(this.isCtrlKeyHeldDown(e)){
       this.checkAndCall('onPressKeyWithCtrl', e);

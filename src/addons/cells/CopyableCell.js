@@ -19,6 +19,7 @@ var KeyboardHandlerMixin = require('./mixins/KeyboardHandlerMixin');
 
 var CopyableCell = React.createClass({
 
+  propTypes : { },
 
   mixins : [CopyableMixin],
 

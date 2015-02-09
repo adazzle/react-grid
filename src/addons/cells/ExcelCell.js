@@ -23,6 +23,15 @@ var cloneWithProps       = React.addons.cloneWithProps;
 
 var CellControls = React.createClass({
 
+  propTypes : {
+    column : React.PropTypes.shape(ExcelColumn).isRequired,
+    onClickEdit : React.PropTypes.func.isRequired,
+    onShowLess : React.PropTypes.func.isRequired,
+    height : React.PropTypes.number.isRequired,
+    value : React.PropTypes.any.isRequired,
+    rowIdx : React.PropTypes.number.isRequired
+  },
+
   onClickEdit : function(e: Event){
     e.stopPropagation();
     e.preventDefault();
@@ -72,6 +81,17 @@ var CellControls = React.createClass({
 var ExcelCell = React.createClass({
 
   mixins : [EditableMixin, CopyableMixin, DraggableMixin],
+
+  propTypes : {
+    rowIdx : React.PropTypes.number.isRequired,
+    dragged: React.PropTypes.shape({rowIdx: React.PropTypes.number.isRequired }).isRequired,
+    column : React.PropTypes.shape(ExcelColumn).isRequired,
+    value : React.PropTypes.any.isRequired,
+    height : React.PropTypes.number.isRequired,
+    handleDragEnd : React.PropTypes.func.isRequired,
+    onShowMore : React.PropTypes.func.isRequired,
+    onShowLess : React.PropTypes.func.isRequired
+  },
 
   overrides : {
     getCellClass : function(): string{

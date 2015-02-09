@@ -17,6 +17,12 @@ var SelectableCell = React.createClass({
 
   mixins : [SelectableMixin],
 
+  propTypes : {
+    column : React.PropTypes.shape(ExcelColumn).isRequired,
+    height : React.PropTypes.number.isRequired,
+    value : React.PropTypes.any.isRequired,
+    rowIdx : React.PropTypes.number.isRequired
+  },
   getCellClass : function(): ?string{
     return this.isSelected() ? 'selected' : null;
   },

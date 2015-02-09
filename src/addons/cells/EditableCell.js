@@ -22,6 +22,13 @@ var EditableCell = React.createClass({
 
   mixins : [EditableMixin],
 
+  propTypes : {
+    column : React.PropTypes.shape(ExcelColumn).isRequired,
+    value : React.PropTypes.any.isRequired,
+    height : React.PropTypes.number.isRequired,
+    rowIdx : React.PropTypes.number.isRequired,
+  },
+
   getCellClass : function(): string{
       return cx({
       'editing' : this.isActive(),

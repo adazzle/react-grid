@@ -23,6 +23,16 @@ var MixinHelper           = require('../utils/MixinHelper');
 
 var ExcelGrid = React.createClass({
 
+  propTypes: {
+    rowHeight: React.PropTypes.number,
+    minHeight: React.PropTypes.number,
+    enableRowSelect: React.PropTypes.boolean,
+    onRowUpdated:React.PropTypes.func,
+    columns:React.PropTypes.arrayOf(ExcelColumn).isRequired,
+    rows:React.PropTypes.arrayOf(ExcelRow).isRequired,
+    toolbar:React.PropTypes.element
+  },
+  
   mixins : [SelectableGridMixin, EditableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
 
   getInitialState(): { selectedRows: Array<ExcelRow>; expandedRows: Array<ExcelRow>}{

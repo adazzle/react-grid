@@ -14,6 +14,19 @@ var MixinHelper    = require('../../utils/MixinHelper');
 
 var SelectableMixin = MixinHelper.createDependency({KeyboardHandlerMixin : KeyboardHandlerMixin}).assignTo({
 
+  propTypes : {
+    rowIdx : React.PropTypes.number.isRequired,
+    idx : React.PropTypes.number.isRequired,
+    onClick : React.PropTypes.func.isRequired,
+    onSelect : React.PropTypes.func.isRequired,
+    selected : React.PropTypes.shape({
+      idx : React.PropTypes.number.isRequired,
+    }),
+    tabIndex : React.PropTypes.number,
+    ref : React.PropTypes.string
+  },
+
+
   getDefaultProps : function(){
     return {
       tabIndex : -1,

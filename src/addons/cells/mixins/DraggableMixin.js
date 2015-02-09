@@ -44,7 +44,17 @@ getCellClass : function(){
     handleDragEnter : React.PropTypes.func.isRequired,
     handleDragStart : React.PropTypes.func.isRequired,
     handleDragEnd : React.PropTypes.func.isRequired,
-    handleTerminateDrag : React.PropTypes.func.isRequired
+    handleTerminateDrag : React.PropTypes.func.isRequired,
+    onDragEnter : React.PropTypes.func,
+    onDragEnd : React.PropTypes.func,
+    rowIdx: React.PropTypes.number.isRequired,
+    idx: React.PropTypes.number.isRequired,
+    value: React.PropTypes.any.isRequired,
+    dragged: React.PropTyes.shape({
+        overRowIdx: React.PropTypes.number.isRequired,
+        idx: React.PropTypes.number.isRequired,
+        complete: React.PropTypes.boolean
+    }),
   },
 
   isDraggedOver(){

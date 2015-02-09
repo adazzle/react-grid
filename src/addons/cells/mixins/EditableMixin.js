@@ -24,7 +24,20 @@ var EditableMixin = MixinHelper.createDependency({
   }).assignTo({
 
     propTypes : {
-        onCommit : PropTypes.func.isRequired
+        onCommit : PropTypes.func.isRequired,
+        column : PropTypes.shape(ExcelColumn).isRequired,
+        height : PropTypes.number.isRequired,
+        selected : PropTypes.shape({
+          initialKeyCode: PropTypes.string.isRequired,
+          active: PropTypes.boolean.isRequired,
+        }),
+        rowData : PropTypes.array.isRequired,
+        rowIdx : PropTypes.number.isRequired,
+        idx : PropTypes.number.isRequired,
+        filterRowIdx : PropTypes.number,
+        onClick : PropTypes.func.isRequired,
+        onSetActive : PropTypes.func.isRequired
+
     },
 
     canEdit(){
