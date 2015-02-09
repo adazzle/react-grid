@@ -29,9 +29,9 @@ var DateRangeFormatter = React.createClass({
     }
   },
 
-  formatDate(date: Date): string{
+  formatDate(date: Date | moment): string{
     if(moment.isMoment(date)){
-      return date.format(this.props.displayFormat);
+      return moment(date).format(this.props.displayFormat);
     }else{
       return moment(date, this.props.inputFormat).format(this.props.displayFormat);
     }

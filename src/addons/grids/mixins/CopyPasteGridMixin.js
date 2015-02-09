@@ -1,4 +1,4 @@
-/* @flow */
+/* TODO@flow */
 /**
  * @jsx React.DOM
 
@@ -10,7 +10,6 @@ var React               = require('react/addons');
 var PropTypes           = React.PropTypes;
 
 var CopyPasteGridMixin = {
-
   propTypes : {
     onCellCopyPaste : React.PropTypes.func
   },

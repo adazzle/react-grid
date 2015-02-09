@@ -53,7 +53,7 @@ var ExcelRow = React.createClass({
       this.hasRowHeightChanged(nextProps);
   },
 
-  doesRowContainSelectedCell(propsToCheck: any = this.props): boolean{
+  doesRowContainSelectedCell(propsToCheck: ?any = null): boolean{
     var props = propsToCheck || this.props;
     var cell = cell || props.cellRenderer;
     if(cell.props && cell.props.selected && cell.props.selected.rowIdx === props.idx){

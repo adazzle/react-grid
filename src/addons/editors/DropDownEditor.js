@@ -27,7 +27,7 @@ var DropDownEditor = React.createClass({
     options : React.PropTypes.array.isRequired
   },
 
-  renderEditorNode(): ?ReactElement{
+  renderEditorNode(): ReactElement{
     return (
       <select ref="select" style={this.getStyle()} defaultValue={this.props.value} onChange={this.onChange} >
         {this.renderOptions()}
@@ -43,7 +43,7 @@ var DropDownEditor = React.createClass({
   },
 
 
-  onChange(e: Event){
+  onChange(e: any){ //having to use any to access currentTarget.value which isnt a property of an event
     this.props.onCommit({value : e.currentTarget.value});
   },
 
