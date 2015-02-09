@@ -11,6 +11,7 @@ var EditorMixin             = require('./mixins/EditorMixin');
 var TextInputMixin          = require('./mixins/TextInputMixin');
 var ReactAutocomplete       = require('ron-react-autocomplete');
 var keyboardHandlerMixin    = require('../cells/mixins/KeyboardHandlerMixin');
+var ExcelColumn = require('../grids/ExcelColumn');
 
 var optionPropType = React.PropTypes.shape({
       id    :   React.PropTypes.required,

@@ -9,6 +9,8 @@ var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
 var isFunction = require('../../utils/isFunction');
 
+var ExcelColumn = require('../../grids/ExcelColumn');
+
 var EditorMixin = {
 
   propTypes : {

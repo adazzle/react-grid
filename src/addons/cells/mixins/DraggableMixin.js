@@ -50,10 +50,10 @@ getCellClass : function(){
     rowIdx: React.PropTypes.number.isRequired,
     idx: React.PropTypes.number.isRequired,
     value: React.PropTypes.any.isRequired,
-    dragged: React.PropTyes.shape({
+    dragged: React.PropTypes.shape({
         overRowIdx: React.PropTypes.number.isRequired,
         idx: React.PropTypes.number.isRequired,
-        complete: React.PropTypes.boolean
+        complete: React.PropTypes.bool
     }),
   },
 

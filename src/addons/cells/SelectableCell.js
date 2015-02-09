@@ -12,6 +12,7 @@ var cloneWithProps = React.addons.cloneWithProps;
 var BaseCell       = require('../../Cell');
 var SelectableMixin = require('./mixins/SelectableMixin');
 var MixinHelper            = require('../utils/MixinHelper');
+var ExcelColumn = require('../grids/ExcelColumn');
 
 var SelectableCell = React.createClass({
 

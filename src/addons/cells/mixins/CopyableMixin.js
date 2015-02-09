@@ -39,7 +39,7 @@ var CopyableMixin = MixinHelper.createDependency({
   KeyCode_v : '118',
 
   propTypes : {
-    copied: React.PropTyes.shape({
+    copied: React.PropTypes.shape({
         rowIdx: React.PropTypes.number.isRequired,
         idx: React.PropTypes.number.isRequired
     }),

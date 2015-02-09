@@ -10,10 +10,11 @@ var React          = require('react/addons');
 var cx             = React.addons.classSet;
 var BaseRow       = require('../../Row');
 var ColumnMetrics = require('../../ColumnMetrics');
+var ExcelColumn = require('../grids/ExcelColumn');
 var ExcelRow = React.createClass({
   propTypes: {
     row : React.PropTypes.shape(ExcelRow).isRequired,
-    isSelected : React.PropTypes.boolean,
+    isSelected : React.PropTypes.bool,
     height : React.PropTypes.number,
     columns : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired,
     cellRenderer : React.PropTypes.func.isRequired,
@@ -28,11 +29,11 @@ var ExcelRow = React.createClass({
   },
   render(): ?ReactElement {
     var row = React.addons.update(this.props.row,  {$merge : {'select-row' : this.props.isSelected}});
-
     return (
       <BaseRow
         {... this.props}
         row={row}
+        iam="excelRow"
         height={this.getRowHeight(this.props)}/>
       );
   },
@@ -67,7 +68,7 @@ var ExcelRow = React.createClass({
       this.hasRowHeightChanged(nextProps);
   },
 
-  doesRowContainSelectedCell(props: any): boolean{
+  doesRowContainSelectedCell(props: {cellRenderer: {props: {selected: bool; rowIdx: number}}}): boolean{
     var cell = props.cellRenderer;
     if(cell.props && cell.props.selected && cell.props.selected.rowIdx === props.idx){
       return true;
@@ -76,7 +77,7 @@ var ExcelRow = React.createClass({
     }
   },
 
-  willRowBeDraggedOver(props: any): boolean{
+  willRowBeDraggedOver(props: {cellRenderer: {props: {dragged: bool; rowIdx: number}}}): boolean{
     if(props.cellRenderer.props){
       var dragged = props.cellRenderer.props.dragged;
       return  dragged != null && (dragged.rowIdx || dragged.complete === true);

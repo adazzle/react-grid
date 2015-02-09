@@ -9,7 +9,7 @@
 var TextInputMixin = {
 
   propTypes : {
-    initialKeyCode : React.PropTypes.string.isRequired,
+    initialKeyCode : React.PropTypes.string,
     value : React.PropTypes.any.isRequired
   },
 

@@ -19,14 +19,14 @@ var SortableGridMixin     = require('./mixins/SortableGridMixin');
 var FilterableGridMixin   = require('./mixins/FilterableGridMixin');
 var CheckboxEditor        = require('../editors/CheckboxEditor');
 var MixinHelper           = require('../utils/MixinHelper');
-
+var ExcelColumn = require('./ExcelColumn');
 
 var ExcelGrid = React.createClass({
 
   propTypes: {
     rowHeight: React.PropTypes.number.isRequired,
     minHeight: React.PropTypes.number.isRequired,
-    enableRowSelect: React.PropTypes.boolean,
+    enableRowSelect: React.PropTypes.bool,
     onRowUpdated:React.PropTypes.func,
     columns:React.PropTypes.arrayOf(ExcelColumn).isRequired,
     rows:React.PropTypes.arrayOf(ExcelRow).isRequired,
@@ -149,37 +149,43 @@ var ExcelGrid = React.createClass({
   },
 
   render: function(): any {
-    var getCellRenderer = (function(props: {column: ExcelColumn; height: number; rowIdx: number; value: any}): ReactElement {
+    var cellRenderCtx = {
+      selected: this.state.selected,
+      copied: this.state.copied,
+      dragged: this.state.dragged,
+      onSelect: this.onSelect,
+      onClick: this.onSelect,
+      onSetActive: this.onSetActive,
+      onCommit: this.onCellCommit,
+      handleCopy: this.handleCopy,
+      handlePaste: this.handlePaste,
+      handleDragStart: this.handleDragStart,
+      handleDragEnter: this.handleDragEnter,
+      handleDragEnd: this.handleDragEnd,
+      handleTerminateDrag: this.handleTerminateDrag,
+      onShowMore: this.handleShowMore,
+      onShowLess: this.handleShowLess,
+      expandedRows: this.state.expandedRows
+    };
+    var getCellRenderer = (function(props: {ref: ?string; column: ExcelColumn; height: number; rowIdx: number; value: any}): ReactElement {
+      var {ref, column, height, rowIdx, value, ...other} = props;
       return (
       <ExcelCell
+        {...other}
+
         column={props.column}
         height={props.height}
         rowIdx={props.rowIdx}
         value={props.value}
 
-        selected={this.state.selected}
-        copied={this.state.copied}
-        dragged={this.state.dragged}
-        onSelect={this.onSelect}
-        onClick={this.onSelect}
-        onSetActive={this.onSetActive}
-        onCommit={this.onCellCommit}
-        handleCopy={this.handleCopy}
-        handlePaste={this.handlePaste}
-        handleDragStart={this.handleDragStart}
-        handleDragEnter={this.handleDragEnter}
-        handleDragEnd={this.handleDragEnd}
-        handleTerminateDrag={this.handleTerminateDrag}
-        onShowMore={this.handleShowMore}
-        onShowLess={this.handleShowLess}
-        expandedRows={this.state.expandedRows}
+        {...cellRenderCtx}
         />
     );
-  }).bind(this);
+  });
 
-    var getRowRenderer = (function(props: {idx: number; row: ExcelRow; columns: Array<ExcelColumn>}): ReactElement {
-      return (<ExcelRow {...props} idx={props.idx} row={props.row} columns={props.columns} cellRenderer={getCellRenderer} />);
-    }).bind(this);
+    var getRowRenderer = function(props: {idx: number; row: ExcelRow; columns: Array<ExcelColumn>}): ReactElement {
+      return (<ExcelRow idx={props.idx} row={props.row} columns={props.columns} cellRenderer={getCellRenderer}/>);
+    }
     var rows = this.filterRows();
     var toolbar = this.renderToolbar();
     return(

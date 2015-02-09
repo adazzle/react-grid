@@ -14,6 +14,8 @@ var PropTypes        = React.PropTypes;
 var MixinHelper      = require('../../utils/MixinHelper');
 var SelectableMixin  = require('./SelectableMixin');
 var KeyboardHandlerMixin = require('./KeyboardHandlerMixin');
+var ExcelColumn = require('../../grids/ExcelColumn');
+var ExcelRow = require('../../rows/ExcelRow');
 
 var EditableMixin = MixinHelper.createDependency({
 
@@ -28,16 +30,26 @@ var EditableMixin = MixinHelper.createDependency({
         column : PropTypes.shape(ExcelColumn).isRequired,
         height : PropTypes.number.isRequired,
         selected : PropTypes.shape({
-          initialKeyCode: PropTypes.string.isRequired,
-          active: PropTypes.boolean.isRequired,
+          initialKeyCode: PropTypes.string,
+          active: PropTypes.bool,
         }),
-        rowData : PropTypes.array.isRequired,
+        //TODO this mixin is used on a Cell. means that now all cells MUST have access to the row??
+        //see Row.js line 52
+        rowData : PropTypes.object.isRequired,
         rowIdx : PropTypes.number.isRequired,
         idx : PropTypes.number.isRequired,
         filterRowIdx : PropTypes.number,
         onClick : PropTypes.func.isRequired,
         onSetActive : PropTypes.func.isRequired
 
+    },
+    getDefaultProps: function() {
+      return {
+        selected: {
+          initialKeyCode: '',
+          active: false
+        }
+      }
     },
 
     canEdit(){

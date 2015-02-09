@@ -11,15 +11,18 @@ var PropTypes           = React.PropTypes;
 
 var CopyPasteGridMixin = {
   propTypes : {
-    onCellCopyPaste : React.PropTypes.func.isRequired
+    onCellCopyPaste : React.PropTypes.func
   },
 
   getInitialState: function(): any {
-    return {copied : null};
+    return {copied : null };
+  },
+  copyPasteEnabled: function() {
+    return this.props.onCellCopyPaste !== null;
   },
 
-
   handleCopy(args: {value: string}){
+    if(!this.copyPasteEnabled()) { return; }
     var textToCopy = args.value;
     var selected = this.state.selected;
     var copied = {idx : selected.idx, rowIdx : selected.rowIdx};
@@ -27,10 +30,12 @@ var CopyPasteGridMixin = {
   },
 
   handlePaste(){
+    if(!this.copyPasteEnabled()) { return; }
     var selected = this.state.selected;
     var cellKey = this.getColumns()[selected.idx].key;
-    this.props.onCellCopyPaste({cellKey: cellKey , rowIdx: selected.rowIdx, value : this.state.textToCopy, fromRow : this.state.copied.rowIdx, toRow : selected.rowIdx});
+    if(this.props.onCellCopyPaste) { this.props.onCellCopyPaste({cellKey: cellKey , rowIdx: selected.rowIdx, value : this.state.textToCopy, fromRow : this.state.copied.rowIdx, toRow : selected.rowIdx}); }
     this.setState({copied : null});
+
   }
 }
 

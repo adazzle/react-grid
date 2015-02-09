@@ -18,15 +18,18 @@ var DraggableGridMixin = {
   mixinDependencies : ['SelectableGridMixin'],
 
   propTypes : {
-    onCellsDragged : React.PropTypes.func.isRequired,
-    rows : React.PropTyes.array.isRequired
+    onCellsDragged : React.PropTypes.func,
+    rows : React.PropTypes.array.isRequired
   },
-
+  dragEnabled: function() {
+    return this.props.onCellsDragged !== null;
+  },
   getInitialState: function() {
-    return {dragged : null};
+    return {dragged : null };
   },
 
   handleDragStart(dragged){
+    if(!this.dragEnabled()) { return; }
     var idx = dragged.idx;
     var rowIdx = dragged.rowIdx;
     if (
@@ -40,6 +43,7 @@ var DraggableGridMixin = {
   },
 
   handleDragEnter(row){
+    if(!this.dragEnabled()) { return; }
     var selected = this.state.selected;
     var dragged = this.state.dragged;
     dragged.overRowIdx = row;
@@ -47,17 +51,19 @@ var DraggableGridMixin = {
   },
 
   handleDragEnd(){
+    if(!this.dragEnabled()) { return; }
     var fromRow, toRow;
     var selected = this.state.selected;
     var dragged = this.state.dragged;
     var cellKey = this.getColumns()[this.state.selected.idx].key;
     fromRow = selected.rowIdx < dragged.overRowIdx ? selected.rowIdx : dragged.overRowIdx;
     toRow   = selected.rowIdx > dragged.overRowIdx ? selected.rowIdx : dragged.overRowIdx;
-    this.props.onCellsDragged({cellKey: cellKey , fromRow: fromRow, toRow : toRow, value : dragged.copiedText});
+    if(this.props.onCellsDragged) { this.props.onCellsDragged({cellKey: cellKey , fromRow: fromRow, toRow : toRow, value : dragged.copiedText}); }
     this.setState({dragged : {complete : true}});
   },
 
   handleTerminateDrag(){
+    if(!this.dragEnabled()) { return; }
     this.setState({dragged: null});
   }
 }

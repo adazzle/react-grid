@@ -15,7 +15,7 @@ var BaseCell       = require('../../Cell');
 var MixinHelper            = require('../utils/MixinHelper');
 var KeyboardHandlerMixin = require('./mixins/KeyboardHandlerMixin');
 var PropTypes = React.PropTypes;
-
+var ExcelColumn = require('../grids/ExcelColumn');
 
 
 var EditableCell = React.createClass({

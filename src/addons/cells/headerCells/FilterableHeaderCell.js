@@ -8,12 +8,13 @@
 
 var React              = require('react/addons');
 var cx             = React.addons.classSet;
+var ExcelColumn = require('../../grids/ExcelColumn');
 
 var FilterableHeaderCell = React.createClass({
 
   propTypes: {
     onChange: React.PropTypes.func.isRequired,
-    column: Rect.PropTypes.shape(ExcelColumn)
+    column: React.PropTypes.shape(ExcelColumn)
   },
 
   getInitialState(): {filterTerm: string}{

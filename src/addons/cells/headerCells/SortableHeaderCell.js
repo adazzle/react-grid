@@ -8,10 +8,11 @@
 
 var React              = require('react/addons');
 var cx             = React.addons.classSet;
+var ExcelColumn = require('../../grids/ExcelColumn');
 
 var SortableHeaderCell = React.createClass({
   propTypes: {
-    column: Rect.PropTypes.shape(ExcelColumn).isRequired
+    column: React.PropTypes.shape(ExcelColumn).isRequired
   },
   onClick: function() {
     this.props.column.sortBy(

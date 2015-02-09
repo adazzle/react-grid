@@ -14,8 +14,8 @@ var ExcelRow = require('../../rows/ExcelRow');
 var FilterableGridMixin = {
   propTypes : {
     onFilter : React.PropTypes.func,
-    rows : React.PropTyes.array.isRequired,
-    rowHeight : React.PropTyes.number.isRequired
+    rows : React.PropTypes.array.isRequired,
+    rowHeight : React.PropTypes.number.isRequired
   },
 
   getInitialState : function(): {canFilter: boolean; columnFilters: any}{

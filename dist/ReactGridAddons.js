@@ -83,7 +83,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                   = __webpack_require__(10);
 	var Toolbar = React.createClass({displayName: "Toolbar",
-
+	  propTypes: {
+	    onAddRow : React.PropTypes.func.isRequired,
+	    onToggleFilter : React.PropTypes.func.isRequired,
+	    rows : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelRow)).isRequired
+	  },
 	  onAddRow:function(){
 	    if(this.props.onAddRow){
 	      this.props.onAddRow({newRowIndex : this.props.rows.length});
@@ -121,11 +125,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	var React                   = __webpack_require__(10);
 	var cx                      = React.addons.classSet;
-	var isFunction = __webpack_require__(24);
+	var isFunction = __webpack_require__(25);
+
+	var ExcelColumn = __webpack_require__(24);
 
 	var EditorMixin = {
 
 	  propTypes : {
+	    height : React.PropTypes.number.isRequired,
+	    column : React.PropTypes.shape(ExcelColumn).isRequired,
 	    onCommit : React.PropTypes.func.isRequired
 	  },
 
@@ -236,6 +244,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var TextInputMixin = {
 
+	  propTypes : {
+	    initialKeyCode : React.PropTypes.string,
+	    value : React.PropTypes.any.isRequired
+	  },
+
 	  onPressArrowLeft:function(e       ){
 	    //prevent event propogation. this disables left cell navigation
 	    e.stopPropagation();
@@ -294,9 +307,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* @flow */
 	var Editors = {
-	  AutoComplete     : __webpack_require__(25),
-	  DropDownEditor   : __webpack_require__(26),
-	  SimpleTextEditor : __webpack_require__(27)
+	  AutoComplete     : __webpack_require__(26),
+	  DropDownEditor   : __webpack_require__(27),
+	  SimpleTextEditor : __webpack_require__(28)
 
 	}
 
@@ -335,6 +348,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var KeyboardHandlerMixin = {
 
+	  propTypes : {
+	  },
+	  
 	  onKeyDown:function(e       ){
 	    if(this.isCtrlKeyHeldDown(e)){
 	      this.checkAndCall('onPressKeyWithCtrl', e);
@@ -407,11 +423,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* TODO@flow */
 	"use strict";
 
-	var keyMirror  = __webpack_require__(39);
-	var isFunction = __webpack_require__(24)
+	var keyMirror  = __webpack_require__(38);
+	var isFunction = __webpack_require__(25)
 	var React      = __webpack_require__(10);
 	if (!Object.assign) {
-	  Object.assign = __webpack_require__(40);
+	  Object.assign = __webpack_require__(41);
 	}
 
 	/**
@@ -639,6 +655,28 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
+	                    
+	               
+	              
+	                
+	                                                                                                                                      
+	  
+
+	/* @flow */
+	function ExcelColumn(){"use strict";}
+	               
+	              
+	                
+	                                                                                                                                      
+
+
+	module.exports = ExcelColumn;
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* @flow */
 	"use strict";
 
@@ -651,7 +689,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow */
@@ -665,8 +703,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var MixinHelper             = __webpack_require__(23);
 	var EditorMixin             = __webpack_require__(5);
 	var TextInputMixin          = __webpack_require__(6);
-	var ReactAutocomplete       = __webpack_require__(43);
+	var ReactAutocomplete       = __webpack_require__(42);
 	var keyboardHandlerMixin    = __webpack_require__(9);
+	var ExcelColumn = __webpack_require__(24);
 
 	var optionPropType = React.PropTypes.shape({
 	      id    :   React.PropTypes.required,
@@ -676,7 +715,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	var AutoCompleteEditor = React.createClass({displayName: "AutoCompleteEditor",
 
 	  propTypes : {
-	    options : React.PropTypes.arrayOf(optionPropType)
+	    onCommit : React.PropTypes.func.isRequired,
+	    options : React.PropTypes.arrayOf(optionPropType).isRequired,
+	    label : React.PropTypes.string,
+	    value : React.PropTypes.any.isRequired,
+	    valueParams: React.PropTypes.arrayOf(React.PropTypes.string),
+	    column: React.PropTypes.shape(ExcelColumn).isRequired,
+	    resultIdentifier : React.PropTypes.string.isRequired,
+	    search : React.PropTypes.string.isRequired,
+
 	  },
 
 	  mixins : MixinHelper.mix([keyboardHandlerMixin, EditorMixin, TextInputMixin]),
@@ -763,7 +810,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.props.onCommit({value : value, key : key, rowDataChanged : rowDataChanged});
 	  },
 
-	  constuctValueFromParams:function(obj     , props            )         {
+	  constuctValueFromParams:function(obj     , props               )         {
 	    var ret = [];
 	    for (var i = 0, ii = props.length; i < ii; i++) {
 	      ret.push(obj[props[i]]);
@@ -785,7 +832,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -814,7 +861,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  propTypes : {
-	    options : React.PropTypes.array.isRequired
+	    options : React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+	    value : React.PropTypes.string.isRequired,
+	    onCommit : React.PropTypes.func.isRequired
 	  },
 
 	  renderEditorNode:function()              {
@@ -848,7 +897,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -870,13 +919,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
 
+	  propTypes : {
+	  },
+
 	  overrides : {
 	      checkFocus : function(){
 	          this.setTextInputFocus();
 	      }
 	  },
 
-	  renderEditorNode:function()               {
+	  renderEditorNode:function()                {
 	    return (React.createElement("input", {type: "text", onBlur: this.commit, className: "form-control", defaultValue: this.getDefaultValue(), style: this.getStyle(), onKeyDown: this.onKeyDown}));
 	  }
 
@@ -887,7 +939,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 28 */,
 /* 29 */,
 /* 30 */,
 /* 31 */,
@@ -897,8 +948,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 35 */,
 /* 36 */,
 /* 37 */,
-/* 38 */,
-/* 39 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -915,7 +965,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	var invariant = __webpack_require__(48);
+	var invariant = __webpack_require__(49);
 
 	/**
 	 * Constructs an enumeration with keys equal to their value.
@@ -953,10 +1003,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = keyMirror;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(49)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)))
 
 /***/ },
-/* 40 */
+/* 39 */,
+/* 40 */,
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -988,9 +1040,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 41 */,
-/* 42 */,
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -1449,11 +1499,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 43 */,
 /* 44 */,
 /* 45 */,
 /* 46 */,
 /* 47 */,
-/* 48 */
+/* 48 */,
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1510,10 +1562,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = invariant;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(49)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)))
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// shim for using process in browser

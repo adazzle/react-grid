@@ -18,7 +18,7 @@ var isFunction           = require('../utils/isFunction');
 var PropTypes            = React.PropTypes;
 var cx                   = React.addons.classSet;
 var cloneWithProps       = React.addons.cloneWithProps;
-
+var ExcelColumn          = require('../grids/ExcelColumn');
 
 
 var CellControls = React.createClass({
@@ -26,6 +26,7 @@ var CellControls = React.createClass({
   propTypes : {
     column : React.PropTypes.shape(ExcelColumn).isRequired,
     onClickEdit : React.PropTypes.func.isRequired,
+    onShowMore : React.PropTypes.func.isRequired,
     onShowLess : React.PropTypes.func.isRequired,
     height : React.PropTypes.number.isRequired,
     value : React.PropTypes.any.isRequired,
@@ -84,15 +85,21 @@ var ExcelCell = React.createClass({
 
   propTypes : {
     rowIdx : React.PropTypes.number.isRequired,
-    dragged: React.PropTypes.shape({rowIdx: React.PropTypes.number.isRequired }).isRequired,
+    dragged: React.PropTypes.shape({rowIdx: React.PropTypes.number.isRequired }),
     column : React.PropTypes.shape(ExcelColumn).isRequired,
     value : React.PropTypes.any.isRequired,
     height : React.PropTypes.number.isRequired,
     handleDragEnd : React.PropTypes.func.isRequired,
-    onShowMore : React.PropTypes.func.isRequired,
-    onShowLess : React.PropTypes.func.isRequired
+    onShowMore : React.PropTypes.func,
+    onShowLess : React.PropTypes.func,
+    onCommit: React.PropTypes.func.isRequired
   },
 
+  getDefaultProps: function(): any {
+    return {
+      dragged: {rowIdx:null},
+    }
+  },
   overrides : {
     getCellClass : function(): string{
       return cx({
