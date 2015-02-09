@@ -12,6 +12,8 @@ var isFunction = require('../../utils/isFunction');
 var EditorMixin = {
 
   propTypes : {
+    height : React.PropTypes.number.isRequired,
+    column : React.PropTypes.shape(ExcelColumn).isRequired,
     onCommit : React.PropTypes.func.isRequired
   },
 

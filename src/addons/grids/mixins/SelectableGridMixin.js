@@ -5,6 +5,13 @@ var ExcelRow = require('../../rows/ExcelRow');
 type selectedType = {rowIdx: number; idx: number }
 var SelectableGridMixin = {
 
+  propTypes : {
+    enableCellSelect : React.PropTypes.boolean,
+    columns : React.PropTyes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired,
+    rows : React.PropTyes.array.isRequired,
+    onSelect : React.PropTypes.func
+  },
+
   getDefaultProps(): {enableCellSelect: boolean} {
     return {
       enableCellSelect : false,

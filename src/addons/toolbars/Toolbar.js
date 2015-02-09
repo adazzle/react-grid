@@ -7,7 +7,11 @@
 
 var React                   = require('react/addons');
 var Toolbar = React.createClass({
-
+  propTypes: {
+    onAddRow : React.PropTypes.func.isRequired,
+    onToggleFilter : React.PropTypes.func.isRequired,
+    rows : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelRow)).isRequired
+  },
   onAddRow(){
     if(this.props.onAddRow){
       this.props.onAddRow({newRowIndex : this.props.rows.length});

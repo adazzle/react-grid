@@ -11,7 +11,21 @@ var cx             = React.addons.classSet;
 var BaseRow       = require('../../Row');
 var ColumnMetrics = require('../../ColumnMetrics');
 var ExcelRow = React.createClass({
+  propTypes: {
+    row : React.PropTypes.shape(ExcelRow).isRequired,
+    isSelected : React.PropTypes.boolean,
+    height : React.PropTypes.number,
+    columns : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired,
+    cellRenderer : React.PropTypes.func.isRequired,
+    idx : React.PropTypes.number.isRequired
+  },
 
+  getDefaultProps(): any {
+    return {
+      isSelected: false,
+      height : 35
+    };
+  },
   render(): ?ReactElement {
     var row = React.addons.update(this.props.row,  {$merge : {'select-row' : this.props.isSelected}});
 

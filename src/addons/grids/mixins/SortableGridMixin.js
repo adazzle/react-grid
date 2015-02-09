@@ -20,6 +20,9 @@ var DEFINE_SORT = {
 Object.freeze(DEFINE_SORT);
 
 var SortableGridMixin = {
+  propTypes : {
+    columns : React.PropTyes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired
+  },
 
   getInitialState: function(): any {
     return {sortDirection: null, sortColumn: null};

@@ -24,7 +24,9 @@ var DropDownEditor = React.createClass({
   },
 
   propTypes : {
-    options : React.PropTypes.array.isRequired
+    options : React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    value : React.PropTypes.string.isRequired,
+    onCommit : React.PropTypes.func.isRequired
   },
 
   renderEditorNode(): ReactElement{

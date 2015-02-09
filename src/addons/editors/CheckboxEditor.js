@@ -11,7 +11,8 @@ var CheckBoxEditor = React.createClass({
 
 
   PropTypes : {
-    value : React.PropTypes.bool.isRequired
+    value : React.PropTypes.bool.isRequired,
+    rowIdx : React.PropTypes.number.isRequired
   },
 
   render(): ?ReactElement{

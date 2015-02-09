@@ -1,6 +1,6 @@
 /**
  * @jsx React.DOM
- 
+
 
  */
 'use strict';
@@ -136,7 +136,6 @@ var Viewport = React.createClass({
           selectedRows={this.props.selectedRows}
           expandedRows={this.props.expandedRows}
           columns={this.props.columns.columns}
-          cellRenderer={this.props.cellRenderer}
           rowRenderer={this.props.rowRenderer}
 
           visibleStart={this.state.visibleStart}

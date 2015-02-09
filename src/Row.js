@@ -77,6 +77,9 @@ var Row = React.createClass({
   },
 
   renderCell(props) {
+    if(typeof this.props.cellRenderer == 'function') {
+      this.props.cellRenderer(props);
+    }
     if (React.isValidElement(this.props.cellRenderer)) {
       return cloneWithProps(this.props.cellRenderer, props);
     } else {

@@ -8,6 +8,11 @@
 
 var TextInputMixin = {
 
+  propTypes : {
+    initialKeyCode : React.PropTypes.string.isRequired,
+    value : React.PropTypes.any.isRequired
+  },
+
   onPressArrowLeft(e: Event){
     //prevent event propogation. this disables left cell navigation
     e.stopPropagation();

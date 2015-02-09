@@ -56,7 +56,16 @@ var Grid = React.createClass({
 
   propTypes: {
     rows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]).isRequired,
-    columns: PropTypes.array.isRequired
+    columns: PropTypes.array.isRequired,
+    minHeight: PropTypes.number,
+    headerRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
+    rowHeight: PropTypes.number,
+    rowRenderer: PropTypes.func.isRequired,
+    expandedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
+    selectedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
+    length: PropTypes.number.isRequired,
+    onRows: PropTypes.func,
+    rowOffsetHeight: PropTypes.number.isRequired
   },
 
   getStyle: function(){
@@ -85,7 +94,6 @@ var Grid = React.createClass({
           width={this.state.columns.width}
           rowHeight={this.props.rowHeight}
           rowRenderer={this.props.rowRenderer}
-          cellRenderer={this.props.cellRenderer}
           rows={this.props.rows}
           selectedRows={this.props.selectedRows}
           expandedRows={this.props.expandedRows}

@@ -17,6 +17,9 @@ var SimpleTextEditor = React.createClass({
 
   mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
 
+  propTypes : {
+  },
+
   overrides : {
       checkFocus : function(){
           this.setTextInputFocus();

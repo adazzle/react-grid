@@ -24,15 +24,15 @@ var MixinHelper           = require('../utils/MixinHelper');
 var ExcelGrid = React.createClass({
 
   propTypes: {
-    rowHeight: React.PropTypes.number,
-    minHeight: React.PropTypes.number,
+    rowHeight: React.PropTypes.number.isRequired,
+    minHeight: React.PropTypes.number.isRequired,
     enableRowSelect: React.PropTypes.boolean,
     onRowUpdated:React.PropTypes.func,
     columns:React.PropTypes.arrayOf(ExcelColumn).isRequired,
     rows:React.PropTypes.arrayOf(ExcelRow).isRequired,
     toolbar:React.PropTypes.element
   },
-  
+
   mixins : [SelectableGridMixin, EditableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
 
   getInitialState(): { selectedRows: Array<ExcelRow>; expandedRows: Array<ExcelRow>}{
@@ -149,8 +149,14 @@ var ExcelGrid = React.createClass({
   },
 
   render: function(): any {
-    var cellRenderer = (
+    var getCellRenderer = (function(props: {column: ExcelColumn; height: number; rowIdx: number; value: any}): ReactElement {
+      return (
       <ExcelCell
+        column={props.column}
+        height={props.height}
+        rowIdx={props.rowIdx}
+        value={props.value}
+
         selected={this.state.selected}
         copied={this.state.copied}
         dragged={this.state.dragged}
@@ -169,7 +175,11 @@ var ExcelGrid = React.createClass({
         expandedRows={this.state.expandedRows}
         />
     );
+  }).bind(this);
 
+    var getRowRenderer = (function(props: {idx: number; row: ExcelRow; columns: Array<ExcelColumn>}): ReactElement {
+      return (<ExcelRow {...props} idx={props.idx} row={props.row} columns={props.columns} cellRenderer={getCellRenderer} />);
+    }).bind(this);
     var rows = this.filterRows();
     var toolbar = this.renderToolbar();
     return(
@@ -183,8 +193,7 @@ var ExcelGrid = React.createClass({
           headerRows={this.getHeaderRows()}
           columns={this.getColumns()}
           rows={rows}
-          cellRenderer={cellRenderer}
-          rowRenderer={<ExcelRow/>}
+          rowRenderer={getRowRenderer}
           selectedRows={this.state.selectedRows}
           expandedRows={this.state.expandedRows}
           rowOffsetHeight={this.getRowOffsetHeight()}

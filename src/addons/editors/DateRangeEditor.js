@@ -21,6 +21,15 @@ var DateRangeEditor = React.createClass({
 
   mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
 
+  PropTypes : {
+    format : React.PropTypes.string,
+    ranges : React.PropTypes.arrayOf(React.PropTypes.string),
+    value : React.PropTypes.shape({
+      startDate: React.PropTypes.Date.isRequired,
+      endDate: React.PropTypes.Date.isRequired
+    }).isRequired
+  },
+
   getDefaultProps(): {format: string; ranges: Array<Date>}{
     return {
       format   : "YYYY-MM-DD",

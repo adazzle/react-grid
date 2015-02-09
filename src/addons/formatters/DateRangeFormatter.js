@@ -15,10 +15,12 @@ var PropTypes = React.PropTypes;
 var DateRangeFormatter = React.createClass({
 
   propTypes : {
-      value : PropTypes.shape({
+    value : PropTypes.shape({
       startDate : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
       endDate   : PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-    }).isRequired
+    }).isRequired,
+    inputFormat : PropTypes.string,
+    displayFormat : PropTypes.string
   },
 
   getDefaultProps() : {inputFormat: string; displayFormat: string; value: {startDate: ?Date; endDate: ?Date }}{

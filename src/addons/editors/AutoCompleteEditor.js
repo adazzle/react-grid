@@ -20,7 +20,15 @@ var optionPropType = React.PropTypes.shape({
 var AutoCompleteEditor = React.createClass({
 
   propTypes : {
-    options : React.PropTypes.arrayOf(optionPropType)
+    onCommit : React.PropTypes.func.isRequired,
+    options : React.PropTypes.arrayOf(optionPropType).isRequired,
+    label : React.PropTypes.string,
+    value : React.PropTypes.any.isRequired,
+    valueParams: React.PropTypes.arrayOf(React.PropTypes.string),
+    column: React.PropTypes.shape(ExcelColumn).isRequired,
+    resultIdentifier : React.PropTypes.string.isRequired,
+    search : React.PropTypes.string.isRequired,
+
   },
 
   mixins : MixinHelper.mix([keyboardHandlerMixin, EditorMixin, TextInputMixin]),
@@ -107,7 +115,7 @@ var AutoCompleteEditor = React.createClass({
     this.props.onCommit({value : value, key : key, rowDataChanged : rowDataChanged});
   },
 
-  constuctValueFromParams(obj: any, props: Array<any>): string {
+  constuctValueFromParams(obj: any, props: Array<string>): string {
     var ret = [];
     for (var i = 0, ii = props.length; i < ii; i++) {
       ret.push(obj[props[i]]);

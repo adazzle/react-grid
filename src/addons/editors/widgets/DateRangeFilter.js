@@ -1099,9 +1099,11 @@ var DateRangeFilter = React.createClass({
 	},
 
 	propTypes : {
-		format    : React.PropTypes.string,
-		ranges    : React.PropTypes.object,
+		format    : React.PropTypes.string.isRequired,
+		ranges    : React.PropTypes.object.isRequired,
 		onApply   : React.PropTypes.func,
+		title    	: React.PropTypes.string.isRequired,
+		onblur   	: React.PropTypes.func,
 		startDate : validateDate,
 		endDate   : validateDate
 	},
