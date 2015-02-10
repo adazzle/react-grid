@@ -68,7 +68,7 @@ var EditableGrid = React.createClass({
   }
 });
 
-module.exports = React.createClass({
+var Example = React.createClass({
 
   render:function(): ?ReactElement {
     return(
@@ -80,3 +80,4 @@ module.exports = React.createClass({
   }
 
 });
+module.exports = Example;

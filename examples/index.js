@@ -1,2 +1,4 @@
-var ExcelGrid = require('./scripts/ExcelGrid');
-React.render(<ExcelGrid/>, document.getElementById('excel-example'));
+/* @flow */
+var React = require('react/addons');
+var editableExample = require('./scripts/exampleEditable');
+React.render(<editableExample/>, document.getElementById('excel-example'));

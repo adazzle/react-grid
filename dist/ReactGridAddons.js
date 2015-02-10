@@ -69,8 +69,207 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 1 */,
-/* 2 */,
-/* 3 */,
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+
+
+	 */
+	'use strict';
+
+	var React          = __webpack_require__(10);
+	var cx             = React.addons.classSet;
+	var Cell           = __webpack_require__(3);
+	var cloneWithProps = React.addons.cloneWithProps;
+	var ColumnMetrics    = __webpack_require__(11);
+
+	var Row = React.createClass({displayName: "Row",
+
+	  render:function() {
+	    var className = cx(
+	      'react-grid-Row',
+	      ("react-grid-Row--" + (this.props.idx % 2 === 0 ? 'even' : 'odd'))
+	    );
+
+	    var style = {
+	      height: this.getRowHeight(),
+	      overflow: 'hidden'
+	    };
+
+	    var cells = this.getCells();
+	    return (
+	      React.createElement("div", React.__spread({},  this.props, {className: className, style: style}), 
+	        React.isValidElement(this.props.row) ?
+	          this.props.row : cells
+	      )
+	    );
+	  },
+
+	  getCells:function() {
+	    var cells = [];
+	    var lockedCells = [];
+
+	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
+	      var column = this.props.columns[i];
+	      var cell = this.renderCell({
+	        ref:i,
+	        key:i,
+	        idx:i,
+	        rowIdx:this.props.idx,
+	        filterRowIdx:this.props.row.key,
+	        value:this.getCellValue(column.key || i),
+	        column:column,
+	        height:this.getRowHeight(),
+	        formatter:column.formatter,
+	        //TODO passing the row to the cell??
+	        rowData : this.props.row});
+	      if (column.locked) {
+	        lockedCells.push(cell);
+	      } else {
+	        cells.push(cell);
+	      }
+	    }
+
+	    return cells.concat(lockedCells);
+	  },
+
+	  getRowHeight:function(){
+	    if(this.props.expandedRows && this.props.expandedRows[this.props.key]){
+	      return this.props.expandedRows[this.props.key];
+	    }else{
+	      return this.props.height;
+	    }
+	  },
+
+	  getCellValue:function(key){
+	    if(key === 'select-row'){
+	      return this.props.isSelected;
+	    }else{
+	      return this.props.row[key]
+	    }
+	  },
+
+	  renderCell:function(props) {
+	    if(typeof this.props.cellRenderer == 'function') {
+	      this.props.cellRenderer.call(this, props);
+	    }
+	    if (React.isValidElement(this.props.cellRenderer)) {
+	      return cloneWithProps(this.props.cellRenderer, props);
+	    } else {
+	      return this.props.cellRenderer(props);
+	    }
+	  },
+
+	  getDefaultProps:function() {
+	    return {
+	      cellRenderer: Cell
+	    };
+	  },
+
+	  shouldComponentUpdate:function(nextProps) {
+	    return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
+	      
+	      nextProps.row !== this.props.row            ||
+	      nextProps.height !== this.props.height;
+	  },
+
+	  setScrollLeft:function(scrollLeft) {
+	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
+	      if (this.props.columns[i].locked) {
+	        this.refs[i].setScrollLeft(scrollLeft);
+	      }
+	    }
+	  }
+
+	});
+
+	module.exports = Row;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 
+
+	 */
+	'use strict';
+
+	var React          = __webpack_require__(10);
+	var cx             = React.addons.classSet;
+	var cloneWithProps = React.addons.cloneWithProps;
+
+	var Cell = React.createClass({displayName: "Cell",
+
+	  render:function() {
+	    var style = this.getStyle();
+	    var className = cx(
+	      'react-grid-Cell',
+	      this.props.className,
+	      this.props.column.locked ? 'react-grid-Cell--locked' : null
+	    );
+
+	    var cellContent = this.renderCellContent({
+	      value : this.props.value,
+	      column : this.props.column,
+	      rowIdx : this.props.rowIdx,
+	      isExpanded : this.props.isExpanded
+	    });
+
+	    return (
+	      React.createElement("div", React.__spread({},  this.props, {className: className, style: style}), 
+	          cellContent, 
+	          React.createElement("div", {className: "drag-handle", draggable: "true", onDragStart: this.props.handleDragStart}
+	          )
+	      )
+	    );
+	  },
+
+	  renderCellContent:function(props) {
+	    var formatter = React.isValidElement(this.props.formatter) ? cloneWithProps(this.props.formatter, props) : this.props.formatter(props);
+	    return (React.createElement("div", {
+	      className: "react-grid-Cell__value"}, formatter, " ", this.props.cellControls))
+
+	  },
+
+	  getDefaultProps:function() {
+	    return {
+	      formatter: simpleCellFormatter
+	    };
+	  },
+
+	  getStyle:function() {
+	    var style = {
+	      position: 'absolute',
+	      width: this.props.column.width,
+	      height: this.props.height,
+	      left: this.props.column.left
+	    };
+	    return style;
+	  },
+
+	  setScrollLeft:function(scrollLeft) {
+	    if (this.isMounted()) {
+	      var node = this.getDOMNode();
+	      var transform = ("translate3d(" + scrollLeft + "px, 0px, 0px)");
+	      node.style.webkitTransform = transform;
+	      node.style.transform = transform;
+	    }
+	  }
+	});
+
+	function simpleCellFormatter(props) {
+	  return props.value;
+	}
+
+	module.exports = Cell;
+
+
+/***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -81,7 +280,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 	'use strict';
 
-	var React                   = __webpack_require__(10);
+	var React = __webpack_require__(10);
+	var ExcelRow = __webpack_require__(14);
+
 	var Toolbar = React.createClass({displayName: "Toolbar",
 	  propTypes: {
 	    onAddRow : React.PropTypes.func.isRequired,
@@ -321,11 +522,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
-	var formatters = {
-
+	//not including this
+	//it currently requires the whole of moment, which we dont want to take as a dependency
+	//var DateRangeFormatter = require('./DateRangeFormatter');
+	var Formatters = {
+	  //DateRangeFormatter : DateRangeFormatter
 	}
 
-	module.exports = formatters;
+	module.exports = Formatters;
 
 
 /***/ },
@@ -405,11 +609,410 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
 
 /***/ },
-/* 11 */,
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+
+
+	 */
+	"use strict";
+
+	var $__0=   __webpack_require__(10),PropTypes=$__0.PropTypes,isValidElement=$__0.isValidElement;
+	var shallowCloneObject            = __webpack_require__(30);
+	var DOMMetrics                    = __webpack_require__(31);
+	var merge                         = __webpack_require__(15);
+
+	/**
+	 * Update column metrics calculation.
+	 *
+	 * @param {ColumnMetrics} metrics
+	 */
+	function calculate(metrics) {
+	  var width = 0;
+	  var unallocatedWidth = metrics.totalWidth;
+
+	  var deferredColumns = [];
+	  var columns = metrics.columns.map(shallowCloneObject);
+
+	  var i, len, column;
+
+	  // compute width for columns which specify width
+	  for (i = 0, len = columns.length; i < len; i++) {
+	    column = columns[i];
+
+	    if (column.width) {
+	      if (/^([0-9]+)%$/.exec(column.width)) {
+	        column.width = Math.floor(
+	          parseInt(column.width, 10) / 100 * metrics.totalWidth);
+	      }
+	      unallocatedWidth -= column.width;
+	      width += column.width;
+	    } else {
+	      deferredColumns.push(column);
+	    }
+
+	  }
+
+	  // compute width for columns which doesn't specify width
+	  for (i = 0, len = deferredColumns.length; i < len; i++) {
+	    column = deferredColumns[i];
+
+	    if (unallocatedWidth <= 0) {
+	      column.width = metrics.minColumnWidth;
+	    } else {
+	      column.width = Math.floor(unallocatedWidth / deferredColumns.length);
+	    }
+	    width += column.width;
+	  }
+
+	  // compute left offset
+	  var left = 0;
+	  for (i = 0, len = columns.length; i < len; i++) {
+	    column = columns[i];
+	    column.left = left;
+	    left += column.width;
+	  }
+
+	  return {
+	    columns:columns,
+	    width:width,
+	    totalWidth: metrics.totalWidth,
+	    minColumnWidth: metrics.minColumnWidth
+	  };
+	}
+
+	/**
+	 * Update column metrics calculation by resizing a column.
+	 *
+	 * @param {ColumnMetrics} metrics
+	 * @param {Column} column
+	 * @param {number} width
+	 */
+	function resizeColumn(metrics, index, width) {
+	  var column = metrics.columns[index];
+	  metrics = shallowCloneObject(metrics);
+	  metrics.columns = metrics.columns.slice(0);
+
+	  var updatedColumn = shallowCloneObject(column);
+	  updatedColumn.width = Math.max(width, metrics.minColumnWidth);
+
+	  metrics.columns.splice(index, 1, updatedColumn);
+
+	  return calculate(metrics);
+	}
+
+	var Mixin = {
+	  mixins: [DOMMetrics.MetricsMixin],
+
+	  propTypes: {
+	    columns: PropTypes.array,
+	    minColumnWidth: PropTypes.number,
+	    columnEquality: PropTypes.func
+	  },
+
+	  DOMMetrics: {
+	    gridWidth:function() {
+	      return this.getDOMNode().offsetWidth - 2;
+	    }
+	  },
+
+	  getDefaultProps:function() {
+	    return {
+	      minColumnWidth: 80,
+	      columnEquality: sameColumn
+	    };
+	  },
+
+	  getInitialState:function() {
+	    return this.getColumnMetrics(this.props, true);
+	  },
+
+	  componentWillReceiveProps:function(nextProps) {
+	    if (nextProps.columns) {
+	      if (!sameColumns(this.props.columns, nextProps.columns, this.props.columnEquality)) {
+	        this.setState(this.getColumnMetrics(nextProps));
+	      } else {
+	        var index = {};
+	        this.state.columns.columns.forEach(function(c)  {
+	          index[c.key] = {width: c.width, left: c.left};
+	        });
+	        var nextColumns = merge(this.state.columns, {
+	          columns: nextProps.columns.map(function(c)  {return merge(c, index[c.key]);})
+	        });
+	        this.setState({columns: nextColumns});
+	      }
+	    }
+	  },
+
+	  getColumnMetrics:function(props, initial) {
+	    var totalWidth = initial ? null : this.DOMMetrics.gridWidth();
+	    return {
+	      columns: calculate({
+	        columns: props.columns,
+	        width: null,
+	        totalWidth:totalWidth,
+	        minColumnWidth: props.minColumnWidth
+	      }),
+	      gridWidth: totalWidth
+	    };
+	  },
+
+	  metricsUpdated:function() {
+	    this.setState(this.getColumnMetrics(this.props));
+	  },
+
+	  onColumnResize:function(index, width) {
+	    var columns = resizeColumn(this.state.columns, index, width);
+	    this.setState({columns:columns});
+	  }
+	};
+
+	function sameColumns(prevColumns, nextColumns, sameColumn) {
+	  var i, len, column;
+	  var prevColumnsByKey = {};
+	  var nextColumnsByKey = {};
+
+
+	  if(prevColumns.length !== nextColumns.length){
+	    return false;
+	  }
+
+	  for (i = 0, len = prevColumns.length; i < len; i++) {
+	    column = prevColumns[i];
+	    prevColumnsByKey[column.key] = column;
+	  }
+
+	  for (i = 0, len = nextColumns.length; i < len; i++) {
+	    column = nextColumns[i];
+	    nextColumnsByKey[column.key] = column;
+	    var prevColumn = prevColumnsByKey[column.key];
+	    if (prevColumn === undefined || !sameColumn(prevColumn, column)) {
+	      return false;
+	    }
+	  }
+
+	  for (i = 0, len = prevColumns.length; i < len; i++) {
+	    column = prevColumns[i];
+	    var nextColumn = nextColumnsByKey[column.key];
+	    if (nextColumn === undefined) {
+	      return false;
+	    }
+	  }
+
+	  return true;
+	}
+
+	function sameColumn(a, b) {
+	  var k;
+
+	  for (k in a) {
+	    if (a.hasOwnProperty(k)) {
+	      if ((typeof a[k] === 'function' && typeof b[k] === 'function') || (isValidElement(a[k]) && isValidElement(b[k]))) {
+	        continue;
+	      }
+	      if (!b.hasOwnProperty(k) || a[k] !== b[k]) {
+	        return false;
+	      }
+	    }
+	  }
+
+	  for (k in b) {
+	    if (b.hasOwnProperty(k) && !a.hasOwnProperty(k)) {
+	      return false;
+	    }
+	  }
+
+	  return true;
+	}
+
+	module.exports = {Mixin:Mixin, calculate:calculate, resizeColumn:resizeColumn, sameColumns:sameColumns, sameColumn:sameColumn};
+
+
+/***/ },
 /* 12 */,
 /* 13 */,
-/* 14 */,
-/* 15 */,
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* @flow */
+	/**
+	 * @jsx React.DOM
+
+
+	 */
+	'use strict';
+
+	var React          = __webpack_require__(10);
+	var cx             = React.addons.classSet;
+	var BaseRow       = __webpack_require__(2);
+	var ColumnMetrics = __webpack_require__(11);
+	var ExcelColumn = __webpack_require__(24);
+
+	                  
+	          
+	                               
+	                                              
+	                              
+	   
+	  
+
+	var ExcelRow = React.createClass({displayName: "ExcelRow",
+	  propTypes: {
+	    row : React.PropTypes.shape(ExcelRow).isRequired,
+	    isSelected : React.PropTypes.bool,
+	    height : React.PropTypes.number,
+	    columns : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired,
+	    cellRenderer : React.PropTypes.func.isRequired,
+	    idx : React.PropTypes.number.isRequired
+	  },
+
+	  getDefaultProps:function()      {
+	    return {
+	      isSelected: false,
+	      height : 35
+	    };
+	  },
+	  render:function()                {
+	    var row = React.addons.update(this.props.row,  {$merge : {'select-row' : this.props.isSelected}});
+	    return (
+	      React.createElement(BaseRow, React.__spread({}, 
+	         this.props, 
+	        {row: row, 
+	        iam: "excelRow", 
+	        height: this.getRowHeight(this.props)}))
+	      );
+	  },
+
+	  getRowHeight:function(props     )                       {
+	    if(props.expandedRows && props.expandedRows[props.key]){
+	      return props.expandedRows[props.key];
+	    }else{
+	      return props.height;
+	    }
+	  },
+
+	  hasRowHeightChanged:function(props     )         {
+	    if(props.expandedRows){
+	      if(typeof props.expandedRows[props.key] !== 'undefined'){
+	        return this.props.height !== props.expandedRows[props.key]
+	      }else{
+	        return false;
+	      }
+	    }else{
+	      return false;
+	    }
+	  },
+
+	  shouldComponentUpdate:function(nextProps     )          {
+	    return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
+	      this.doesRowContainSelectedCell(this.props)          ||
+	      this.doesRowContainSelectedCell(nextProps) ||
+	      this.willRowBeDraggedOver(nextProps)       ||
+	      this.hasRowBeenCopied(this.props)          ||
+	      this.hasRowBeenCopied(nextProps)           ||
+	      nextProps.row !== this.props.row           ||
+	      this.hasRowHeightChanged(nextProps);
+	  },
+
+	  doesRowContainSelectedCell:function(props                           )         {
+	    var cell = props.cellRenderer;
+	    if(cell.props && cell.props.selected && cell.props.selected.rowIdx === this.props.idx){
+	      return true;
+	    }else{
+	      return false;
+	    }
+	  },
+
+	  willRowBeDraggedOver:function(props                           )         {
+	    if(props.cellRenderer.props){
+	      var dragged = props.cellRenderer.props.dragged;
+	      return  dragged != null && (dragged.rowIdx != null || dragged.complete === true);
+	    }else{
+	      return false;
+	    }
+
+	  },
+
+	  hasRowBeenCopied:function(props                           )         {
+	    if(this.props.cellRenderer.props){
+	      var cell = this.props.cellRenderer;
+	      return cell.props.copied && cell.props.copied.rowIdx === this.props.idx;
+	    }else{
+	      return false;
+	    }
+
+	  },
+
+	  setScrollLeft:function(scrollLeft        ) {
+	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
+	      if (this.props.columns[i].locked) {
+	        this.refs[i].setScrollLeft(scrollLeft);
+	      }
+	    }
+	  }
+
+
+	});
+
+	module.exports = ExcelRow;
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule merge
+
+	 */
+
+	"use strict";
+
+	/**
+	 * Shallow merges two structures into a return value, without mutating either.
+	 *
+	 * @param {?object} one Optional object with properties to merge from.
+	 * @param {?object} two Optional object with properties to merge from.
+	 * @return {object} The shallow extension of one by two.
+	 */
+	var merge = function(one, two) {
+	  var result = {};
+	  if (one != null) {
+	    Object.assign(result, one);
+	  }
+	  if (two != null) {
+	    Object.assign(result, two);
+	  }
+	  return result;
+	};
+
+	function mergeFallback(obj1,obj2){
+	    var obj3 = {};
+	    for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+	    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+	    return obj3;
+	}
+
+	module.exports = Object.assign ? merge : mergeFallback;
+
+
+/***/ },
 /* 16 */,
 /* 17 */,
 /* 18 */,
@@ -423,7 +1026,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* TODO@flow */
 	"use strict";
 
-	var keyMirror  = __webpack_require__(38);
+	var keyMirror  = __webpack_require__(40);
 	var isFunction = __webpack_require__(25)
 	var React      = __webpack_require__(10);
 	if (!Object.assign) {
@@ -940,15 +1543,210 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 29 */,
-/* 30 */,
-/* 31 */,
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 
+
+	 */
+	'use strict';
+
+	function shallowCloneObject(obj) {
+	  var result = {};
+	  for (var k in obj) {
+	    if (obj.hasOwnProperty(k)) {
+	      result[k] = obj[k];
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = shallowCloneObject;
+
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 
+
+	 */
+	'use strict';
+
+	var React               = __webpack_require__(10);
+	var emptyFunction       = __webpack_require__(43);
+	var shallowCloneObject  = __webpack_require__(30);
+	var invariant           = __webpack_require__(44);
+
+	var contextTypes = {
+	  metricsComputator: React.PropTypes.object
+	};
+
+	var MetricsComputatorMixin = {
+
+	  childContextTypes: contextTypes,
+
+	  getChildContext:function() {
+	    return {metricsComputator: this};
+	  },
+
+	  getMetricImpl:function(name) {
+	    return this._DOMMetrics.metrics[name].value;
+	  },
+
+	  registerMetricsImpl:function(component, metrics) {
+	    var getters = {};
+	    var s = this._DOMMetrics;
+
+	    for (var name in metrics) {
+	      invariant(
+	          s.metrics[name] === undefined,
+	          'DOM metric ' + name + ' is already defined'
+	      );
+	      s.metrics[name] = {component:component, computator: metrics[name].bind(component)};
+	      getters[name] = this.getMetricImpl.bind(null, name);
+	    }
+
+	    if (s.components.indexOf(component) === -1) {
+	      s.components.push(component);
+	    }
+
+	    return getters;
+	  },
+
+	  unregisterMetricsFor:function(component) {
+	    var s = this._DOMMetrics;
+	    var idx = s.components.indexOf(component);
+
+	    if (idx > -1) {
+	      s.components.splice(idx, 1);
+
+	      var name;
+	      var metricsToDelete = {};
+
+	      for (name in s.metrics) {
+	        if (s.metrics[name].component === component) {
+	          metricsToDelete[name] = true;
+	        }
+	      }
+
+	      for (name in metricsToDelete) {
+	        delete s.metrics[name];
+	      }
+	    }
+	  },
+
+	  updateMetrics:function() {
+	    var s = this._DOMMetrics;
+
+	    var needUpdate = false;
+
+	    for (var name in s.metrics) {
+	      var newMetric = s.metrics[name].computator();
+	      if (newMetric !== s.metrics[name].value) {
+	        needUpdate = true;
+	      }
+	      s.metrics[name].value = newMetric;
+	    }
+
+	    if (needUpdate) {
+	      for (var i = 0, len = s.components.length; i < len; i++) {
+	        if (s.components[i].metricsUpdated) {
+	          s.components[i].metricsUpdated();
+	        }
+	      }
+	    }
+	  },
+
+	  componentWillMount:function() {
+	    this._DOMMetrics = {
+	      metrics: {},
+	      components: []
+	    };
+	  },
+
+	  componentDidMount:function() {
+	    if(window.addEventListener){
+	      window.addEventListener('resize', this.updateMetrics);
+	    }else{
+	      window.attachEvent('resize', this.updateMetrics);
+	    }
+	    this.updateMetrics();
+	  },
+
+	  componentWillUnmount:function() {
+	    window.removeEventListener('resize', this.updateMetrics);
+	  }
+
+	};
+
+	var MetricsMixin = {
+
+	  contextTypes: contextTypes,
+
+	  componentWillMount:function() {
+	    if (this.DOMMetrics) {
+	      this._DOMMetricsDefs = shallowCloneObject(this.DOMMetrics);
+
+	      this.DOMMetrics = {};
+	      for (var name in this._DOMMetricsDefs) {
+	        this.DOMMetrics[name] = emptyFunction;
+	      }
+	    }
+	  },
+
+	  componentDidMount:function() {
+	    if (this.DOMMetrics) {
+	      this.DOMMetrics = this.registerMetrics(this._DOMMetricsDefs);
+	    }
+	  },
+
+	  componentWillUnmount:function() {
+	    if (!this.registerMetricsImpl) {
+	      return this.context.metricsComputator.unregisterMetricsFor(this);
+	    }
+	    if (this.hasOwnProperty('DOMMetrics')) {
+	        delete this.DOMMetrics;
+	    }
+	  },
+
+	  registerMetrics:function(metrics) {
+	    if (this.registerMetricsImpl) {
+	      return this.registerMetricsImpl(this, metrics);
+	    } else {
+	      return this.context.metricsComputator.registerMetricsImpl(this, metrics);
+	    }
+	  },
+
+	  getMetric:function(name) {
+	    if (this.getMetricImpl) {
+	      return this.getMetricImpl(name);
+	    } else {
+	      return this.context.metricsComputator.getMetricImpl(name);
+	    }
+	  }
+	};
+
+	module.exports = {
+	  MetricsComputatorMixin:MetricsComputatorMixin,
+	  MetricsMixin:MetricsMixin
+	};
+
+
+/***/ },
 /* 32 */,
 /* 33 */,
 /* 34 */,
 /* 35 */,
 /* 36 */,
 /* 37 */,
-/* 38 */
+/* 38 */,
+/* 39 */,
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1006,8 +1804,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)))
 
 /***/ },
-/* 39 */,
-/* 40 */,
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1499,8 +2295,125 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 43 */,
-/* 44 */,
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule emptyFunction
+
+	 */
+	'use strict';
+
+	var copyProperties = __webpack_require__(51);
+
+	function makeEmptyFunction(arg) {
+	  return function() {
+	    return arg;
+	  };
+	}
+
+	/**
+	 * This function accepts and discards inputs; it has no side effects. This is
+	 * primarily useful idiomatically for overridable function endpoints which
+	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+	 */
+	function emptyFunction() {}
+
+	copyProperties(emptyFunction, {
+	  thatReturns: makeEmptyFunction,
+	  thatReturnsFalse: makeEmptyFunction(false),
+	  thatReturnsTrue: makeEmptyFunction(true),
+	  thatReturnsNull: makeEmptyFunction(null),
+	  thatReturnsThis: function() { return this; },
+	  thatReturnsArgument: function(arg) { return arg; }
+	});
+
+	module.exports = emptyFunction;
+
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule invariant
+
+	 */
+
+	"use strict";
+
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+
+	var invariant = function(condition, format, a, b, c, d, e, f) {
+	  if (process.env.NODE_ENV) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error(
+	        'Minified exception occurred; use the non-minified dev environment ' +
+	        'for the full error message and additional helpful warnings.'
+	      );
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(
+	        'Invariant Violation: ' +
+	        format.replace(/%s/g, function() { return args[argIndex++]; })
+	      );
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+
+	module.exports = invariant;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)))
+
+/***/ },
 /* 45 */,
 /* 46 */,
 /* 47 */,
@@ -1655,6 +2568,69 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new Error('process.chdir is not supported');
 	};
 
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule copyProperties
+
+	 */
+	'use strict';
+
+	/**
+	 * Copy properties from one or more objects (up to 5) into the first object.
+	 * This is a shallow copy. It mutates the first object and also returns it.
+	 *
+	 * NOTE: `arguments` has a very significant performance penalty, which is why
+	 * we don't support unlimited arguments.
+	 */
+	function copyProperties(obj, a, b, c, d, e, f) {
+	  obj = obj || {};
+
+	  if (process.env.NODE_ENV) {
+	    if (f) {
+	      throw new Error('Too many arguments passed to copyProperties');
+	    }
+	  }
+
+	  var args = [a, b, c, d, e];
+	  var ii = 0, v;
+	  while (args[ii]) {
+	    v = args[ii++];
+	    for (var k in v) {
+	      obj[k] = v[k];
+	    }
+
+	    // IE ignores toString in object iteration.. See:
+	    // webreflection.blogspot.com/2007/07/quick-fix-internet-explorer-and.html
+	    if (v.hasOwnProperty && v.hasOwnProperty('toString') &&
+	        (typeof v.toString != 'undefined') && (obj.toString !== v.toString)) {
+	      obj.toString = v.toString;
+	    }
+	  }
+
+	  return obj;
+	}
+
+	module.exports = copyProperties;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)))
 
 /***/ }
 /******/ ])

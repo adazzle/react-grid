@@ -2,20 +2,14 @@ var gulp      = require("gulp");
 var gutil     = require("gulp-util");
 var webpack   = require("webpack");
 var uglify = require('gulp-uglify');
-var webpackConfig = require("../../webpack.config.js");
+var webpackConfig = require("../../config/webpack.config.js");
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 
 gulp.task("webpack",function(callback) {
 
     // run webpack
-    webpack(Object.create(webpackConfig), function(err, stats) {
-        if(err) throw new gutil.PluginError("webpack", err);
-        gutil.log("[standalone]", stats.toString({
-            // output options
-        }));
-        callback();
-    });
+    webpack(webpackConfig, callback);
 });
 
 

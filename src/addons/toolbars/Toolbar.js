@@ -5,7 +5,9 @@
 */
 'use strict';
 
-var React                   = require('react/addons');
+var React = require('react/addons');
+var ExcelRow = require('../rows/ExcelRow');
+
 var Toolbar = React.createClass({
   propTypes: {
     onAddRow : React.PropTypes.func.isRequired,
