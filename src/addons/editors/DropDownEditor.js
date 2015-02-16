@@ -42,7 +42,7 @@ var DropDownEditor = React.createClass({
 
 
   onChange(e){
-    this.props.onCommit({value : e.currentTarget.value});
+    this.commit({key : 'Enter'});
   },
 
   onClick(e){

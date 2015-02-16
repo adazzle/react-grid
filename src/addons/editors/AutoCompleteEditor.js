@@ -104,7 +104,7 @@ var AutoCompleteEditor = React.createClass({
       rowDataChanged[this.props.column.key] = value;
     }
     key = key ? key : 'Enter';
-    this.props.onCommit({value : value, key : key, rowDataChanged : rowDataChanged});
+    this.props.onCommit({value : value, key : key, updated : rowDataChanged});
   },
 
   constuctValueFromParams(obj, props) {

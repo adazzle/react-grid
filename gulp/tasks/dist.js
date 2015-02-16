@@ -6,7 +6,7 @@ var webpackConfig = require("../../webpack.config.js");
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 
-gulp.task("webpack",function(callback) {
+gulp.task("webpack", function(callback) {
 
     // run webpack
     webpack(Object.create(webpackConfig), function(err, stats) {
@@ -20,9 +20,9 @@ gulp.task("webpack",function(callback) {
 
 
 gulp.task("dist", ['webpack'], function() {
-  gulp.src('dist/ReactGridAddons.js')
+  gulp.src('dist/ReactGridWithAddons.js')
   .pipe(uglify())
-  .pipe(rename('ReactGridAddons.min.js'))
+  .pipe(rename('ReactGridWithAddons.min.js'))
   .pipe(gulp.dest('dist'))
   .on('error', gutil.log)
 

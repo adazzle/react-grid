@@ -5,13 +5,13 @@ var path = require("path");
 
 module.exports = {
 	entry: {
-		'Grid' : './src/index',
-		'GridAddons' : './src/addons/index'
+		'ReactGrid' : './src/index',
+		'ReactGridWithAddons' : './src/addons/index'
 	},
 	output: {
 		path: path.join(__dirname, "./dist"),
-		filename: "React[name].js",
-		library: ["ReactGrid", "[name]"],
+		filename: "[name].js",
+		library: ["ReactGrid"],
 		libraryTarget: "umd"
 	},
 	externals: {
