@@ -58,7 +58,7 @@ gulp.task("copy-dist", ['build'], function(){
 
 // task
 gulp.task('styles', function () {
-	return gulp.src('./themes/reactGrid.css')
+	return gulp.src(['./themes/reactGrid.css', './themes/fixed-data-table.css'] )
 	.pipe(gulp.dest('./examples/build'));
 });
 

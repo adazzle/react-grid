@@ -17,6 +17,9 @@
   ],
   "dependencies": {
     "es5-shim": "^4.0.3",
+    "faker": "^2.1.2",
+    "fixed-data-table": "^0.1.0",
+    "glob": "^4.4.0",
     "highlight.js": "^8.4.0",
     "immutable": "^3.0.0",
     "jquery": "^2.1.1",
