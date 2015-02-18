@@ -25,14 +25,7 @@
       editable : true,
       sortable : true,
       resizeable : true,
-      showCellControls : true,
-      getExpandedHeight : function(value){
-        if(value === 'User Story 1'){
-          return 60;
-        }else{
-          return null;
-        }
-      }
+      showCellControls : true
     },
     {
       key: 'developer',

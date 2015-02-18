@@ -59,7 +59,7 @@ var CellControls = React.createClass({
 
   render : function(){
     return (<div className="pull-right btn-group">
-              {this.renderShowMoreButton}
+              {this.renderShowMoreButton()}
               <button onClick={this.onClickEdit} type="button" className="btn btn-link btn-xs">Edit</button>
             </div>)
   }

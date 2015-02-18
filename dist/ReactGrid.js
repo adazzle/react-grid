@@ -82,18 +82,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                 = __webpack_require__(10);
 	var PropTypes             = React.PropTypes;
-	var BaseGrid              = __webpack_require__(12);
-	var ExcelCell             = __webpack_require__(13);
-	var ExcelRow              = __webpack_require__(14);
-	var merge                 = __webpack_require__(15);
-	var SelectableGridMixin   = __webpack_require__(16);
-	var DraggableGridMixin    = __webpack_require__(17);
-	var CopyPasteGridMixin    = __webpack_require__(18);
-	var EditableGridMixin     = __webpack_require__(19);
-	var SortableGridMixin     = __webpack_require__(20);
-	var FilterableGridMixin   = __webpack_require__(21);
-	var CheckboxEditor        = __webpack_require__(22);
-	var MixinHelper           = __webpack_require__(23);
+	var BaseGrid              = __webpack_require__(16);
+	var ExcelCell             = __webpack_require__(17);
+	var ExcelRow              = __webpack_require__(18);
+	var merge                 = __webpack_require__(19);
+	var SelectableGridMixin   = __webpack_require__(20);
+	var DraggableGridMixin    = __webpack_require__(21);
+	var CopyPasteGridMixin    = __webpack_require__(22);
+	var EditableGridMixin     = __webpack_require__(23);
+	var SortableGridMixin     = __webpack_require__(24);
+	var FilterableGridMixin   = __webpack_require__(25);
+	var CheckboxEditor        = __webpack_require__(26);
+	var MixinHelper           = __webpack_require__(27);
 
 	var cloneWithProps = React.addons.cloneWithProps;
 
@@ -506,7 +506,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 	var React                   = __webpack_require__(10);
 	var cx                      = React.addons.classSet;
-	var isFunction = __webpack_require__(24);
+	var isFunction = __webpack_require__(12);
 
 	var EditorMixin = {
 
@@ -757,7 +757,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var $__0=   __webpack_require__(10),PropTypes=$__0.PropTypes,isValidElement=$__0.isValidElement;
 	var shallowCloneObject            = __webpack_require__(28);
 	var DOMMetrics                    = __webpack_require__(29);
-	var merge                         = __webpack_require__(15);
+	var merge                         = __webpack_require__(19);
 
 	/**
 	 * Update column metrics calculation.
@@ -969,6 +969,60 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
+	
+	"use strict";
+
+	var isFunction = function(functionToCheck){
+	    var getType = {};
+	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	}
+
+	module.exports = isFunction;
+
+
+/***/ },
+/* 13 */,
+/* 14 */,
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React                   = __webpack_require__(10);
+	var cx                      = React.addons.classSet;
+	var MixinHelper             = __webpack_require__(27);
+	var EditorMixin             = __webpack_require__(5);
+	var TextInputMixin          = __webpack_require__(6);
+	var keyboardHandlerMixin    = __webpack_require__(9);
+
+	var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
+
+	  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
+
+	  overrides : {
+	      checkFocus : function(){
+	          this.setTextInputFocus();
+	      }
+	  },
+
+	  renderEditorNode:function(){
+	    return (React.createElement("input", {type: "text", onBlur: this.commit, className: "form-control", defaultValue: this.getDefaultValue(), style: this.getStyle(), onKeyDown: this.onKeyDown}));
+	  }
+
+
+	});
+
+	module.exports = SimpleTextEditor;
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/**
 	 * @jsx React.DOM
 	 * @copyright Prometheus Research, LLC 2014
@@ -977,8 +1031,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                = __webpack_require__(10);
 	var PropTypes            = React.PropTypes;
-	var Header               = __webpack_require__(34);
-	var Viewport             = __webpack_require__(35);
+	var Header               = __webpack_require__(30);
+	var Viewport             = __webpack_require__(31);
 	var ColumnMetrics        = __webpack_require__(11);
 	var DOMMetrics           = __webpack_require__(29);
 
@@ -1082,7 +1136,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 13 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1093,13 +1147,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                = __webpack_require__(10);
 	var BaseCell             = __webpack_require__(3);
-	var SelectableMixin      = __webpack_require__(30);
-	var EditableMixin        = __webpack_require__(31);
-	var CopyableMixin        = __webpack_require__(32);
-	var DraggableMixin       = __webpack_require__(33);
-	var MixinHelper          = __webpack_require__(23);
+	var SelectableMixin      = __webpack_require__(32);
+	var EditableMixin        = __webpack_require__(33);
+	var CopyableMixin        = __webpack_require__(34);
+	var DraggableMixin       = __webpack_require__(35);
+	var MixinHelper          = __webpack_require__(27);
 	var KeyboardHandlerMixin = __webpack_require__(9);
-	var isFunction           = __webpack_require__(24);
+	var isFunction           = __webpack_require__(12);
 	var PropTypes            = React.PropTypes;
 	var cx                   = React.addons.classSet;
 	var cloneWithProps       = React.addons.cloneWithProps;
@@ -1146,7 +1200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  render : function(){
 	    return (React.createElement("div", {className: "pull-right btn-group"}, 
-	              this.renderShowMoreButton, 
+	              this.renderShowMoreButton(), 
 	              React.createElement("button", {onClick: this.onClickEdit, type: "button", className: "btn btn-link btn-xs"}, "Edit")
 	            ))
 	  }
@@ -1224,7 +1278,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 14 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1326,7 +1380,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 15 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1378,7 +1432,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 16 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1430,7 +1484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 17 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1441,8 +1495,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                    = __webpack_require__(10);
 	var PropTypes                = React.PropTypes;
-	var MixinHelper              = __webpack_require__(23);
-	var SelectableGridMixin          = __webpack_require__(16);
+	var MixinHelper              = __webpack_require__(27);
+	var SelectableGridMixin          = __webpack_require__(20);
 
 	MixinHelper.addAlias('SelectableGridMixin');
 
@@ -1499,7 +1553,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 18 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1541,7 +1595,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 19 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1552,7 +1606,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(10);
 	var PropTypes           = React.PropTypes;
-	var merge               = __webpack_require__(15);
+	var merge               = __webpack_require__(19);
 
 	var EditableGridMixin = {
 
@@ -1582,7 +1636,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 20 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1593,7 +1647,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(10);
 	var PropTypes           = React.PropTypes;
-	var SortableHeaderCell  = __webpack_require__(37);
+	var SortableHeaderCell  = __webpack_require__(36);
 	var shallowCloneObject  = __webpack_require__(28);
 
 	var DEFINE_SORT = {
@@ -1666,7 +1720,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 21 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1677,7 +1731,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(10);
 	var PropTypes           = React.PropTypes;
-	var FilterableHeaderCell = __webpack_require__(36);
+	var FilterableHeaderCell = __webpack_require__(37);
 
 	var FilterableGridMixin = {
 
@@ -1761,7 +1815,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 22 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1798,14 +1852,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 23 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
 	"use strict";
 
-	var keyMirror  = __webpack_require__(39);
-	var isFunction = __webpack_require__(24)
+	var keyMirror  = __webpack_require__(42);
+	var isFunction = __webpack_require__(12)
 	var React      = __webpack_require__(10);
 	if (!Object.assign) {
 	  Object.assign = __webpack_require__(38);
@@ -2033,60 +2087,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	
-	"use strict";
-
-	var isFunction = function(functionToCheck){
-	    var getType = {};
-	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-	}
-
-	module.exports = isFunction;
-
-
-/***/ },
-/* 25 */,
-/* 26 */,
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React                   = __webpack_require__(10);
-	var cx                      = React.addons.classSet;
-	var MixinHelper             = __webpack_require__(23);
-	var EditorMixin             = __webpack_require__(5);
-	var TextInputMixin          = __webpack_require__(6);
-	var keyboardHandlerMixin    = __webpack_require__(9);
-
-	var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
-
-	  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
-
-	  overrides : {
-	      checkFocus : function(){
-	          this.setTextInputFocus();
-	      }
-	  },
-
-	  renderEditorNode:function(){
-	    return (React.createElement("input", {type: "text", onBlur: this.commit, className: "form-control", defaultValue: this.getDefaultValue(), style: this.getStyle(), onKeyDown: this.onKeyDown}));
-	  }
-
-
-	});
-
-	module.exports = SimpleTextEditor;
-
-
-/***/ },
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -2120,9 +2120,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React               = __webpack_require__(10);
-	var emptyFunction       = __webpack_require__(44);
+	var emptyFunction       = __webpack_require__(40);
 	var shallowCloneObject  = __webpack_require__(28);
-	var invariant           = __webpack_require__(45);
+	var invariant           = __webpack_require__(41);
 
 	var contextTypes = {
 	  metricsComputator: React.PropTypes.object
@@ -2287,434 +2287,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @jsx React.DOM
 	 * @copyright Prometheus Research, LLC 2014
 	 */
-	'use strict';
-
-	var React          = __webpack_require__(10);
-	var cx             = React.addons.classSet;
-	var cloneWithProps = React.addons.cloneWithProps;
-	var KeyboardHandlerMixin = __webpack_require__(9);
-	var MixinHelper    = __webpack_require__(23);
-
-	var SelectableMixin = MixinHelper.createDependency({KeyboardHandlerMixin : KeyboardHandlerMixin}).assignTo({
-
-	  getDefaultProps : function(){
-	    return {
-	      tabIndex : -1,
-	      ref : "cell"
-	    }
-	  },
-
-	  isSelected: function() {
-	    return (
-	      this.props.selected
-	      && this.props.selected.rowIdx === this.props.rowIdx
-	      && this.props.selected.idx === this.props.idx
-	    );
-	  },
-
-	  onClick: function() {
-	    var rowIdx = this.props.rowIdx;
-	    var idx = this.props.idx;
-	    this.props.onClick({rowIdx: rowIdx, idx: idx});
-	  },
-
-	  onPressArrowUp:function(e){
-	    this.moveSelectedCell(e, -1, 0);
-	  },
-
-	  onPressArrowDown:function(e){
-	    this.moveSelectedCell(e, 1, 0);
-	  },
-
-	  onPressArrowLeft:function(e){
-	    this.moveSelectedCell(e, 0, -1);
-	  },
-
-	  onPressArrowRight:function(e){
-	    this.moveSelectedCell(e, 0, 1);
-	  },
-
-	  onPressTab:function(e){
-	    this.moveSelectedCell(e, 0, 1);
-	  },
-
-	  moveSelectedCell:function(e, rowDelta, cellDelta){
-	    e.stopPropagation();
-	    e.preventDefault();
-	    var rowIdx = this.props.rowIdx + rowDelta;
-	    var idx = this.props.idx + cellDelta;
-	    this.props.onSelect({idx: idx, rowIdx: rowIdx});
-	  },
-
-	  setScrollLeft: function(scrollLeft) {
-	    this.refs.row.setScrollLeft(scrollLeft);
-	  },
-
-	  componentDidMount: function() {
-	    this.checkFocus();
-	  },
-
-	  componentDidUpdate: function() {
-	    this.checkFocus();
-	  },
-
-	  isCellSelectionChanging:function(nextProps){
-	    if(this.props.selected && nextProps.selected){
-	      return this.props.idx === nextProps.selected.idx || this.props.idx === this.props.selected.idx;
-	    }else{
-	      return true;
-	    }
-	  },
-
-	  checkFocus: function() {
-	    if (this.isSelected()) {
-	      this.getDOMNode().focus();
-	    }
-	  }
-	})
-
-
-
-	module.exports = SelectableMixin;
-
-
-/***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React            = __webpack_require__(10);
-	var cx               = React.addons.classSet;
-	var cloneWithProps   = React.addons.cloneWithProps;
-	var SimpleTextEditor = __webpack_require__(27);
-	var PropTypes        = React.PropTypes;
-	var MixinHelper      = __webpack_require__(23);
-	var SelectableMixin  = __webpack_require__(30);
-	var KeyboardHandlerMixin = __webpack_require__(9);
-
-	var EditableMixin = MixinHelper.createDependency({
-
-	  KeyboardHandlerMixin : KeyboardHandlerMixin,
-
-	  SelectableMixin : SelectableMixin
-
-	  }).assignTo({
-
-	    propTypes : {
-	        onCommit : PropTypes.func.isRequired
-	    },
-
-	    canEdit:function(){
-	      return (this.props.column.editor != null) || this.props.column.editable;
-	    },
-
-
-	    getEditor:function(){
-
-	      var editorProps = {height : this.props.height, onPressEscape : this.onPressEscape,  onCommit : this.onCommit, initialKeyCode : this.props.selected.initialKeyCode, editorRowMetaData : this.getEditorRowMetaData()};
-	      var customEditor = this.props.column.editor;
-	      if(customEditor && React.isValidElement(customEditor)){
-	        //return custom column editor or SimpleEditor if none specified
-	        return cloneWithProps(customEditor, editorProps);
-	      }else{
-	        return cloneWithProps(SimpleTextEditor(), editorProps);
-	      }
-	    },
-
-	    getEditorRowMetaData:function(){
-	      //clone row data so editor cannot actually change this
-	      var columnName = this.props.column.ItemId;
-	      //convention based method to get corresponding Id or Name of any Name or Id property
-	      if(typeof this.props.column.getEditorRowMetaData === 'function'){
-	        return this.props.column.getEditorRowMetaData(this.props.rowData);
-	      }
-	    },
-
-	    getFormatter:function(){
-	      var col = this.props.column;
-	      if(this.isActive()){
-	        return this.getEditor();
-	      }else{
-	        return this.props.column.formatter;
-	      }
-	    },
-
-	    onCommit:function(commit){
-	      var rowIdx = this.props.rowIdx;
-	      var idx = this.props.idx;
-	      var cellKey = this.props.column.key;
-	      this.props.onCommit({cellKey: cellKey, rowIdx: this.props.filterRowIdx || rowIdx, updated : commit.updated, keyCode : commit.key});
-	    },
-
-	    checkFocus: function() {
-	      if (this.isSelected() && !this.isActive()) {
-	        this.getDOMNode().focus();
-	      }
-	    },
-
-	    onClick:function() {
-	      if(!this.isActive()){
-	        var rowIdx = this.props.rowIdx;
-	        var idx = this.props.idx;
-	        this.props.onClick({rowIdx: rowIdx, idx: idx});
-	      }
-
-	    },
-
-	    onDoubleClick:function() {
-	      var rowIdx = this.props.rowIdx;
-	      var idx = this.props.idx;
-	      this.props.onClick({rowIdx: rowIdx, idx: idx, active : this.canEdit()});
-	    },
-
-	    setActive:function(keyPressed){
-	      var rowIdx = this.props.rowIdx;
-	      var idx = this.props.idx;
-	      if(this.props.column.key === 'select-row' && this.props.column.onRowSelect){
-	        this.props.column.onRowSelect(rowIdx);
-	      }
-	      else if(this.canEdit() && !this.isActive()){
-	        this.props.onSetActive({idx: idx, rowIdx: rowIdx, active : true, initialKeyCode : keyPressed});
-	      }
-	    },
-
-	    setInactive:function(){
-	      if(this.canEdit() && this.isActive()){
-	        var rowIdx = this.props.rowIdx;
-	        var idx = this.props.idx;
-	        this.props.onSetActive({idx: idx, rowIdx: rowIdx, active : false});
-	      }
-	    },
-
-	    isActive:function(){
-	      return this.isSelected() && this.props.selected.active === true;
-	    },
-
-	    onPressEnter:function(e){
-	      this.setActive(e.key);
-	    },
-
-	    onPressDelete:function(e){
-	      this.setActive(e.key);
-	    },
-
-	    onPressEscape:function(e){
-	      this.setInactive(e.key);
-	    },
-
-	    onPressBackspace:function(e){
-	      this.setActive(e.key);
-	    },
-
-	    onPressChar:function(e){
-	      if(this.isKeyPrintable(e.keyCode)){
-	        this.setActive(e.keyCode);
-	      }
-	    }
-	});
-
-
-
-	module.exports = EditableMixin;
-
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React                = __webpack_require__(10);
-	var cx                   = React.addons.classSet;
-	var cloneWithProps       = React.addons.cloneWithProps;
-	var PropTypes            = React.PropTypes;
-	var SimpleTextEditor     = __webpack_require__(27);
-	var MixinHelper          = __webpack_require__(23);
-	var SelectableMixin      = __webpack_require__(30);
-	var KeyboardHandlerMixin = __webpack_require__(9);
-
-	var CopyableMixin = MixinHelper.createDependency({
-
-	  KeyboardHandlerMixin : KeyboardHandlerMixin,
-
-	  SelectableMixin : SelectableMixin
-
-	}).assignTo({
-
-	  getCellClass : function(){
-	    return cx({
-	      'selected' : this.isSelected() && !this.isCopied(),
-	      'copied' : this.isCopied()
-	    })
-	  },
-
-	  KeyCode_c : '99',
-
-	  KeyCode_C : '67',
-
-	  KeyCode_V : '86',
-
-	  KeyCode_v : '118',
-
-	  propTypes : {
-	    handleCopy : React.PropTypes.func.isRequired,
-	    handlePaste : React.PropTypes.func.isRequired
-	  },
-
-	  isCopied : function(){
-	    return (
-	      this.props.copied
-	      && this.props.copied.rowIdx === this.props.rowIdx
-	      && this.props.copied.idx === this.props.idx
-	    );
-	  },
-
-	  onPressKeyWithCtrl:function(e){
-	    if(this.canEdit()){
-	      if(e.keyCode == this.KeyCode_c || e.keyCode == this.KeyCode_C){
-	        this.props.handleCopy({value : this.props.value});
-	      }else if(e.keyCode == this.KeyCode_v || e.keyCode == this.KeyCode_V){
-	        this.props.handlePaste({value : this.props.value});
-	      }
-	    }
-	  }
-	});
-
-
-
-	module.exports = CopyableMixin;
-
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React          = __webpack_require__(10);
-	var cx             = React.addons.classSet;
-	var cloneWithProps = React.addons.cloneWithProps;
-	var PropTypes      = React.PropTypes;
-	var MixinHelper      = __webpack_require__(23);
-	var SelectableMixin  = __webpack_require__(30);
-	var KeyboardHandlerMixin = __webpack_require__(9);
-
-	var DraggableMixin = MixinHelper.createDependency({
-
-	  KeyboardHandlerMixin : KeyboardHandlerMixin,
-
-	  SelectableMixin : SelectableMixin
-
-	}).assignTo({
-
-	getCellClass : function(){
-	  return cx({
-	    'selected-draggable' : this.isSelected(),
-	    'active-drag-cell' : this.isSelected() || this.isDraggedOver(),
-	    'is-dragged-over-up' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx < this.props.dragged.rowIdx,
-	    'is-dragged-over-down' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx > this.props.dragged.rowIdx,
-	    'was-dragged-over' : this.wasDraggedOver()
-	  });
-	},
-
-	  getDefaultProps : function(){
-	    return {
-	        handleDragStart: this.handleDragStart,
-	        onDragEnter: this.handleDragEnter,
-	        onDragEnd: this.handleDragEnd
-	    }
-	  },
-
-	  propTypes : {
-	    handleDragEnter : React.PropTypes.func.isRequired,
-	    handleDragStart : React.PropTypes.func.isRequired,
-	    handleDragEnd : React.PropTypes.func.isRequired,
-	    handleTerminateDrag : React.PropTypes.func.isRequired
-	  },
-
-	  isDraggedOver:function(){
-
-	      return (
-	        this.props.dragged &&
-	        this.props.dragged.overRowIdx === this.props.rowIdx
-	        && this.props.dragged.idx === this.props.idx
-	      )
-	  },
-
-	  wasDraggedOver:function(){
-	    return (
-	      this.props.dragged
-	      && ((this.props.dragged.overRowIdx < this.props.rowIdx && this.props.rowIdx < this.props.dragged.rowIdx)
-	      ||  (this.props.dragged.overRowIdx > this.props.rowIdx && this.props.rowIdx > this.props.dragged.rowIdx))
-	      && this.props.dragged.idx === this.props.idx
-	    );
-	  },
-
-	  handleDragStart:function(e){
-	    var rowIdx = this.props.rowIdx;
-	    var idx = this.props.idx;
-	    this.props.handleDragStart({rowIdx : rowIdx, idx : idx, copiedText : this.props.value});
-	  },
-
-	  handleDragEnter:function(){
-	    this.props.handleDragEnter(this.props.rowIdx);
-	  },
-
-	  handleDragEnd:function(){
-	    this.props.handleDragEnd();
-	  },
-
-	  isDraggedCellChanging:function(nextProps){
-	    if(this.props.dragged){
-	      return (nextProps.dragged && this.props.idx === nextProps.dragged.idx)
-	      || (this.props.dragged && this.props.idx === this.props.dragged.idx);
-	    }else{
-	      return false;
-	    }
-	  },
-
-	  componentDidUpdate:function(){
-	    var dragged = this.props.dragged;
-	    if(dragged && dragged.complete === true){
-	      this.props.handleTerminateDrag();
-	    }
-	  }
-
-	});
-
-
-
-	module.exports = DraggableMixin;
-
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
 	"use strict";
 
 	var React               = __webpack_require__(10);
 	var cx                  = React.addons.classSet;
 	var shallowCloneObject  = __webpack_require__(28);
 	var ColumnMetrics       = __webpack_require__(11);
-	var HeaderRow           = __webpack_require__(41);
+	var HeaderRow           = __webpack_require__(45);
 	var ColumnMetrics = __webpack_require__(11);
 
 	var Header = React.createClass({displayName: 'Header',
@@ -2839,7 +2418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 35 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2849,9 +2428,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React             = __webpack_require__(10);
-	var getWindowSize     = __webpack_require__(42);
+	var getWindowSize     = __webpack_require__(43);
 	var DOMMetrics        = __webpack_require__(29);
-	var Canvas            = __webpack_require__(43);
+	var Canvas            = __webpack_require__(44);
 
 	var min   = Math.min;
 	var max   = Math.max;
@@ -3023,7 +2602,474 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React          = __webpack_require__(10);
+	var cx             = React.addons.classSet;
+	var cloneWithProps = React.addons.cloneWithProps;
+	var KeyboardHandlerMixin = __webpack_require__(9);
+	var MixinHelper    = __webpack_require__(27);
+
+	var SelectableMixin = MixinHelper.createDependency({KeyboardHandlerMixin : KeyboardHandlerMixin}).assignTo({
+
+	  getDefaultProps : function(){
+	    return {
+	      tabIndex : -1,
+	      ref : "cell"
+	    }
+	  },
+
+	  isSelected: function() {
+	    return (
+	      this.props.selected
+	      && this.props.selected.rowIdx === this.props.rowIdx
+	      && this.props.selected.idx === this.props.idx
+	    );
+	  },
+
+	  onClick: function() {
+	    var rowIdx = this.props.rowIdx;
+	    var idx = this.props.idx;
+	    this.props.onClick({rowIdx: rowIdx, idx: idx});
+	  },
+
+	  onPressArrowUp:function(e){
+	    this.moveSelectedCell(e, -1, 0);
+	  },
+
+	  onPressArrowDown:function(e){
+	    this.moveSelectedCell(e, 1, 0);
+	  },
+
+	  onPressArrowLeft:function(e){
+	    this.moveSelectedCell(e, 0, -1);
+	  },
+
+	  onPressArrowRight:function(e){
+	    this.moveSelectedCell(e, 0, 1);
+	  },
+
+	  onPressTab:function(e){
+	    this.moveSelectedCell(e, 0, 1);
+	  },
+
+	  moveSelectedCell:function(e, rowDelta, cellDelta){
+	    e.stopPropagation();
+	    e.preventDefault();
+	    var rowIdx = this.props.rowIdx + rowDelta;
+	    var idx = this.props.idx + cellDelta;
+	    this.props.onSelect({idx: idx, rowIdx: rowIdx});
+	  },
+
+	  setScrollLeft: function(scrollLeft) {
+	    this.refs.row.setScrollLeft(scrollLeft);
+	  },
+
+	  componentDidMount: function() {
+	    this.checkFocus();
+	  },
+
+	  componentDidUpdate: function() {
+	    this.checkFocus();
+	  },
+
+	  isCellSelectionChanging:function(nextProps){
+	    if(this.props.selected && nextProps.selected){
+	      return this.props.idx === nextProps.selected.idx || this.props.idx === this.props.selected.idx;
+	    }else{
+	      return true;
+	    }
+	  },
+
+	  checkFocus: function() {
+	    if (this.isSelected()) {
+	      this.getDOMNode().focus();
+	    }
+	  }
+	})
+
+
+
+	module.exports = SelectableMixin;
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React            = __webpack_require__(10);
+	var cx               = React.addons.classSet;
+	var cloneWithProps   = React.addons.cloneWithProps;
+	var SimpleTextEditor = __webpack_require__(15);
+	var PropTypes        = React.PropTypes;
+	var MixinHelper      = __webpack_require__(27);
+	var SelectableMixin  = __webpack_require__(32);
+	var KeyboardHandlerMixin = __webpack_require__(9);
+
+	var EditableMixin = MixinHelper.createDependency({
+
+	  KeyboardHandlerMixin : KeyboardHandlerMixin,
+
+	  SelectableMixin : SelectableMixin
+
+	  }).assignTo({
+
+	    propTypes : {
+	        onCommit : PropTypes.func.isRequired
+	    },
+
+	    canEdit:function(){
+	      return (this.props.column.editor != null) || this.props.column.editable;
+	    },
+
+
+	    getEditor:function(){
+
+	      var editorProps = {height : this.props.height, onPressEscape : this.onPressEscape,  onCommit : this.onCommit, initialKeyCode : this.props.selected.initialKeyCode, editorRowMetaData : this.getEditorRowMetaData()};
+	      var customEditor = this.props.column.editor;
+	      if(customEditor && React.isValidElement(customEditor)){
+	        //return custom column editor or SimpleEditor if none specified
+	        return cloneWithProps(customEditor, editorProps);
+	      }else{
+	        return cloneWithProps(SimpleTextEditor(), editorProps);
+	      }
+	    },
+
+	    getEditorRowMetaData:function(){
+	      //clone row data so editor cannot actually change this
+	      var columnName = this.props.column.ItemId;
+	      //convention based method to get corresponding Id or Name of any Name or Id property
+	      if(typeof this.props.column.getEditorRowMetaData === 'function'){
+	        return this.props.column.getEditorRowMetaData(this.props.rowData);
+	      }
+	    },
+
+	    getFormatter:function(){
+	      var col = this.props.column;
+	      if(this.isActive()){
+	        return this.getEditor();
+	      }else{
+	        return this.props.column.formatter;
+	      }
+	    },
+
+	    onCommit:function(commit){
+	      var rowIdx = this.props.rowIdx;
+	      var idx = this.props.idx;
+	      var cellKey = this.props.column.key;
+	      this.props.onCommit({cellKey: cellKey, rowIdx: this.props.filterRowIdx || rowIdx, updated : commit.updated, keyCode : commit.key});
+	    },
+
+	    checkFocus: function() {
+	      if (this.isSelected() && !this.isActive()) {
+	        this.getDOMNode().focus();
+	      }
+	    },
+
+	    onClick:function() {
+	      if(!this.isActive()){
+	        var rowIdx = this.props.rowIdx;
+	        var idx = this.props.idx;
+	        this.props.onClick({rowIdx: rowIdx, idx: idx});
+	      }
+
+	    },
+
+	    onDoubleClick:function() {
+	      var rowIdx = this.props.rowIdx;
+	      var idx = this.props.idx;
+	      this.props.onClick({rowIdx: rowIdx, idx: idx, active : this.canEdit()});
+	    },
+
+	    setActive:function(keyPressed){
+	      var rowIdx = this.props.rowIdx;
+	      var idx = this.props.idx;
+	      if(this.props.column.key === 'select-row' && this.props.column.onRowSelect){
+	        this.props.column.onRowSelect(rowIdx);
+	      }
+	      else if(this.canEdit() && !this.isActive()){
+	        this.props.onSetActive({idx: idx, rowIdx: rowIdx, active : true, initialKeyCode : keyPressed});
+	      }
+	    },
+
+	    setInactive:function(){
+	      if(this.canEdit() && this.isActive()){
+	        var rowIdx = this.props.rowIdx;
+	        var idx = this.props.idx;
+	        this.props.onSetActive({idx: idx, rowIdx: rowIdx, active : false});
+	      }
+	    },
+
+	    isActive:function(){
+	      return this.isSelected() && this.props.selected.active === true;
+	    },
+
+	    onPressEnter:function(e){
+	      this.setActive(e.key);
+	    },
+
+	    onPressDelete:function(e){
+	      this.setActive(e.key);
+	    },
+
+	    onPressEscape:function(e){
+	      this.setInactive(e.key);
+	    },
+
+	    onPressBackspace:function(e){
+	      this.setActive(e.key);
+	    },
+
+	    onPressChar:function(e){
+	      if(this.isKeyPrintable(e.keyCode)){
+	        this.setActive(e.keyCode);
+	      }
+	    }
+	});
+
+
+
+	module.exports = EditableMixin;
+
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React                = __webpack_require__(10);
+	var cx                   = React.addons.classSet;
+	var cloneWithProps       = React.addons.cloneWithProps;
+	var PropTypes            = React.PropTypes;
+	var SimpleTextEditor     = __webpack_require__(15);
+	var MixinHelper          = __webpack_require__(27);
+	var SelectableMixin      = __webpack_require__(32);
+	var KeyboardHandlerMixin = __webpack_require__(9);
+
+	var CopyableMixin = MixinHelper.createDependency({
+
+	  KeyboardHandlerMixin : KeyboardHandlerMixin,
+
+	  SelectableMixin : SelectableMixin
+
+	}).assignTo({
+
+	  getCellClass : function(){
+	    return cx({
+	      'selected' : this.isSelected() && !this.isCopied(),
+	      'copied' : this.isCopied()
+	    })
+	  },
+
+	  KeyCode_c : '99',
+
+	  KeyCode_C : '67',
+
+	  KeyCode_V : '86',
+
+	  KeyCode_v : '118',
+
+	  propTypes : {
+	    handleCopy : React.PropTypes.func.isRequired,
+	    handlePaste : React.PropTypes.func.isRequired
+	  },
+
+	  isCopied : function(){
+	    return (
+	      this.props.copied
+	      && this.props.copied.rowIdx === this.props.rowIdx
+	      && this.props.copied.idx === this.props.idx
+	    );
+	  },
+
+	  onPressKeyWithCtrl:function(e){
+	    if(this.canEdit()){
+	      if(e.keyCode == this.KeyCode_c || e.keyCode == this.KeyCode_C){
+	        this.props.handleCopy({value : this.props.value});
+	      }else if(e.keyCode == this.KeyCode_v || e.keyCode == this.KeyCode_V){
+	        this.props.handlePaste({value : this.props.value});
+	      }
+	    }
+	  }
+	});
+
+
+
+	module.exports = CopyableMixin;
+
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React          = __webpack_require__(10);
+	var cx             = React.addons.classSet;
+	var cloneWithProps = React.addons.cloneWithProps;
+	var PropTypes      = React.PropTypes;
+	var MixinHelper      = __webpack_require__(27);
+	var SelectableMixin  = __webpack_require__(32);
+	var KeyboardHandlerMixin = __webpack_require__(9);
+
+	var DraggableMixin = MixinHelper.createDependency({
+
+	  KeyboardHandlerMixin : KeyboardHandlerMixin,
+
+	  SelectableMixin : SelectableMixin
+
+	}).assignTo({
+
+	getCellClass : function(){
+	  return cx({
+	    'selected-draggable' : this.isSelected(),
+	    'active-drag-cell' : this.isSelected() || this.isDraggedOver(),
+	    'is-dragged-over-up' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx < this.props.dragged.rowIdx,
+	    'is-dragged-over-down' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx > this.props.dragged.rowIdx,
+	    'was-dragged-over' : this.wasDraggedOver()
+	  });
+	},
+
+	  getDefaultProps : function(){
+	    return {
+	        handleDragStart: this.handleDragStart,
+	        onDragEnter: this.handleDragEnter,
+	        onDragEnd: this.handleDragEnd
+	    }
+	  },
+
+	  propTypes : {
+	    handleDragEnter : React.PropTypes.func.isRequired,
+	    handleDragStart : React.PropTypes.func.isRequired,
+	    handleDragEnd : React.PropTypes.func.isRequired,
+	    handleTerminateDrag : React.PropTypes.func.isRequired
+	  },
+
+	  isDraggedOver:function(){
+
+	      return (
+	        this.props.dragged &&
+	        this.props.dragged.overRowIdx === this.props.rowIdx
+	        && this.props.dragged.idx === this.props.idx
+	      )
+	  },
+
+	  wasDraggedOver:function(){
+	    return (
+	      this.props.dragged
+	      && ((this.props.dragged.overRowIdx < this.props.rowIdx && this.props.rowIdx < this.props.dragged.rowIdx)
+	      ||  (this.props.dragged.overRowIdx > this.props.rowIdx && this.props.rowIdx > this.props.dragged.rowIdx))
+	      && this.props.dragged.idx === this.props.idx
+	    );
+	  },
+
+	  handleDragStart:function(e){
+	    var rowIdx = this.props.rowIdx;
+	    var idx = this.props.idx;
+	    this.props.handleDragStart({rowIdx : rowIdx, idx : idx, copiedText : this.props.value});
+	  },
+
+	  handleDragEnter:function(){
+	    this.props.handleDragEnter(this.props.rowIdx);
+	  },
+
+	  handleDragEnd:function(){
+	    this.props.handleDragEnd();
+	  },
+
+	  isDraggedCellChanging:function(nextProps){
+	    if(this.props.dragged){
+	      return (nextProps.dragged && this.props.idx === nextProps.dragged.idx)
+	      || (this.props.dragged && this.props.idx === this.props.dragged.idx);
+	    }else{
+	      return false;
+	    }
+	  },
+
+	  componentDidUpdate:function(){
+	    var dragged = this.props.dragged;
+	    if(dragged && dragged.complete === true){
+	      this.props.handleTerminateDrag();
+	    }
+	  }
+
+	});
+
+
+
+	module.exports = DraggableMixin;
+
+
+/***/ },
 /* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React              = __webpack_require__(10);
+	var cx             = React.addons.classSet;
+
+	var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
+
+	  onClick: function() {
+	    this.props.column.sortBy(
+	      this.props.column,
+	      this.props.column.sorted);
+	  },
+
+	  getSortByClass : function(){
+	    var sorted = this.props.column.sorted;
+	    return cx({
+	      'pull-right' : true,
+	      'glyphicon glyphicon-arrow-up' : sorted === 'ASC',
+	      'glyphicon glyphicon-arrow-down' : sorted === 'DESC'
+	    });
+	  },
+
+	  render: function() {
+
+	    return (
+	      React.createElement("div", {
+	        onClick: this.onClick, 
+	        style: {cursor: 'pointer'}}, 
+	        this.props.column.name, 
+	        React.createElement("span", {className: this.getSortByClass()})
+	      )
+	    );
+	  }
+	});
+
+	module.exports = SortableHeaderCell;
+
+
+/***/ },
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3076,52 +3122,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React              = __webpack_require__(10);
-	var cx             = React.addons.classSet;
-
-	var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
-
-	  onClick: function() {
-	    this.props.column.sortBy(
-	      this.props.column,
-	      this.props.column.sorted);
-	  },
-
-	  getSortByClass : function(){
-	    var sorted = this.props.column.sorted;
-	    return cx({
-	      'pull-right' : true,
-	      'glyphicon glyphicon-arrow-up' : sorted === 'ASC',
-	      'glyphicon glyphicon-arrow-down' : sorted === 'DESC'
-	    });
-	  },
-
-	  render: function() {
-
-	    return (
-	      React.createElement("div", {
-	        onClick: this.onClick, 
-	        style: {cursor: 'pointer'}}, 
-	        this.props.column.name, 
-	        React.createElement("span", {className: this.getSortByClass()})
-	      )
-	    );
-	  }
-	});
-
-	module.exports = SortableHeaderCell;
-
-
-/***/ },
 /* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -3154,7 +3154,125 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 39 */
+/* 39 */,
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule emptyFunction
+	 */
+	'use strict';
+
+	var copyProperties = __webpack_require__(46);
+
+	function makeEmptyFunction(arg) {
+	  return function() {
+	    return arg;
+	  };
+	}
+
+	/**
+	 * This function accepts and discards inputs; it has no side effects. This is
+	 * primarily useful idiomatically for overridable function endpoints which
+	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
+	 */
+	function emptyFunction() {}
+
+	copyProperties(emptyFunction, {
+	  thatReturns: makeEmptyFunction,
+	  thatReturnsFalse: makeEmptyFunction(false),
+	  thatReturnsTrue: makeEmptyFunction(true),
+	  thatReturnsNull: makeEmptyFunction(null),
+	  thatReturnsThis: function() { return this; },
+	  thatReturnsArgument: function(arg) { return arg; }
+	});
+
+	module.exports = emptyFunction;
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2014 Facebook, Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 * @providesModule invariant
+	 */
+
+	"use strict";
+
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+
+	var invariant = function(condition, format, a, b, c, d, e, f) {
+	  if (process.env.NODE_ENV) {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error(
+	        'Minified exception occurred; use the non-minified dev environment ' +
+	        'for the full error message and additional helpful warnings.'
+	      );
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error(
+	        'Invariant Violation: ' +
+	        format.replace(/%s/g, function() { return args[argIndex++]; })
+	      );
+	    }
+
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+
+	module.exports = invariant;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
+
+/***/ },
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -3212,111 +3330,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
 
 /***/ },
-/* 40 */,
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	"use strict";
-
-	var React             = __webpack_require__(10);
-	var PropTypes         = React.PropTypes;
-	var shallowEqual      = __webpack_require__(46);
-	var HeaderCell        = __webpack_require__(48);
-	var getScrollbarSize  = __webpack_require__(49);
-
-	var HeaderRow = React.createClass({displayName: 'HeaderRow',
-
-	  propTypes: {
-	    width: PropTypes.number,
-	    height: PropTypes.number.isRequired,
-	    columns: PropTypes.array.isRequired,
-	    onColumnResize: PropTypes.func
-	  },
-
-	  render:function() {
-	    var cellsStyle = {
-	      width: this.props.width ? (this.props.width + getScrollbarSize()) : '100%',
-	      height: this.props.height,
-	      whiteSpace: 'nowrap',
-	      overflowX: 'hidden',
-	      overflowY: 'hidden'
-	    };
-
-	    var cells = this.getCells();
-	    return (
-	      React.createElement("div", React.__spread({},  this.props, {className: "react-grid-HeaderRow"}), 
-	        React.createElement("div", {style: cellsStyle}, 
-	          cells
-	        )
-	      )
-	    );
-	  },
-
-	  getCells:function() {
-	    var cells = [];
-	    var lockedCells = [];
-
-	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
-	      var column = this.props.columns[i];
-	      var cell = (
-	        React.createElement(HeaderCell, {
-	          ref: i, 
-	          key: i, 
-	          height: this.props.height, 
-	          column: column, 
-	          renderer: this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer, 
-	          resizing: this.props.resizing === column, 
-	          onResize: this.props.onColumnResize, 
-	          onResizeEnd: this.props.onColumnResizeEnd}
-	          )
-	      );
-	      if (column.locked) {
-	        lockedCells.push(cell);
-	      } else {
-	        cells.push(cell);
-	      }
-	    }
-
-	    return cells.concat(lockedCells);
-	  },
-
-	  setScrollLeft:function(scrollLeft) {
-	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
-	      if (this.props.columns[i].locked) {
-	        this.refs[i].setScrollLeft(scrollLeft);
-	      }
-	    }
-	  },
-
-	  shouldComponentUpdate:function(nextProps) {
-	    return (
-	      nextProps.width !== this.props.width
-	      || nextProps.height !== this.props.height
-	      || nextProps.columns !== this.props.columns
-	      || !shallowEqual(nextProps.style, this.props.style)
-	    );
-	  },
-
-	  getStyle:function() {
-	    return {
-	      overflow: 'hidden',
-	      width: '100%',
-	      height: this.props.height,
-	      position: 'absolute'
-	    };
-	  }
-
-	});
-
-	module.exports = HeaderRow;
-
-
-/***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3351,7 +3365,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3364,9 +3378,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cx             = React.addons.classSet;
 	var PropTypes      = React.PropTypes;
 	var cloneWithProps = React.addons.cloneWithProps;
-	var shallowEqual   = __webpack_require__(46);
-	var emptyFunction  = __webpack_require__(44);
-	var ScrollShim     = __webpack_require__(47);
+	var shallowEqual   = __webpack_require__(47);
+	var emptyFunction  = __webpack_require__(40);
+	var ScrollShim     = __webpack_require__(48);
 	var Row            = __webpack_require__(2);
 
 	var Canvas = React.createClass({displayName: 'Canvas',
@@ -3568,57 +3582,110 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule emptyFunction
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
 	 */
-	'use strict';
+	"use strict";
 
-	var copyProperties = __webpack_require__(50);
+	var React             = __webpack_require__(10);
+	var PropTypes         = React.PropTypes;
+	var shallowEqual      = __webpack_require__(47);
+	var HeaderCell        = __webpack_require__(49);
+	var getScrollbarSize  = __webpack_require__(50);
 
-	function makeEmptyFunction(arg) {
-	  return function() {
-	    return arg;
-	  };
-	}
+	var HeaderRow = React.createClass({displayName: 'HeaderRow',
 
-	/**
-	 * This function accepts and discards inputs; it has no side effects. This is
-	 * primarily useful idiomatically for overridable function endpoints which
-	 * always need to be callable, since JS lacks a null-call idiom ala Cocoa.
-	 */
-	function emptyFunction() {}
+	  propTypes: {
+	    width: PropTypes.number,
+	    height: PropTypes.number.isRequired,
+	    columns: PropTypes.array.isRequired,
+	    onColumnResize: PropTypes.func
+	  },
 
-	copyProperties(emptyFunction, {
-	  thatReturns: makeEmptyFunction,
-	  thatReturnsFalse: makeEmptyFunction(false),
-	  thatReturnsTrue: makeEmptyFunction(true),
-	  thatReturnsNull: makeEmptyFunction(null),
-	  thatReturnsThis: function() { return this; },
-	  thatReturnsArgument: function(arg) { return arg; }
+	  render:function() {
+	    var cellsStyle = {
+	      width: this.props.width ? (this.props.width + getScrollbarSize()) : '100%',
+	      height: this.props.height,
+	      whiteSpace: 'nowrap',
+	      overflowX: 'hidden',
+	      overflowY: 'hidden'
+	    };
+
+	    var cells = this.getCells();
+	    return (
+	      React.createElement("div", React.__spread({},  this.props, {className: "react-grid-HeaderRow"}), 
+	        React.createElement("div", {style: cellsStyle}, 
+	          cells
+	        )
+	      )
+	    );
+	  },
+
+	  getCells:function() {
+	    var cells = [];
+	    var lockedCells = [];
+
+	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
+	      var column = this.props.columns[i];
+	      var cell = (
+	        React.createElement(HeaderCell, {
+	          ref: i, 
+	          key: i, 
+	          height: this.props.height, 
+	          column: column, 
+	          renderer: this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer, 
+	          resizing: this.props.resizing === column, 
+	          onResize: this.props.onColumnResize, 
+	          onResizeEnd: this.props.onColumnResizeEnd}
+	          )
+	      );
+	      if (column.locked) {
+	        lockedCells.push(cell);
+	      } else {
+	        cells.push(cell);
+	      }
+	    }
+
+	    return cells.concat(lockedCells);
+	  },
+
+	  setScrollLeft:function(scrollLeft) {
+	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
+	      if (this.props.columns[i].locked) {
+	        this.refs[i].setScrollLeft(scrollLeft);
+	      }
+	    }
+	  },
+
+	  shouldComponentUpdate:function(nextProps) {
+	    return (
+	      nextProps.width !== this.props.width
+	      || nextProps.height !== this.props.height
+	      || nextProps.columns !== this.props.columns
+	      || !shallowEqual(nextProps.style, this.props.style)
+	    );
+	  },
+
+	  getStyle:function() {
+	    return {
+	      overflow: 'hidden',
+	      width: '100%',
+	      height: this.props.height,
+	      position: 'absolute'
+	    };
+	  }
+
 	});
 
-	module.exports = emptyFunction;
+	module.exports = HeaderRow;
 
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -3636,56 +3703,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * See the License for the specific language governing permissions and
 	 * limitations under the License.
 	 *
-	 * @providesModule invariant
+	 * @providesModule copyProperties
 	 */
-
-	"use strict";
+	'use strict';
 
 	/**
-	 * Use invariant() to assert state which your program assumes to be true.
+	 * Copy properties from one or more objects (up to 5) into the first object.
+	 * This is a shallow copy. It mutates the first object and also returns it.
 	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
+	 * NOTE: `arguments` has a very significant performance penalty, which is why
+	 * we don't support unlimited arguments.
 	 */
+	function copyProperties(obj, a, b, c, d, e, f) {
+	  obj = obj || {};
 
-	var invariant = function(condition, format, a, b, c, d, e, f) {
 	  if (process.env.NODE_ENV) {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
+	    if (f) {
+	      throw new Error('Too many arguments passed to copyProperties');
 	    }
 	  }
 
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error(
-	        'Minified exception occurred; use the non-minified dev environment ' +
-	        'for the full error message and additional helpful warnings.'
-	      );
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error(
-	        'Invariant Violation: ' +
-	        format.replace(/%s/g, function() { return args[argIndex++]; })
-	      );
+	  var args = [a, b, c, d, e];
+	  var ii = 0, v;
+	  while (args[ii]) {
+	    v = args[ii++];
+	    for (var k in v) {
+	      obj[k] = v[k];
 	    }
 
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
+	    // IE ignores toString in object iteration.. See:
+	    // webreflection.blogspot.com/2007/07/quick-fix-internet-explorer-and.html
+	    if (v.hasOwnProperty && v.hasOwnProperty('toString') &&
+	        (typeof v.toString != 'undefined') && (obj.toString !== v.toString)) {
+	      obj.toString = v.toString;
+	    }
 	  }
-	};
 
-	module.exports = invariant;
+	  return obj;
+	}
+
+	module.exports = copyProperties;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3721,7 +3783,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3775,7 +3837,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3909,7 +3971,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3947,68 +4009,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = getScrollbarSize;
 
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2014 Facebook, Inc.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 *
-	 * @providesModule copyProperties
-	 */
-	'use strict';
-
-	/**
-	 * Copy properties from one or more objects (up to 5) into the first object.
-	 * This is a shallow copy. It mutates the first object and also returns it.
-	 *
-	 * NOTE: `arguments` has a very significant performance penalty, which is why
-	 * we don't support unlimited arguments.
-	 */
-	function copyProperties(obj, a, b, c, d, e, f) {
-	  obj = obj || {};
-
-	  if (process.env.NODE_ENV) {
-	    if (f) {
-	      throw new Error('Too many arguments passed to copyProperties');
-	    }
-	  }
-
-	  var args = [a, b, c, d, e];
-	  var ii = 0, v;
-	  while (args[ii]) {
-	    v = args[ii++];
-	    for (var k in v) {
-	      obj[k] = v[k];
-	    }
-
-	    // IE ignores toString in object iteration.. See:
-	    // webreflection.blogspot.com/2007/07/quick-fix-internet-explorer-and.html
-	    if (v.hasOwnProperty && v.hasOwnProperty('toString') &&
-	        (typeof v.toString != 'undefined') && (obj.toString !== v.toString)) {
-	      obj.toString = v.toString;
-	    }
-	  }
-
-	  return obj;
-	}
-
-	module.exports = copyProperties;
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
 
 /***/ },
 /* 51 */
@@ -4174,7 +4174,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React         = __webpack_require__(10);
 	var PropTypes     = React.PropTypes;
-	var emptyFunction = __webpack_require__(44);
+	var emptyFunction = __webpack_require__(40);
 
 	var Draggable = React.createClass({displayName: 'Draggable',
 
