@@ -122,6 +122,8 @@ var FixedDataTableRowImpl = React.createClass({
         onColumnResize={this.props.onColumnResize}
         rowHeight={this.props.height}
         rowIndex={this.props.index}
+        cellEvents={this.props.cellEvents}
+        startIndex={0}
       />;
     var fixedColumnsWidth = this._getColumnsWidth(this.props.fixedColumns);
     var columnsShadow = this._renderColumnsShadow(fixedColumnsWidth);
@@ -136,6 +138,8 @@ var FixedDataTableRowImpl = React.createClass({
         onColumnResize={this.props.onColumnResize}
         rowHeight={this.props.height}
         rowIndex={this.props.index}
+        cellEvents={this.props.cellEvents}
+        startIndex={this.props.fixedColumns.length}
       />;
 
     return (

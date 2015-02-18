@@ -95,10 +95,10 @@ var COLUMN_SETTING_NAMES = [
 var FixedDataTable = React.createClass({
 
   propTypes: {
-    
+
     /**
      * Pixel width of table. If all rows do not fit,
-     * a horizontal scrollbar will appear. 
+     * a horizontal scrollbar will appear.
      */
     width: PropTypes.number.isRequired,
 
@@ -517,6 +517,7 @@ var FixedDataTable = React.createClass({
         scrollableColumns={state.bodyScrollableColumns}
         showLastRowBorder={!state.footerHeight}
         width={state.width}
+        cellEvents={this.props.cellEvents}
       />
     );
   },
@@ -1004,7 +1005,7 @@ var HorizontalScrollbar = React.createClass({
     return (
       <div
         className={cx('fixedDataTable/horizontalScrollbar')}
-        style={outerContainerStyle}>
+        style={outerContainerStyle} tabIndex={-1}>
         <div style={innerContainerStyle}>
           <Scrollbar
             {...this.props}

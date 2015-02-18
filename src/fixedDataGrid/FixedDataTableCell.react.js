@@ -26,7 +26,11 @@ var DEFAULT_PROPS = new ImmutableObject({
   isHeaderCell: false,
 });
 
+var SelectableMixin   = require('../addons/cells/mixins/SelectableMixin');
+
 var FixedDataTableCell = React.createClass({
+
+  mixins : [SelectableMixin],
 
   propTypes: {
     align: PropTypes.oneOf(['left', 'center', 'right']),
@@ -135,7 +139,7 @@ var FixedDataTableCell = React.createClass({
     var className = joinClasses(
       cx({
         'public/fixedDataTableCell/main': true,
-        'public/fixedDataTableCell/highlighted': props.highlighted,
+        'public/fixedDataTableCell/highlighted': this.isSelected(),
         'public/fixedDataTableCell/lastChild': props.lastChild,
         'public/fixedDataTableCell/alignRight': props.align === 'right',
         'public/fixedDataTableCell/alignCenter': props.align === 'center'
@@ -187,7 +191,7 @@ var FixedDataTableCell = React.createClass({
       );
     }
     return (
-      <div className={className} style={style}>
+      <div className={className} style={style} tabIndex="-1" onKeyDown={this.onKeyDown}>
         {columnResizerComponent}
         <div className={cx('public/fixedDataTableCell/wrap1')} style={style}>
           <div className={cx('public/fixedDataTableCell/wrap2')}>

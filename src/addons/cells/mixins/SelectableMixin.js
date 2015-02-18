@@ -20,11 +20,17 @@ var SelectableMixin = MixinHelper.createDependency({KeyboardHandlerMixin : Keybo
   },
 
   isSelected: function() {
-    return (
-      this.props.selected
-      && this.props.selected.rowIdx === this.props.rowIdx
-      && this.props.selected.idx === this.props.idx
-    );
+    if(this.props.cellEvents){
+      var selected = this.props.cellEvents.selected;
+      return (
+        selected
+        && selected.rowIdx === this.props.rowIndex
+        && selected.idx === this.props.cellIndex
+      );
+    }else{
+      return false;
+    }
+
   },
 
   onClick: function() {
@@ -56,13 +62,9 @@ var SelectableMixin = MixinHelper.createDependency({KeyboardHandlerMixin : Keybo
   moveSelectedCell(e, rowDelta, cellDelta){
     e.stopPropagation();
     e.preventDefault();
-    var rowIdx = this.props.rowIdx + rowDelta;
-    var idx = this.props.idx + cellDelta;
-    this.props.onSelect({idx: idx, rowIdx: rowIdx});
-  },
-
-  setScrollLeft: function(scrollLeft) {
-    this.refs.row.setScrollLeft(scrollLeft);
+    var rowIdx = this.props.rowIndex + rowDelta;
+    var idx = this.props.cellIndex + cellDelta;
+    this.props.cellEvents.onSelect({idx: idx, rowIdx: rowIdx});
   },
 
   componentDidMount: function() {

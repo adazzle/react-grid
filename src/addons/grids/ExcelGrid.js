@@ -6,7 +6,7 @@ var ExampleImage = require('./ExampleImage');
 var FakeObjectDataListStore = require('./FakeObjectDataListStore');
 var FixedDataTable = require('../../fixedDataGrid/FixedDataTableRoot');
 var SelectableGridMixin   = require('./mixins/SelectableGridMixin');
-
+var ExcelCell             = require('../cells/ExcelCell');
 
 var PropTypes = React.PropTypes;
 var Table = FixedDataTable.Table;
@@ -40,6 +40,16 @@ function renderLink(/*string*/ cellData) {
       },
 
       render() {
+
+        var cellEvents = {
+          selected : this.state.selected,
+          onSelect : this.onSelect,
+          onClick  : this.onSelect,
+          onSetActive : this.onSetActive,
+          onCommit : this.onCellCommit
+        }
+
+
         var win = window;
 
         var widthOffset = win.innerWidth < 680 ? 0 : 240;
@@ -62,7 +72,9 @@ function renderLink(/*string*/ cellData) {
             scrollTop={this.props.top}
             scrollLeft={this.props.left}
             overflowX={controlledScrolling ? "hidden" : "auto"}
-            overflowY={controlledScrolling ? "hidden" : "auto"}>
+            overflowY={controlledScrolling ? "hidden" : "auto"}
+            cellEvents={cellEvents}
+            >
             <Column
               cellRenderer={renderImage}
               dataKey="avartar"

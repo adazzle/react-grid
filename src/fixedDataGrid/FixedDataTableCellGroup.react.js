@@ -70,7 +70,8 @@ var FixedDataTableCellGroupImpl = React.createClass({
         props.rowHeight,
         columnProps,
         width,
-        key
+        key,
+        i
       );
     }
 
@@ -93,7 +94,8 @@ var FixedDataTableCellGroupImpl = React.createClass({
     /*number*/ height,
     /*object*/ columnProps,
     /*?number*/ widthOffset,
-    /*string*/ key
+    /*string*/ key,
+    /*?number*/ cellIndex
   ) /*object*/ {
     var cellRenderer = columnProps.cellRenderer || renderToString;
     var columnData = columnProps.columnData || EMPTY_OBJECT;
@@ -116,6 +118,7 @@ var FixedDataTableCellGroupImpl = React.createClass({
     var onColumnResize = cellIsResizable ? this.props.onColumnResize : null;
 
     return (
+
       <FixedDataTableCell
         align={columnProps.align}
         cellData={cellData}
@@ -132,8 +135,10 @@ var FixedDataTableCellGroupImpl = React.createClass({
         onColumnResize={onColumnResize}
         rowData={rowData}
         rowIndex={rowIndex}
+        cellIndex={this.props.startIndex + cellIndex}
         width={columnProps.width}
         widthOffset={widthOffset}
+        cellEvents={this.props.cellEvents}
       />
     );
   },
