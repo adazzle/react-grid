@@ -27,39 +27,15 @@ var Canvas = React.createClass({
       PropTypes.func.isRequired,
       PropTypes.array.isRequired
     ]),
-    onRows: PropTypes.func
+    onRows: PropTypes.func,
+    placeholderText: PropTypes.string
   },
 
   render() {
-    var displayStart = this.state.displayStart;
-    var displayEnd = this.state.displayEnd;
-    var rowHeight = this.props.rowHeight;
     var length = this.props.length;
-
-    var rows = this
-        .getRows(displayStart, displayEnd)
-        .map((row, idx) => this.renderRow({
-          key: displayStart + idx,
-          ref: idx,
-          idx: displayStart + idx,
-          row: row,
-          height: rowHeight,
-          columns: this.props.columns,
-          cellRenderer: this.props.cellRenderer,
-          isSelected : this.isRowSelected(displayStart + idx),
-          expandedRows : this.props.expandedRows
-        }));
-
-    this._currentRowsLength = rows.length;
-
-    if (displayStart > 0) {
-      rows.unshift(this.renderPlaceholder('top', displayStart * rowHeight));
-    }
-
-    if (length - displayEnd > 0) {
-      rows.push(
-        this.renderPlaceholder('bottom', (length - displayEnd) * rowHeight));
-    }
+    var rows = length > 0
+      ? this.getRows()
+      : [<span>{this.props.placeholderText || "There is no data to display"}</span>];
 
     var style = {
       position: 'absolute',
@@ -174,7 +150,39 @@ var Canvas = React.createClass({
     }
   },
 
-  getRows(displayStart, displayEnd) {
+  getRows() {
+    var rowHeight = this.props.rowHeight;
+    var displayStart = this.state.displayStart;
+    var displayEnd = this.state.displayEnd;
+
+    var rows = this.getRowsToDisplay(displayStart, displayEnd)
+      .map((row, idx) => this.renderRow({
+        key: displayStart + idx,
+        ref: idx,
+        idx: displayStart + idx,
+        row: row,
+        height: rowHeight,
+        columns: this.props.columns,
+        cellRenderer: this.props.cellRenderer,
+        isSelected : this.isRowSelected(displayStart + idx),
+        expandedRows : this.props.expandedRows
+      }));
+
+    this._currentRowsLength = rows.length;
+
+    if (displayStart > 0) {
+      rows.unshift(this.renderPlaceholder('top', displayStart * rowHeight));
+    }
+
+    if (length - displayEnd > 0) {
+      rows.push(
+        this.renderPlaceholder('bottom', (length - displayEnd) * rowHeight));
+    }
+
+    return rows;
+  },
+
+  getRowsToDisplay(displayStart, displayEnd) {
     this._currentRowsRange = {start: displayStart, end: displayEnd};
     if (Array.isArray(this.props.rows)) {
       return this.props.rows.slice(displayStart, displayEnd);
