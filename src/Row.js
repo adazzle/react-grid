@@ -48,6 +48,7 @@ var Row = React.createClass({
         column:column,
         height:this.getRowHeight(),
         formatter:column.formatter,
+        cellMetaData : this.props.cellMetaData,
         rowData : this.props.row});
       if (column.locked) {
         lockedCells.push(cell);
@@ -89,15 +90,6 @@ var Row = React.createClass({
     };
   },
 
-  shouldComponentUpdate(nextProps) {
-    return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
-      this.doesRowContainSelectedCell()          ||
-      this.doesRowContainSelectedCell(nextProps) ||
-      this.willRowBeDraggedOver(nextProps)       ||
-      this.hasRowBeenCopied()                    ||
-      nextProps.row !== this.props.row           ||
-      nextProps.height !== this.props.height;
-  },
 
   setScrollLeft(scrollLeft) {
     for (var i = 0, len = this.props.columns.length; i < len; i++) {

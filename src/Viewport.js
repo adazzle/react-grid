@@ -135,14 +135,13 @@ var Viewport = React.createClass({
           selectedRows={this.props.selectedRows}
           expandedRows={this.props.expandedRows}
           columns={this.props.columns.columns}
-          cellRenderer={this.props.cellRenderer}
           rowRenderer={this.props.rowRenderer}
 
           visibleStart={this.state.visibleStart}
           visibleEnd={this.state.visibleEnd}
           displayStart={this.state.displayStart}
           displayEnd={this.state.displayEnd}
-
+          cellMetaData={this.props.cellMetaData}
           length={this.props.length}
           height={this.state.height}
           rowHeight={this.props.rowHeight}

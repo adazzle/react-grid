@@ -69,22 +69,14 @@ var CellControls = React.createClass({
 
 var ExcelCell = React.createClass({
 
-  mixins : [EditableMixin, CopyableMixin, DraggableMixin],
+    mixins : [SelectableMixin],
 
-  overrides : {
     getCellClass : function(){
       return cx({
-        'selected' : this.isSelected() && !this.isCopied() && !this.isActive(),
-        'editing' : this.isActive(),
-        'copied' : this.isCopied(),
-        'selected-draggable' : this.isSelected() && !this.isActive() && this.canEdit(),
-        'active-drag-cell' : this.isActiveDragCell() && this.canEdit(),
-        'is-dragged-over-up' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx < this.props.dragged.rowIdx,
-        'is-dragged-over-down' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx > this.props.dragged.rowIdx,
-        'was-dragged-over' : this.wasDraggedOver() && this.canEdit()
+        'selected' : this.isSelected()
       });
-    }
-  },
+    },
+
 
   isActiveDragCell : function(){
     return (this.isSelected() || this.isDraggedOver()) && !this.isActive();
@@ -109,8 +101,7 @@ var ExcelCell = React.createClass({
     || this.props.value !== nextProps.value
     || this.props.height !== nextProps.height
     || this.props.rowIdx !== nextProps.rowIdx
-    || this.isCellSelectionChanging(nextProps)
-    || this.isDraggedCellChanging(nextProps);
+    || this.isCellSelectionChanging(nextProps);
   },
 
 
@@ -119,7 +110,6 @@ var ExcelCell = React.createClass({
       <BaseCell
         {...this.props}
         className={this.getCellClass()}
-        onKeyDown={this.onKeyDown}
         onClick={this.onClick}
         onDoubleClick={this.onDoubleClick}
         formatter={this.getFormatter()}

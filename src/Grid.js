@@ -84,7 +84,6 @@ var Grid = React.createClass({
           width={this.state.columns.width}
           rowHeight={this.props.rowHeight}
           rowRenderer={this.props.rowRenderer}
-          cellRenderer={this.props.cellRenderer}
           rows={this.props.rows}
           selectedRows={this.props.selectedRows}
           expandedRows={this.props.expandedRows}
@@ -93,6 +92,7 @@ var Grid = React.createClass({
           totalWidth={this.DOMMetrics.gridWidth()}
           onScroll={this.onScroll}
           onRows={this.props.onRows}
+          cellMetaData={this.props.cellMetaData}
           rowOffsetHeight={this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
           />
       </div>

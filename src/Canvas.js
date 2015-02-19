@@ -17,7 +17,6 @@ var Canvas = React.createClass({
   mixins: [ScrollShim],
 
   propTypes: {
-    cellRenderer: PropTypes.element,
     rowRenderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     rowHeight: PropTypes.number.isRequired,
     displayStart: PropTypes.number.isRequired,
@@ -45,9 +44,9 @@ var Canvas = React.createClass({
           row: row,
           height: rowHeight,
           columns: this.props.columns,
-          cellRenderer: this.props.cellRenderer,
           isSelected : this.isRowSelected(displayStart + idx),
-          expandedRows : this.props.expandedRows
+          expandedRows : this.props.expandedRows,
+          cellMetaData : this.props.cellMetaData
         }));
 
     this._currentRowsLength = rows.length;

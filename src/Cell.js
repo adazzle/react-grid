@@ -7,16 +7,31 @@
 var React          = require('react/addons');
 var cx             = React.addons.classSet;
 var cloneWithProps = React.addons.cloneWithProps;
+var SelectableMixin      = require('./addons/cells/mixins/SelectableMixin');
 
 var Cell = React.createClass({
 
-  render() {
-    var style = this.getStyle();
+  mixins : [SelectableMixin],
+
+  getCellClass : function(){
+
     var className = cx(
       'react-grid-Cell',
       this.props.className,
       this.props.column.locked ? 'react-grid-Cell--locked' : null
     );
+
+    if(this.isSelected()){
+      className += ' selected';
+    }
+
+    return className;
+  },
+
+  render() {
+    var style = this.getStyle();
+
+    var className = this.getCellClass();
 
     var cellContent = this.renderCellContent({
       value : this.props.value,

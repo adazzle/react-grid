@@ -140,26 +140,10 @@ var ExcelGrid = React.createClass({
   },
 
   render: function() {
-    var cellRenderer = (
-      <ExcelCell
-        selected={this.state.selected}
-        copied={this.state.copied}
-        dragged={this.state.dragged}
-        onSelect={this.onSelect}
-        onClick={this.onSelect}
-        onSetActive={this.onSetActive}
-        onCommit={this.onCellCommit}
-        handleCopy={this.handleCopy}
-        handlePaste={this.handlePaste}
-        handleDragStart={this.handleDragStart}
-        handleDragEnter={this.handleDragEnter}
-        handleDragEnd={this.handleDragEnd}
-        handleTerminateDrag={this.handleTerminateDrag}
-        onShowMore={this.handleShowMore}
-        onShowLess={this.handleShowLess}
-        expandedRows={this.state.expandedRows}
-        />
-    );
+    var cellMetaData = {
+      selected : this.state.selected
+    }
+
 
     var rows = this.filterRows();
     var toolbar = this.renderToolbar();
@@ -174,12 +158,12 @@ var ExcelGrid = React.createClass({
           headerRows={this.getHeaderRows()}
           columns={this.getColumns()}
           rows={rows}
-          cellRenderer={cellRenderer}
-          rowRenderer={<ExcelRow/>}
+          cellMetaData={cellMetaData}
           selectedRows={this.state.selectedRows}
           expandedRows={this.state.expandedRows}
           rowOffsetHeight={this.getRowOffsetHeight()}
-          minHeight={this.props.minHeight} />)}
+          minHeight={this.props.minHeight}
+          onKeyDown={this.onKeyDown} />)}
         </div>
       </div>
     )

@@ -9,7 +9,7 @@
   var DropDownEditor      = Editors.DropDownEditor;
   var cx                  = React.addons.classSet;
   var cloneWithProps      = React.addons.cloneWithProps;
-
+  var FakeObjectDataStoreList = require('./FakeObjectDataStoreList');
   var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
   var epics = [{id : 0, title : 'Unification Of Media'}, { id : 1, title : 'Trading Desk'}, { id : 2, title : 'Tech Costs'}, { id : 3, title : 'Tactical'}, { id : 4, title : 'Barter'}, { id : 5, title :'Lego'}, {id : 6, title : 'Media Plan'}, {id : 7, title : 'Infrastructure'}];
 
@@ -20,47 +20,65 @@
       width : 80
     },
     {
-      key: 'userStory',
-      name: 'User Story',
-      editable : true,
-      sortable : true,
-      resizeable : true,
-      showCellControls : true
+      key: 'avartar',
+      name: 'Avartar'
     },
     {
-      key: 'developer',
-      name: 'Developer',
-      editor : <DropDownEditor options={developers}/>,
-      sortable : true,
-      resizeable : true
+      key: 'city',
+      name: 'City'
     },
     {
-      key: 'epic',
-      name: 'Epic',
+      key: 'email',
+      name: 'Email',
       editor : <AutoCompleteEditor options={epics}/>,
       sortable : true
+    },
+    {
+      key: 'firstName',
+      name: 'First Name'
+    },
+    {
+      key: 'lastName',
+      name: 'Last Name'
+    },
+    {
+      key: 'street',
+      name: 'Street'
+    },
+    {
+      key: 'zipCode',
+      name: 'ZipCode'
+    },
+    {
+      key: 'date',
+      name: 'Date'
+    },
+    {
+      key: 'bs',
+      name: 'bs'
+    },
+    {
+      key: 'catchPhrase',
+      name: 'Catch Phrase'
+    },
+    {
+      key: 'companyName',
+      name: 'Company Name'
+    },
+    {
+      key: 'words',
+      name: 'Words'
+    },
+    {
+      key: 'sentence',
+      name: 'Sentence'
     }
-
   ]
-
-  var getRows = function(start, end) {
-    var result = []
-    for (var i = start; i < end; i++) {
-      result.push({
-        id: i,
-        userStory: 'User Story ' + i,
-        developer : developers[i%6],
-        epic : epics[i%8].title
-      });
-    }
-    return result;
-  }
-
 
  var Component = React.createClass({displayName: 'component',
 
     getInitialState : function(){
-      return {rows : getRows(0, 1000)};
+      return {rows : FakeObjectDataStoreList.getRows(1000)};
     },
 
     handleRowUpdated : function(commit){
