@@ -13,6 +13,14 @@ var Cell = React.createClass({
 
   mixins : [SelectableMixin],
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.column.width !== nextProps.column.width
+    || this.props.value !== nextProps.value
+    || this.props.height !== nextProps.height
+    || this.props.rowIdx !== nextProps.rowIdx
+    || this.isCellSelectionChanging(nextProps);
+  },
+
   getCellClass : function(){
 
     var className = cx(
@@ -28,6 +36,10 @@ var Cell = React.createClass({
     return className;
   },
 
+  onCellClick(){
+    this.props.cellMetaData.onCellClick({rowIdx : this.props.rowIdx, idx : this.props.idx});
+  },
+
   render() {
     var style = this.getStyle();
 
@@ -41,7 +53,7 @@ var Cell = React.createClass({
     });
 
     return (
-      <div {...this.props} className={className} style={style}>
+      <div {...this.props} className={className} style={style} onClick={this.onCellClick}>
           {cellContent}
           <div className="drag-handle" draggable="true" onDragStart={this.props.handleDragStart}>
           </div>

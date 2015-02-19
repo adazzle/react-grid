@@ -58,10 +58,8 @@ var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : K
     );
   },
 
-  onClick: function() {
-    var rowIdx = this.props.rowIdx;
-    var idx = this.props.idx;
-    this.props.onClick({rowIdx: rowIdx, idx: idx});
+  onCellClick: function(cell) {
+    this.onSelect({rowIdx: cell.rowIdx, idx: cell.idx});
   },
 
   onPressArrowUp(e){

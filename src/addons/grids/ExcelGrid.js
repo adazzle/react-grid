@@ -141,7 +141,8 @@ var ExcelGrid = React.createClass({
 
   render: function() {
     var cellMetaData = {
-      selected : this.state.selected
+      selected : this.state.selected,
+      onCellClick : this.onCellClick
     }
 
 
@@ -163,7 +164,8 @@ var ExcelGrid = React.createClass({
           expandedRows={this.state.expandedRows}
           rowOffsetHeight={this.getRowOffsetHeight()}
           minHeight={this.props.minHeight}
-          onKeyDown={this.onKeyDown} />)}
+          onKeyDown={this.onKeyDown}
+          onClick={this.onClick} />)}
         </div>
       </div>
     )

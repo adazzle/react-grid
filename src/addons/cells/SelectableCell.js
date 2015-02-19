@@ -19,18 +19,12 @@ var SelectableCell = React.createClass({
     return this.isSelected() ? 'selected' : null;
   },
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return this.props.column.width !== nextProps.column.width
-    || this.props.value !== nextProps.value
-    || this.props.height !== nextProps.height
-    || this.props.rowIdx !== nextProps.rowIdx
-    || this.isCellSelectionChanging(nextProps);
-  },
+  
 
   render: function() {
     return (
       <BaseCell
-        {...this.props} 
+        {...this.props}
         className={this.getCellClass()}
         onKeyDown={this.onKeyDown}
         onClick={this.onClick} />)

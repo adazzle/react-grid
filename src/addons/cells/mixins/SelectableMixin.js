@@ -35,8 +35,10 @@ var SelectableMixin = {
   },
 
   isCellSelectionChanging(nextProps){
-    if(this.props.selected && nextProps.selected){
-      return this.props.idx === nextProps.selected.idx || this.props.idx === this.props.selected.idx;
+    var selected     = this.props.cellMetaData.selected;
+    var nextSelected = nextProps.cellMetaData.selected;
+    if(selected && nextSelected){
+      return this.props.idx === nextSelected.idx || this.props.idx === selected.idx;
     }else{
       return true;
     }
