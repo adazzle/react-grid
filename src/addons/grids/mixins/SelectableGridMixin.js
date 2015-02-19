@@ -82,13 +82,76 @@ var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : K
     this.moveSelectedCell(e, 0, 1);
   },
 
+  onPressEnter(e){
+    this.setActive(e.key);
+  },
+
+  onPressDelete(e){
+    this.setActive(e.key);
+  },
+
+  onPressEscape(e){
+    this.setInactive(e.key);
+  },
+
+  onPressBackspace(e){
+    this.setActive(e.key);
+  },
+
+  onPressChar(e){
+    if(this.isKeyPrintable(e.keyCode)){
+      this.setActive(e.keyCode);
+    }
+  },
+
   moveSelectedCell(e, rowDelta, cellDelta){
     e.stopPropagation();
     e.preventDefault();
     var rowIdx = this.state.selected.rowIdx + rowDelta;
     var idx = this.state.selected.idx + cellDelta;
     this.onSelect({idx: idx, rowIdx: rowIdx});
+  },
+
+  setActive(keyPressed){
+    var rowIdx = this.state.selected.rowIdx;
+    var idx = this.state.selected.idx;
+    if(this.props.column.key === 'select-row' && this.props.column.onRowSelect){
+      this.props.column.onRowSelect(rowIdx);
+    }
+    else if(this.canEdit(idx) && !this.isActive()){
+      var selected = merge(this.state.selected, {idx: idx, rowIdx: rowIdx, active : true, initialKeyCode : keyPressed});
+      this.setState({selected: selected});
+    }
+  },
+
+  onCellCommit(commit){
+    var selected = this.state.selected;
+    selected.active = false;
+    if(commit.keyCode === 'Tab'){
+      selected.idx += 1;
+    }
+    this.setState({selected : selected});
+    this.props.onRowUpdate(commit);
+  },
+
+  setInactive(){
+    var rowIdx = this.state.selected.rowIdx;
+    var idx =this.state.selectedidx;
+    if(this.canEdit(idx) && this.isActive()){
+      var selected = merge(this.state.selected, {idx: idx, rowIdx: rowIdx, active : false});
+      this.setState({selected: selected});
+    }
+  },
+
+  canEdit(){
+    return (this.props.columns[idx].editor != null) || this.props.columns[idx].editable;
+  },
+
+  isActive(){
+    return this.state.selected.active === true;
   }
+
+
 })
 
 
