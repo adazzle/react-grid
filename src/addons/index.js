@@ -1,3 +1,4 @@
+/* @flow */
 module.exports = {
   Grid       : require('./grids/ExcelGrid'),
   Editors    : require('./editors'),

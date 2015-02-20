@@ -1,6 +1,8 @@
+/* TODO@flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 
 'use strict';
@@ -12,7 +14,10 @@ var hasPerfStarted = false;
 
 var KeyboardHandlerMixin = {
 
-  onKeyDown(e){
+  propTypes : {
+  },
+  
+  onKeyDown(e: Event){
     if(this.isCtrlKeyHeldDown(e)){
       this.checkAndCall('onPressKeyWithCtrl', e);
     }
@@ -27,7 +32,7 @@ var KeyboardHandlerMixin = {
   },
 
   //taken from http://stackoverflow.com/questions/12467240/determine-if-javascript-e-keycode-is-a-printable-non-control-character
-  isKeyPrintable(keycode){
+  isKeyPrintable(keycode: number){
     var valid =
         (keycode > 47 && keycode < 58)   || // number keys
         keycode == 32 || keycode == 13   || // spacebar & return key(s) (if you want to allow carriage returns)
@@ -39,15 +44,15 @@ var KeyboardHandlerMixin = {
     return valid;
   },
 
-  isKeyIdentified(key){
+  isKeyIdentified(key: string): boolean{
     return key !== "Unidentified";
   },
 
-  isCtrlKeyHeldDown(e){
+  isCtrlKeyHeldDown(e: Event): boolean{
     return e.ctrlKey === true && e.key !== "Control";
   },
 
-  checkAndCall(methodName, args){
+  checkAndCall(methodName: string, args: any){
     if(typeof this[methodName] === 'function'){
       this[methodName](args);
     }

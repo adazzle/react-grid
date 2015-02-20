@@ -1,6 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
@@ -13,21 +15,28 @@ var BaseCell       = require('../../Cell');
 var MixinHelper            = require('../utils/MixinHelper');
 var KeyboardHandlerMixin = require('./mixins/KeyboardHandlerMixin');
 var PropTypes = React.PropTypes;
-
+var ExcelColumn = require('../grids/ExcelColumn');
 
 
 var EditableCell = React.createClass({
 
   mixins : [EditableMixin],
 
-  getCellClass : function(){
+  propTypes : {
+    column : React.PropTypes.shape(ExcelColumn).isRequired,
+    value : React.PropTypes.any.isRequired,
+    height : React.PropTypes.number.isRequired,
+    rowIdx : React.PropTypes.number.isRequired,
+  },
+
+  getCellClass : function(): string{
       return cx({
       'editing' : this.isActive(),
       'selected' : this.isSelected() && !this.isActive()
       });
   },
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: any, nextState: any): boolean {
     return this.props.column.width !== nextProps.column.width
     || this.props.value !== nextProps.value
     || this.props.height !== nextProps.height
@@ -35,7 +44,7 @@ var EditableCell = React.createClass({
     || this.isCellSelectionChanging(nextProps);
   },
 
-  render: function() {
+  render: function(): ?ReactElement {
     return (
       <BaseCell
         {...this.props}

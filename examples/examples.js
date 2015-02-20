@@ -1,13 +1,12 @@
-
-var { Route, RouteHandler, Link } = ReactRouter;
+var React = require('react/addons');
+var ReactRouter = require('react-router');
 
 var basicExample = require('./scripts/exampleBasic');
 var editableExample = require('./scripts/exampleEditable');
 
+var { Route, RouteHandler, Link } = ReactRouter;
+
 var App = React.createClass({
-
-  
-
   render: function () {
     return (
       <div>

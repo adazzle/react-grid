@@ -1,0 +1,93 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'gulp-utils',
+1 verbose cli   '--save' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose node symlink C:\Program Files\nodejs\\node.exe
+5 warn package.json karma-ie-launcher@0.1.5 No README data
+6 warn package.json karma-phantomjs-launcher@0.1.4 No README data
+7 warn package.json karma-chrome-launcher@0.1.7 No README data
+8 warn package.json karma-coverage@0.2.7 No README data
+9 verbose readDependencies using package.json deps
+10 verbose cache add [ 'gulp-utils', null ]
+11 verbose cache add name=undefined spec="gulp-utils" args=["gulp-utils",null]
+12 verbose parsed url { protocol: null,
+12 verbose parsed url   slashes: null,
+12 verbose parsed url   auth: null,
+12 verbose parsed url   host: null,
+12 verbose parsed url   port: null,
+12 verbose parsed url   hostname: null,
+12 verbose parsed url   hash: null,
+12 verbose parsed url   search: null,
+12 verbose parsed url   query: null,
+12 verbose parsed url   pathname: 'gulp-utils',
+12 verbose parsed url   path: 'gulp-utils',
+12 verbose parsed url   href: 'gulp-utils' }
+13 silly lockFile 857e4415-gulp-utils gulp-utils
+14 verbose lock gulp-utils C:\Users\conor.malone\AppData\Roaming\npm-cache\857e4415-gulp-utils.lock
+15 silly lockFile 857e4415-gulp-utils gulp-utils
+16 silly lockFile 857e4415-gulp-utils gulp-utils
+17 verbose addNamed [ 'gulp-utils', '' ]
+18 verbose addNamed [ null, '*' ]
+19 silly lockFile e55e02d4-gulp-utils gulp-utils@
+20 verbose lock gulp-utils@ C:\Users\conor.malone\AppData\Roaming\npm-cache\e55e02d4-gulp-utils.lock
+21 silly addNameRange { name: 'gulp-utils', range: '*', hasData: false }
+22 verbose request where is /gulp-utils
+23 verbose request registry https://registry.npmjs.org/
+24 verbose request id c7df100f6febe69a
+25 verbose url raw /gulp-utils
+26 verbose url resolving [ 'https://registry.npmjs.org/', './gulp-utils' ]
+27 verbose url resolved https://registry.npmjs.org/gulp-utils
+28 verbose request where is https://registry.npmjs.org/gulp-utils
+29 info trying registry request attempt 1 at 14:29:31
+30 http GET https://registry.npmjs.org/gulp-utils
+31 http 404 https://registry.npmjs.org/gulp-utils
+32 verbose headers { date: 'Fri, 20 Feb 2015 14:29:01 GMT',
+32 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+32 verbose headers   'content-type': 'application/json',
+32 verbose headers   'cache-control': 'max-age=0',
+32 verbose headers   'content-length': '52',
+32 verbose headers   'accept-ranges': 'bytes',
+32 verbose headers   via: '1.1 varnish',
+32 verbose headers   age: '0',
+32 verbose headers   'x-served-by': 'cache-ams4123-AMS',
+32 verbose headers   'x-cache': 'MISS',
+32 verbose headers   'x-cache-hits': '0',
+32 verbose headers   'x-timer': 'S1424442541.072620,VS0,VE164',
+32 verbose headers   'keep-alive': 'timeout=10, max=50',
+32 verbose headers   connection: 'Keep-Alive' }
+33 silly registry.get cb [ 404,
+33 silly registry.get   { date: 'Fri, 20 Feb 2015 14:29:01 GMT',
+33 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+33 silly registry.get     'content-type': 'application/json',
+33 silly registry.get     'cache-control': 'max-age=0',
+33 silly registry.get     'content-length': '52',
+33 silly registry.get     'accept-ranges': 'bytes',
+33 silly registry.get     via: '1.1 varnish',
+33 silly registry.get     age: '0',
+33 silly registry.get     'x-served-by': 'cache-ams4123-AMS',
+33 silly registry.get     'x-cache': 'MISS',
+33 silly registry.get     'x-cache-hits': '0',
+33 silly registry.get     'x-timer': 'S1424442541.072620,VS0,VE164',
+33 silly registry.get     'keep-alive': 'timeout=10, max=50',
+33 silly registry.get     connection: 'Keep-Alive' } ]
+34 silly lockFile e55e02d4-gulp-utils gulp-utils@
+35 silly lockFile e55e02d4-gulp-utils gulp-utils@
+36 error 404 404 Not Found: gulp-utils
+36 error 404
+36 error 404 'gulp-utils' is not in the npm registry.
+36 error 404 You should bug the author to publish it
+36 error 404 It was specified as a dependency of 'adazzle-react-grid'
+36 error 404
+36 error 404 Note that you can also install from a
+36 error 404 tarball, folder, or http url, or git url.
+37 error System Windows_NT 6.1.7601
+38 error command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "gulp-utils" "--save"
+39 error cwd C:\Users\conor.malone\Documents\github\react-grid
+40 error node -v v0.10.33
+41 error npm -v 1.4.28
+42 error code E404
+43 verbose exit [ 1, true ]

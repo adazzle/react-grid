@@ -1,14 +1,19 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
 var React              = require('react/addons');
 var cx             = React.addons.classSet;
+var ExcelColumn = require('../../grids/ExcelColumn');
 
 var SortableHeaderCell = React.createClass({
-
+  propTypes: {
+    column: React.PropTypes.shape(ExcelColumn).isRequired
+  },
   onClick: function() {
     this.props.column.sortBy(
       this.props.column,
@@ -24,7 +29,7 @@ var SortableHeaderCell = React.createClass({
     });
   },
 
-  render: function() {
+  render: function(): ?ReactElement {
 
     return (
       <div

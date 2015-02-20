@@ -1,11 +1,11 @@
 /* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
  */
 "use strict";
 
-var React                 = require('react/addons');
+var React                 = require('react');
 var PropTypes             = React.PropTypes;
 var BaseGrid              = require('../../Grid');
 var ExcelCell             = require('../cells/ExcelCell');
@@ -18,19 +18,18 @@ var SortableGridMixin     = require('./mixins/SortableGridMixin');
 var FilterableGridMixin   = require('./mixins/FilterableGridMixin');
 var CheckboxEditor        = require('../editors/CheckboxEditor');
 var MixinHelper           = require('../utils/MixinHelper');
-
-var cloneWithProps = React.addons.cloneWithProps;
+var ExcelColumn = require('./ExcelColumn');
 
 var ExcelGrid = React.createClass({
 
   mixins : [SelectableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
 
-  getInitialState(){
+  getInitialState(): { selectedRows: Array<ExcelRow>; expandedRows: Array<ExcelRow>}{
     return {selectedRows : [], expandedRows : []};
   },
 
   overrides : {
-    onCellCommit(commit: RowUpdateEvent){
+    onCellCommit(commit: Array<RowUpdateEvent>){
       var committed = commit[0];
       var selected = Object.assign({}, this.state.selected);
       selected.active = false;
@@ -38,13 +37,13 @@ var ExcelGrid = React.createClass({
         selected.idx += 1;
       }
       var expandedRows = this.state.expandedRows;
-      if(committed.changed && committed.changed.expandedHeight){
-        expandedRows = this.expandRow(committed.rowIdx, committed.changed.expandedHeight);
+      if(committed.updated && committed.updated.expandedHeight){
+        expandedRows = this.expandRow(committed.rowIdx, committed.updated.expandedHeight);
       }
       this.setState({selected : selected, expandedRows : expandedRows});
       this.props.onRowUpdated(committed);
     },
-    getColumns : function(){
+    getColumns : function(): Array<any>{
       var cols = this.getDecoratedColumns(this.props.columns)
       if(this.props.enableRowSelect){
           cols.unshift({
@@ -69,7 +68,7 @@ var ExcelGrid = React.createClass({
     };
   },
 
-  handleCheckboxChange : function(e){
+  handleCheckboxChange : function(e: {currentTarget: {checked: boolean}}){
     if(e.currentTarget.checked === true){
       var selectedRows = this.props.rows.map(() => true);
       this.setState({selectedRows : selectedRows});
@@ -79,7 +78,7 @@ var ExcelGrid = React.createClass({
     }
   },
 
-  handleRowSelect(row){
+  handleRowSelect(row: ExcelRow){
     var selectedRows = this.state.selectedRows;
     if(selectedRows[row] == null || selectedRows[row] == false){
       selectedRows[row] = true;
@@ -89,7 +88,7 @@ var ExcelGrid = React.createClass({
     this.setState({selectedRows : selectedRows});
   },
 
-  expandRow(row, newHeight){
+  expandRow(row: ExcelRow, newHeight: number): Array<ExcelRow>{
     var expandedRows = this.state.expandedRows;
     if(expandedRows[row]){
       if(expandedRows[row]== null || expandedRows[row] < newHeight){
@@ -105,12 +104,12 @@ var ExcelGrid = React.createClass({
 
   },
 
-  handleShowMore(row, newHeight){
+  handleShowMore(row: ExcelRow, newHeight: number) {
     var expandedRows = this.expandRow(row, newHeight);
     this.setState({expandedRows : expandedRows});
   },
 
-  handleShowLess(row){
+  handleShowLess(row: ExcelRow){
     var expandedRows = this.state.expandedRows;
     if(expandedRows[row]){
         expandedRows[row] = false;
@@ -126,13 +125,13 @@ var ExcelGrid = React.createClass({
 
   },
 
-  onAfterAddRow:function(numberOfRows){
+  onAfterAddRow:function(numberOfRows: number){
     this.setState({selected : {idx : 1, rowIdx : numberOfRows - 2}});
     //cheeky
     this.refs.base.refs.viewport.refs.canvas.getDOMNode().scrollTop = numberOfRows * this.props.rowHeight;
   },
 
-  componentWillReceiveProps:function(nextProps){
+  componentWillReceiveProps:function(nextProps: any){
     if(nextProps.rows.length  === this.props.rows.length + 1){
       this.onAfterAddRow(nextProps.rows.length + 1);
     }
@@ -144,8 +143,6 @@ var ExcelGrid = React.createClass({
       onCellClick : this.onCellClick,
       onCommit : this.onCellCommit
     }
-
-
     var rows = this.filterRows();
     var toolbar = this.renderToolbar();
     return(

@@ -1,6 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
@@ -10,6 +12,19 @@ var cloneWithProps = React.addons.cloneWithProps;
 var SimpleTextEditor = require('../../editors/SimpleTextEditor');
 
 var SelectableMixin = {
+
+  propTypes : {
+    rowIdx : React.PropTypes.number.isRequired,
+    idx : React.PropTypes.number.isRequired,
+    onClick : React.PropTypes.func.isRequired,
+    onSelect : React.PropTypes.func.isRequired,
+    selected : React.PropTypes.shape({
+      idx : React.PropTypes.number.isRequired,
+    }),
+    tabIndex : React.PropTypes.number,
+    ref : React.PropTypes.string
+  },
+
 
   getDefaultProps : function(){
     return {

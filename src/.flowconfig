@@ -1,7 +1,3 @@
-[ignore]
-
 [include]
-/node_modules/
-../node_modules/
-../node_modules
-../node_modules/**
+../node_modules/immutable
+../node_modules/react

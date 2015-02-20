@@ -1,6 +1,6 @@
+/* TODO@flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
  */
 'use strict';
 
@@ -11,6 +11,7 @@ var EditorMixin             = require('./mixins/EditorMixin');
 var TextInputMixin          = require('./mixins/TextInputMixin');
 var ReactAutocomplete       = require('ron-react-autocomplete');
 var keyboardHandlerMixin    = require('../cells/mixins/KeyboardHandlerMixin');
+var ExcelColumn = require('../grids/ExcelColumn');
 
 var optionPropType = React.PropTypes.shape({
       id    :   React.PropTypes.required,
@@ -20,7 +21,15 @@ var optionPropType = React.PropTypes.shape({
 var AutoCompleteEditor = React.createClass({
 
   propTypes : {
-    options : React.PropTypes.arrayOf(optionPropType)
+    onCommit : React.PropTypes.func.isRequired,
+    options : React.PropTypes.arrayOf(optionPropType).isRequired,
+    label : React.PropTypes.string,
+    value : React.PropTypes.any.isRequired,
+    valueParams: React.PropTypes.arrayOf(React.PropTypes.string),
+    column: React.PropTypes.shape(ExcelColumn).isRequired,
+    resultIdentifier : React.PropTypes.string.isRequired,
+    search : React.PropTypes.string.isRequired,
+
   },
 
   mixins : MixinHelper.mix([keyboardHandlerMixin, EditorMixin, TextInputMixin]),
@@ -29,20 +38,20 @@ var AutoCompleteEditor = React.createClass({
       checkFocus : function(){
           this.setTextInputFocus();
       },
-      getInputNode(){
+      getInputNode(): HTMLElement {
         return this.getSearchComponent().getDOMNode();
       },
-      onPressEnter(args){
+      onPressEnter(args: any){
         var e = args[0];
         this.handleEnter(e);
       },
-      onPressTab(args){
+      onPressTab(args: any){
         var e = args[0];
         this.handleTab(e);
       }
   },
 
-  handleTab(e){
+  handleTab(e: ReactEvent){
     e.stopPropagation();
     e.preventDefault();
     if(!this.isFocusedOnSuggestion()){
@@ -52,7 +61,7 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  handleEnter(e){
+  handleEnter(e: ReactEvent){
     e.stopPropagation();
     e.preventDefault();
     if(!this.isFocusedOnSuggestion()){
@@ -60,31 +69,31 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  getSearchComponent(){
+  getSearchComponent(): ?ReactElement{
     return this.refs.autoComplete.refs.search;
   },
 
-  isFocusedOnSuggestion(){
+  isFocusedOnSuggestion(): boolean{
     var autoComplete = this.refs.autoComplete;
     return autoComplete.state.focusedValue != null;
   },
 
-  getFocusedSuggestion(){
+  getFocusedSuggestion(): string{
     return this.refs.autoComplete.state.focusedValue;
   },
 
-  onPressArrowDown(e){
+  onPressArrowDown(e: ReactEvent){
     //prevent event propogation. this disables downwards cell navigation
     e.stopPropagation();
     e.preventDefault();
   },
 
-  onPressArrowUp(e){
+  onPressArrowUp(e: ReactEvent){
     //prevent event propogation. this disables upwards cell navigation
     e.stopPropagation();
   },
 
-  getLabel(result) {
+  getLabel(result: string | Array<{[key:string]: string }>): string {
     var label = this.props.label != null ? this.props.label : 'title';
     if (typeof label === "function") {
       return label(result);
@@ -93,7 +102,7 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  handleChange(item, key){
+  handleChange(item: key, key: string) {
     var rowDataChanged = {};
     var value = this.props.value;
     if(item!=null){
@@ -107,7 +116,7 @@ var AutoCompleteEditor = React.createClass({
     this.props.onCommit({value : value, key : key, updated : rowDataChanged});
   },
 
-  constuctValueFromParams(obj, props) {
+  constuctValueFromParams(obj: any, props: Array<string>): string {
     var ret = [];
     for (var i = 0, ii = props.length; i < ii; i++) {
       ret.push(obj[props[i]]);
@@ -115,7 +124,7 @@ var AutoCompleteEditor = React.createClass({
     return ret.join('|');
   },
 
-  renderEditorNode(){
+  renderEditorNode(): ?ReactElement {
     var val = {title : this.getDefaultValue()};
     var label = this.props.label != null ? this.props.label : 'title';
     return (<div style={this.getStyle()} onKeyDown={this.onKeyDown}>

@@ -1,7 +1,4 @@
-/**
- * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
- */
+/* @flow */
 'use strict';
 
 var Grid = require('./addons/grids/ExcelGrid');

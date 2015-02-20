@@ -1,6 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
@@ -37,6 +39,13 @@ var CopyableMixin = MixinHelper.createDependency({
   KeyCode_v : '118',
 
   propTypes : {
+    copied: React.PropTypes.shape({
+        rowIdx: React.PropTypes.number.isRequired,
+        idx: React.PropTypes.number.isRequired
+    }),
+    rowIdx: React.PropTypes.number.isRequired,
+    idx: React.PropTypes.number.isRequired,
+    value: React.PropTypes.any.isRequired,
     handleCopy : React.PropTypes.func.isRequired,
     handlePaste : React.PropTypes.func.isRequired
   },

@@ -1,6 +1,7 @@
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
@@ -77,6 +78,9 @@ var Row = React.createClass({
   },
 
   renderCell(props) {
+    if(typeof this.props.cellRenderer == 'function') {
+      this.props.cellRenderer.call(this, props);
+    }
     if (React.isValidElement(this.props.cellRenderer)) {
       return cloneWithProps(this.props.cellRenderer, props);
     } else {
@@ -90,6 +94,15 @@ var Row = React.createClass({
     };
   },
 
+  shouldComponentUpdate(nextProps) {
+    return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
+      this.doesRowContainSelectedCell()          ||
+      this.doesRowContainSelectedCell(nextProps) ||
+      this.willRowBeDraggedOver(nextProps)       ||
+      this.hasRowBeenCopied()                    ||
+      nextProps.row !== this.props.row           ||
+      nextProps.height !== this.props.height;
+  },
 
   setScrollLeft(scrollLeft) {
     for (var i = 0, len = this.props.columns.length; i < len; i++) {
@@ -97,28 +110,7 @@ var Row = React.createClass({
         this.refs[i].setScrollLeft(scrollLeft);
       }
     }
-  },
-
-  doesRowContainSelectedCell(propsToCheck){
-    var props = propsToCheck || this.props;
-    var cell = cell || props.cellRenderer;
-    if(cell.props.selected && cell.props.selected.rowIdx === props.idx){
-      return true;
-    }else{
-      return false;
-    }
-  },
-
-  willRowBeDraggedOver(props){
-    var dragged = props.cellRenderer.props.dragged;
-    return  dragged != null && (dragged.rowIdx || dragged.complete === true);
-  },
-
-  hasRowBeenCopied(){
-    var cell = this.props.cellRenderer;
-    return cell.props.copied != null && cell.props.copied.rowIdx === this.props.idx;
   }
-
 
 });
 

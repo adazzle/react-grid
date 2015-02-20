@@ -1,4 +1,4 @@
-
+/* TODO@flow */
 "use strict";
 
 var keyMirror  = require('react/lib/keyMirror');
@@ -110,14 +110,14 @@ var MixinHelper = {
    * @return {array} A new array of mixins, the first object being an object of containing all custom methods wrapped
    * Subsequent object in array will be any extracted lifecycle methods which should be treated as standard
    */
-  mix : function(mixins){
+  mix : function(mixins: Array<any>): Array<any>{
 
     var results = [];
     var primary = {};
 
     var dependencies = mixinUtils.getUniqueDependencies(mixins);
-    for (var d in dependencies){
-      Object.assign(primary, MixinAliasCache[dependencies[d]]);
+    for (var i=0, ii=dependencies.length;i < ii; i++){
+      Object.assign(primary, MixinAliasCache[dependencies[i]]);
     }
     wrapEachMethodInObject(primary, results);
 
@@ -144,7 +144,7 @@ var MixinHelper = {
   },
 
 
-  createDependency : function(deps){
+  createDependency : function(deps: any): Dependency{
     var dependencyList = [];
     for (var d in deps){
       if(deps[d] instanceof Mixin){
@@ -160,7 +160,7 @@ var MixinHelper = {
     return new Dependency(uniqueDependencyList);
   },
 
-  addAlias : function(key, object){
+  addAlias : function(key: number | string, object: any){
     MixinAliasCache[key] = object;
   }
 
@@ -214,7 +214,7 @@ var mixinUtils = {
     return this.overrides[methodName].call(this, args);
   },
 
-  getUniqueDependencies : function(mixins){
+  getUniqueDependencies : function(mixins): Array<Dependency> {
     var deps = [];
     mixins.forEach(function(m){
       if(m instanceof Mixin){

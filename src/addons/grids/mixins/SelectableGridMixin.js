@@ -1,8 +1,6 @@
-/**
- * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
- */
+/* TODO@flow */
 "use strict";
+var ExcelRow = require('../../rows/ExcelRow');
 
 var React          = require('react/addons');
 var cx             = React.addons.classSet;
@@ -10,9 +8,14 @@ var cloneWithProps = React.addons.cloneWithProps;
 var KeyboardHandlerMixin = require('../../cells/mixins/KeyboardHandlerMixin');
 var MixinHelper    = require('../../utils/MixinHelper');
 
-var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : KeyboardHandlerMixin}).assignTo({
+  propTypes : {
+    enableCellSelect : React.PropTypes.bool,
+    columns : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired,
+    rows : React.PropTypes.array.isRequired,
+    onSelect : React.PropTypes.func
+  },
 
-  getDefaultProps() {
+  getDefaultProps(): {enableCellSelect: boolean} {
     return {
       enableCellSelect : false,
       tabIndex : -1,
@@ -20,11 +23,11 @@ var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : K
     };
   },
 
-  getColumns : function(){
+  getColumns : function(): Array<ExcelColumn> {
     return this.props.columns
   },
 
-  getInitialState: function() {
+  getInitialState: function(): {selected: selectedType } {
     if(this.props.enableCellSelect){
       return {selected: {rowIdx: 0, idx: 0}};
     }else{
@@ -32,7 +35,7 @@ var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : K
     }
   },
 
-  onSelect: function(selected) {
+  onSelect: function(selected: selectedType) {
     if(this.props.enableCellSelect){
       var idx = selected.idx;
       var rowIdx = selected.rowIdx;

@@ -1,6 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
@@ -8,15 +10,39 @@ var React          = require('react/addons');
 var cx             = React.addons.classSet;
 var BaseRow       = require('../../Row');
 var ColumnMetrics = require('../../ColumnMetrics');
+var ExcelColumn = require('../grids/ExcelColumn');
+
+type cellProps = {
+  props: {
+    selected: {rowIdx: number};
+    dragged: {complete: bool; rowIdx: number};
+    copied: { rowIdx: number};
+  }
+};
+
 var ExcelRow = React.createClass({
+  propTypes: {
+    row : React.PropTypes.shape(ExcelRow).isRequired,
+    isSelected : React.PropTypes.bool,
+    height : React.PropTypes.number,
+    columns : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired,
+    cellRenderer : React.PropTypes.func.isRequired,
+    idx : React.PropTypes.number.isRequired
+  },
 
-  render() {
+  getDefaultProps(): any {
+    return {
+      isSelected: false,
+      height : 35
+    };
+  },
+  render(): ?ReactElement {
     var row = React.addons.update(this.props.row,  {$merge : {'select-row' : this.props.isSelected}});
-
     return (
       <BaseRow
         {... this.props}
         row={row}
+        iam="excelRow"
         height={this.getRowHeight(this.props)}/>
       );
   },
@@ -29,7 +55,7 @@ var ExcelRow = React.createClass({
     }
   },
 
-  hasRowHeightChanged(props){
+  hasRowHeightChanged(props: any): boolean{
     if(props.expandedRows){
       if(typeof props.expandedRows[props.idx] !== 'undefined'){
         return this.props.height !== props.expandedRows[props.idx]
@@ -41,48 +67,46 @@ var ExcelRow = React.createClass({
     }
   },
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: any): boolean {
     return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
-      this.doesRowContainSelectedCell()               ||
-      this.doesRowContainSelectedCell(nextProps)      ||
-      this.willRowBeDraggedOver(nextProps)            ||
-      this.hasRowBeenCopied()                         ||
-      nextProps.row !== this.props.row                ||
-      this.props.isSelected !== nextProps.isSelected  ||
+      this.doesRowContainSelectedCell()          ||
+      this.doesRowContainSelectedCell(nextProps) ||
+      this.willRowBeDraggedOver(nextProps)       ||
+      this.hasRowBeenCopied()                    ||
+      nextProps.row !== this.props.row           ||
       this.hasRowHeightChanged(nextProps);
   },
 
-  doesRowContainSelectedCell(propsToCheck){
-    var props = propsToCheck || this.props;
-    var cell = cell || props.cellRenderer;
-    if(cell.props && cell.props.selected && cell.props.selected.rowIdx === props.idx){
+  doesRowContainSelectedCell(props: {cellRenderer: cellProps}): boolean{
+    var cell = props.cellRenderer;
+    if(cell.props && cell.props.selected && cell.props.selected.rowIdx === this.props.idx){
       return true;
     }else{
       return false;
     }
   },
 
-  willRowBeDraggedOver(props){
+  willRowBeDraggedOver(props: {cellRenderer: cellProps}): boolean{
     if(props.cellRenderer.props){
       var dragged = props.cellRenderer.props.dragged;
-      return  dragged != null && (dragged.rowIdx || dragged.complete === true);
+      return  dragged != null && (dragged.rowIdx != null || dragged.complete === true);
     }else{
       return false;
     }
 
   },
 
-  hasRowBeenCopied(){
+  hasRowBeenCopied(props: {cellRenderer: cellProps}): boolean{
     if(this.props.cellRenderer.props){
       var cell = this.props.cellRenderer;
-      return cell.props.copied != null && cell.props.copied.rowIdx === this.props.idx;
+      return cell.props.copied && cell.props.copied.rowIdx === this.props.idx;
     }else{
       return false;
     }
 
   },
 
-  setScrollLeft(scrollLeft) {
+  setScrollLeft(scrollLeft: number) {
     for (var i = 0, len = this.props.columns.length; i < len; i++) {
       if (this.props.columns[i].locked) {
         this.refs[i].setScrollLeft(scrollLeft);

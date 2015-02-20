@@ -1,3 +1,5 @@
+/* TODO@flow */
+var Highlight = require('highlight.js');
 module.exports = {
   componentDidMount : function(){
     this.highlight();
@@ -10,7 +12,7 @@ module.exports = {
   highlight : function(){
     var aCodes = document.getElementsByTagName('pre');
     for (var i=0; i < aCodes.length; i++) {
-      hljs.highlightBlock(aCodes[i]);
+      Highlight.highlightBlock(aCodes[i]);
     }
   }
 }

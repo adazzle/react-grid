@@ -1,6 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
@@ -15,13 +17,16 @@ var SimpleTextEditor = React.createClass({
 
   mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
 
+  propTypes : {
+  },
+
   overrides : {
       checkFocus : function(){
           this.setTextInputFocus();
       }
   },
 
-  renderEditorNode(){
+  renderEditorNode(): ?ReactElement {
     return (<input type="text" onBlur={this.commit} className="form-control" defaultValue={this.getDefaultValue()}  style={this.getStyle()} onKeyDown={this.onKeyDown} />);
   }
 

@@ -1,6 +1,8 @@
+/* TODO@flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 "use strict";
 
@@ -8,7 +10,10 @@ var React               = require('react/addons');
 var PropTypes           = React.PropTypes;
 var SortableHeaderCell  = require('../../cells/headerCells/SortableHeaderCell');
 var shallowCloneObject  = require('../../../shallowCloneObject');
+var ExcelRow = require('../../rows/ExcelRow');
+var ExcelColumn = require('../ExcelColumn');
 
+type SortType = {ASC: string; DESC: string};
 var DEFINE_SORT = {
   ASC : 'ASC',
   DESC : 'DESC'
@@ -16,12 +21,15 @@ var DEFINE_SORT = {
 Object.freeze(DEFINE_SORT);
 
 var SortableGridMixin = {
+  propTypes : {
+    columns : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired
+  },
 
-  getInitialState: function() {
+  getInitialState: function(): any {
     return {sortDirection: null, sortColumn: null};
   },
 
-   getDecoratedColumns: function(columns) {
+   getDecoratedColumns: function(columns: Array<ExcelColumn>): Array<ExcelColumn> {
       return this.props.columns.map(function(column) {
         column = shallowCloneObject(column);
         if (column.sortable) {
@@ -37,7 +45,7 @@ var SortableGridMixin = {
       }, this);
     },
 
-    sortBy: function(column, direction) {
+    sortBy: function(column: ExcelColumn, direction: SortType) {
       switch(direction){
         case null:
         case undefined:
@@ -53,7 +61,7 @@ var SortableGridMixin = {
       this.setState({sortDirection: direction, sortColumn: column.key});
     },
 
-    sortRows: function(rows) {
+    sortRows: function(rows: Array<ExcelRow>): Array<ExcelRow> {
       //feels naughty
       rows = [].concat(rows);
       var sortColumn = this.state.sortColumn;

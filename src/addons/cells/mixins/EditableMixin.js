@@ -1,6 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
@@ -12,6 +14,8 @@ var PropTypes        = React.PropTypes;
 var MixinHelper      = require('../../utils/MixinHelper');
 var SelectableMixin  = require('./SelectableMixin');
 var KeyboardHandlerMixin = require('./KeyboardHandlerMixin');
+var ExcelColumn = require('../../grids/ExcelColumn');
+var ExcelRow = require('../../rows/ExcelRow');
 
 var EditableMixin = MixinHelper.createDependency({
 
@@ -23,7 +27,24 @@ var EditableMixin = MixinHelper.createDependency({
 
     propTypes : {
         onCommit : PropTypes.func.isRequired
-    }
+    },
+
+    canEdit(){
+      return (this.props.column.editor != null) || this.props.column.editable;
+    },
+
+
+    getEditor(){
+
+      var editorProps = {height : this.props.height, onPressEscape : this.onPressEscape,  onCommit : this.onCommit, initialKeyCode : this.props.selected.initialKeyCode, editorRowMetaData : this.getEditorRowMetaData()};
+      var customEditor = this.props.column.editor;
+      if(customEditor && React.isValidElement(customEditor)){
+        //return custom column editor or SimpleEditor if none specified
+        return cloneWithProps(customEditor, editorProps);
+      }else{
+        return cloneWithProps(SimpleTextEditor(), editorProps);
+      }
+    },
 
 
 });
