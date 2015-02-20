@@ -21,57 +21,81 @@
     },
     {
       key: 'avartar',
-      name: 'Avartar'
+      name: 'Avartar',
+      width : 200
+
     },
     {
       key: 'city',
-      name: 'City'
+      name: 'City',
+      editable:true,
+      width : 200
     },
     {
       key: 'email',
       name: 'Email',
-      editor : <AutoCompleteEditor options={epics}/>,
-      sortable : true
+      editable:true,
+      width : 200
     },
     {
       key: 'firstName',
-      name: 'First Name'
+      name: 'First Name',
+      editable:true,
+      width : 200
     },
     {
       key: 'lastName',
-      name: 'Last Name'
+      name: 'Last Name',
+      editable:true,
+      width : 200
     },
     {
       key: 'street',
-      name: 'Street'
+      name: 'Street',
+      editable:true,
+      width : 200
     },
     {
       key: 'zipCode',
-      name: 'ZipCode'
+      name: 'ZipCode',
+      editable:true,
+      width : 200
     },
     {
       key: 'date',
-      name: 'Date'
+      name: 'Date',
+      editable:true,
+      width : 200
     },
     {
       key: 'bs',
-      name: 'bs'
+      name: 'bs',
+      editable:true,
+      width : 200
     },
     {
       key: 'catchPhrase',
-      name: 'Catch Phrase'
+      name: 'Catch Phrase',
+      editable:true,
+      width : 200
     },
     {
       key: 'companyName',
-      name: 'Company Name'
+      name: 'Company Name',
+      editable:true,
+      width : 200
     },
     {
       key: 'words',
-      name: 'Words'
+      name: 'Words',
+      editable:true,
+      width : 200
     },
     {
       key: 'sentence',
-      name: 'Sentence'
+      name: 'Sentence',
+      editable:true,
+      width : 200
     }
   ]
 

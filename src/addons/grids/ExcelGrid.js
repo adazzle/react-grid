@@ -14,7 +14,6 @@ var merge                 = require('../../merge');
 var SelectableGridMixin   = require('./mixins/SelectableGridMixin');
 var DraggableGridMixin    = require('./mixins/DraggableGridMixin');
 var CopyPasteGridMixin    = require('./mixins/CopyPasteGridMixin');
-var EditableGridMixin     = require('./mixins/EditableGridMixin');
 var SortableGridMixin     = require('./mixins/SortableGridMixin');
 var FilterableGridMixin   = require('./mixins/FilterableGridMixin');
 var CheckboxEditor        = require('../editors/CheckboxEditor');
@@ -24,7 +23,7 @@ var cloneWithProps = React.addons.cloneWithProps;
 
 var ExcelGrid = React.createClass({
 
-  mixins : [SelectableGridMixin, EditableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
+  mixins : [SelectableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
 
   getInitialState(){
     return {selectedRows : [], expandedRows : []};
@@ -142,7 +141,8 @@ var ExcelGrid = React.createClass({
   render: function() {
     var cellMetaData = {
       selected : this.state.selected,
-      onCellClick : this.onCellClick
+      onCellClick : this.onCellClick,
+      onCommit : this.onCellCommit
     }
 
 

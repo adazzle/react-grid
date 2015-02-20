@@ -29,11 +29,12 @@ var Cell = React.createClass({
       this.props.column.locked ? 'react-grid-Cell--locked' : null
     );
 
-    if(this.isSelected()){
-      className += ' selected';
-    }
-
-    return className;
+    var extraClasses = cx({
+      'selected' : this.isSelected(),
+      'editing' : this.isActive()
+    })
+    
+    return className + ' ' + extraClasses;
   },
 
   onCellClick(){
@@ -62,9 +63,10 @@ var Cell = React.createClass({
   },
 
   renderCellContent(props) {
-    var formatter = React.isValidElement(this.props.formatter) ? cloneWithProps(this.props.formatter, props) : this.props.formatter(props);
+    var formatter = this.getFormatter() || this.props.formatter;
+    var formatterTag = React.isValidElement(formatter) ? cloneWithProps(formatter, props) : this.props.formatter(props);
     return (<div
-      className="react-grid-Cell__value">{formatter} {this.props.cellControls}</div>)
+      className="react-grid-Cell__value">{formatterTag} {this.props.cellControls}</div>)
 
   },
 

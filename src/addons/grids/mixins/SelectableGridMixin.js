@@ -115,11 +115,11 @@ var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : K
   setActive(keyPressed){
     var rowIdx = this.state.selected.rowIdx;
     var idx = this.state.selected.idx;
-    if(this.props.column.key === 'select-row' && this.props.column.onRowSelect){
+    if(this.props.columns[idx].key === 'select-row' && this.props.columns[idx].onRowSelect){
       this.props.column.onRowSelect(rowIdx);
     }
     else if(this.canEdit(idx) && !this.isActive()){
-      var selected = merge(this.state.selected, {idx: idx, rowIdx: rowIdx, active : true, initialKeyCode : keyPressed});
+      var selected = Object.assign(this.state.selected, {idx: idx, rowIdx: rowIdx, active : true, initialKeyCode : keyPressed});
       this.setState({selected: selected});
     }
   },
@@ -136,14 +136,14 @@ var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : K
 
   setInactive(){
     var rowIdx = this.state.selected.rowIdx;
-    var idx =this.state.selectedidx;
+    var idx =this.state.selected.idx;
     if(this.canEdit(idx) && this.isActive()){
-      var selected = merge(this.state.selected, {idx: idx, rowIdx: rowIdx, active : false});
+      var selected = Object.assign(this.state.selected, {idx: idx, rowIdx: rowIdx, active : false});
       this.setState({selected: selected});
     }
   },
 
-  canEdit(){
+  canEdit(idx){
     return (this.props.columns[idx].editor != null) || this.props.columns[idx].editable;
   },
 
