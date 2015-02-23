@@ -23,7 +23,7 @@ var DraggableCell = React.createClass({
   },
   mixins : [DraggableMixin],
 
-  render: function() {
+  render: function(): ?ReactElement {
     return (
       <BaseCell
         {...this.props}

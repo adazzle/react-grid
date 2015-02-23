@@ -23,7 +23,7 @@ var CopyableCell = React.createClass({
 
   mixins : [CopyableMixin],
 
-  render: function() {
+  render: function(): ?ReactElement {
     return (<BaseCell
       {...this.props}
       className={this.getCellClass()}

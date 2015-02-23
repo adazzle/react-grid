@@ -1,3 +1,4 @@
+/* @flow */
 /**
  * @jsx React.DOM
 
@@ -9,48 +10,15 @@ var React                = require('react/addons');
 var PropTypes            = React.PropTypes;
 var Header               = require('./Header');
 var Viewport             = require('./Viewport');
-var ColumnMetrics        = require('./ColumnMetrics');
 var DOMMetrics           = require('./DOMMetrics');
+var GridScrollMixin      = require('./GridScrollMixin');
+var ColumnMetricsMixin      = require('./ColumnMetricsMixin');
 
-
-var GridScrollMixin = {
-
-  componentDidMount() {
-    this._scrollLeft = this.refs.viewport.getScroll().scrollLeft;
-    this._onScroll();
-  },
-
-  componentDidUpdate() {
-    this._onScroll();
-  },
-
-  componentWillMount() {
-    this._scrollLeft = undefined;
-  },
-
-  componentWillUnmount() {
-    this._scrollLeft = undefined;
-  },
-
-  onScroll({scrollLeft}) {
-    if (this._scrollLeft !== scrollLeft) {
-      this._scrollLeft = scrollLeft;
-      this._onScroll();
-    }
-  },
-
-  _onScroll() {
-    if (this._scrollLeft !== undefined) {
-      this.refs.header.setScrollLeft(this._scrollLeft);
-      this.refs.viewport.setScrollLeft(this._scrollLeft);
-    }
-  }
-};
 
 var Grid = React.createClass({
   mixins: [
     GridScrollMixin,
-    ColumnMetrics.Mixin,
+    ColumnMetricsMixin,
     DOMMetrics.MetricsComputatorMixin
   ],
 
@@ -63,12 +31,12 @@ var Grid = React.createClass({
     rowRenderer: PropTypes.func.isRequired,
     expandedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
     selectedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
-    length: PropTypes.number.isRequired,
+    totalRows: PropTypes.number,
     onRows: PropTypes.func,
     rowOffsetHeight: PropTypes.number.isRequired
   },
 
-  getStyle: function(){
+  getStyle: function(): { overflow: string; outline: number; position: string; minHeight: number } {
     return{
       overflow: 'hidden',
       outline: 0,
@@ -77,7 +45,7 @@ var Grid = React.createClass({
     }
   },
 
-  render() {
+  render(): ?ReactElement {
     var headerRows = this.props.headerRows || [{ref : 'row'}];
     return (
       <div {...this.props} style={this.getStyle()} className="react-grid-Grid">
@@ -97,7 +65,7 @@ var Grid = React.createClass({
           rows={this.props.rows}
           selectedRows={this.props.selectedRows}
           expandedRows={this.props.expandedRows}
-          length={this.props.length}
+          totalRows={this.props.totalRows || this.props.rows.length}
           columns={this.state.columns}
           totalWidth={this.DOMMetrics.gridWidth()}
           onScroll={this.onScroll}

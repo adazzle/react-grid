@@ -196,7 +196,7 @@ var ExcelGrid = React.createClass({
         {(<BaseGrid
           ref="base"
           {...this.props}
-          length={this.props.rows.length}
+          totalRows={this.props.rows.length}
           headerRows={this.getHeaderRows()}
           columns={this.getColumns()}
           rows={rows}

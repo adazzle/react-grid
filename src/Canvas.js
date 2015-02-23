@@ -1,7 +1,6 @@
+/* @flow */
 /**
  * @jsx React.DOM
-
-
  */
 "use strict";
 
@@ -20,9 +19,10 @@ var Canvas = React.createClass({
   propTypes: {
     rowRenderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     rowHeight: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
     displayStart: PropTypes.number.isRequired,
     displayEnd: PropTypes.number.isRequired,
-    length: PropTypes.number.isRequired,
+    totalRows: PropTypes.number.isRequired,
     rows: PropTypes.oneOfType([
       PropTypes.func.isRequired,
       PropTypes.array.isRequired
@@ -30,11 +30,11 @@ var Canvas = React.createClass({
     onRows: PropTypes.func
   },
 
-  render() {
+  render(): ?ReactElement {
     var displayStart = this.state.displayStart;
     var displayEnd = this.state.displayEnd;
     var rowHeight = this.props.rowHeight;
-    var length = this.props.length;
+    var length = this.props.totalRows;
 
     var rows = this
         .getRows(displayStart, displayEnd)
@@ -83,7 +83,7 @@ var Canvas = React.createClass({
     );
   },
 
-  renderRow(props) {
+  renderRow(props: any) {
     if(typeof this.props.rowRenderer === 'function') {
       return this.props.rowRenderer.call(this,props);
     }
@@ -94,7 +94,7 @@ var Canvas = React.createClass({
     }
   },
 
-  renderPlaceholder(key, height) {
+  renderPlaceholder(key: string, height: number): ?ReactElement {
     return (
       <div key={key} style={{height: height}}>
         {this.props.columns.map(
@@ -110,9 +110,13 @@ var Canvas = React.createClass({
     };
   },
 
-  isRowSelected(rowIdx){
+  isRowSelected(rowIdx: number): boolean{
    return this.props.selectedRows && this.props.selectedRows[rowIdx] === true;
   },
+
+  _currentRowsLength : 0,
+  _currentRowsRange : { start: 0, end: 0 },
+  _scroll : { scrollTop : 0, scrollLeft: 0 },
 
   getInitialState() {
     return {
@@ -123,32 +127,32 @@ var Canvas = React.createClass({
   },
 
   componentWillMount() {
-    this._currentRowsLength = undefined;
-    this._currentRowsRange = undefined;
-    this._scroll = undefined;
+    this._currentRowsLength = 0;
+    this._currentRowsRange = {start: 0, end: 0};
+    this._scroll = {scrollTop : 0, scrollLeft: 0};
   },
 
   componentDidMount() {
     this.onRows();
   },
 
-  componentDidUpdate() {
-    if (this._scroll !== undefined) {
-      this.setScrollLeft(this._scroll);
+  componentDidUpdate(nextProps: any) {
+    if (this._scroll !== {start: 0, end: 0}) {
+      this.setScrollLeft(this._scroll.scrollLeft);
     }
     this.onRows();
   },
 
   componentWillUnmount() {
-    this._currentRowsLength = undefined;
-    this._currentRowsRange = undefined;
-    this._scroll = undefined;
+    this._currentRowsLength = 0;
+    this._currentRowsRange = {start: 0, end: 0};
+    this._scroll = {scrollTop : 0, scrollLeft: 0};
   },
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: any) {
     var shouldUpdate = !(nextProps.visibleStart > this.state.displayStart
                         && nextProps.visibleEnd < this.state.displayEnd)
-                        || nextProps.length !== this.props.length
+                        || nextProps.totalRows !== this.props.totalRows
                         || nextProps.rowHeight !== this.props.rowHeight
                         || nextProps.columns !== this.props.columns
                         || nextProps.width !== this.props.width
@@ -165,18 +169,18 @@ var Canvas = React.createClass({
     }
   },
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.shouldUpdate;
+  shouldComponentUpdate(nextProps: any, nextState: any): boolean {
+    return !nextState || nextState.shouldUpdate;
   },
 
   onRows() {
-    if (this._currentRowsRange !== undefined) {
+    if (this._currentRowsRange !== {start: 0, end: 0}) {
       this.props.onRows(this._currentRowsRange);
-      this._currentRowsRange = undefined;
+      this._currentRowsRange = {start: 0, end: 0};
     }
   },
 
-  getRows(displayStart, displayEnd) {
+  getRows(displayStart: number, displayEnd: number): Array<any> {
     this._currentRowsRange = {start: displayStart, end: displayEnd};
     if (Array.isArray(this.props.rows)) {
       return this.props.rows.slice(displayStart, displayEnd);
@@ -185,8 +189,8 @@ var Canvas = React.createClass({
     }
   },
 
-  setScrollLeft(scrollLeft) {
-    if (this._currentRowsLength !== undefined) {
+  setScrollLeft(scrollLeft: number) {
+    if (this._currentRowsLength !== 0) {
       for (var i = 0, len = this._currentRowsLength; i < len; i++) {
         if(this.refs[i]) {
           this.refs[i].setScrollLeft(scrollLeft);
@@ -195,12 +199,12 @@ var Canvas = React.createClass({
     }
   },
 
-  getScroll() {
+  getScroll(): {scrollTop: number; scrollLeft: number} {
     var {scrollTop, scrollLeft} = this.getDOMNode();
     return {scrollTop, scrollLeft};
   },
 
-  onScroll(e) {
+  onScroll(e: any) {
     this.appendScrollShim();
     var {scrollTop, scrollLeft} = e.target;
     var scroll = {scrollTop, scrollLeft};

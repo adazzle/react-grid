@@ -96,7 +96,7 @@ var Row = React.createClass({
 
   shouldComponentUpdate(nextProps) {
     return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
-      
+
       nextProps.row !== this.props.row            ||
       nextProps.height !== this.props.height;
   },

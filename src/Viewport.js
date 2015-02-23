@@ -1,3 +1,4 @@
+/* @flow */
 /**
  * @jsx React.DOM
 
@@ -6,115 +7,33 @@
 'use strict';
 
 var React             = require('react/addons');
-var getWindowSize     = require('./getWindowSize');
-var DOMMetrics        = require('./DOMMetrics');
 var Canvas            = require('./Canvas');
+var PropTypes            = React.PropTypes;
 
-var min   = Math.min;
-var max   = Math.max;
-var floor = Math.floor;
-var ceil  = Math.ceil;
+var ViewportScroll      = require('./ViewportScrollMixin');
 
-var ViewportScroll = {
-  mixins: [DOMMetrics.MetricsMixin],
 
-  DOMMetrics: {
-    viewportHeight() {
-      return this.getDOMNode().offsetHeight;
-    }
-  },
-
-  propTypes: {
-    rowHeight: React.PropTypes.number,
-    length: React.PropTypes.number.isRequired
-  },
-
-  getDefaultProps() {
-    return {
-      rowHeight: 30
-    };
-  },
-
-  getInitialState() {
-    return this.getGridState(this.props);
-  },
-
-  getGridState(props) {
-    var height = this.state && this.state.height ?
-      this.state.height :
-      getWindowSize().height;
-    var renderedRowsCount = ceil(height / props.rowHeight);
-    return {
-      displayStart: 0,
-      displayEnd: renderedRowsCount * 2,
-      height: height,
-      scrollTop: 0,
-      scrollLeft: 0
-    };
-  },
-
-  updateScroll(scrollTop, scrollLeft, height, rowHeight, length) {
-    var renderedRowsCount = ceil(height / rowHeight);
-
-    var visibleStart = floor(scrollTop / rowHeight);
-
-    var visibleEnd = min(
-        visibleStart + renderedRowsCount,
-        length);
-
-    var displayStart = max(
-        0,
-        visibleStart - renderedRowsCount * 2);
-
-    var displayEnd = min(
-        visibleStart + renderedRowsCount * 2,
-        length);
-
-    var nextScrollState = {
-      visibleStart,
-      visibleEnd,
-      displayStart,
-      displayEnd,
-      height,
-      scrollTop,
-      scrollLeft
-    };
-
-    this.setState(nextScrollState);
-  },
-
-  metricsUpdated() {
-    var height = this.DOMMetrics.viewportHeight();
-    if (height) {
-      this.updateScroll(
-        this.state.scrollTop,
-        this.state.scrollLeft,
-        height,
-        this.props.rowHeight,
-        this.props.length
-      );
-    }
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.rowHeight !== nextProps.rowHeight) {
-      this.setState(this.getGridState(nextProps));
-    } else if (this.props.length !== nextProps.length) {
-      this.updateScroll(
-        this.state.scrollTop,
-        this.state.scrollLeft,
-        this.state.height,
-        nextProps.rowHeight,
-        nextProps.length
-      );
-    }
-  }
-};
 
 var Viewport = React.createClass({
   mixins: [ViewportScroll],
 
-  render() {
+  propTypes: {
+    rowOffsetHeight: PropTypes.number.isRequired,
+    totalWidth: PropTypes.number.isRequired,
+    columns: PropTypes.shape({
+      width: PropTypes.number.isRequired,
+      columns: PropTypes.array.isRequired,
+    }),
+    rows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]).isRequired,
+    selectedRows: PropTypes.array,
+    expandedRows: PropTypes.array,
+    rowRenderer: PropTypes.func,
+    totalRows: PropTypes.number.isRequired,
+    rowHeight: PropTypes.number.isRequired,
+    onRows: PropTypes.func,
+    onScroll: PropTypes.func
+  },
+  render(): ?ReactElement {
     var style = {
       padding: 0,
       bottom: 0,
@@ -143,7 +62,7 @@ var Viewport = React.createClass({
           displayStart={this.state.displayStart}
           displayEnd={this.state.displayEnd}
 
-          length={this.props.length}
+          totalRows={this.props.totalRows}
           height={this.state.height}
           rowHeight={this.props.rowHeight}
           onScroll={this.onScroll}
@@ -153,16 +72,16 @@ var Viewport = React.createClass({
     );
   },
 
-  getScroll() {
+  getScroll(): {scrollLeft: number; scrollTopo: number} {
     return this.refs.canvas.getScroll();
   },
 
-  onScroll({scrollTop, scrollLeft}) {
+  onScroll(scrollTop: number, scrollLeft: number) {
     this.updateScroll(
       scrollTop, scrollLeft,
       this.state.height,
       this.props.rowHeight,
-      this.props.length
+      this.props.totalRows
     );
 
     if (this.props.onScroll) {
@@ -170,7 +89,7 @@ var Viewport = React.createClass({
     }
   },
 
-  setScrollLeft(scrollLeft) {
+  setScrollLeft(scrollLeft: number) {
     this.refs.canvas.setScrollLeft(scrollLeft);
   }
 });

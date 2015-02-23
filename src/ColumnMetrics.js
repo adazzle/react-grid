@@ -1,3 +1,4 @@
+/* @flow */
 /**
  * @jsx React.DOM
 
@@ -5,17 +6,28 @@
  */
 "use strict";
 
-var {PropTypes, isValidElement} = require('react/addons');
 var shallowCloneObject            = require('./shallowCloneObject');
-var DOMMetrics                    = require('./DOMMetrics');
 var merge                         = require('./merge');
+var isValidElement = require('react/addons').isValidElement;
+
+type ColumnMetricsType = {
+    columns: Array<Column>;
+    width: ?number;
+    totalWidth: number;
+    minColumnWidth: number;
+};
+type Column = {
+  key: string;
+  left: number;
+  width: number;
+};
 
 /**
  * Update column metrics calculation.
  *
- * @param {ColumnMetrics} metrics
+ * @param {ColumnMetricsType} metrics
  */
-function calculate(metrics) {
+function calculate(metrics: ColumnMetricsType): ColumnMetricsType {
   var width = 0;
   var unallocatedWidth = metrics.totalWidth;
 
@@ -29,9 +41,9 @@ function calculate(metrics) {
     column = columns[i];
 
     if (column.width) {
-      if (/^([0-9]+)%$/.exec(column.width)) {
+      if (/^([0-9]+)%$/.exec(column.width.toString())) {
         column.width = Math.floor(
-          parseInt(column.width, 10) / 100 * metrics.totalWidth);
+          column.width / 100 * metrics.totalWidth);
       }
       unallocatedWidth -= column.width;
       width += column.width;
@@ -72,11 +84,11 @@ function calculate(metrics) {
 /**
  * Update column metrics calculation by resizing a column.
  *
- * @param {ColumnMetrics} metrics
+ * @param {ColumnMetricsType} metrics
  * @param {Column} column
  * @param {number} width
  */
-function resizeColumn(metrics, index, width) {
+function resizeColumn(metrics: ColumnMetricsType, index: number, width: number): ColumnMetricsType {
   var column = metrics.columns[index];
   metrics = shallowCloneObject(metrics);
   metrics.columns = metrics.columns.slice(0);
@@ -89,76 +101,10 @@ function resizeColumn(metrics, index, width) {
   return calculate(metrics);
 }
 
-var Mixin = {
-  mixins: [DOMMetrics.MetricsMixin],
-
-  propTypes: {
-    columns: PropTypes.array,
-    minColumnWidth: PropTypes.number,
-    columnEquality: PropTypes.func
-  },
-
-  DOMMetrics: {
-    gridWidth() {
-      return this.getDOMNode().offsetWidth - 2;
-    }
-  },
-
-  getDefaultProps() {
-    return {
-      minColumnWidth: 80,
-      columnEquality: sameColumn
-    };
-  },
-
-  getInitialState() {
-    return this.getColumnMetrics(this.props, true);
-  },
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.columns) {
-      if (!sameColumns(this.props.columns, nextProps.columns, this.props.columnEquality)) {
-        this.setState(this.getColumnMetrics(nextProps));
-      } else {
-        var index = {};
-        this.state.columns.columns.forEach((c) => {
-          index[c.key] = {width: c.width, left: c.left};
-        });
-        var nextColumns = merge(this.state.columns, {
-          columns: nextProps.columns.map((c) => merge(c, index[c.key]))
-        });
-        this.setState({columns: nextColumns});
-      }
-    }
-  },
-
-  getColumnMetrics(props, initial) {
-    var totalWidth = initial ? null : this.DOMMetrics.gridWidth();
-    return {
-      columns: calculate({
-        columns: props.columns,
-        width: null,
-        totalWidth,
-        minColumnWidth: props.minColumnWidth
-      }),
-      gridWidth: totalWidth
-    };
-  },
-
-  metricsUpdated() {
-    this.setState(this.getColumnMetrics(this.props));
-  },
-
-  onColumnResize(index, width) {
-    var columns = resizeColumn(this.state.columns, index, width);
-    this.setState({columns});
-  }
-};
-
-function sameColumns(prevColumns, nextColumns, sameColumn) {
+function sameColumns(prevColumns: Array<Column>, nextColumns: Array<Column>, sameColumn: (a: Column, b: Column) => boolean): boolean {
   var i, len, column;
-  var prevColumnsByKey = {};
-  var nextColumnsByKey = {};
+  var prevColumnsByKey: { [key:string]: Column } = {};
+  var nextColumnsByKey: { [key:string]: Column } = {};
 
 
   if(prevColumns.length !== nextColumns.length){
@@ -190,7 +136,7 @@ function sameColumns(prevColumns, nextColumns, sameColumn) {
   return true;
 }
 
-function sameColumn(a, b) {
+function sameColumn(a: Column, b: Column): boolean {
   var k;
 
   for (k in a) {
@@ -213,4 +159,4 @@ function sameColumn(a, b) {
   return true;
 }
 
-module.exports = {Mixin, calculate, resizeColumn, sameColumns, sameColumn};
+module.exports = { calculate, resizeColumn, sameColumns, sameColumn};

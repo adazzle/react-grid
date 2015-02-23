@@ -1,6 +1,9 @@
+/* TODO@flow
+isMounted isnt in flow.exe yet, need to get latest flow build
+*/
 /**
  * @jsx React.DOM
- 
+
 
  */
 'use strict';
@@ -11,7 +14,7 @@ var cloneWithProps = React.addons.cloneWithProps;
 
 var Cell = React.createClass({
 
-  render() {
+  render(): ?ReactElement {
     var style = this.getStyle();
     var className = cx(
       'react-grid-Cell',
@@ -35,20 +38,20 @@ var Cell = React.createClass({
     );
   },
 
-  renderCellContent(props) {
+  renderCellContent(props: any): ?ReactElement {
     var formatter = React.isValidElement(this.props.formatter) ? cloneWithProps(this.props.formatter, props) : this.props.formatter(props);
     return (<div
       className="react-grid-Cell__value">{formatter} {this.props.cellControls}</div>)
 
   },
 
-  getDefaultProps() {
+  getDefaultProps(): {formatter: (props:{value: string}) => string} {
     return {
       formatter: simpleCellFormatter
     };
   },
 
-  getStyle() {
+  getStyle(): {position:string; width: number; height: number; left: number} {
     var style = {
       position: 'absolute',
       width: this.props.column.width,
@@ -58,7 +61,7 @@ var Cell = React.createClass({
     return style;
   },
 
-  setScrollLeft(scrollLeft) {
+  setScrollLeft(scrollLeft: number) {
     if (this.isMounted()) {
       var node = this.getDOMNode();
       var transform = `translate3d(${scrollLeft}px, 0px, 0px)`;
