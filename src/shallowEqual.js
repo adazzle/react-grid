@@ -1,11 +1,12 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
+
 
  */
 'use strict';
 
-function shallowEqual(a, b) {
+function shallowEqual(a: any, b: any): boolean {
   if (a === b) {
     return true;
   }

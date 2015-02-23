@@ -1,6 +1,7 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
+
 
  */
 "use strict";
@@ -10,18 +11,20 @@ var cx                  = React.addons.classSet;
 var shallowCloneObject  = require('./shallowCloneObject');
 var ColumnMetrics       = require('./ColumnMetrics');
 var HeaderRow           = require('./HeaderRow');
-var ColumnMetrics = require('./ColumnMetrics');
+
+type Column = {
+  width: number
+}
 
 var Header = React.createClass({
-
   propTypes: {
-    columns: React.PropTypes.object.isRequired,
+    columns: React.PropTypes.shape({  width: React.PropTypes.number.isRequired }).isRequired,
     totalWidth: React.PropTypes.number,
     height: React.PropTypes.number.isRequired,
     headerRows : React.PropTypes.array.isRequired
   },
 
-  render() {
+  render(): ?ReactElement {
     var state = this.state.resizing || this.props;
 
     var className = cx({
@@ -38,14 +41,14 @@ var Header = React.createClass({
     );
   },
 
-  shouldComponentUpdate : function(nextProps, nextState){
+  shouldComponentUpdate : function(nextProps: any, nextState: any): boolean{
     return !(ColumnMetrics.sameColumns(this.props.columns.columns, nextProps.columns.columns, ColumnMetrics.sameColumn))
     || this.props.totalWidth != nextProps.totalWidth
     || (this.props.headerRows.length != nextProps.headerRows.length)
     || (this.state.resizing != nextState.resizing)
   },
 
-  getHeaderRows(){
+  getHeaderRows(): Array<HeaderRow>{
     var state = this.state.resizing || this.props;
     var headerRows = [];
     this.props.headerRows.forEach((function(row, index){
@@ -72,20 +75,20 @@ var Header = React.createClass({
     return headerRows;
   },
 
-  getInitialState() {
+  getInitialState(): {resizing: any} {
     return {resizing: null};
   },
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps: any) {
     this.setState({resizing: null});
   },
 
-  onColumnResize(column, width) {
+  onColumnResize(column: Column, width: number) {
     var state = this.state.resizing || this.props;
 
     var pos = this.getColumnPosition(column);
 
-    if (pos !== null) {
+    if (pos != null) {
       var resizing = {
         columns: shallowCloneObject(state.columns)
       };
@@ -102,26 +105,26 @@ var Header = React.createClass({
     }
   },
 
-  getColumnPosition(column) {
+  getColumnPosition(column: Column): ?number {
     var state = this.state.resizing || this.props;
     var pos = state.columns.columns.indexOf(column);
     return pos === -1 ? null : pos;
   },
 
-  onColumnResizeEnd(column, width) {
+  onColumnResizeEnd(column: Column, width: number) {
     var pos = this.getColumnPosition(column);
     if (pos !== null && this.props.onColumnResize) {
       this.props.onColumnResize(pos, width || column.width);
     }
   },
 
-  setScrollLeft(scrollLeft) {
+  setScrollLeft(scrollLeft: number) {
     var node = this.refs.row.getDOMNode();
     node.scrollLeft = scrollLeft;
     this.refs.row.setScrollLeft(scrollLeft);
   },
 
-  getStyle() {
+  getStyle(): {position: string; height: number} {
     return {
       position: 'relative',
       height: this.props.height

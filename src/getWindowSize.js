@@ -1,6 +1,7 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
+
 
 
  */
@@ -11,7 +12,7 @@
  *
  * @return {Object} height and width of the window
  */
-function getWindowSize() {
+function getWindowSize(): {width: number; height: number} {
     var width = window.innerWidth;
     var height = window.innerHeight;
 

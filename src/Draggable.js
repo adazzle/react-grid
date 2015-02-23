@@ -1,6 +1,7 @@
+/* TODO@flow need SyntheticEvent  */
 /**
  * @jsx React.DOM
- 
+
 
  */
 'use strict';
@@ -18,7 +19,7 @@ var Draggable = React.createClass({
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.constructor])
   },
 
-  render() {
+  render(): ?ReactElement {
     var Component = this.props.component;
     return (
       <Component {...this.props}  onMouseDown={this.onMouseDown} />
@@ -40,7 +41,7 @@ var Draggable = React.createClass({
     };
   },
 
-  onMouseDown(e) {
+  onMouseDown(e: Event) {
     var drag = this.props.onDragStart(e);
 
     if (drag === null && e.button !== 0) {
@@ -53,7 +54,7 @@ var Draggable = React.createClass({
     this.setState({drag});
   },
 
-  onMouseMove(e) {
+  onMouseMove(e: Event) {
     if (this.state.drag === null) {
       return;
     }
@@ -69,7 +70,7 @@ var Draggable = React.createClass({
     this.props.onDrag(e);
   },
 
-  onMouseUp(e) {
+  onMouseUp(e: Event) {
     this.cleanUp();
     this.props.onDragEnd(e, this.state.drag);
     this.setState({drag: null});

@@ -1,11 +1,12 @@
+/* @flow */
 /**
  * @jsx React.DOM
- 
+
 
  */
 'use strict';
 
-function shallowCloneObject(obj) {
+function shallowCloneObject(obj: any): any {
   var result = {};
   for (var k in obj) {
     if (obj.hasOwnProperty(k)) {

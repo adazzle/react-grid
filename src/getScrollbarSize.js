@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow offsetWidth in HTMLElement */
 "use strict";
 
 var size;
