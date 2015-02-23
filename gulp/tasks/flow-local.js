@@ -7,3 +7,11 @@ gulp.task('flow-local', function() {
     if(stdout) console.log(stdout);
   });
 });
+
+
+gulp.task('flow-examples', ['examples'], function() {
+  execFile('./flow/flow.exe', ['check','--lib','./flow/libs','--strip-root','./flow/examples'],function (err, stdout, stderr) {
+    if(err) console.log('Error:' + err);
+    if(stdout) console.log(stdout);
+  });
+});
