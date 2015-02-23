@@ -1,3 +1,3 @@
 var gulp = require('gulp');
 
-gulp.task('build', ['flow-local','dist','styles']);
+gulp.task('build', ['dist','flow-local','styles']);
