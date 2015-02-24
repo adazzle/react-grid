@@ -12,8 +12,8 @@ build_script:
 
     npm install
 
-    gulp test --release
-
     gulp flow-win
-    
+
+    gulp test --release
+       
     gulp coveralls
