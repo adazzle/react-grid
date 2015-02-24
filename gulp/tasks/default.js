@@ -1,3 +1,5 @@
 var gulp = require('gulp');
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['clean'], function(){
+  gulp.start('watch');
+});

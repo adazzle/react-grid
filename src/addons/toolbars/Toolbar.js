@@ -20,13 +20,25 @@ var Toolbar = React.createClass({
     }
   },
 
-  render(): ?ReactElement{
+  getDefaultProps(){
+    return {
+      enableAddRow : true
+    }
+  },
+
+  getAddRowButton(){
+    if(this.props.enableAddRow){
+      return(<button type="button" className="btn" onClick={this.onAddRow}>
+        Add Row
+      </button>)
+    }
+  },
+
+  render(){
     return (
       <div className="react-grid-Toolbar">
         <div className="tools">
-          <button type="button" className="btn" onClick={this.onAddRow}>
-            Add Row
-          </button>
+          {this.getAddRowButton()}
           <button type="button" className="btn" onClick={this.props.onToggleFilter}>
             Filter Rows
           </button>

@@ -45,8 +45,8 @@ var DropDownEditor = React.createClass({
   },
 
 
-  onChange(e: any){ //having to use any to access currentTarget.value which isnt a property of an event
-    this.props.onCommit({value : e.currentTarget.value});
+  onChange(e){
+    this.commit({key : 'Enter'});
   },
 
   onClick(e: Event){

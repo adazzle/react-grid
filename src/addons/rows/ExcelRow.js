@@ -48,9 +48,9 @@ var ExcelRow = React.createClass({
       );
   },
 
-  getRowHeight(props: any): number | ReactElement{
-    if(props.expandedRows && props.expandedRows[props.key]){
-      return props.expandedRows[props.key];
+  getRowHeight(props){
+    if(props.expandedRows && props.expandedRows[props.idx]){
+      return props.expandedRows[props.idx];
     }else{
       return props.height;
     }
@@ -58,8 +58,8 @@ var ExcelRow = React.createClass({
 
   hasRowHeightChanged(props: any): boolean{
     if(props.expandedRows){
-      if(typeof props.expandedRows[props.key] !== 'undefined'){
-        return this.props.height !== props.expandedRows[props.key]
+      if(typeof props.expandedRows[props.idx] !== 'undefined'){
+        return this.props.height !== props.expandedRows[props.idx]
       }else{
         return false;
       }
@@ -70,18 +70,19 @@ var ExcelRow = React.createClass({
 
   shouldComponentUpdate(nextProps: any): boolean {
     return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
-      this.doesRowContainSelectedCell(this.props)          ||
-      this.doesRowContainSelectedCell(nextProps) ||
-      this.willRowBeDraggedOver(nextProps)       ||
-      this.hasRowBeenCopied(this.props)          ||
-      this.hasRowBeenCopied(nextProps)           ||
-      nextProps.row !== this.props.row           ||
+      this.doesRowContainSelectedCell()               ||
+      this.doesRowContainSelectedCell(nextProps)      ||
+      this.willRowBeDraggedOver(nextProps)            ||
+      this.hasRowBeenCopied()                         ||
+      nextProps.row !== this.props.row                ||
+      this.props.isSelected !== nextProps.isSelected  ||
       this.hasRowHeightChanged(nextProps);
   },
 
-  doesRowContainSelectedCell(props: {cellRenderer: cellProps}): boolean{
-    var cell = props.cellRenderer;
-    if(cell.props && cell.props.selected && cell.props.selected.rowIdx === this.props.idx){
+  doesRowContainSelectedCell(propsToCheck){
+    var props = propsToCheck || this.props;
+    var cell = cell || props.cellRenderer;
+    if(cell.props && cell.props.selected && cell.props.selected.rowIdx === props.idx){
       return true;
     }else{
       return false;
