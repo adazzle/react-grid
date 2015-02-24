@@ -7,7 +7,6 @@ var gulp = require('gulp');
 var rename = require('gulp-rename');
 
 gulp.task("webpack", function(callback) {
-
     // run webpack
     webpack(webpackConfig, callback);
 });

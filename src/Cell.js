@@ -1,6 +1,4 @@
-/* @flow
-isMounted isnt in flow.exe yet, need to get latest flow build
-*/
+/* @flow */
 /**
  * @jsx React.DOM
 
@@ -17,7 +15,7 @@ var Cell = React.createClass({
 
   mixins : [SelectableMixin],
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: any, nextState: any): boolean {
     return this.props.column.width !== nextProps.column.width
     || this.props.value !== nextProps.value
     || this.props.height !== nextProps.height
@@ -25,7 +23,7 @@ var Cell = React.createClass({
     || this.isCellSelectionChanging(nextProps);
   },
 
-  getCellClass : function(){
+  getCellClass : function(): string {
 
     var className = cx(
       'react-grid-Cell',
@@ -45,7 +43,7 @@ var Cell = React.createClass({
     this.props.cellMetaData.onCellClick({rowIdx : this.props.rowIdx, idx : this.props.idx});
   },
 
-  render() {
+  render(): ?ReactElement {
     var style = this.getStyle();
 
     var className = this.getCellClass();
@@ -66,7 +64,7 @@ var Cell = React.createClass({
     );
   },
 
-  renderCellContent(props) {
+  renderCellContent(props: any): ReactElement {
     var formatter = this.getFormatter() || this.props.formatter;
     var formatterTag = React.isValidElement(formatter) ? cloneWithProps(formatter, props) : this.props.formatter(props);
     return (<div
@@ -100,7 +98,7 @@ var Cell = React.createClass({
   }
 });
 
-function simpleCellFormatter(props) {
+function simpleCellFormatter(props: any): string {
   return props.value;
 }
 

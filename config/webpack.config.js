@@ -9,7 +9,7 @@ module.exports = {
     'GridAddons' : './src/addons/index'
   },
   output: {
-    path: path.join(__dirname, "./dist"),
+    path: path.join(__dirname, "../dist"),
     filename: "React[name].js",
     library: ["ReactGrid", "[name]"],
     libraryTarget: "umd"

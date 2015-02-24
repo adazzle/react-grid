@@ -9,7 +9,6 @@ var webpackConfig = require("../../config/webpack.config.js");
 
 
 gulp.task('script-deps',  function() {
-
 	return gulp.src([
 		'node_modules/es5-shim/es5-shim.js'
 	])
