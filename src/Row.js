@@ -1,4 +1,4 @@
-/* @flow rowHeight property..expandedRows issue? */
+/* @flow  */
 /**
  * @jsx React.DOM
 

@@ -1,4 +1,4 @@
-/* TODO@flow mixins */
+/* @flow mixins */
 
 var ColumnMetrics        = require('./ColumnMetrics');
 var DOMMetrics                    = require('./DOMMetrics');
