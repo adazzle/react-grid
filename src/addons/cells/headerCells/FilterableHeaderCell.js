@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* @flow  */
 /**
  * @jsx React.DOM
 
@@ -14,7 +14,7 @@ var FilterableHeaderCell = React.createClass({
 
   propTypes: {
     onChange: React.PropTypes.func.isRequired,
-    column: React.PropTypes.shape(ExcelColumn)
+    column: React.PropTypes.shape(ExcelColumn).isRequired
   },
 
   getInitialState(): {filterTerm: string}{
@@ -24,12 +24,15 @@ var FilterableHeaderCell = React.createClass({
   handleChange(e: Event){
     e.preventDefault();
     e.stopPropagation();
-    this.setState({filterTerm : e.currentTarget.value});
-    this.props.onChange({filterTerm : e.currentTarget.value, columnKey : this.props.column.key});
+
+    var val = (e.currentTarget instanceof Node) ? e.currentTarget.nodeValue : null;
+    this.setState({filterTerm : val });
+    this.props.onChange({filterTerm : val, columnKey : this.props.column.key});
   },
 
-  componentDidUpdate(): boolean{
-    this.getDOMNode().focus();
+  componentDidUpdate(nextProps: any) {
+    var ele = this.getDOMNode();
+    if(ele) ele.focus();
   },
 
   render: function(): ?ReactElement {

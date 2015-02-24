@@ -1,4 +1,8 @@
 /* TODO@flow */
+/* Flow issues:
+overrides? getDefaultValue, getStyle, onKeyDown
+getLabvel doing some funky js overrides, throwing off flow
+*/
 /**
  * @jsx React.DOM
  */
@@ -25,7 +29,7 @@ var AutoCompleteEditor = React.createClass({
     options : React.PropTypes.arrayOf(optionPropType).isRequired,
     label : React.PropTypes.string,
     value : React.PropTypes.any.isRequired,
-    valueParams: React.PropTypes.arrayOf(React.PropTypes.string),
+    valueParams: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
     column: React.PropTypes.shape(ExcelColumn).isRequired,
     resultIdentifier : React.PropTypes.string.isRequired,
     search : React.PropTypes.string.isRequired,
@@ -51,7 +55,7 @@ var AutoCompleteEditor = React.createClass({
       }
   },
 
-  handleTab(e: ReactEvent){
+  handleTab(e: Event){
     e.stopPropagation();
     e.preventDefault();
     if(!this.isFocusedOnSuggestion()){
@@ -61,7 +65,7 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  handleEnter(e: ReactEvent){
+  handleEnter(e: Event){
     e.stopPropagation();
     e.preventDefault();
     if(!this.isFocusedOnSuggestion()){
@@ -82,18 +86,18 @@ var AutoCompleteEditor = React.createClass({
     return this.refs.autoComplete.state.focusedValue;
   },
 
-  onPressArrowDown(e: ReactEvent){
+  onPressArrowDown(e: Event){
     //prevent event propogation. this disables downwards cell navigation
     e.stopPropagation();
     e.preventDefault();
   },
 
-  onPressArrowUp(e: ReactEvent){
+  onPressArrowUp(e: Event){
     //prevent event propogation. this disables upwards cell navigation
     e.stopPropagation();
   },
 
-  getLabel(result: string | Array<{[key:string]: string }>): string {
+  getLabel(result: Array<{[key:string]: string }>): string {
     var label = this.props.label != null ? this.props.label : 'title';
     if (typeof label === "function") {
       return label(result);
@@ -102,7 +106,7 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  handleChange(item: key, key: string) {
+  handleChange(item: ?string, key: string) {
     var rowDataChanged = {};
     var value = this.props.value;
     if(item!=null){

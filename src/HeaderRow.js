@@ -1,8 +1,8 @@
-/* TODO@flow */
+/* TODO@flow unknown,ReactElement
+This type is incompatible with
+  ..\flow\..\src\HeaderRow.js:120:18,26: React component  */
 /**
  * @jsx React.DOM
-
-
  */
 "use strict";
 
@@ -12,16 +12,37 @@ var shallowEqual      = require('./shallowEqual');
 var HeaderCell        = require('./HeaderCell');
 var getScrollbarSize  = require('./getScrollbarSize');
 
+type HeaderRowStyle = {
+  overflow: string;
+  width: string | number;
+  height: number;
+  position: string
+};
+
+type Column = {
+  locked: boolean;
+  headerRenderer: ?any;
+};
+
+type HeaderRowProps = {
+  width: ?number;
+  height: number;
+  columns: Array<Column>;
+  onColumnResize: ?any;
+  style: ?HeaderRowStyle
+};
+
 var HeaderRow = React.createClass({
 
   propTypes: {
     width: PropTypes.number,
     height: PropTypes.number.isRequired,
     columns: PropTypes.array.isRequired,
-    onColumnResize: PropTypes.func
+    onColumnResize: PropTypes.func,
+    style: PropTypes.shape(HeaderRowStyle)
   },
 
-  render() {
+  render(): ?ReactElement {
     var cellsStyle = {
       width: this.props.width ? (this.props.width + getScrollbarSize()) : '100%',
       height: this.props.height,
@@ -40,7 +61,7 @@ var HeaderRow = React.createClass({
     );
   },
 
-  getCells() {
+  getCells(): Array<HeaderCell> {
     var cells = [];
     var lockedCells = [];
 
@@ -68,7 +89,7 @@ var HeaderRow = React.createClass({
     return cells.concat(lockedCells);
   },
 
-  setScrollLeft(scrollLeft) {
+  setScrollLeft(scrollLeft: number) {
     for (var i = 0, len = this.props.columns.length; i < len; i++) {
       if (this.props.columns[i].locked) {
         this.refs[i].setScrollLeft(scrollLeft);
@@ -76,7 +97,7 @@ var HeaderRow = React.createClass({
     }
   },
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: HeaderRowProps): boolean {
     return (
       nextProps.width !== this.props.width
       || nextProps.height !== this.props.height
@@ -85,7 +106,7 @@ var HeaderRow = React.createClass({
     );
   },
 
-  getStyle() {
+  getStyle(): HeaderRowStyle {
     return {
       overflow: 'hidden',
       width: '100%',

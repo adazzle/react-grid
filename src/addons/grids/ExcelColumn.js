@@ -1,3 +1,4 @@
+/* @flow */
 type ExcelColumn = {
   name: string;
   key: string;
@@ -5,7 +6,6 @@ type ExcelColumn = {
   cellRenderer: (cellData: any, cellDataKey: string, rowData: any, rowIndex: number, columnData: any, width: number ) => ReactElement;
 };
 
-/* @flow */
 class ExcelColumn {
   name: string;
   key: string;

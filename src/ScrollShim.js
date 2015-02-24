@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow mixin not compatible and HTMLElement classList */
 /**
  * @jsx React.DOM
 
@@ -12,7 +12,7 @@ var ScrollShim = {
     if (!this._scrollShim) {
       var size = this._scrollShimSize();
       var shim = document.createElement('div');
-      shim.classList.add('react-grid-ScrollShim');
+      shim.classList.add('react-grid-ScrollShim'); //flow - not compatible with HTMLElement
       shim.style.position = 'absolute';
       shim.style.top = 0;
       shim.style.left = 0;
@@ -24,7 +24,7 @@ var ScrollShim = {
     this._scheduleRemoveScrollShim();
   },
 
-  _scrollShimSize() {
+  _scrollShimSize(): {width: number; height: number } {
     return {
       width: this.props.width,
       height: this.props.length * this.props.rowHeight

@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow mixins */
 /**
  * @jsx React.DOM
 
@@ -33,7 +33,7 @@ var SortableGridMixin = {
       return this.props.columns.map(function(column) {
         column = shallowCloneObject(column);
         if (column.sortable) {
-          column.headerRenderer = <SortableHeaderCell/>;
+          column.headerRenderer = <SortableHeaderCell column={column}/>;
           column.sortBy = this.sortBy;
           if (this.state.sortColumn === column.key) {
             column.sorted = this.state.sortDirection;

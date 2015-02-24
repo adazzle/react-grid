@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow invarient and react mixin cant be flow'd */
 /**
  * @jsx React.DOM
 
@@ -19,15 +19,15 @@ var MetricsComputatorMixin = {
 
   childContextTypes: contextTypes,
 
-  getChildContext() {
+  getChildContext(): {metricsComputator: any} {
     return {metricsComputator: this};
   },
 
-  getMetricImpl(name) {
+  getMetricImpl(name: string): any {
     return this._DOMMetrics.metrics[name].value;
   },
 
-  registerMetricsImpl(component, metrics) {
+  registerMetricsImpl(component: ReactComponent, metrics: any): {[key:string]: any} {
     var getters = {};
     var s = this._DOMMetrics;
 
@@ -47,7 +47,7 @@ var MetricsComputatorMixin = {
     return getters;
   },
 
-  unregisterMetricsFor(component) {
+  unregisterMetricsFor(component: ReactComponent) {
     var s = this._DOMMetrics;
     var idx = s.components.indexOf(component);
 
@@ -134,7 +134,7 @@ var MetricsMixin = {
     }
   },
 
-  componentWillUnmount() {
+  componentWillUnmount(): any {
     if (!this.registerMetricsImpl) {
       return this.context.metricsComputator.unregisterMetricsFor(this);
     }
@@ -143,7 +143,7 @@ var MetricsMixin = {
     }
   },
 
-  registerMetrics(metrics) {
+  registerMetrics(metrics: any): any {
     if (this.registerMetricsImpl) {
       return this.registerMetricsImpl(this, metrics);
     } else {
@@ -151,7 +151,7 @@ var MetricsMixin = {
     }
   },
 
-  getMetric(name) {
+  getMetric(name: string): any {
     if (this.getMetricImpl) {
       return this.getMetricImpl(name);
     } else {

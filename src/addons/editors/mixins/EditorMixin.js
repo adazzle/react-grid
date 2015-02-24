@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow mixin */
 /**
  * @jsx React.DOM
 

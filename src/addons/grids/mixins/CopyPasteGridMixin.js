@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow mixins */
 /**
  * @jsx React.DOM
 
@@ -14,10 +14,10 @@ var CopyPasteGridMixin = {
     onCellCopyPaste : React.PropTypes.func
   },
 
-  getInitialState: function(): any {
+  getInitialState: function(): { copied: ?{idx: number; rowIdx: number} } {
     return {copied : null };
   },
-  copyPasteEnabled: function() {
+  copyPasteEnabled: function(): boolean {
     return this.props.onCellCopyPaste !== null;
   },
 

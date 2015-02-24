@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow mixins, getHeaderRows */
 /**
  * @jsx React.DOM
 
@@ -81,7 +81,11 @@ var FilterableGridMixin = {
   getHeaderRows(): Array<ReactElement> {
     var rows = [{ref:"row", height: this.props.rowHeight}];
     if(this.state.canFilter === true){
-      rows.push({ref:"filterRow", headerCellRenderer : <FilterableHeaderCell onChange={this.handleAddFilter}/>, height : 45});
+      rows.push({
+        ref:"filterRow",
+        headerCellRenderer : <FilterableHeaderCell onChange={this.handleAddFilter} column={this.props.column}/>,
+        height : 45
+      });
     }
     return rows;
   },

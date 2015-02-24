@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* @flow */
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -27,7 +27,7 @@
  * @param {?object} two Optional object with properties to merge from.
  * @return {object} The shallow extension of one by two.
  */
-var merge = function(one, two) {
+var merge = function(one: any, two: any): any {
   var result = {};
   if (one != null) {
     Object.assign(result, one);
@@ -38,7 +38,7 @@ var merge = function(one, two) {
   return result;
 };
 
-function mergeFallback(obj1,obj2){
+function mergeFallback(obj1: any,obj2: any): any{
     var obj3 = {};
     for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
     for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }

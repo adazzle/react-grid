@@ -41,9 +41,10 @@ var ExcelRow = React.createClass({
     return (
       <BaseRow
         {... this.props}
+        idx={this.props.idx}
+        columns={this.props.columns}
         row={row}
-        iam="excelRow"
-        height={this.getRowHeight(this.props)}/>
+        rowHeight={this.getRowHeight(this.props)}/>
       );
   },
 

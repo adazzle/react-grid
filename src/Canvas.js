@@ -105,7 +105,7 @@ var Canvas = React.createClass({
 
   getDefaultProps() {
     return {
-      rowRenderer: <Row/>,
+      rowRenderer: Row,
       onRows: emptyFunction
     };
   },

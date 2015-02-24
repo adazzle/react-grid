@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow mixins */
 /**
  * @jsx React.DOM
 
@@ -13,6 +13,11 @@ var SelectableGridMixin          = require('./SelectableGridMixin');
 
 MixinHelper.addAlias('SelectableGridMixin');
 
+type DraggedType = {
+  idx: number;
+  rowIdx: number;
+};
+
 var DraggableGridMixin = {
 
   mixinDependencies : ['SelectableGridMixin'],
@@ -21,14 +26,14 @@ var DraggableGridMixin = {
     onCellsDragged : React.PropTypes.func,
     rows : React.PropTypes.array.isRequired
   },
-  dragEnabled: function() {
+  dragEnabled: function(): boolean {
     return this.props.onCellsDragged !== null;
   },
-  getInitialState: function() {
+  getInitialState: function(): {dragged: ?DraggedType } {
     return {dragged : null };
   },
 
-  handleDragStart(dragged){
+  handleDragStart(dragged: DraggedType){
     if(!this.dragEnabled()) { return; }
     var idx = dragged.idx;
     var rowIdx = dragged.rowIdx;
@@ -42,7 +47,7 @@ var DraggableGridMixin = {
     }
   },
 
-  handleDragEnter(row){
+  handleDragEnter(row: any){
     if(!this.dragEnabled()) { return; }
     var selected = this.state.selected;
     var dragged = this.state.dragged;

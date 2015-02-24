@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow mixins */
 
 var React             = require('react/addons');
 var DOMMetrics        = require('./DOMMetrics');
