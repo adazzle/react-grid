@@ -14,12 +14,12 @@ var merge                 = require('../../merge');
 var SelectableGridMixin   = require('./mixins/SelectableGridMixin');
 var DraggableGridMixin    = require('./mixins/DraggableGridMixin');
 var CopyPasteGridMixin    = require('./mixins/CopyPasteGridMixin');
-var EditableGridMixin     = require('./mixins/EditableGridMixin');
 var SortableGridMixin     = require('./mixins/SortableGridMixin');
 var FilterableGridMixin   = require('./mixins/FilterableGridMixin');
 var CheckboxEditor        = require('../editors/CheckboxEditor');
 var MixinHelper           = require('../utils/MixinHelper');
-var ExcelColumn = require('./ExcelColumn');
+
+var cloneWithProps = React.addons.cloneWithProps;
 
 var ExcelGrid = React.createClass({
 
@@ -33,7 +33,7 @@ var ExcelGrid = React.createClass({
     toolbar:React.PropTypes.element
   },
 
-  mixins : [SelectableGridMixin, EditableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
+  mixins : [SelectableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
 
   getInitialState(): { selectedRows: Array<ExcelRow>; expandedRows: Array<ExcelRow>}{
     return {selectedRows : [], expandedRows : []};
@@ -48,8 +48,8 @@ var ExcelGrid = React.createClass({
         selected.idx += 1;
       }
       var expandedRows = this.state.expandedRows;
-      if(committed.updated && committed.updated.expandedHeight){
-        expandedRows = this.expandRow(committed.rowIdx, committed.updated.expandedHeight);
+      if(committed.changed && committed.changed.expandedHeight){
+        expandedRows = this.expandRow(committed.rowIdx, committed.changed.expandedHeight);
       }
       this.setState({selected : selected, expandedRows : expandedRows});
       this.props.onRowUpdated(committed);
@@ -142,51 +142,20 @@ var ExcelGrid = React.createClass({
     this.refs.base.refs.viewport.refs.canvas.getDOMNode().scrollTop = numberOfRows * this.props.rowHeight;
   },
 
-  componentWillReceiveProps:function(nextProps: any){
+  componentWillReceiveProps:function(nextProps){
     if(nextProps.rows.length  === this.props.rows.length + 1){
       this.onAfterAddRow(nextProps.rows.length + 1);
     }
   },
 
-  render: function(): any {
-    var cellRenderCtx = {
-      selected: this.state.selected,
-      copied: this.state.copied,
-      dragged: this.state.dragged,
-      onSelect: this.onSelect,
-      onClick: this.onSelect,
-      onSetActive: this.onSetActive,
-      onCommit: this.onCellCommit,
-      handleCopy: this.handleCopy,
-      handlePaste: this.handlePaste,
-      handleDragStart: this.handleDragStart,
-      handleDragEnter: this.handleDragEnter,
-      handleDragEnd: this.handleDragEnd,
-      handleTerminateDrag: this.handleTerminateDrag,
-      onShowMore: this.handleShowMore,
-      onShowLess: this.handleShowLess,
-      expandedRows: this.state.expandedRows
-    };
-    var getCellRenderer = (function(props: {ref: ?string; column: ExcelColumn; height: number; rowIdx: number; value: any}): ReactElement {
-      var {ref, column, height, rowIdx, value, ...other} = props;
-      return (
-      <ExcelCell
-        {...other}
-
-        column={props.column}
-        height={props.height}
-        rowIdx={props.rowIdx}
-        value={props.value}
-
-        {...cellRenderCtx}
-        onCommit={cellRenderCtx.onCommit}
-        />
-    );
-  });
-
-    var getRowRenderer = function(props: {idx: number; row: ExcelRow; columns: Array<ExcelColumn>}): ReactElement {
-      return (<ExcelRow idx={props.idx} row={props.row} columns={props.columns} cellRenderer={getCellRenderer}/>);
+  render: function() {
+    var cellMetaData = {
+      selected : this.state.selected,
+      onCellClick : this.onCellClick,
+      onCommit : this.onCellCommit
     }
+
+
     var rows = this.filterRows();
     var toolbar = this.renderToolbar();
     return(
@@ -196,15 +165,17 @@ var ExcelGrid = React.createClass({
         {(<BaseGrid
           ref="base"
           {...this.props}
-          totalRows={this.props.rows.length}
+          length={this.props.rows.length}
           headerRows={this.getHeaderRows()}
           columns={this.getColumns()}
           rows={rows}
-          rowRenderer={getRowRenderer}
+          cellMetaData={cellMetaData}
           selectedRows={this.state.selectedRows}
           expandedRows={this.state.expandedRows}
           rowOffsetHeight={this.getRowOffsetHeight()}
-          minHeight={this.props.minHeight} />)}
+          minHeight={this.props.minHeight}
+          onKeyDown={this.onKeyDown}
+          onClick={this.onClick} />)}
         </div>
       </div>
     )

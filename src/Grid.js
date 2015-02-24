@@ -70,6 +70,7 @@ var Grid = React.createClass({
           totalWidth={this.DOMMetrics.gridWidth()}
           onScroll={this.onScroll}
           onRows={this.props.onRows}
+          cellMetaData={this.props.cellMetaData}
           rowOffsetHeight={this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
           />
       </div>

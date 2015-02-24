@@ -9,7 +9,7 @@
   var DropDownEditor      = Editors.DropDownEditor;
   var cx                  = React.addons.classSet;
   var cloneWithProps      = React.addons.cloneWithProps;
-
+  var FakeObjectDataStoreList = require('./FakeObjectDataStoreList');
   var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
   var epics = [{id : 0, title : 'Unification Of Media'}, { id : 1, title : 'Trading Desk'}, { id : 2, title : 'Tech Costs'}, { id : 3, title : 'Tactical'}, { id : 4, title : 'Barter'}, { id : 5, title :'Lego'}, {id : 6, title : 'Media Plan'}, {id : 7, title : 'Infrastructure'}];
 
@@ -20,47 +20,89 @@
       width : 80
     },
     {
-      key: 'userStory',
-      name: 'User Story',
-      editable : true,
-      sortable : true,
-      resizeable : true,
-      showCellControls : true
-    },
-    {
-      key: 'developer',
-      name: 'Developer',
-      editor : <DropDownEditor options={developers}/>,
-      sortable : true,
-      resizeable : true
-    },
-    {
-      key: 'epic',
-      name: 'Epic',
-      editor : <AutoCompleteEditor options={epics}/>,
-      sortable : true
-    }
+      key: 'avartar',
+      name: 'Avartar',
+      width : 200
 
+    },
+    {
+      key: 'city',
+      name: 'City',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'email',
+      name: 'Email',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'firstName',
+      name: 'First Name',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'lastName',
+      name: 'Last Name',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'street',
+      name: 'Street',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'zipCode',
+      name: 'ZipCode',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'date',
+      name: 'Date',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'bs',
+      name: 'bs',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'catchPhrase',
+      name: 'Catch Phrase',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'companyName',
+      name: 'Company Name',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'words',
+      name: 'Words',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'sentence',
+      name: 'Sentence',
+      editable:true,
+      width : 200
+    }
   ]
-
-  var getRows = function(start, end) {
-    var result = []
-    for (var i = start; i < end; i++) {
-      result.push({
-        id: i,
-        userStory: 'User Story ' + i,
-        developer : developers[i%6],
-        epic : epics[i%8].title
-      });
-    }
-    return result;
-  }
-
 
  var Component = React.createClass({displayName: 'component',
 
     getInitialState : function(){
-      return {rows : getRows(0, 1000)};
+      return {rows : FakeObjectDataStoreList.getRows(1000)};
     },
 
     handleRowUpdated : function(commit){

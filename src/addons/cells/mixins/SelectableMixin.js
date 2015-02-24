@@ -9,10 +9,9 @@
 var React          = require('react/addons');
 var cx             = React.addons.classSet;
 var cloneWithProps = React.addons.cloneWithProps;
-var KeyboardHandlerMixin = require('./KeyboardHandlerMixin');
-var MixinHelper    = require('../../utils/MixinHelper');
+var SimpleTextEditor = require('../../editors/SimpleTextEditor');
 
-var SelectableMixin = MixinHelper.createDependency({KeyboardHandlerMixin : KeyboardHandlerMixin}).assignTo({
+var SelectableMixin = {
 
   propTypes : {
     rowIdx : React.PropTypes.number.isRequired,
@@ -35,49 +34,17 @@ var SelectableMixin = MixinHelper.createDependency({KeyboardHandlerMixin : Keybo
   },
 
   isSelected: function() {
+    var selected = this.props.cellMetaData.selected;
     return (
-      this.props.selected
-      && this.props.selected.rowIdx === this.props.rowIdx
-      && this.props.selected.idx === this.props.idx
+      selected
+      && selected.rowIdx === this.props.rowIdx
+      && selected.idx === this.props.idx
     );
   },
 
-  onClick: function() {
-    var rowIdx = this.props.rowIdx;
-    var idx = this.props.idx;
-    this.props.onClick({rowIdx: rowIdx, idx: idx});
-  },
-
-  onPressArrowUp(e){
-    this.moveSelectedCell(e, -1, 0);
-  },
-
-  onPressArrowDown(e){
-    this.moveSelectedCell(e, 1, 0);
-  },
-
-  onPressArrowLeft(e){
-    this.moveSelectedCell(e, 0, -1);
-  },
-
-  onPressArrowRight(e){
-    this.moveSelectedCell(e, 0, 1);
-  },
-
-  onPressTab(e){
-    this.moveSelectedCell(e, 0, 1);
-  },
-
-  moveSelectedCell(e, rowDelta, cellDelta){
-    e.stopPropagation();
-    e.preventDefault();
-    var rowIdx = this.props.rowIdx + rowDelta;
-    var idx = this.props.idx + cellDelta;
-    this.props.onSelect({idx: idx, rowIdx: rowIdx});
-  },
-
-  setScrollLeft: function(scrollLeft) {
-    this.refs.row.setScrollLeft(scrollLeft);
+  isActive(){
+    var selected = this.props.cellMetaData.selected;
+    return this.isSelected() && selected.active === true;
   },
 
   componentDidMount: function() {
@@ -89,19 +56,74 @@ var SelectableMixin = MixinHelper.createDependency({KeyboardHandlerMixin : Keybo
   },
 
   isCellSelectionChanging(nextProps){
-    if(this.props.selected && nextProps.selected){
-      return this.props.idx === nextProps.selected.idx || this.props.idx === this.props.selected.idx;
+    var selected     = this.props.cellMetaData.selected;
+    var nextSelected = nextProps.cellMetaData.selected;
+    if(selected && nextSelected){
+      return this.props.idx === nextSelected.idx || this.props.idx === selected.idx;
     }else{
       return true;
     }
   },
 
+  getEditor(){
+    var selected     = this.props.cellMetaData.selected;
+    var editorProps = {height : this.props.height, onPressEscape : this.onPressEscape,  onCommit : this.onCommit, initialKeyCode : selected.initialKeyCode, editorRowMetaData : this.getEditorRowMetaData()};
+    var customEditor = this.props.column.editor;
+    if(customEditor && React.isValidElement(customEditor)){
+      //return custom column editor or SimpleEditor if none specified
+      return cloneWithProps(customEditor, editorProps);
+    }else{
+      return cloneWithProps(SimpleTextEditor(), editorProps);
+    }
+  },
+
+  getEditorRowMetaData(){
+    //clone row data so editor cannot actually change this
+    var columnName = this.props.column.ItemId;
+    //convention based method to get corresponding Id or Name of any Name or Id property
+    if(typeof this.props.column.getEditorRowMetaData === 'function'){
+      return this.props.column.getEditorRowMetaData(this.props.rowData);
+    }
+  },
+
+  getFormatter(){
+    var col = this.props.column;
+    if(this.isActive()){
+      return this.getEditor();
+    }else{
+      return this.props.column.formatter;
+    }
+  },
+
+
+  onCommit(commit){
+    var rowIdx = this.props.rowIdx;
+    var idx = this.props.idx;
+    var cellKey = this.props.column.key;
+    this.props.cellMetaData.onCommit({cellKey: cellKey, rowIdx: this.props.filterRowIdx || rowIdx, updated : commit.updated, keyCode : commit.key});
+  },
+
   checkFocus: function() {
-    if (this.isSelected()) {
+    if (this.isSelected() && !this.isActive()) {
       this.getDOMNode().focus();
     }
+  },
+
+  onClick() {
+    if(!this.isActive()){
+      var rowIdx = this.props.rowIdx;
+      var idx = this.props.idx;
+      this.props.onClick({rowIdx: rowIdx, idx: idx});
+    }
+
+  },
+
+  onDoubleClick() {
+    var rowIdx = this.props.rowIdx;
+    var idx = this.props.idx;
+    this.props.onClick({rowIdx: rowIdx, idx: idx, active : this.canEdit()});
   }
-})
+}
 
 
 

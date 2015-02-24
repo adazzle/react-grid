@@ -61,8 +61,8 @@ var Viewport = React.createClass({
           visibleEnd={this.state.visibleEnd}
           displayStart={this.state.displayStart}
           displayEnd={this.state.displayEnd}
-
-          totalRows={this.props.totalRows}
+          cellMetaData={this.props.cellMetaData}
+          length={this.props.length}
           height={this.state.height}
           rowHeight={this.props.rowHeight}
           onScroll={this.onScroll}
@@ -76,12 +76,12 @@ var Viewport = React.createClass({
     return this.refs.canvas.getScroll();
   },
 
-  onScroll(scrollTop: number, scrollLeft: number) {
+  onScroll({scrollTop, scrollLeft}) {
     this.updateScroll(
       scrollTop, scrollLeft,
       this.state.height,
       this.props.rowHeight,
-      this.props.totalRows
+      this.props.length
     );
 
     if (this.props.onScroll) {

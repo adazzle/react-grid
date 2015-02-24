@@ -2,9 +2,6 @@
 "use strict";
 var ExcelRow = require('../../rows/ExcelRow');
 
-var ExcelColumn = require('../ExcelColumn');
-
-type selectedType = {rowIdx: number; idx: number }
 var SelectableGridMixin = {
 
   propTypes : {
@@ -17,6 +14,8 @@ var SelectableGridMixin = {
   getDefaultProps(): {enableCellSelect: boolean} {
     return {
       enableCellSelect : false,
+      tabIndex : -1,
+      ref : "cell"
     };
   },
 
@@ -48,7 +47,114 @@ var SelectableGridMixin = {
         this.setState({selected: selected});
       }
     }
+  },
+
+  isSelected: function() {
+    return (
+      this.props.selected
+      && this.props.selected.rowIdx === this.props.rowIdx
+      && this.props.selected.idx === this.props.idx
+    );
+  },
+
+  onCellClick: function(cell) {
+    this.onSelect({rowIdx: cell.rowIdx, idx: cell.idx});
+  },
+
+  onPressArrowUp(e){
+    this.moveSelectedCell(e, -1, 0);
+  },
+
+  onPressArrowDown(e){
+    this.moveSelectedCell(e, 1, 0);
+  },
+
+  onPressArrowLeft(e){
+    this.moveSelectedCell(e, 0, -1);
+  },
+
+  onPressArrowRight(e){
+    this.moveSelectedCell(e, 0, 1);
+  },
+
+  onPressTab(e){
+    this.moveSelectedCell(e, 0, 1);
+  },
+
+  onPressEnter(e){
+    this.setActive(e.key);
+  },
+
+  onPressDelete(e){
+    this.setActive(e.key);
+  },
+
+  onPressEscape(e){
+    this.setInactive(e.key);
+  },
+
+  onPressBackspace(e){
+    this.setActive(e.key);
+  },
+
+  onPressChar(e){
+    if(this.isKeyPrintable(e.keyCode)){
+      this.setActive(e.keyCode);
+    }
+  },
+
+  moveSelectedCell(e, rowDelta, cellDelta){
+    e.stopPropagation();
+    e.preventDefault();
+    var rowIdx = this.state.selected.rowIdx + rowDelta;
+    var idx = this.state.selected.idx + cellDelta;
+    this.onSelect({idx: idx, rowIdx: rowIdx});
+  },
+
+  setActive(keyPressed){
+    var rowIdx = this.state.selected.rowIdx;
+    var idx = this.state.selected.idx;
+    if(this.props.columns[idx].key === 'select-row' && this.props.columns[idx].onRowSelect){
+      this.props.column.onRowSelect(rowIdx);
+    }
+    else if(this.canEdit(idx) && !this.isActive()){
+      var selected = Object.assign(this.state.selected, {idx: idx, rowIdx: rowIdx, active : true, initialKeyCode : keyPressed});
+      this.setState({selected: selected});
+    }
+  },
+
+  onCellCommit(commit){
+    var selected = this.state.selected;
+    selected.active = false;
+    if(commit.keyCode === 'Tab'){
+      selected.idx += 1;
+    }
+    this.setState({selected : selected});
+    this.props.onRowUpdate(commit);
+  },
+
+  setInactive(){
+    var rowIdx = this.state.selected.rowIdx;
+    var idx =this.state.selected.idx;
+    if(this.canEdit(idx) && this.isActive()){
+      var selected = Object.assign(this.state.selected, {idx: idx, rowIdx: rowIdx, active : false});
+      this.setState({selected: selected});
+    }
+  },
+
+  canEdit(idx){
+    return (this.props.columns[idx].editor != null) || this.props.columns[idx].editable;
+  },
+
+  isActive(){
+    return this.state.selected.active === true;
   }
-}
+
+
+})
+
+
+
+
 
 module.exports = SelectableGridMixin;

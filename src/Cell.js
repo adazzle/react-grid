@@ -11,16 +11,44 @@ isMounted isnt in flow.exe yet, need to get latest flow build
 var React          = require('react/addons');
 var cx             = React.addons.classSet;
 var cloneWithProps = React.addons.cloneWithProps;
+var SelectableMixin      = require('./addons/cells/mixins/SelectableMixin');
 
 var Cell = React.createClass({
 
-  render(): ?ReactElement {
-    var style = this.getStyle();
+  mixins : [SelectableMixin],
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.column.width !== nextProps.column.width
+    || this.props.value !== nextProps.value
+    || this.props.height !== nextProps.height
+    || this.props.rowIdx !== nextProps.rowIdx
+    || this.isCellSelectionChanging(nextProps);
+  },
+
+  getCellClass : function(){
+
     var className = cx(
       'react-grid-Cell',
       this.props.className,
       this.props.column.locked ? 'react-grid-Cell--locked' : null
     );
+
+    var extraClasses = cx({
+      'selected' : this.isSelected(),
+      'editing' : this.isActive()
+    })
+    
+    return className + ' ' + extraClasses;
+  },
+
+  onCellClick(){
+    this.props.cellMetaData.onCellClick({rowIdx : this.props.rowIdx, idx : this.props.idx});
+  },
+
+  render() {
+    var style = this.getStyle();
+
+    var className = this.getCellClass();
 
     var cellContent = this.renderCellContent({
       value : this.props.value,
@@ -30,7 +58,7 @@ var Cell = React.createClass({
     });
 
     return (
-      <div {...this.props} className={className} style={style}>
+      <div {...this.props} className={className} style={style} onClick={this.onCellClick}>
           {cellContent}
           <div className="drag-handle" draggable="true" onDragStart={this.props.handleDragStart}>
           </div>
@@ -38,10 +66,11 @@ var Cell = React.createClass({
     );
   },
 
-  renderCellContent(props: any): ?ReactElement {
-    var formatter = React.isValidElement(this.props.formatter) ? cloneWithProps(this.props.formatter, props) : this.props.formatter(props);
+  renderCellContent(props) {
+    var formatter = this.getFormatter() || this.props.formatter;
+    var formatterTag = React.isValidElement(formatter) ? cloneWithProps(formatter, props) : this.props.formatter(props);
     return (<div
-      className="react-grid-Cell__value">{formatter} {this.props.cellControls}</div>)
+      className="react-grid-Cell__value">{formatterTag} {this.props.cellControls}</div>)
 
   },
 

@@ -46,7 +46,8 @@ var Canvas = React.createClass({
           height: rowHeight,
           columns: this.props.columns,
           isSelected : this.isRowSelected(displayStart + idx),
-          expandedRows : this.props.expandedRows
+          expandedRows : this.props.expandedRows,
+          cellMetaData : this.props.cellMetaData
         }));
 
     this._currentRowsLength = rows.length;
