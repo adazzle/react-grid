@@ -27,7 +27,8 @@ var ExcelRow = React.createClass({
     height : React.PropTypes.number,
     columns : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired,
     cellRenderer : React.PropTypes.func.isRequired,
-    idx : React.PropTypes.number.isRequired
+    idx : React.PropTypes.number.isRequired,
+    expandedRows : React.PropTypes.arrayOf(ExcelRow)
   },
 
   getDefaultProps(): any {
@@ -48,7 +49,7 @@ var ExcelRow = React.createClass({
       );
   },
 
-  getRowHeight(props){
+  getRowHeight(props: {idx: number; expandedRows: ?Array<ExcelRow>; height: ?number}): ?number | ExcelRow{
     if(props.expandedRows && props.expandedRows[props.idx]){
       return props.expandedRows[props.idx];
     }else{
@@ -70,16 +71,16 @@ var ExcelRow = React.createClass({
 
   shouldComponentUpdate(nextProps: any): boolean {
     return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
-      this.doesRowContainSelectedCell()               ||
+      this.doesRowContainSelectedCell(this.props)     ||
       this.doesRowContainSelectedCell(nextProps)      ||
       this.willRowBeDraggedOver(nextProps)            ||
-      this.hasRowBeenCopied()                         ||
+      this.hasRowBeenCopied(this.props)               ||
       nextProps.row !== this.props.row                ||
       this.props.isSelected !== nextProps.isSelected  ||
       this.hasRowHeightChanged(nextProps);
   },
 
-  doesRowContainSelectedCell(propsToCheck){
+  doesRowContainSelectedCell(propsToCheck: any): boolean{
     var props = propsToCheck || this.props;
     var cell = cell || props.cellRenderer;
     if(cell.props && cell.props.selected && cell.props.selected.rowIdx === props.idx){
