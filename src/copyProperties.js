@@ -1,4 +1,3 @@
-/* TODO@flow */
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *

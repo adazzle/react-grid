@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow mixins */
 
 var ColumnMetrics        = require('./ColumnMetrics');
 var DOMMetrics                    = require('./DOMMetrics');
@@ -8,7 +8,6 @@ var PropTypes = require('react/addons').PropTypes;
 
 type ColumnMetricsType = {
     columns: Array<Column>;
-    width: ?number;
     totalWidth: number;
     minColumnWidth: number;
 };
@@ -67,7 +66,6 @@ module.exports = {
     return {
       columns: ColumnMetrics.calculate({
         columns: props.columns,
-        width: null,
         totalWidth: totalWidth,
         minColumnWidth: props.minColumnWidth
       }),

@@ -10,6 +10,7 @@ var PropTypes             = React.PropTypes;
 var BaseGrid              = require('../../Grid');
 var ExcelCell             = require('../cells/ExcelCell');
 var ExcelRow              = require('../rows/ExcelRow');
+var ExcelColumn           = require('./ExcelColumn');
 var merge                 = require('../../merge');
 var SelectableGridMixin   = require('./mixins/SelectableGridMixin');
 var DraggableGridMixin    = require('./mixins/DraggableGridMixin');
@@ -21,6 +22,15 @@ var MixinHelper           = require('../utils/MixinHelper');
 
 var cloneWithProps = React.addons.cloneWithProps;
 
+type ExcelGridProps = {
+  rowHeight: number;
+  minHeight: number;
+  enableRowSelect: ?boolean;
+  onRowUpdated: ?() => void;
+  columns: Array<ExcelColumn>;
+  rows: Array<ExcelRow>;
+  toolbar: ?any;
+};
 var ExcelGrid = React.createClass({
 
   propTypes: {
@@ -35,7 +45,7 @@ var ExcelGrid = React.createClass({
 
   mixins : [SelectableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
 
-  getInitialState(): { selectedRows: Array<ExcelRow>; expandedRows: Array<ExcelRow>}{
+  getInitialState(): { selectedRows: Array<ExcelRow>; expandedRows: Array<ExcelRow> } {
     return {selectedRows : [], expandedRows : []};
   },
 
@@ -79,8 +89,8 @@ var ExcelGrid = React.createClass({
     };
   },
 
-  handleCheckboxChange : function(e: {currentTarget: {checked: boolean}}){
-    if(e.currentTarget.checked === true){
+  handleCheckboxChange : function(e: SyntheticEvent){
+    if(e.currentTarget instanceof HTMLInputElement && e.currentTarget.checked === true){
       var selectedRows = this.props.rows.map(() => true);
       this.setState({selectedRows : selectedRows});
     }else{
@@ -142,7 +152,7 @@ var ExcelGrid = React.createClass({
     this.refs.base.refs.viewport.refs.canvas.getDOMNode().scrollTop = numberOfRows * this.props.rowHeight;
   },
 
-  componentWillReceiveProps:function(nextProps: {rows: Array<ExcelRow>}){
+  componentWillReceiveProps:function(nextProps: ExcelGridProps){
     if(nextProps.rows.length  === this.props.rows.length + 1){
       this.onAfterAddRow(nextProps.rows.length + 1);
     }

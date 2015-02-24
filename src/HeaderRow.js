@@ -1,6 +1,4 @@
-/* TODO@flow unknown,ReactElement
-This type is incompatible with
-  ..\flow\..\src\HeaderRow.js:120:18,26: React component  */
+/* TODO@flow unknown  */
 /**
  * @jsx React.DOM
  */

@@ -12,10 +12,10 @@ var isValidElement = require('react/addons').isValidElement;
 
 type ColumnMetricsType = {
     columns: Array<Column>;
-    width: number;
     totalWidth: number;
     minColumnWidth: number;
 };
+
 type Column = {
   key: string;
   left: number;

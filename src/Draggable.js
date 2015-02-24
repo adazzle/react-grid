@@ -1,4 +1,4 @@
-/* TODO@flow need SyntheticEvent  */
+/* @flow need   */
 /**
  * @jsx React.DOM
 
@@ -35,13 +35,13 @@ var Draggable = React.createClass({
     };
   },
 
-  getInitialState() {
+  getInitialState(): {drag: ?any} {
     return {
       drag: null
     };
   },
 
-  onMouseDown(e: Event) {
+  onMouseDown(e: SyntheticMouseEvent) {
     var drag = this.props.onDragStart(e);
 
     if (drag === null && e.button !== 0) {
@@ -54,7 +54,7 @@ var Draggable = React.createClass({
     this.setState({drag});
   },
 
-  onMouseMove(e: Event) {
+  onMouseMove(e: SyntheticEvent) {
     if (this.state.drag === null) {
       return;
     }
@@ -70,7 +70,7 @@ var Draggable = React.createClass({
     this.props.onDrag(e);
   },
 
-  onMouseUp(e: Event) {
+  onMouseUp(e: SyntheticEvent) {
     this.cleanUp();
     this.props.onDragEnd(e, this.state.drag);
     this.setState({drag: null});

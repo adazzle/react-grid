@@ -1,4 +1,4 @@
-/* TODO@flow need SyntheticEvent */
+/* TODO@flow unkwon */
 /**
  * @jsx React.DOM
 
@@ -61,7 +61,7 @@ var HeaderCell = React.createClass({
     );
   },
 
-  getCell(): ?ReactElement {
+  getCell(): ReactComponent {
     if (React.isValidElement(this.props.renderer)) {
       return React.addons.cloneWithProps(this.props.renderer, {column : this.props.column});
     } else {
@@ -69,13 +69,13 @@ var HeaderCell = React.createClass({
     }
   },
 
-  getDefaultProps() {
+  getDefaultProps(): {renderer: ReactComponent | (props: {column: {name: string}}) => ReactElement} {
     return {
       renderer: simpleCellRenderer
     };
   },
 
-  getInitialState() {
+  getInitialState(): {resizing: boolean} {
     return {resizing: false};
   },
 
@@ -103,7 +103,7 @@ var HeaderCell = React.createClass({
     this.setState({resizing: true});
   },
 
-  onDrag(e: Event) {
+  onDrag(e: SyntheticMouseEvent) {
     var resize = this.props.onResize || null; //for flows sake, doesnt recognise a null check direct
     if(resize) {
       var width = this.getWidthFromMouseEvent(e);
@@ -113,13 +113,13 @@ var HeaderCell = React.createClass({
     }
   },
 
-  onDragEnd(e: Event) {
+  onDragEnd(e: SyntheticMouseEvent) {
     var width = this.getWidthFromMouseEvent(e);
     this.props.onResizeEnd(this.props.column, width);
     this.setState({resizing: false});
   },
 
-  getWidthFromMouseEvent(e: Event): number {
+  getWidthFromMouseEvent(e: SyntheticMouseEvent): number {
     var right = e.pageX;
     var left = this.getDOMNode().getBoundingClientRect().left;
     return right - left;

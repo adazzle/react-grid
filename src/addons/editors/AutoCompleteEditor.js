@@ -1,7 +1,6 @@
-/* TODO@flow */
+/* @flow */
 /* Flow issues:
 overrides? getDefaultValue, getStyle, onKeyDown
-getLabvel doing some funky js overrides, throwing off flow
 */
 /**
  * @jsx React.DOM
@@ -97,12 +96,12 @@ var AutoCompleteEditor = React.createClass({
     e.stopPropagation();
   },
 
-  getLabel(result: Array<{[key:string]: string }>): string {
+  getLabel(item: any): string {
     var label = this.props.label != null ? this.props.label : 'title';
     if (typeof label === "function") {
-      return label(result);
+      return label(item);
     } else if (typeof label === "string") {
-      return result[label];
+      return item[label];
     }
   },
 
@@ -128,10 +127,11 @@ var AutoCompleteEditor = React.createClass({
     return ret.join('|');
   },
 
-  renderEditorNode(): ?ReactElement {
-    var val = {title : this.getDefaultValue()};
+  renderEditorNode(): ReactElement {
+    var ctrl: any = this; //flow thrown by our override magic, so stepping into the shadows..
+    var val = {title : ctrl.getDefaultValue()};
     var label = this.props.label != null ? this.props.label : 'title';
-    return (<div style={this.getStyle()} onKeyDown={this.onKeyDown}>
+    return (<div style={ctrl.getStyle()} onKeyDown={ctrl.onKeyDown}>
               <ReactAutocomplete  search={this.props.search} ref="autoComplete" label={label} resultIdentifier={this.props.resultIdentifier} options={this.props.options} value={val} onChange={this.handleChange} />
             </div>);
   }

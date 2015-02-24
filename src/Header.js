@@ -96,8 +96,8 @@ var Header = React.createClass({
           resizing.columns, pos, width);
 
       // we don't want to influence scrollLeft while resizing
-      if (resizing.columns.width < state.columns.width) {
-        resizing.columns.width = state.columns.width;
+      if (resizing.columns.totalWidth < state.columns.totalWidth) {
+        resizing.columns.totalWidth = state.columns.totalWidth;
       }
 
       resizing.column = resizing.columns.columns[pos];

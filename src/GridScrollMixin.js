@@ -1,4 +1,4 @@
-/* TODO@flow */
+/* TODO@flow mixins */
 module.exports = {
 
   componentDidMount() {

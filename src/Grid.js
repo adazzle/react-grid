@@ -28,7 +28,7 @@ var Grid = React.createClass({
     minHeight: PropTypes.number,
     headerRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
     rowHeight: PropTypes.number,
-    rowRenderer: PropTypes.func.isRequired,
+    rowRenderer: PropTypes.func,
     expandedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
     selectedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
     totalRows: PropTypes.number,

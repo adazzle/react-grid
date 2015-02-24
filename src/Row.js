@@ -1,4 +1,4 @@
-/* TODO@flow rowHeight property..expandedRows issue? */
+/* @flow rowHeight property..expandedRows issue? */
 /**
  * @jsx React.DOM
 
@@ -12,12 +12,12 @@ var Cell           = require('./Cell');
 var cloneWithProps = React.addons.cloneWithProps;
 var ColumnMetrics    = require('./ColumnMetrics');
 
-type RowPropTypes = {
+type RowPropsType = {
   rowHeight: number;
   idx: number;
   columns: any;
   row: any;
-  cellRenderer: any;
+  cellRenderer: ?any;
   isSelected: ?boolean;
 };
 
@@ -85,7 +85,7 @@ var Row = React.createClass({
     if(this.props.expandedRows && this.props.key) {
       var row = this.props.expandedRows[this.props.key] || null;
       if(row) {
-        return this.props.expandedRows[this.props.key].rowHeight;
+        return row.rowHeight;
       }
     }
     return this.props.rowHeight;
@@ -99,7 +99,7 @@ var Row = React.createClass({
     }
   },
 
-  renderCell(props: {cellRenderer: (props: any) => ReactElement | ReactComponent}): ReactElement {
+  renderCell(props: any): ReactElement {
     if(typeof this.props.cellRenderer == 'function') {
       this.props.cellRenderer.call(this, props);
     }
@@ -125,22 +125,21 @@ var Row = React.createClass({
     }
   },
 
-  doesRowContainSelectedCell(propsToCheck){
-    var props = propsToCheck || this.props;
-    var cell = cell || props.cellRenderer;
-    if(cell.props.selected && cell.props.selected.rowIdx === props.idx){
+  doesRowContainSelectedCell(): boolean{
+    var cell = this.props.cellRenderer;
+    if(cell.props.selected && cell.props.selected.rowIdx === this.props.idx){
       return true;
     }else{
       return false;
     }
   },
 
-  willRowBeDraggedOver(props){
+  willRowBeDraggedOver(props: any): boolean{
     var dragged = props.cellRenderer.props.dragged;
     return  dragged != null && (dragged.rowIdx || dragged.complete === true);
   },
 
-  hasRowBeenCopied(){
+  hasRowBeenCopied(): boolean{
     var cell = this.props.cellRenderer;
     return cell.props.copied != null && cell.props.copied.rowIdx === this.props.idx;
   }

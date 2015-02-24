@@ -1,4 +1,4 @@
-/* TODO@flow invarient and react mixin cant be flow'd */
+/* TODO@flow mixin and invarient splat */
 /**
  * @jsx React.DOM
 
@@ -9,7 +9,6 @@
 var React               = require('react/addons');
 var emptyFunction       = require('./emptyFunction');
 var shallowCloneObject  = require('./shallowCloneObject');
-var invariant           = require('./invariant');
 
 var contextTypes = {
   metricsComputator: React.PropTypes.object
@@ -32,10 +31,9 @@ var MetricsComputatorMixin = {
     var s = this._DOMMetrics;
 
     for (var name in metrics) {
-      invariant(
-          s.metrics[name] === undefined,
-          'DOM metric ' + name + ' is already defined'
-      );
+      if(s.metrics[name] !== undefined) {
+          throw new Error('DOM metric ' + name + ' is already defined');
+      }
       s.metrics[name] = {component, computator: metrics[name].bind(component)};
       getters[name] = this.getMetricImpl.bind(null, name);
     }

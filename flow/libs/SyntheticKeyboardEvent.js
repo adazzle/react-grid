@@ -28,3 +28,25 @@ declare class SyntheticKeyboardEvent extends SyntheticEvent {
   shiftKey: boolean;
   which: number;
 }
+
+
+declare class SyntheticMouseEvent extends SyntheticEvent {
+  button: number;
+  buttons: number;
+  clientX: number;
+  clientY: number;
+  pageX: number;
+  pageY: number;
+  screenX: number;
+  screenY: number;
+  relatedTarget: EventTarget;
+
+  getModifierState: (key: string) => void;
+  altKey: boolean;
+  ctrlKey: boolean;
+  metaKey: boolean;
+}
+
+declare class HTMLInputElement extends HTMLElement {
+checked: boolean;
+}

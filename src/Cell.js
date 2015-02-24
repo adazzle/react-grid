@@ -1,4 +1,4 @@
-/* TODO@flow
+/* @flow
 isMounted isnt in flow.exe yet, need to get latest flow build
 */
 /**
@@ -37,7 +37,7 @@ var Cell = React.createClass({
       'selected' : this.isSelected(),
       'editing' : this.isActive()
     })
-    
+
     return className + ' ' + extraClasses;
   },
 
