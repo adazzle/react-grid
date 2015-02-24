@@ -1,6 +1,12 @@
-/* TODO@flow mixins */
+/* @flow mixins */
 "use strict";
 var ExcelRow = require('../../rows/ExcelRow');
+var ExcelColumn = require('../ExcelColumn');
+
+type SelectedType = {
+  rowIdx: number;
+  idx: number;
+};
 
 var SelectableGridMixin = {
 
@@ -23,7 +29,7 @@ var SelectableGridMixin = {
     return this.props.columns
   },
 
-  getInitialState: function(): {selected: selectedType } {
+  getInitialState: function(): {selected: SelectedType } {
     if(this.props.enableCellSelect){
       return {selected: {rowIdx: 0, idx: 0}};
     }else{
@@ -31,7 +37,7 @@ var SelectableGridMixin = {
     }
   },
 
-  onSelect: function(selected: selectedType) {
+  onSelect: function(selected: SelectedType) {
     if(this.props.enableCellSelect){
       var idx = selected.idx;
       var rowIdx = selected.rowIdx;
@@ -49,7 +55,7 @@ var SelectableGridMixin = {
     }
   },
 
-  isSelected: function() {
+  isSelected: function(): boolean {
     return (
       this.props.selected
       && this.props.selected.rowIdx === this.props.rowIdx
@@ -57,53 +63,53 @@ var SelectableGridMixin = {
     );
   },
 
-  onCellClick: function(cell) {
+  onCellClick: function(cell: SelectedType) {
     this.onSelect({rowIdx: cell.rowIdx, idx: cell.idx});
   },
 
-  onPressArrowUp(e){
+  onPressArrowUp(e: SyntheticEvent){
     this.moveSelectedCell(e, -1, 0);
   },
 
-  onPressArrowDown(e){
+  onPressArrowDown(e: SyntheticEvent){
     this.moveSelectedCell(e, 1, 0);
   },
 
-  onPressArrowLeft(e){
+  onPressArrowLeft(e: SyntheticEvent){
     this.moveSelectedCell(e, 0, -1);
   },
 
-  onPressArrowRight(e){
+  onPressArrowRight(e: SyntheticEvent){
     this.moveSelectedCell(e, 0, 1);
   },
 
-  onPressTab(e){
+  onPressTab(e: SyntheticEvent){
     this.moveSelectedCell(e, 0, 1);
   },
 
-  onPressEnter(e){
+  onPressEnter(e: SyntheticKeyboardEvent){
     this.setActive(e.key);
   },
 
-  onPressDelete(e){
+  onPressDelete(e: SyntheticKeyboardEvent){
     this.setActive(e.key);
   },
 
-  onPressEscape(e){
+  onPressEscape(e: SyntheticKeyboardEvent){
     this.setInactive(e.key);
   },
 
-  onPressBackspace(e){
+  onPressBackspace(e: SyntheticKeyboardEvent){
     this.setActive(e.key);
   },
 
-  onPressChar(e){
+  onPressChar(e: SyntheticKeyboardEvent){
     if(this.isKeyPrintable(e.keyCode)){
       this.setActive(e.keyCode);
     }
   },
 
-  moveSelectedCell(e, rowDelta, cellDelta){
+  moveSelectedCell(e: SyntheticEvent, rowDelta: number, cellDelta: number){
     e.stopPropagation();
     e.preventDefault();
     var rowIdx = this.state.selected.rowIdx + rowDelta;
@@ -111,7 +117,7 @@ var SelectableGridMixin = {
     this.onSelect({idx: idx, rowIdx: rowIdx});
   },
 
-  setActive(keyPressed){
+  setActive(keyPressed: string){
     var rowIdx = this.state.selected.rowIdx;
     var idx = this.state.selected.idx;
     if(this.props.columns[idx].key === 'select-row' && this.props.columns[idx].onRowSelect){
@@ -123,7 +129,7 @@ var SelectableGridMixin = {
     }
   },
 
-  onCellCommit(commit){
+  onCellCommit(commit: {keyCode: string}){
     var selected = this.state.selected;
     selected.active = false;
     if(commit.keyCode === 'Tab'){
@@ -142,19 +148,15 @@ var SelectableGridMixin = {
     }
   },
 
-  canEdit(idx){
+  canEdit(idx: number): boolean{
     return (this.props.columns[idx].editor != null) || this.props.columns[idx].editable;
   },
 
-  isActive(){
+  isActive(): boolean{
     return this.state.selected.active === true;
   }
 
 
-})
-
-
-
-
+};
 
 module.exports = SelectableGridMixin;

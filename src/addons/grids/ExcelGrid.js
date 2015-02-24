@@ -142,13 +142,13 @@ var ExcelGrid = React.createClass({
     this.refs.base.refs.viewport.refs.canvas.getDOMNode().scrollTop = numberOfRows * this.props.rowHeight;
   },
 
-  componentWillReceiveProps:function(nextProps){
+  componentWillReceiveProps:function(nextProps: {rows: Array<ExcelRow>}){
     if(nextProps.rows.length  === this.props.rows.length + 1){
       this.onAfterAddRow(nextProps.rows.length + 1);
     }
   },
 
-  render: function() {
+  render: function(): ?ReactElement {
     var cellMetaData = {
       selected : this.state.selected,
       onCellClick : this.onCellClick,
@@ -181,7 +181,7 @@ var ExcelGrid = React.createClass({
     )
   },
 
-  renderToolbar(){
+  renderToolbar(): ReactElement {
     var Toolbar = this.props.toolbar;
     if(React.isValidElement(Toolbar)){
       return( React.addons.cloneWithProps(Toolbar, {onToggleFilter : this.onToggleFilter, rows : this.props.rows}));

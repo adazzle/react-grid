@@ -26,14 +26,14 @@ var SelectableMixin = {
   },
 
 
-  getDefaultProps : function(){
+  getDefaultProps : function(): {tabIndex: number; ref: string } {
     return {
       tabIndex : -1,
       ref : "cell"
     }
   },
 
-  isSelected: function() {
+  isSelected: function(): boolean {
     var selected = this.props.cellMetaData.selected;
     return (
       selected
@@ -42,7 +42,7 @@ var SelectableMixin = {
     );
   },
 
-  isActive(){
+  isActive(): boolean{
     var selected = this.props.cellMetaData.selected;
     return this.isSelected() && selected.active === true;
   },
@@ -55,7 +55,7 @@ var SelectableMixin = {
     this.checkFocus();
   },
 
-  isCellSelectionChanging(nextProps){
+  isCellSelectionChanging(nextProps: {idx: number; cellMetaData: {selected: {idx: number}}}): boolean {
     var selected     = this.props.cellMetaData.selected;
     var nextSelected = nextProps.cellMetaData.selected;
     if(selected && nextSelected){
@@ -65,7 +65,7 @@ var SelectableMixin = {
     }
   },
 
-  getEditor(){
+  getEditor(): ReactElement{
     var selected     = this.props.cellMetaData.selected;
     var editorProps = {height : this.props.height, onPressEscape : this.onPressEscape,  onCommit : this.onCommit, initialKeyCode : selected.initialKeyCode, editorRowMetaData : this.getEditorRowMetaData()};
     var customEditor = this.props.column.editor;
@@ -77,7 +77,7 @@ var SelectableMixin = {
     }
   },
 
-  getEditorRowMetaData(){
+  getEditorRowMetaData(): any {
     //clone row data so editor cannot actually change this
     var columnName = this.props.column.ItemId;
     //convention based method to get corresponding Id or Name of any Name or Id property
@@ -86,7 +86,7 @@ var SelectableMixin = {
     }
   },
 
-  getFormatter(){
+  getFormatter(): ReactElement {
     var col = this.props.column;
     if(this.isActive()){
       return this.getEditor();
@@ -96,7 +96,7 @@ var SelectableMixin = {
   },
 
 
-  onCommit(commit){
+  onCommit(commit: {key: string; updated: any}){
     var rowIdx = this.props.rowIdx;
     var idx = this.props.idx;
     var cellKey = this.props.column.key;

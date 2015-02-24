@@ -89,7 +89,7 @@ var ExcelCell = React.createClass({
       });
     },
 
-  isActiveDragCell : function(){
+  isActiveDragCell : function(): boolean{
     return (this.isSelected() || this.isDraggedOver()) && !this.isActive();
   },
 
