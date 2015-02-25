@@ -10,7 +10,7 @@ var shallowEqual      = require('./shallowEqual');
 var HeaderCell        = require('./HeaderCell');
 var getScrollbarSize  = require('./getScrollbarSize');
 
-type HeaderRowStyle = {
+class HeaderRowStyle {
   overflow: string;
   width: string | number;
   height: number;

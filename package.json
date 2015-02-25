@@ -16,6 +16,7 @@
     "grid"
   ],
   "dependencies": {
+    "del": "^1.1.1",
     "es5-shim": "^4.0.3",
     "faker": "^2.1.2",
     "highlight.js": "^8.4.0",
