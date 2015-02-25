@@ -12,7 +12,7 @@ type ColumnMetricsType = {
     minColumnWidth: number;
 };
 
-type Column = {
+class Column {
   key: string;
   left: number;
   width: number;

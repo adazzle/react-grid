@@ -1,4 +1,4 @@
-/* TODO@flow unknown  */
+/* @flow */
 /**
  * @jsx React.DOM
  */
@@ -10,11 +10,12 @@ var shallowEqual      = require('./shallowEqual');
 var HeaderCell        = require('./HeaderCell');
 var getScrollbarSize  = require('./getScrollbarSize');
 
+
 class HeaderRowStyle {
   overflow: string;
   width: string | number;
   height: number;
-  position: string
+  position: string;
 };
 
 type Column = {
@@ -30,7 +31,7 @@ type HeaderRowProps = {
   style: ?HeaderRowStyle
 };
 
-var HeaderRow = React.createClass({
+var headerRow = React.createClass({
 
   propTypes: {
     width: PropTypes.number,
