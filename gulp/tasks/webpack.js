@@ -2,10 +2,9 @@ var Webpack = require("webpack");
 var gutil     = require("gulp-util");
 
 var defaultErrorHandler = function(err, ctx) {
-  if(err) throw new gutil.PluginError("webpack", err);
-  else gutil.log("[webpack]", ctx.toString({
-      // output options
-  }));
+//  if(err) throw new gutil.PluginError("webpack", err);
+
+    gutil.log("[webpack]", err);
 }
 module.exports = function (config, done, handlers) {
   handlers = handlers || {};
@@ -22,10 +21,10 @@ module.exports = function (config, done, handlers) {
 
       }
       if(jsonStats.errors.length > 0) {
-        return handlers.onError(jsonStats.errors, 'Stats error');
+        return handlers.onError(jsonStats.errors.toString(), 'Stats error');
       }
       if(jsonStats.warnings.length > 0) {
-        return handlers.onWarning(jsonStats.warnings, 'Stats warning');
+        return handlers.onWarning(jsonStats.warnings.toString(), 'Stats warning');
       }
       done();
 
