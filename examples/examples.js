@@ -1,8 +1,8 @@
 var React = require('react/addons');
 var ReactRouter = require('react-router');
 
-var basicExample = require('./scripts/exampleBasic');
-var editableExample = require('./scripts/exampleEditable');
+var BasicExample = require('./scripts/exampleBasic');
+var EditableExample = require('./scripts/exampleEditable');
 
 var { Route, RouteHandler, Link } = ReactRouter;
 
@@ -19,8 +19,8 @@ var App = React.createClass({
 
 var routes = (
   <Route handler={App}>
-      <Route name="basic" handler={basicExample}/>
-      <Route name="editable" handler={editableExample}/>
+      <Route name="basic" handler={BasicExample}/>
+      <Route name="editable" handler={EditableExample}/>
   </Route>
 );
 

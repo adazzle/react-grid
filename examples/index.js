@@ -1,4 +1,4 @@
 /* @flow */
 var React = require('react/addons');
-var editableExample = require('./scripts/exampleEditable');
-React.render(<editableExample/>, document.getElementById('excel-example'));
+var EditableExample = require('./scripts/exampleEditable');
+React.render(<EditableExample/>, document.getElementById('excel-example'));
