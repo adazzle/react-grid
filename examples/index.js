@@ -1,3 +1,2 @@
-var React = require('react/addons');
-var EditableExample = require('./scripts/exampleEditable');
-React.render(<EditableExample/>, document.getElementById('excel-example'));
+var ExcelGrid = require('./scripts/ExcelGrid');
+React.render(<ExcelGrid/>, document.getElementById('excel-example'));

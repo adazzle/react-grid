@@ -31,7 +31,7 @@ type HeaderRowProps = {
   style: ?HeaderRowStyle
 };
 
-var headerRow = React.createClass({
+var HeaderRow = React.createClass({
 
   propTypes: {
     width: PropTypes.number,

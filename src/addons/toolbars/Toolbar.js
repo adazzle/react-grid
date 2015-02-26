@@ -12,11 +12,11 @@ var Toolbar = React.createClass({
   propTypes: {
     onAddRow : React.PropTypes.func.isRequired,
     onToggleFilter : React.PropTypes.func.isRequired,
-    rows : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelRow)).isRequired
+    numberOfRows : React.PropTypes.number.isRequired
   },
   onAddRow(){
     if(this.props.onAddRow){
-      this.props.onAddRow({newRowIndex : this.props.rows.length});
+      this.props.onAddRow({newRowIndex : numberOfRows});
     }
   },
 

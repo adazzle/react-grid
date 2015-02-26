@@ -24,7 +24,7 @@ type RowPropsType = {
 var Row = React.createClass({
 
   propTypes: {
-    rowHeight: React.PropTypes.number.isRequired,
+    height: React.PropTypes.number.isRequired,
     idx: React.PropTypes.number.isRequired,
     columns: React.PropTypes.array.isRequired,
     row: React.PropTypes.object.isRequired,
@@ -85,10 +85,10 @@ var Row = React.createClass({
     if(this.props.expandedRows && this.props.key) {
       var row = this.props.expandedRows[this.props.key] || null;
       if(row) {
-        return row.rowHeight;
+        return row.height;
       }
     }
-    return this.props.rowHeight;
+    return this.props.height;
   },
 
   getCellValue(key: number | string): any {

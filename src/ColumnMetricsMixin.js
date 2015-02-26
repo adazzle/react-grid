@@ -53,7 +53,7 @@ module.exports = {
         this.state.columns.columns.forEach((c) => {
           index[c.key] = {width: c.width, left: c.left};
         });
-        var nextColumns = merge(this.state.columns, {
+        var nextColumns = Object.assign(this.state.columns, {
           columns: nextProps.columns.map((c) => merge(c, index[c.key]))
         });
         this.setState({columns: nextColumns});
