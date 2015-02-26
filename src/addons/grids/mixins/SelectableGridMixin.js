@@ -1,14 +1,20 @@
 /* TODO@flow mixins */
 "use strict";
-var ExcelRow = require('../../rows/ExcelRow');
-var ExcelColumn = require('../ExcelColumn');
+var ExcelRow       = require('../../rows/ExcelRow');
+var ExcelColumn    = require('../ExcelColumn');
+var React          = require('react/addons');
+var cx             = React.addons.classSet;
+var cloneWithProps = React.addons.cloneWithProps;
+var KeyboardHandlerMixin = require('../../cells/mixins/KeyboardHandlerMixin');
+var MixinHelper    = require('../../utils/MixinHelper');
 
 type SelectedType = {
   rowIdx: number;
   idx: number;
 };
 
-var SelectableGridMixin = {
+var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : KeyboardHandlerMixin}).assignTo({
+
 
   propTypes : {
     enableCellSelect : React.PropTypes.bool,
@@ -156,7 +162,7 @@ var SelectableGridMixin = {
     return this.state.selected.active === true;
   }
 
+});
 
-};
 
 module.exports = SelectableGridMixin;
