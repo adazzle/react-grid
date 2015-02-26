@@ -9,6 +9,7 @@
 var shallowCloneObject            = require('./shallowCloneObject');
 var merge                         = require('./merge');
 var isValidElement = require('react/addons').isValidElement;
+var sameColumn = require('./ColumnComparer');
 
 type ColumnMetricsType = {
     columns: Array<Column>;
@@ -136,27 +137,4 @@ function sameColumns(prevColumns: Array<Column>, nextColumns: Array<Column>, sam
   return true;
 }
 
-function sameColumn(a: Column, b: Column): boolean {
-  var k;
-
-  for (k in a) {
-    if (a.hasOwnProperty(k)) {
-      if ((typeof a[k] === 'function' && typeof b[k] === 'function') || (isValidElement(a[k]) && isValidElement(b[k]))) {
-        continue;
-      }
-      if (!b.hasOwnProperty(k) || a[k] !== b[k]) {
-        return false;
-      }
-    }
-  }
-
-  for (k in b) {
-    if (b.hasOwnProperty(k) && !a.hasOwnProperty(k)) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-module.exports = { calculate, resizeColumn, sameColumns, sameColumn};
+module.exports = { calculate, resizeColumn, sameColumn, sameColumns };

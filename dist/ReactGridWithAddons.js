@@ -426,7 +426,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   
 	  
 
-	var ExcelRow = React.createClass({displayName: 'ExcelRow',
+	var ExcelRow = React.createClass({displayName: "ExcelRow",
 	  propTypes: {
 	    row : React.PropTypes.shape(ExcelRow).isRequired,
 	    isSelected : React.PropTypes.bool,
@@ -879,7 +879,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var TextInputMixin          = __webpack_require__(17);
 	var keyboardHandlerMixin    = __webpack_require__(4);
 
-	var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
+	var SimpleTextEditor = React.createClass({displayName: "SimpleTextEditor",
 
 	  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
 
@@ -1248,7 +1248,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cloneWithProps = React.addons.cloneWithProps;
 	var SelectableMixin      = __webpack_require__(6);
 
-	var Cell = React.createClass({displayName: 'Cell',
+	var Cell = React.createClass({displayName: "Cell",
 
 	  mixins : [SelectableMixin],
 
@@ -1269,7 +1269,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    );
 
 	    var extraClasses = cx({
-	      'selected' : this.isSelected(),
+	      'selected' : this.isSelected() && !this.isActive(),
 	      'editing' : this.isActive()
 	    })
 
@@ -1369,7 +1369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                       
 	  
 
-	var Row = React.createClass({displayName: 'Row',
+	var Row = React.createClass({displayName: "Row",
 
 	  propTypes: {
 	    height: React.PropTypes.number.isRequired,
@@ -2122,7 +2122,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ScrollShim     = __webpack_require__(32);
 	var Row            = __webpack_require__(15);
 
-	var Canvas = React.createClass({displayName: 'Canvas',
+	var Canvas = React.createClass({displayName: "Canvas",
 	  mixins: [ScrollShim],
 
 	  propTypes: {
@@ -2433,7 +2433,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var PropTypes     = React.PropTypes;
 	var emptyFunction = __webpack_require__(13);
 
-	var Draggable = React.createClass({displayName: 'Draggable',
+	var Draggable = React.createClass({displayName: "Draggable",
 
 	  propTypes: {
 	    onDragStart: PropTypes.func,
@@ -2533,7 +2533,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ColumnMetricsMixin      = __webpack_require__(25);
 
 
-	var Grid = React.createClass({displayName: 'Grid',
+	var Grid = React.createClass({displayName: "Grid",
 	  mixins: [
 	    GridScrollMixin,
 	    ColumnMetricsMixin,
@@ -2668,7 +2668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	               
 	 
 
-	var Header = React.createClass({displayName: 'Header',
+	var Header = React.createClass({displayName: "Header",
 	  propTypes: {
 	    columns: React.PropTypes.shape({  width: React.PropTypes.number.isRequired }).isRequired,
 	    totalWidth: React.PropTypes.number,
@@ -2809,7 +2809,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Draggable   = __webpack_require__(26);
 	var PropTypes   = React.PropTypes;
 
-	var ResizeHandle = React.createClass({displayName: 'ResizeHandle',
+	var ResizeHandle = React.createClass({displayName: "ResizeHandle",
 
 	  style: {
 	    position: 'absolute',
@@ -2829,7 +2829,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var HeaderCell = React.createClass({displayName: 'HeaderCell',
+	var HeaderCell = React.createClass({displayName: "HeaderCell",
 
 	  propTypes: {
 	    renderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
@@ -2968,7 +2968,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        
 	  
 
-	var HeaderRow = React.createClass({displayName: 'HeaderRow',
+	var HeaderRow = React.createClass({displayName: "HeaderRow",
 
 	  propTypes: {
 	    width: PropTypes.number,
@@ -3132,7 +3132,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-	var Viewport = React.createClass({displayName: 'Viewport',
+	var Viewport = React.createClass({displayName: "Viewport",
 	  mixins: [ViewportScroll],
 
 	  propTypes: {
@@ -3361,7 +3361,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ExcelColumn          = __webpack_require__(2);
 
 
-	var CellControls = React.createClass({displayName: 'CellControls',
+	var CellControls = React.createClass({displayName: "CellControls",
 
 	  propTypes : {
 	    column : React.PropTypes.shape(ExcelColumn).isRequired,
@@ -3419,7 +3419,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	})
 
 
-	var ExcelCell = React.createClass({displayName: 'ExcelCell',
+	var ExcelCell = React.createClass({displayName: "ExcelCell",
 
 	    mixins : [SelectableMixin],
 
@@ -3493,7 +3493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cx             = React.addons.classSet;
 	var ExcelColumn = __webpack_require__(2);
 
-	var FilterableHeaderCell = React.createClass({displayName: 'FilterableHeaderCell',
+	var FilterableHeaderCell = React.createClass({displayName: "FilterableHeaderCell",
 
 	  propTypes: {
 	    onChange: React.PropTypes.func.isRequired,
@@ -3557,7 +3557,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cx             = React.addons.classSet;
 	var ExcelColumn = __webpack_require__(2);
 
-	var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
+	var SortableHeaderCell = React.createClass({displayName: "SortableHeaderCell",
 	  propTypes: {
 	    column: React.PropTypes.shape(ExcelColumn).isRequired
 	  },
@@ -3863,7 +3863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React                   = __webpack_require__(1);
 	var cx                      = React.addons.classSet;
 
-	var CheckBoxEditor = React.createClass({displayName: 'CheckBoxEditor',
+	var CheckBoxEditor = React.createClass({displayName: "CheckBoxEditor",
 
 
 	  PropTypes : {
@@ -3925,7 +3925,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        
 	                
 	  
-	var ExcelGrid = React.createClass({displayName: 'ExcelGrid',
+	var ExcelGrid = React.createClass({displayName: "ExcelGrid",
 
 	  propTypes: {
 	    rowHeight: React.PropTypes.number.isRequired,
@@ -5057,7 +5057,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      title :   React.PropTypes.string
 	    });
 
-	var AutoCompleteEditor = React.createClass({displayName: 'AutoCompleteEditor',
+	var AutoCompleteEditor = React.createClass({displayName: "AutoCompleteEditor",
 
 	  propTypes : {
 	    onCommit : React.PropTypes.func.isRequired,
@@ -5196,7 +5196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var EditorMixin             = __webpack_require__(16);
 	var cloneWithProps          = React.addons.cloneWithProps;
 
-	var DropDownEditor = React.createClass({displayName: 'DropDownEditor',
+	var DropDownEditor = React.createClass({displayName: "DropDownEditor",
 
 	  mixins : [keyboardHandlerMixin, EditorMixin],
 
@@ -5266,7 +5266,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var PendingPool = {};
 	var ReadyPool = {};
 
-	var ImageFormatter = React.createClass({displayName: 'ImageFormatter',
+	var ImageFormatter = React.createClass({displayName: "ImageFormatter",
 	  propTypes: {
 	    src: React.PropTypes.string.isRequired,
 	  },
@@ -5364,7 +5364,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React = __webpack_require__(1);
 	var ExcelRow = __webpack_require__(5);
 
-	var Toolbar = React.createClass({displayName: 'Toolbar',
+	var Toolbar = React.createClass({displayName: "Toolbar",
 	  propTypes: {
 	    onAddRow : React.PropTypes.func.isRequired,
 	    onToggleFilter : React.PropTypes.func.isRequired,

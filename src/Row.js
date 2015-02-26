@@ -13,7 +13,7 @@ var cloneWithProps = React.addons.cloneWithProps;
 var ColumnMetrics    = require('./ColumnMetrics');
 
 type RowPropsType = {
-  rowHeight: number;
+  height: number;
   idx: number;
   columns: any;
   row: any;

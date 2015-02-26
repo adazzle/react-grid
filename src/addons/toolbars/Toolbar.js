@@ -16,7 +16,7 @@ var Toolbar = React.createClass({
   },
   onAddRow(){
     if(this.props.onAddRow){
-      this.props.onAddRow({newRowIndex : numberOfRows});
+      this.props.onAddRow({newRowIndex : this.props.numberOfRows});
     }
   },
 

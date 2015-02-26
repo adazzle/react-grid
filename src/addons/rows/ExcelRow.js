@@ -24,7 +24,7 @@ var ExcelRow = React.createClass({
   propTypes: {
     row : React.PropTypes.shape(ExcelRow).isRequired,
     isSelected : React.PropTypes.bool,
-    height : React.PropTypes.number,
+    height : React.PropTypes.number.isRequired,
     columns : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired,
     cellRenderer : React.PropTypes.func.isRequired,
     idx : React.PropTypes.number.isRequired,
@@ -45,7 +45,7 @@ var ExcelRow = React.createClass({
         idx={this.props.idx}
         columns={this.props.columns}
         row={row}
-        rowHeight={this.getRowHeight(this.props)}/>
+        height={this.getRowHeight(this.props)}/>
       );
   },
 
@@ -54,10 +54,10 @@ var ExcelRow = React.createClass({
     if(rows && this.props.key) {
       var row = rows[this.props.key] || null;
       if(row) {
-        return row.rowHeight;
+        return row.height;
       }
     }
-    return this.props.rowHeight;
+    return this.props.height;
   },
 
   hasRowHeightChanged(props: any): boolean{

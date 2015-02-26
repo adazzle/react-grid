@@ -13,7 +13,7 @@ var getScrollbarSize  = require('./getScrollbarSize');
 
 class HeaderRowStyle {
   overflow: string;
-  width: string | number;
+  width: string;
   height: number;
   position: string;
 };
@@ -24,7 +24,7 @@ type Column = {
 };
 
 type HeaderRowProps = {
-  width: ?number;
+  width: ?string | ?number;
   height: number;
   columns: Array<Column>;
   onColumnResize: ?any;
@@ -34,7 +34,7 @@ type HeaderRowProps = {
 var HeaderRow = React.createClass({
 
   propTypes: {
-    width: PropTypes.number,
+    width: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
     height: PropTypes.number.isRequired,
     columns: PropTypes.array.isRequired,
     onColumnResize: PropTypes.func,
