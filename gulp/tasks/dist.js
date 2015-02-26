@@ -6,7 +6,7 @@ var webpackConfig = require("../../config/webpack.config.js");
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 
-gulp.task("build", function(callback) {
+gulp.task("dist", function(callback) {
 
   var onBundle = function(){
     gulp.src('dist/ReactGridWithAddons.js')

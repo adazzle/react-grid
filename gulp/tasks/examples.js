@@ -49,7 +49,7 @@ gulp.task('script-deps',  function() {
 });
 
 
-gulp.task("copy-dist", ['build'], function(){
+gulp.task("copy-dist", ['dist'], function(){
 	//copy dist folder to examples
 	return gulp.src([
 		'dist/**',
