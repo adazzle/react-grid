@@ -81,7 +81,7 @@ var Viewport = React.createClass({
       scroll.scrollTop, scroll.scrollLeft,
       this.state.height,
       this.props.rowHeight,
-      this.props.length
+      this.props.totalRows
     );
 
     if (this.props.onScroll) {
