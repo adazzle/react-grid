@@ -184,8 +184,7 @@ var ExcelGrid = React.createClass({
           expandedRows={this.state.expandedRows}
           rowOffsetHeight={this.getRowOffsetHeight()}
           minHeight={this.props.minHeight}
-          onKeyDown={this.onKeyDown}
-          onClick={this.onClick} />)}
+          onKeyDown={this.onKeyDown} />)}
         </div>
       </div>
     )
