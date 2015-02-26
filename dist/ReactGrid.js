@@ -553,8 +553,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  propTypes : {
 	    rowIdx : React.PropTypes.number.isRequired,
 	    idx : React.PropTypes.number.isRequired,
-	    onClick : React.PropTypes.func.isRequired,
-	    onSelect : React.PropTypes.func.isRequired,
 	    selected : React.PropTypes.shape({
 	      idx : React.PropTypes.number.isRequired,
 	    }),
@@ -1693,15 +1691,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* TODO@flow mixins */
 	"use strict";
-	var ExcelRow = __webpack_require__(5);
-	var ExcelColumn = __webpack_require__(2);
+	var ExcelRow       = __webpack_require__(5);
+	var ExcelColumn    = __webpack_require__(2);
+	var React          = __webpack_require__(1);
+	var cx             = React.addons.classSet;
+	var cloneWithProps = React.addons.cloneWithProps;
+	var KeyboardHandlerMixin = __webpack_require__(4);
+	var MixinHelper    = __webpack_require__(3);
 
 	                     
 	                 
 	              
 	  
 
-	var SelectableGridMixin = {
+	var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : KeyboardHandlerMixin}).assignTo({
+
 
 	  propTypes : {
 	    enableCellSelect : React.PropTypes.bool,
@@ -1849,8 +1853,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.state.selected.active === true;
 	  }
 
+	});
 
-	};
 
 	module.exports = SelectableGridMixin;
 
@@ -2381,7 +2385,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          index[c.key] = {width: c.width, left: c.left};
 	        });
 	        var nextColumns = Object.assign(this.state.columns, {
-	          columns: nextProps.columns.map(function(c)  {return merge(c, index[c.key]);})
+	          columns: nextProps.columns.map(function(c)  {return Object.assign(c, index[c.key]);})
 	        });
 	        this.setState({columns: nextColumns});
 	      }
@@ -2688,10 +2692,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  shouldComponentUpdate : function(nextProps     , nextState     )         {
-	    return !(ColumnMetrics.sameColumns(this.props.columns.columns, nextProps.columns.columns, ColumnMetrics.sameColumn))
+	    var update =  !(ColumnMetrics.sameColumns(this.props.columns.columns, nextProps.columns.columns, ColumnMetrics.sameColumn))
 	    || this.props.totalWidth != nextProps.totalWidth
 	    || (this.props.headerRows.length != nextProps.headerRows.length)
-	    || (this.state.resizing != nextState.resizing)
+	    || (this.state.resizing != nextState.resizing);
+
+	    return update;
 	  },
 
 	  getHeaderRows:function()                  {
@@ -2702,7 +2708,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        position: 'absolute',
 	        top: this.props.height * index,
 	        left: 0,
-	        width: this.props.totalWidth
+	        width: this.props.totalWidth,
+	        overflow : 'hidden'
 	      };
 
 	      headerRows.push(React.createElement(HeaderRow, {
@@ -2773,7 +2780,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  getStyle:function()                                     {
 	    return {
 	      position: 'relative',
-	      height: this.props.height
+	      height: this.props.height,
+	      overflow : 'hidden'
 	    };
 	  },
 	});
@@ -3189,7 +3197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scroll.scrollTop, scroll.scrollLeft,
 	      this.state.height,
 	      this.props.rowHeight,
-	      this.props.length
+	      this.props.totalRows
 	    );
 
 	    if (this.props.onScroll) {
@@ -3254,9 +3262,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  getGridState:function(props                     )                       {
-	    var height = this.state && this.state.height ?
-	      this.state.height :
-	      getWindowSize().height;
+	    var height = this.props.minHeight;
 	    var renderedRowsCount = ceil(height / props.rowHeight);
 	    return {
 	      displayStart: 0,
@@ -4070,8 +4076,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          expandedRows: this.state.expandedRows, 
 	          rowOffsetHeight: this.getRowOffsetHeight(), 
 	          minHeight: this.props.minHeight, 
-	          onKeyDown: this.onKeyDown, 
-	          onClick: this.onClick})))
+	          onKeyDown: this.onKeyDown})))
 	        )
 	      )
 	    )

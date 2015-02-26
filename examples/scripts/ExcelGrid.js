@@ -13,6 +13,11 @@
   var developers = ['Conor','Curtis','Danny','Joao','Mo','Rich'];
   var epics = [{id : 0, title : 'Unification Of Media'}, { id : 1, title : 'Trading Desk'}, { id : 2, title : 'Tech Costs'}, { id : 3, title : 'Tactical'}, { id : 4, title : 'Barter'}, { id : 5, title :'Lego'}, {id : 6, title : 'Media Plan'}, {id : 7, title : 'Infrastructure'}];
 
+  function renderImage(cellData) {
+    var ImageFormatter = ReactGrid.Formatters.ImageFormatter;
+    return <ImageFormatter src={cellData.value} />;
+  }
+
   var columns = [
     {
       key: 'id',
@@ -22,8 +27,8 @@
     {
       key: 'avartar',
       name: 'Avartar',
-      width : 200
-
+      width : 60,
+      formatter : renderImage
     },
     {
       key: 'city',
@@ -150,7 +155,8 @@
               onCellCopyPaste={this.handleCellCopyPaste}
               toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
               enableRowSelect={true}
-
+              rowHeight={50}
+              minHeight={600}
               />
       );
     }

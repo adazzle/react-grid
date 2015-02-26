@@ -58,8 +58,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = {
 	  Grid       : __webpack_require__(42),
 	  Editors    : __webpack_require__(53),
-	  Formatters : __webpack_require__(54),
-	  Toolbar    : __webpack_require__(55),
+	  Formatters : __webpack_require__(55),
+	  Toolbar    : __webpack_require__(56),
 	  Mixins : {
 	    EditorMixin          : __webpack_require__(16),
 	    TextInputMixin       : __webpack_require__(17),
@@ -555,8 +555,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  propTypes : {
 	    rowIdx : React.PropTypes.number.isRequired,
 	    idx : React.PropTypes.number.isRequired,
-	    onClick : React.PropTypes.func.isRequired,
-	    onSelect : React.PropTypes.func.isRequired,
 	    selected : React.PropTypes.shape({
 	      idx : React.PropTypes.number.isRequired,
 	    }),
@@ -1695,15 +1693,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* TODO@flow mixins */
 	"use strict";
-	var ExcelRow = __webpack_require__(5);
-	var ExcelColumn = __webpack_require__(2);
+	var ExcelRow       = __webpack_require__(5);
+	var ExcelColumn    = __webpack_require__(2);
+	var React          = __webpack_require__(1);
+	var cx             = React.addons.classSet;
+	var cloneWithProps = React.addons.cloneWithProps;
+	var KeyboardHandlerMixin = __webpack_require__(4);
+	var MixinHelper    = __webpack_require__(3);
 
 	                     
 	                 
 	              
 	  
 
-	var SelectableGridMixin = {
+	var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : KeyboardHandlerMixin}).assignTo({
+
 
 	  propTypes : {
 	    enableCellSelect : React.PropTypes.bool,
@@ -1851,8 +1855,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.state.selected.active === true;
 	  }
 
+	});
 
-	};
 
 	module.exports = SelectableGridMixin;
 
@@ -2383,7 +2387,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          index[c.key] = {width: c.width, left: c.left};
 	        });
 	        var nextColumns = Object.assign(this.state.columns, {
-	          columns: nextProps.columns.map(function(c)  {return merge(c, index[c.key]);})
+	          columns: nextProps.columns.map(function(c)  {return Object.assign(c, index[c.key]);})
 	        });
 	        this.setState({columns: nextColumns});
 	      }
@@ -2690,10 +2694,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  shouldComponentUpdate : function(nextProps     , nextState     )         {
-	    return !(ColumnMetrics.sameColumns(this.props.columns.columns, nextProps.columns.columns, ColumnMetrics.sameColumn))
+	    var update =  !(ColumnMetrics.sameColumns(this.props.columns.columns, nextProps.columns.columns, ColumnMetrics.sameColumn))
 	    || this.props.totalWidth != nextProps.totalWidth
 	    || (this.props.headerRows.length != nextProps.headerRows.length)
-	    || (this.state.resizing != nextState.resizing)
+	    || (this.state.resizing != nextState.resizing);
+
+	    return update;
 	  },
 
 	  getHeaderRows:function()                  {
@@ -2704,7 +2710,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        position: 'absolute',
 	        top: this.props.height * index,
 	        left: 0,
-	        width: this.props.totalWidth
+	        width: this.props.totalWidth,
+	        overflow : 'hidden'
 	      };
 
 	      headerRows.push(React.createElement(HeaderRow, {
@@ -2775,7 +2782,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  getStyle:function()                                     {
 	    return {
 	      position: 'relative',
-	      height: this.props.height
+	      height: this.props.height,
+	      overflow : 'hidden'
 	    };
 	  },
 	});
@@ -3191,7 +3199,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      scroll.scrollTop, scroll.scrollLeft,
 	      this.state.height,
 	      this.props.rowHeight,
-	      this.props.length
+	      this.props.totalRows
 	    );
 
 	    if (this.props.onScroll) {
@@ -3256,9 +3264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  getGridState:function(props                     )                       {
-	    var height = this.state && this.state.height ?
-	      this.state.height :
-	      getWindowSize().height;
+	    var height = this.props.minHeight;
 	    var renderedRowsCount = ceil(height / props.rowHeight);
 	    return {
 	      displayStart: 0,
@@ -4072,8 +4078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          expandedRows: this.state.expandedRows, 
 	          rowOffsetHeight: this.getRowOffsetHeight(), 
 	          minHeight: this.props.minHeight, 
-	          onKeyDown: this.onKeyDown, 
-	          onClick: this.onClick})))
+	          onKeyDown: this.onKeyDown})))
 	        )
 	      )
 	    )
@@ -5256,19 +5261,97 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var React = __webpack_require__(1);
+
+	var PendingPool = {};
+	var ReadyPool = {};
+
+	var ImageFormatter = React.createClass({displayName: 'ImageFormatter',
+	  propTypes: {
+	    src: React.PropTypes.string.isRequired,
+	  },
+
+	  getInitialState:function() {
+	    return {
+	      ready: false,
+	    };
+	  },
+
+	  componentWillMount:function() {
+	    this._load(this.props.src);
+	  },
+
+	  componentWillReceiveProps:function(nextProps) {
+	    if (nextProps.src !== this.props.src) {
+	      this.setState({src: null});
+	      this._load(nextProps.src);
+	    }
+	  },
+
+	  render:function() {
+	    var style = this.state.src ?
+	    { backgroundImage : 'url(' + this.state.src + ')'} :
+	    undefined;
+
+	    return React.createElement("div", {className: "react-grid-image", style: style});
+	  },
+
+	  _load:function(/*string*/ src) {
+	    if (ReadyPool[src]) {
+	      this.setState({src: src});
+	      return;
+	    }
+
+	    if (PendingPool[src]) {
+	      PendingPool[src].push(this._onLoad);
+	      return;
+	    }
+
+	    PendingPool[src] = [this._onLoad];
+
+	    var img = new Image();
+	    img.onload = function()  {
+	      PendingPool[src].forEach(/*function*/ function(callback)  {
+	        callback(src);
+	      });
+	      delete PendingPool[src];
+	      img.onload = null;
+	      src = undefined;
+	    };
+	    img.src = src;
+	  },
+
+	  _onLoad:function(/*string*/ src) {
+	    if (this.isMounted() && src === this.props.src) {
+	      this.setState({
+	        src: src,
+	      });
+	    }
+	  },
+	});
+
+
+	module.exports = ImageFormatter;
+
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* @flow */
 	//not including this
 	//it currently requires the whole of moment, which we dont want to take as a dependency
-	//var DateRangeFormatter = require('./DateRangeFormatter');
+	var ImageFormatter = __webpack_require__(54);
+
 	var Formatters = {
-	  //DateRangeFormatter : DateRangeFormatter
+	  ImageFormatter : ImageFormatter
 	}
 
 	module.exports = Formatters;
 
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
