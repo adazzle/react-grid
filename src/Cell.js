@@ -32,7 +32,7 @@ var Cell = React.createClass({
     );
 
     var extraClasses = cx({
-      'selected' : this.isSelected(),
+      'selected' : this.isSelected() && !this.isActive(),
       'editing' : this.isActive()
     })
 
