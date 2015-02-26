@@ -1471,9 +1471,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
-	  doesRowContainSelectedCell:function()         {
-	    var cell = this.props.cellRenderer;
-	    if(cell.props.selected && cell.props.selected.rowIdx === this.props.idx){
+	  doesRowContainSelectedCell:function(props     )         {
+	    var selected = props.cellMetaData.selected;
+	    if(selected && selected.rowIdx === props.idx){
 	      return true;
 	    }else{
 	      return false;
@@ -1488,7 +1488,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  hasRowBeenCopied:function()         {
 	    var cell = this.props.cellRenderer;
 	    return cell.props.copied != null && cell.props.copied.rowIdx === this.props.idx;
-	  }
+	  },
+
+	  shouldComponentUpdate:function(nextProps) {
+	    return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
+	    this.doesRowContainSelectedCell(this.props)          ||
+	    this.doesRowContainSelectedCell(nextProps)           ||
+	    nextProps.row !== this.props.row                     ||
+	    nextProps.height !== this.props.height;
+	  },
 
 
 	});

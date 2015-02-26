@@ -125,9 +125,9 @@ var Row = React.createClass({
     }
   },
 
-  doesRowContainSelectedCell(): boolean{
-    var cell = this.props.cellRenderer;
-    if(cell.props.selected && cell.props.selected.rowIdx === this.props.idx){
+  doesRowContainSelectedCell(props: any): boolean{
+    var selected = props.cellMetaData.selected;
+    if(selected && selected.rowIdx === props.idx){
       return true;
     }else{
       return false;
@@ -142,7 +142,15 @@ var Row = React.createClass({
   hasRowBeenCopied(): boolean{
     var cell = this.props.cellRenderer;
     return cell.props.copied != null && cell.props.copied.rowIdx === this.props.idx;
-  }
+  },
+
+  shouldComponentUpdate(nextProps) {
+    return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
+    this.doesRowContainSelectedCell(this.props)          ||
+    this.doesRowContainSelectedCell(nextProps)           ||
+    nextProps.row !== this.props.row                     ||
+    nextProps.height !== this.props.height;
+  },
 
 
 });
