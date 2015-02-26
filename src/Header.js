@@ -42,10 +42,12 @@ var Header = React.createClass({
   },
 
   shouldComponentUpdate : function(nextProps: any, nextState: any): boolean{
-    return !(ColumnMetrics.sameColumns(this.props.columns.columns, nextProps.columns.columns, ColumnMetrics.sameColumn))
+    var update =  !(ColumnMetrics.sameColumns(this.props.columns.columns, nextProps.columns.columns, ColumnMetrics.sameColumn))
     || this.props.totalWidth != nextProps.totalWidth
     || (this.props.headerRows.length != nextProps.headerRows.length)
-    || (this.state.resizing != nextState.resizing)
+    || (this.state.resizing != nextState.resizing);
+
+    return update;
   },
 
   getHeaderRows(): Array<HeaderRow>{
@@ -56,7 +58,8 @@ var Header = React.createClass({
         position: 'absolute',
         top: this.props.height * index,
         left: 0,
-        width: this.props.totalWidth
+        width: this.props.totalWidth,
+        overflow : 'hidden'
       };
 
       headerRows.push(<HeaderRow
@@ -127,7 +130,8 @@ var Header = React.createClass({
   getStyle(): {position: string; height: number} {
     return {
       position: 'relative',
-      height: this.props.height
+      height: this.props.height,
+      overflow : 'hidden'
     };
   },
 });

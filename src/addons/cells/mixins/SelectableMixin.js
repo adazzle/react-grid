@@ -16,8 +16,6 @@ var SelectableMixin = {
   propTypes : {
     rowIdx : React.PropTypes.number.isRequired,
     idx : React.PropTypes.number.isRequired,
-    onClick : React.PropTypes.func.isRequired,
-    onSelect : React.PropTypes.func.isRequired,
     selected : React.PropTypes.shape({
       idx : React.PropTypes.number.isRequired,
     }),
