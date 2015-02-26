@@ -8,7 +8,12 @@ var rename = require('gulp-rename');
 
 gulp.task("webpack", function(callback) {
     // run webpack
-    webpack(webpackConfig, callback);
+    webpack(
+      webpackConfig, function(err, stats) {
+        if(err) throw new gutil.PluginError("webpack", err);
+    
+        callback();
+      });
 });
 
 
