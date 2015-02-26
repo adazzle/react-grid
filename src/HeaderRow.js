@@ -34,7 +34,7 @@ type HeaderRowProps = {
 var HeaderRow = React.createClass({
 
   propTypes: {
-    width: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
+    width: PropTypes.oneOf(PropTypes.number, PropTypes.string),
     height: PropTypes.number.isRequired,
     columns: PropTypes.array.isRequired,
     onColumnResize: PropTypes.func,
