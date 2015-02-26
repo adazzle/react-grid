@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["react/addons"], factory);
 	else if(typeof exports === 'object')
-		exports["ReactGridWithAddons"] = factory(require("react/addons"));
+		exports["ReactGrid"] = factory(require("react/addons"));
 	else
-		root["ReactGrid"] = root["ReactGrid"] || {}, root["ReactGrid"]["ReactGridWithAddons"] = factory(root["React"]);
+		root["ReactGrid"] = factory(root["React"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -1374,7 +1374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Row = React.createClass({displayName: 'Row',
 
 	  propTypes: {
-	    rowHeight: React.PropTypes.number.isRequired,
+	    height: React.PropTypes.number.isRequired,
 	    idx: React.PropTypes.number.isRequired,
 	    columns: React.PropTypes.array.isRequired,
 	    row: React.PropTypes.object.isRequired,
@@ -1435,10 +1435,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if(this.props.expandedRows && this.props.key) {
 	      var row = this.props.expandedRows[this.props.key] || null;
 	      if(row) {
-	        return row.rowHeight;
+	        return row.height;
 	      }
 	    }
-	    return this.props.rowHeight;
+	    return this.props.height;
 	  },
 
 	  getCellValue:function(key                 )      {
@@ -2382,7 +2382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.state.columns.columns.forEach(function(c)  {
 	          index[c.key] = {width: c.width, left: c.left};
 	        });
-	        var nextColumns = merge(this.state.columns, {
+	        var nextColumns = Object.assign(this.state.columns, {
 	          columns: nextProps.columns.map(function(c)  {return merge(c, index[c.key]);})
 	        });
 	        this.setState({columns: nextColumns});
@@ -2960,7 +2960,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        
 	  
 
-	var headerRow = React.createClass({displayName: 'headerRow',
+	var HeaderRow = React.createClass({displayName: 'HeaderRow',
 
 	  propTypes: {
 	    width: PropTypes.number,
@@ -4082,7 +4082,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  renderToolbar:function()               {
 	    var Toolbar = this.props.toolbar;
 	    if(React.isValidElement(Toolbar)){
-	      return( React.addons.cloneWithProps(Toolbar, {onToggleFilter : this.onToggleFilter, rows : this.props.rows}));
+	      return( React.addons.cloneWithProps(Toolbar, {onToggleFilter : this.onToggleFilter, numberOfRows : this.props.rows.length}));
 	    }
 
 	  }
@@ -5285,11 +5285,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  propTypes: {
 	    onAddRow : React.PropTypes.func.isRequired,
 	    onToggleFilter : React.PropTypes.func.isRequired,
-	    rows : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelRow)).isRequired
+	    numberOfRows : React.PropTypes.number.isRequired
 	  },
 	  onAddRow:function(){
 	    if(this.props.onAddRow){
-	      this.props.onAddRow({newRowIndex : this.props.rows.length});
+	      this.props.onAddRow({newRowIndex : numberOfRows});
 	    }
 	  },
 
