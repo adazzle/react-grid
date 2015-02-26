@@ -11,7 +11,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, "../dist"),
     filename: "[name].js",
-    library: ["ReactGrid", "[name]"],
+    library: ["ReactGrid"],
     libraryTarget: "umd"
   },
   externals: {
