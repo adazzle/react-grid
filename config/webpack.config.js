@@ -32,5 +32,11 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin()
-  ]
+  ],
+  postLoaders: [
+  {
+    test: /\.js$/,
+    exclude: /node_modules|testData/,
+    loader: 'jshint'
+  }]
 }

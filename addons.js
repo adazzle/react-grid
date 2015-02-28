@@ -1,1 +1,1 @@
-module.exports = require("./dist/ReactGridAddons");
+module.exports = require("./dist/ReactGridWithAddons");

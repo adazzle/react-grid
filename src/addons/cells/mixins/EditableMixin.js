@@ -33,7 +33,6 @@ var EditableMixin = MixinHelper.createDependency({
       return (this.props.column.editor != null) || this.props.column.editable;
     },
 
-
     getEditor(){
 
       var editorProps = {height : this.props.height, onPressEscape : this.onPressEscape,  onCommit : this.onCommit, initialKeyCode : this.props.selected.initialKeyCode, editorRowMetaData : this.getEditorRowMetaData()};

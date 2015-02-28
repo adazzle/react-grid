@@ -2315,38 +2315,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* TODO@flow objects as a map */
-	var isValidElement = __webpack_require__(1).isValidElement;
-	module.exports =
-	function sameColumn(a        , b        )          {
-	  var k;
-
-	  for (k in a) {
-	    if (a.hasOwnProperty(k)) {
-	      if ((typeof a[k] === 'function' && typeof b[k] === 'function') || (isValidElement(a[k]) && isValidElement(b[k]))) {
-	        continue;
-	      }
-	      if (!b.hasOwnProperty(k) || a[k] !== b[k]) {
-	        return false;
-	      }
-	    }
-	  }
-
-	  for (k in b) {
-	    if (b.hasOwnProperty(k) && !a.hasOwnProperty(k)) {
-	      return false;
-	    }
-	  }
-
-	  return true;
-	};
-
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* TODO@flow mixins */
+	/* @flow mixins */
 
 	var ColumnMetrics        = __webpack_require__(7);
 	var DOMMetrics                    = __webpack_require__(11);
@@ -2986,7 +2955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var HeaderRow = React.createClass({displayName: 'HeaderRow',
 
 	  propTypes: {
-	    width: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+	    width: PropTypes.number,
 	    height: PropTypes.number.isRequired,
 	    columns: PropTypes.array.isRequired,
 	    onColumnResize: PropTypes.func,
@@ -3843,7 +3812,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    canEdit:function(){
 	      return (this.props.column.editor != null) || this.props.column.editable;
 	    },
-
 
 	    getEditor:function(){
 
