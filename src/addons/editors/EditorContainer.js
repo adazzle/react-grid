@@ -63,12 +63,13 @@ var EditorContainer = React.createClass({
     this.commit({key : 'Tab'});
   },
 
-  commit(args){
+  commit(args: {key : string}){
     var value = this.getValue();
     var rowDataChanged = {};
     rowDataChanged[this.props.column.key] = value;
     if(this.isNewValueValid(value)){
-      this.props.cellMetaData.onCommit({updated : rowDataChanged, key : args.key});
+      var cellKey = this.props.column.key;
+      this.props.cellMetaData.onCommit({cellKey: cellKey, rowIdx: this.props.rowIdx, updated : rowDataChanged, key : args.key});
     }
   },
 

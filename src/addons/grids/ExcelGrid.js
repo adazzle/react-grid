@@ -50,39 +50,36 @@ var ExcelGrid = React.createClass({
     return {selectedRows : [], expandedRows : []};
   },
 
-  overrides : {
-    onCellCommit(commit: Array<RowUpdateEvent>){
-      var committed = commit[0];
-      var selected = Object.assign({}, this.state.selected);
-      selected.active = false;
-      if (committed.keyCode === 'Tab') {
-        selected.idx += 1;
-      }
-      var expandedRows = this.state.expandedRows;
-      if(committed.changed && committed.changed.expandedHeight){
-        expandedRows = this.expandRow(committed.rowIdx, committed.changed.expandedHeight);
-      }
-
-
-      this.setState({selected : selected, expandedRows : expandedRows});
-      this.props.onRowUpdated(committed);
-
-    },
-    getColumns : function(): Array<any>{
-      var cols = this.getDecoratedColumns(this.props.columns)
-      if(this.props.enableRowSelect){
-          cols.unshift({
-            key: 'select-row',
-            name: '',
-            formatter : <CheckboxEditor/>,
-            onRowSelect :this.handleRowSelect,
-            filterable : false,
-            headerRenderer : <input type="checkbox" onChange={this.handleCheckboxChange} />,
-            width : 60
-          });
-        }
-        return cols;
+  onCellCommit(commit: RowUpdateEvent){
+    var selected = Object.assign({}, this.state.selected);
+    selected.active = false;
+    if (commit.keyCode === 'Tab') {
+      selected.idx += 1;
     }
+    var expandedRows = this.state.expandedRows;
+    if(commit.changed && commit.changed.expandedHeight){
+      expandedRows = this.expandRow(commit.rowIdx, commit.changed.expandedHeight);
+    }
+
+
+    this.setState({selected : selected, expandedRows : expandedRows});
+    this.props.onRowUpdated(commit);
+
+  },
+  getColumns : function(): Array<any>{
+    var cols = this.getDecoratedColumns(this.props.columns)
+    if(this.props.enableRowSelect){
+        cols.unshift({
+          key: 'select-row',
+          name: '',
+          formatter : <CheckboxEditor/>,
+          onRowSelect :this.handleRowSelect,
+          filterable : false,
+          headerRenderer : <input type="checkbox" onChange={this.handleCheckboxChange} />,
+          width : 60
+        });
+      }
+      return cols;
   },
 
   getDefaultProps() {

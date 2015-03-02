@@ -31,10 +31,6 @@ var SelectableGridMixin = {
     };
   },
 
-  getColumns : function(): Array<ExcelColumn> {
-    return this.props.columns
-  },
-
   getInitialState: function(): {selected: SelectedType } {
     if(this.props.enableCellSelect){
       return {selected: {rowIdx: 0, idx: 0}};
@@ -133,16 +129,6 @@ var SelectableGridMixin = {
       var selected = Object.assign(this.state.selected, {idx: idx, rowIdx: rowIdx, active : true, initialKeyCode : keyPressed});
       this.setState({selected: selected});
     }
-  },
-
-  onCellCommit(commit: {keyCode: string}){
-    var selected = this.state.selected;
-    selected.active = false;
-    if(commit.keyCode === 'Tab'){
-      selected.idx += 1;
-    }
-    this.setState({selected : selected});
-    this.props.onRowUpdate(commit);
   },
 
   setInactive(){

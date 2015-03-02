@@ -137,18 +137,10 @@ var Cell = React.createClass({
   getFormatter(): ReactElement {
     var col = this.props.column;
     if(this.isActive()){
-      return <EditorContainer cellMetaData={this.props.cellMetaData} column={col} height={this.props.height}/>;
+      return <EditorContainer rowIdx={this.props.rowIdx} idx={this.props.idx} cellMetaData={this.props.cellMetaData} column={col} height={this.props.height}/>;
     }else{
       return this.props.column.formatter;
     }
-  },
-
-
-  onCommit(commit: {key: string; updated: any}){
-    var rowIdx = this.props.rowIdx;
-    var idx = this.props.idx;
-    var cellKey = this.props.column.key;
-    this.props.cellMetaData.onCommit({cellKey: cellKey, rowIdx: this.props.filterRowIdx || rowIdx, updated : commit.updated, keyCode : commit.key});
   },
 
   onCellClick(){
