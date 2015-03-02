@@ -8,14 +8,12 @@
 
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
-var MixinHelper             = require('../utils/MixinHelper');
+
 var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
 var EditorMixin             = require('./mixins/EditorMixin');
 var cloneWithProps          = React.addons.cloneWithProps;
 
 var DropDownEditor = React.createClass({
-
-  mixins : [keyboardHandlerMixin, EditorMixin],
 
   overrides : {
     getInputNode : function(): HTMLElement {
@@ -29,7 +27,7 @@ var DropDownEditor = React.createClass({
     onCommit : React.PropTypes.func.isRequired
   },
 
-  renderEditorNode(): ReactElement{
+  render(): ReactElement{
     return (
       <select ref="select" style={this.getStyle()} defaultValue={this.props.value} onChange={this.onChange} >
         {this.renderOptions()}

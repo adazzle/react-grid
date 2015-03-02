@@ -6,14 +6,14 @@ var React          = require('react/addons');
 var cx             = React.addons.classSet;
 var cloneWithProps = React.addons.cloneWithProps;
 var KeyboardHandlerMixin = require('../../../KeyboardHandlerMixin');
-var MixinHelper    = require('../../utils/MixinHelper');
+
 
 type SelectedType = {
   rowIdx: number;
   idx: number;
 };
 
-var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : KeyboardHandlerMixin}).assignTo({
+var SelectableGridMixin = {
 
 
   propTypes : {
@@ -162,7 +162,7 @@ var SelectableGridMixin = MixinHelper.createDependency({KeyboardHandlerMixin : K
     return this.state.selected.active === true;
   }
 
-});
+};
 
 
 module.exports = SelectableGridMixin;

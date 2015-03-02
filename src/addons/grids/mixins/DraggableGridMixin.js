@@ -8,10 +8,8 @@
 
 var React                    = require('react/addons');
 var PropTypes                = React.PropTypes;
-var MixinHelper              = require('../../utils/MixinHelper');
 var SelectableGridMixin          = require('./SelectableGridMixin');
 
-MixinHelper.addAlias('SelectableGridMixin');
 
 type DraggedType = {
   idx: number;
@@ -20,7 +18,7 @@ type DraggedType = {
 
 var DraggableGridMixin = {
 
-  mixinDependencies : ['SelectableGridMixin'],
+
 
   propTypes : {
     onCellsDragged : React.PropTypes.func,

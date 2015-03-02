@@ -8,7 +8,7 @@
 
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
-var MixinHelper             = require('../utils/MixinHelper');
+
 var EditorMixin             = require('./mixins/EditorMixin');
 var TextInputMixin          = require('./mixins/TextInputMixin');
 var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
@@ -18,8 +18,6 @@ var Moment                  = require('moment');
 type DateRangeValue = { startDate: Date; endDate: Date};
 
 var DateRangeEditor = React.createClass({
-
-  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
 
   PropTypes : {
     format : React.PropTypes.string,
@@ -71,7 +69,7 @@ var DateRangeEditor = React.createClass({
     this.commit({value : {startDate : startDate, endDate : endDate}});
   },
 
-  renderEditorNode(): ?ReactElement{
+  render(): ?ReactElement{
     return (
       <div style={this.getStyle()} onKeyDown={this.onKeyDown}>
         <DateRangeFilter ref="datepicker" onApply={this.handleDateFilterApply}  format={this.props.format} ranges={this.props.ranges} startDate={this.props.value.startDate} endDate={this.props.value.endDate} />

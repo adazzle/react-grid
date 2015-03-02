@@ -1,9 +1,9 @@
 /* TODO@flow mixins */
 
 var ColumnMetrics        = require('./ColumnMetrics');
-var DOMMetrics                    = require('./DOMMetrics');
-
-var PropTypes = require('react/addons').PropTypes;
+var DOMMetrics           = require('./DOMMetrics');
+Object.assign            = require('object-assign');
+var PropTypes            = require('react/addons').PropTypes;
 
 
 type ColumnMetricsType = {

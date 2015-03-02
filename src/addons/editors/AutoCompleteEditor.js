@@ -9,11 +9,8 @@ overrides? getDefaultValue, getStyle, onKeyDown
 
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
-var MixinHelper             = require('../utils/MixinHelper');
-var EditorMixin             = require('./mixins/EditorMixin');
-var TextInputMixin          = require('./mixins/TextInputMixin');
 var ReactAutocomplete       = require('ron-react-autocomplete');
-var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
+
 var ExcelColumn = require('../grids/ExcelColumn');
 
 var optionPropType = React.PropTypes.shape({
@@ -35,7 +32,7 @@ var AutoCompleteEditor = React.createClass({
 
   },
 
-  mixins : MixinHelper.mix([keyboardHandlerMixin, EditorMixin, TextInputMixin]),
+
 
   overrides : {
       checkFocus : function(){
@@ -127,7 +124,7 @@ var AutoCompleteEditor = React.createClass({
     return ret.join('|');
   },
 
-  renderEditorNode(): ReactElement {
+  render(): ReactElement {
     var ctrl: any = this; //flow thrown by our override magic, so stepping into the shadows..
     var val = {title : ctrl.getDefaultValue()};
     var label = this.props.label != null ? this.props.label : 'title';

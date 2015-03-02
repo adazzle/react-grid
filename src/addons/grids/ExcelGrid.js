@@ -14,12 +14,13 @@ var ExcelColumn           = require('./ExcelColumn');
 var merge                 = require('../../merge');
 var SelectableGridMixin   = require('./mixins/SelectableGridMixin');
 var DraggableGridMixin    = require('./mixins/DraggableGridMixin');
+var KeyboardHandlerMixin  = require('../../KeyboardHandlerMixin');
 var CopyPasteGridMixin    = require('./mixins/CopyPasteGridMixin');
 var SortableGridMixin     = require('./mixins/SortableGridMixin');
 var FilterableGridMixin   = require('./mixins/FilterableGridMixin');
 var CheckboxEditor        = require('../editors/CheckboxEditor');
-var MixinHelper           = require('../utils/MixinHelper');
-window.bla = false;
+
+
 var cloneWithProps = React.addons.cloneWithProps;
 
 type ExcelGridProps = {
@@ -43,7 +44,7 @@ var ExcelGrid = React.createClass({
     toolbar:React.PropTypes.element
   },
 
-  mixins : [SelectableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
+  mixins : [KeyboardHandlerMixin, SelectableGridMixin, DraggableGridMixin, CopyPasteGridMixin, SortableGridMixin, FilterableGridMixin],
 
   getInitialState(): { selectedRows: Array<Row>; expandedRows: Array<Row> } {
     return {selectedRows : [], expandedRows : []};
@@ -65,7 +66,6 @@ var ExcelGrid = React.createClass({
 
       this.setState({selected : selected, expandedRows : expandedRows});
       this.props.onRowUpdated(committed);
-      window.bla = true;
 
     },
     getColumns : function(): Array<any>{
