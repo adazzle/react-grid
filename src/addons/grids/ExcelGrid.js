@@ -40,7 +40,7 @@ var ExcelGrid = React.createClass({
     enableRowSelect: React.PropTypes.bool,
     onRowUpdated:React.PropTypes.func,
     columns:React.PropTypes.arrayOf(ExcelColumn).isRequired,
-    rows:React.PropTypes.arrayOf(Row).isRequired,
+
     toolbar:React.PropTypes.element
   },
 
@@ -60,8 +60,6 @@ var ExcelGrid = React.createClass({
     if(commit.changed && commit.changed.expandedHeight){
       expandedRows = this.expandRow(commit.rowIdx, commit.changed.expandedHeight);
     }
-
-
     this.setState({selected : selected, expandedRows : expandedRows});
     this.props.onRowUpdated(commit);
 
@@ -158,6 +156,8 @@ var ExcelGrid = React.createClass({
       this.onAfterAddRow(nextProps.rows.length + 1);
     }
   },
+
+
 
   render: function(): ?ReactElement {
     var cellMetaData = {

@@ -137,7 +137,7 @@ var EditorContainer = React.createClass({
       </div>
     )
   },
-
+  
   setCaretAtEndOfInput(){
     var input = this.getInputNode();
     //taken from http://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element
