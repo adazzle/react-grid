@@ -2,10 +2,9 @@ var Webpack = require("webpack");
 var gutil     = require("gulp-util");
 
 var defaultErrorHandler = function(err, ctx) {
-//  if(err) throw new gutil.PluginError("webpack", err);
+  throw new gutil.PluginError(ctx, err);
+};
 
-    gutil.log("[webpack]", err);
-}
 module.exports = function (config, done, handlers) {
   handlers = handlers || {};
   handlers = {

@@ -1699,7 +1699,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 19 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow mixins */
@@ -2342,7 +2342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var HeaderRow = React.createClass({displayName: 'HeaderRow',
 
 	  propTypes: {
-	    width: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+	    width: PropTypes.number,
 	    height: PropTypes.number.isRequired,
 	    columns: PropTypes.array.isRequired,
 	    onColumnResize: PropTypes.func,
@@ -3107,19 +3107,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return this.getDOMNode().getElementsByTagName("input")[0];
 	  },
 
-	  getDefaultValue:function(){
-	    var selected = this.props.cellMetaData.selected;
-	    var keyCode = selected.initialKeyCode;
-	    if(keyCode === 'Delete' || keyCode === 'Backspace'){
-	      return '';
-	    }else if(keyCode === 'Enter'){
-	      return this.props.value;
-	    }else{
-	      var text = keyCode ? String.fromCharCode(keyCode) : this.props.value;
-	      return text;
-	    }
 
-	  },
+	    getEditor:function(){
+
+	      var editorProps = {height : this.props.height, onPressEscape : this.onPressEscape,  onCommit : this.onCommit, initialKeyCode : this.props.selected.initialKeyCode, editorRowMetaData : this.getEditorRowMetaData()};
+	      var customEditor = this.props.column.editor;
+	      if(customEditor && React.isValidElement(customEditor)){
+	        //return custom column editor or SimpleEditor if none specified
+	        return cloneWithProps(customEditor, editorProps);
+	      }else{
+	        return cloneWithProps(SimpleTextEditor(), editorProps);
+	      }
+	    },
 
 	  getContainerClass:function(){
 	    return cx({

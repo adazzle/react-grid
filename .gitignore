@@ -3,3 +3,4 @@ bower_components
 lib
 **/build
 test/reports
+dist

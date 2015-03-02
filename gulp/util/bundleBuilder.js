@@ -16,10 +16,9 @@ function buildBundle(bundleConfig, outFile, outFldr, watch, options) {
       if(Array.isArray(options.excludes)){
         options.excludes.forEach(function(toExclude){
             bundler.exclude(toExclude);
-        })
+        });
       }
     }
-
 
     return bundler
       .bundle()
