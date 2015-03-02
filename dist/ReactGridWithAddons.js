@@ -56,15 +56,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/* @flow */
 	module.exports = {
-	  Grid       : __webpack_require__(38),
+	  Grid       : __webpack_require__(37),
 	  Editors    : __webpack_require__(49),
-	  Formatters : __webpack_require__(51),
-	  Toolbar    : __webpack_require__(52),
-	  Mixins : {
-	    EditorMixin          : __webpack_require__(11),
-	    TextInputMixin       : __webpack_require__(12),
-	    KeyboardHandlerMixin : __webpack_require__(6)
-	  }
+	  Formatters : __webpack_require__(52),
+	  Toolbar    : __webpack_require__(53)
 	}
 
 
@@ -78,28 +73,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* @flow */
-	                    
-	               
-	              
-	                
-	                                                                                                                                      
-	  
-
-	function ExcelColumn(){"use strict";}
-	               
-	              
-	                
-	                                                                                                                                      
-
-
-	module.exports = ExcelColumn;
-
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* @flow  */
 	/**
 	 * @jsx React.DOM
@@ -110,7 +83,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React          = __webpack_require__(1);
 	var cx             = React.addons.classSet;
-	var Cell           = __webpack_require__(17);
+	var Cell           = __webpack_require__(15);
 	var cloneWithProps = React.addons.cloneWithProps;
 	var ColumnMetrics    = __webpack_require__(8);
 
@@ -272,16 +245,108 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* @flow */
+	                    
+	               
+	              
+	                
+	                                                                                                                                      
+	  
+
+	function ExcelColumn(){"use strict";}
+	               
+	              
+	                
+	                                                                                                                                      
+
+
+	module.exports = ExcelColumn;
+
+
+/***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* TODO@flow: mixins */
+	/**
+	 * @jsx React.DOM
+
+
+	 */
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var Perf = React.addons.Perf;
+
+	var hasPerfStarted = false;
+
+	var KeyboardHandlerMixin = {
+
+	  propTypes : {
+	  },
+
+	  onKeyDown:function(e                        ){
+	    if(this.isCtrlKeyHeldDown(e)){
+	      this.checkAndCall('onPressKeyWithCtrl', e);
+	    }
+	    else if (this.isKeyIdentified(e.key)) {
+	      //break up individual keyPress events to have their own specific callbacks
+	      //this allows multiple mixins to listen to onKeyDown events and somewhat reduces methodName clashing
+	      var callBack = 'onPress' + e.key;
+	      this.checkAndCall(callBack, e);
+	    }else if(this.isKeyPrintable(e.keyCode)){
+	      this.checkAndCall('onPressChar', e);
+	    }
+	  },
+
+	  //taken from http://stackoverflow.com/questions/12467240/determine-if-javascript-e-keycode-is-a-printable-non-control-character
+	  isKeyPrintable:function(keycode        )         {
+	    var valid =
+	        (keycode > 47 && keycode < 58)   || // number keys
+	        keycode == 32 || keycode == 13   || // spacebar & return key(s) (if you want to allow carriage returns)
+	        (keycode > 64 && keycode < 91)   || // letter keys
+	        (keycode > 95 && keycode < 112)  || // numpad keys
+	        (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
+	        (keycode > 218 && keycode < 223);   // [\]' (in order)
+
+	    return valid;
+	  },
+
+	  isKeyIdentified:function(key        )         {
+	    return key !== "Unidentified";
+	  },
+
+	  isCtrlKeyHeldDown:function(e                        )         {
+	    return e.ctrlKey === true && e.key !== "Control";
+	  },
+
+	  checkAndCall:function(methodName        , args     ){
+	    if(typeof this[methodName] === 'function'){
+	      this[methodName](args);
+	    }
+	  }
+	}
+
+
+
+	module.exports = KeyboardHandlerMixin;
+
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var keyMirror  = __webpack_require__(21);
-	var isFunction = __webpack_require__(14)
+	var keyMirror  = __webpack_require__(19);
+	var isFunction = __webpack_require__(11)
 	var React      = __webpack_require__(1);
 	if (!Object.assign) {
-	  Object.assign = __webpack_require__(19);
+	  Object.assign = __webpack_require__(17);
 	}
 
 	/**
@@ -506,7 +571,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -528,76 +593,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	module.exports = shallowCloneObject;
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* TODO@flow: mixins */
-	/**
-	 * @jsx React.DOM
-
-
-	 */
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-	var Perf = React.addons.Perf;
-
-	var hasPerfStarted = false;
-
-	var KeyboardHandlerMixin = {
-
-	  propTypes : {
-	  },
-
-	  onKeyDown:function(e                        ){
-	    if(this.isCtrlKeyHeldDown(e)){
-	      this.checkAndCall('onPressKeyWithCtrl', e);
-	    }
-	    else if (this.isKeyIdentified(e.key)) {
-	      //break up individual keyPress events to have their own specific callbacks
-	      //this allows multiple mixins to listen to onKeyDown events and somewhat reduces methodName clashing
-	      var callBack = 'onPress' + e.key;
-	      this.checkAndCall(callBack, e);
-	    }else if(this.isKeyPrintable(e.keyCode)){
-	      this.checkAndCall('onPressChar', e);
-	    }
-	  },
-
-	  //taken from http://stackoverflow.com/questions/12467240/determine-if-javascript-e-keycode-is-a-printable-non-control-character
-	  isKeyPrintable:function(keycode        )         {
-	    var valid =
-	        (keycode > 47 && keycode < 58)   || // number keys
-	        keycode == 32 || keycode == 13   || // spacebar & return key(s) (if you want to allow carriage returns)
-	        (keycode > 64 && keycode < 91)   || // letter keys
-	        (keycode > 95 && keycode < 112)  || // numpad keys
-	        (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
-	        (keycode > 218 && keycode < 223);   // [\]' (in order)
-
-	    return valid;
-	  },
-
-	  isKeyIdentified:function(key        )         {
-	    return key !== "Unidentified";
-	  },
-
-	  isCtrlKeyHeldDown:function(e                        )         {
-	    return e.ctrlKey === true && e.key !== "Control";
-	  },
-
-	  checkAndCall:function(methodName        , args     ){
-	    if(typeof this[methodName] === 'function'){
-	      this[methodName](args);
-	    }
-	  }
-	}
-
-
-
-	module.exports = KeyboardHandlerMixin;
 
 
 /***/ },
@@ -704,10 +699,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	"use strict";
 
-	var shallowCloneObject            = __webpack_require__(5);
-	var merge                         = __webpack_require__(15);
+	var shallowCloneObject            = __webpack_require__(6);
+	var merge                         = __webpack_require__(13);
 	var isValidElement = __webpack_require__(1).isValidElement;
-	var sameColumn = __webpack_require__(23);
+	var sameColumn = __webpack_require__(21);
 
 	                          
 	                           
@@ -852,7 +847,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(1);
 	var emptyFunction       = __webpack_require__(10);
-	var shallowCloneObject  = __webpack_require__(5);
+	var shallowCloneObject  = __webpack_require__(6);
 
 	var contextTypes = {
 	  metricsComputator: React.PropTypes.object
@@ -1033,7 +1028,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	'use strict';
 
-	var copyProperties = __webpack_require__(43);
+	var copyProperties = __webpack_require__(42);
 
 	function makeEmptyFunction(arg) {
 	  return function() {
@@ -1064,205 +1059,30 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* TODO@flow mixin */
-	/**
-	 * @jsx React.DOM
+	/* @flow */
+	"use strict";
 
+	var isFunction = function(functionToCheck     )         {
+	    var getType = {};
+	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	}
 
-	 */
-	'use strict';
-	var React                   = __webpack_require__(1);
-	var cx                      = React.addons.classSet;
-	var isFunction = __webpack_require__(14);
-
-	var ExcelColumn = __webpack_require__(2);
-
-	var EditorMixin = {
-
-	  propTypes : {
-	    height : React.PropTypes.number.isRequired,
-	    column : React.PropTypes.shape(ExcelColumn).isRequired,
-	    onCommit : React.PropTypes.func.isRequired
-	  },
-
-	  getStyle:function()                    {
-	    return {
-	      height : this.props.height - 1
-	    }
-	  },
-
-	  getInitialState:function()                       {
-	    return {isInvalid : false}
-	  },
-
-	  onPressEnter:function(e       ){
-	    React.addons.Perf.start();
-	    e.stopPropagation();
-	    e.preventDefault();
-	    this.commit({key : 'Enter'});
-	  },
-
-	  onPressTab:function(e       ){
-	    e.stopPropagation();
-	    e.preventDefault();
-	    this.commit({key : 'Tab'});
-	  },
-
-	  commit:function(args               ){
-	    var value = this.getValue();
-	    var rowDataChanged = {};
-	    rowDataChanged[this.props.column.key] = value;
-	    if(this.isNewValueValid(value)){
-	      this.props.onCommit({updated : rowDataChanged, key : args.key});
-	    }
-	  },
-
-	  isNewValueValid:function(value        )         {
-	    if(isFunction(this.validate)){
-	      var isValid = this.validate(value);
-	      this.setState({isInvalid : !isValid});
-	      return isValid;
-	    }else{
-	      return true;
-	    }
-	  },
-
-	  getValue:function()        {
-	      return this.getInputNode().value;
-	  },
-
-	  setValue:function(value        ){
-	      this.getInputNode().value = value;
-	  },
-
-	  componentDidMount: function() {
-	    if(this.getInputNode() !== undefined){
-	      this.checkFocus();
-	      this.getInputNode().className += ' editor-main';
-	    }
-	  },
-
-	  checkFocus:function(){
-	    this.getInputNode().focus();
-	  },
-
-	  getInputNode:function()             {
-	    return this.getDOMNode().getElementsByTagName("input")[0];
-	  },
-
-	  getContainerClass:function()        {
-	    return cx({
-	      'has-error' : this.state.isInvalid === true
-	    })
-	  },
-
-	  renderStatusIcon:function()               {
-	    if(this.state.isInvalid === true){
-	      return React.createElement("span", {className: "glyphicon glyphicon-remove form-control-feedback"})
-	    }
-	  },
-
-	  render:function()               {
-	    if(!isFunction(this.renderEditorNode)){
-	        throw "Editor Mixin Error : " + this.displayName + " component must implement method renderEditorNode";
-	    }
-	    var editorNode = this.renderEditorNode();
-	    return (
-	      React.createElement("div", {className: this.getContainerClass()}, 
-	        editorNode, 
-	        this.renderStatusIcon()
-	      )
-	    )
-	  }
-	};
-
-	module.exports = EditorMixin;
+	module.exports = isFunction;
 
 
 /***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* TODO@flow mixin */
-	/**
-	 * @jsx React.DOM
-
-
-	 */
-	'use strict';
-
-	var TextInputMixin = {
-
-	  propTypes : {
-	    initialKeyCode : React.PropTypes.string,
-	    value : React.PropTypes.any.isRequired
-	  },
-
-	  onPressArrowLeft:function(e       ){
-	    //prevent event propogation. this disables left cell navigation
-	    e.stopPropagation();
-	  },
-
-	  onPressArrowRight:function(e       ){
-	    //prevent event propogation. this disables right cell navigation
-	    e.stopPropagation();
-	  },
-
-	  getDefaultValue:function()        {
-	    var keyCode = this.props.initialKeyCode;
-	    if(keyCode === 'Delete' || keyCode === 'Backspace'){
-	      return '';
-	    }else if(keyCode === 'Enter'){
-	      return this.props.value;
-	    }else{
-	      var text = keyCode ? String.fromCharCode(keyCode) : this.props.value;
-	      return text;
-	    }
-
-	  },
-
-	  setCaretAtEndOfInput:function(){
-	    var input = this.getInputNode();
-	    //taken from http://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element
-	    var txtLength = input.value.length;
-	    if(input.setSelectionRange){
-	      input.setSelectionRange(txtLength, txtLength);
-	    }else if(input.createTextRange){
-	      var fieldRange = input.createTextRange();
-	      fieldRange.moveStart('character', input.value.length);
-	      fieldRange.collapse();
-	      fieldRange.select();
-	    }
-	  },
-
-	  setTextInputFocus:function(){
-	    if(!this.isKeyPrintable(this.props.initialKeyCode)){
-	      this.getInputNode().focus();
-	      this.setCaretAtEndOfInput();
-	    }else{
-	      this.getInputNode().select();
-	    }
-	  }
-
-
-	};
-
-	module.exports = TextInputMixin;
-
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* TODO@flow mixins */
 	"use strict";
-	var Row       = __webpack_require__(3);
-	var ExcelColumn    = __webpack_require__(2);
+	var Row       = __webpack_require__(2);
+	var ExcelColumn    = __webpack_require__(3);
 	var React          = __webpack_require__(1);
 	var cx             = React.addons.classSet;
 	var cloneWithProps = React.addons.cloneWithProps;
-	var KeyboardHandlerMixin = __webpack_require__(6);
-	var MixinHelper    = __webpack_require__(4);
+	var KeyboardHandlerMixin = __webpack_require__(4);
+	var MixinHelper    = __webpack_require__(5);
 
 	                     
 	                 
@@ -1425,22 +1245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* @flow */
-	"use strict";
-
-	var isFunction = function(functionToCheck     )         {
-	    var getType = {};
-	    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-	}
-
-	module.exports = isFunction;
-
-
-/***/ },
-/* 15 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -1494,7 +1299,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 16 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -1532,7 +1337,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 17 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -1546,7 +1351,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React          = __webpack_require__(1);
 	var cx             = React.addons.classSet;
 	var cloneWithProps = React.addons.cloneWithProps;
-	var SimpleTextEditor = __webpack_require__(18);
+	var EditorContainer = __webpack_require__(36);
 
 	var Cell = React.createClass({displayName: 'Cell',
 
@@ -1671,31 +1476,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 
-	  getEditor:function()              {
-	    var selected     = this.props.cellMetaData.selected;
-	    var editorProps = {height : this.props.height, onCommit : this.onCommit, initialKeyCode : selected.initialKeyCode, editorRowMetaData : this.getEditorRowMetaData()};
-	    var customEditor = this.props.column.editor;
-	    if(customEditor && React.isValidElement(customEditor)){
-	      //return custom column editor or SimpleEditor if none specified
-	      return cloneWithProps(customEditor, editorProps);
-	    }else{
-	      return cloneWithProps(SimpleTextEditor(), editorProps);
-	    }
-	  },
-
-	  getEditorRowMetaData:function()      {
-	    //clone row data so editor cannot actually change this
-	    var columnName = this.props.column.ItemId;
-	    //convention based method to get corresponding Id or Name of any Name or Id property
-	    if(typeof this.props.column.getEditorRowMetaData === 'function'){
-	      return this.props.column.getEditorRowMetaData(this.props.rowData);
-	    }
-	  },
-
 	  getFormatter:function()               {
 	    var col = this.props.column;
 	    if(this.isActive()){
-	      return this.getEditor();
+	      return React.createElement(EditorContainer, {cellMetaData: this.props.cellMetaData, column: col, height: this.props.height});
 	    }else{
 	      return this.props.column.formatter;
 	    }
@@ -1826,7 +1610,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 18 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -1839,28 +1623,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                   = __webpack_require__(1);
 	var cx                      = React.addons.classSet;
-	var MixinHelper             = __webpack_require__(4);
-	var EditorMixin             = __webpack_require__(11);
-	var TextInputMixin          = __webpack_require__(12);
-	var keyboardHandlerMixin    = __webpack_require__(6);
+	var keyboardHandlerMixin    = __webpack_require__(4);
 
 	var SimpleTextEditor = React.createClass({displayName: 'SimpleTextEditor',
 
-	  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
-
-	  propTypes : {
+	  getStyle:function(){
+	    return {
+	      height : this.props.height - 1
+	    }
 	  },
 
-	  overrides : {
-	      checkFocus : function(){
-	          this.setTextInputFocus();
-	      }
-	  },
-
-	  renderEditorNode:function()                {
-	    return (React.createElement("input", {type: "text", onBlur: this.commit, className: "form-control", defaultValue: this.getDefaultValue(), style: this.getStyle(), onKeyDown: this.onKeyDown}));
+	  render:function()                {
+	    return (React.createElement("input", {type: "text", style: this.getStyle(), onBlur: this.props.commit, className: "form-control", defaultValue: this.props.value, onKeyDown: this.props.onKeyDown}));
 	  }
-
 
 	});
 
@@ -1868,7 +1643,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 19 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1900,7 +1675,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 20 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1960,7 +1735,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
-/* 21 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -1977,7 +1752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	var invariant = __webpack_require__(20);
+	var invariant = __webpack_require__(18);
 
 	/**
 	 * Constructs an enumeration with keys equal to their value.
@@ -2018,7 +1793,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
-/* 22 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -2031,10 +1806,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cx             = React.addons.classSet;
 	var PropTypes      = React.PropTypes;
 	var cloneWithProps = React.addons.cloneWithProps;
-	var shallowEqual   = __webpack_require__(16);
+	var shallowEqual   = __webpack_require__(14);
 	var emptyFunction  = __webpack_require__(10);
-	var ScrollShim     = __webpack_require__(31);
-	var Row            = __webpack_require__(3);
+	var ScrollShim     = __webpack_require__(29);
+	var Row            = __webpack_require__(2);
 
 	var Canvas = React.createClass({displayName: 'Canvas',
 	  mixins: [ScrollShim],
@@ -2242,7 +2017,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 23 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow objects as a map */
@@ -2273,7 +2048,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 24 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow mixins */
@@ -2363,7 +2138,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 25 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow need   */
@@ -2458,7 +2233,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 26 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -2471,11 +2246,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                = __webpack_require__(1);
 	var PropTypes            = React.PropTypes;
-	var Header               = __webpack_require__(28);
-	var Viewport             = __webpack_require__(32);
+	var Header               = __webpack_require__(26);
+	var Viewport             = __webpack_require__(30);
 	var DOMMetrics           = __webpack_require__(9);
-	var GridScrollMixin      = __webpack_require__(27);
-	var ColumnMetricsMixin      = __webpack_require__(24);
+	var GridScrollMixin      = __webpack_require__(25);
+	var ColumnMetricsMixin      = __webpack_require__(22);
 
 
 	var Grid = React.createClass({displayName: 'Grid',
@@ -2552,7 +2327,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 27 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow mixins */
@@ -2592,7 +2367,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 28 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -2605,9 +2380,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(1);
 	var cx                  = React.addons.classSet;
-	var shallowCloneObject  = __webpack_require__(5);
+	var shallowCloneObject  = __webpack_require__(6);
 	var ColumnMetrics       = __webpack_require__(8);
-	var HeaderRow           = __webpack_require__(30);
+	var HeaderRow           = __webpack_require__(28);
 
 	               
 	               
@@ -2738,7 +2513,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 29 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow unkwon */
@@ -2751,7 +2526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React       = __webpack_require__(1);
 	var cx          = React.addons.classSet;
-	var Draggable   = __webpack_require__(25);
+	var Draggable   = __webpack_require__(23);
 	var PropTypes   = React.PropTypes;
 
 	var ResizeHandle = React.createClass({displayName: 'ResizeHandle',
@@ -2877,7 +2652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 30 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -2888,9 +2663,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React             = __webpack_require__(1);
 	var PropTypes         = React.PropTypes;
-	var shallowEqual      = __webpack_require__(16);
-	var HeaderCell        = __webpack_require__(29);
-	var getScrollbarSize  = __webpack_require__(44);
+	var shallowEqual      = __webpack_require__(14);
+	var HeaderCell        = __webpack_require__(27);
+	var getScrollbarSize  = __webpack_require__(43);
 
 
 	function HeaderRowStyle(){}
@@ -3002,7 +2777,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 31 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow mixin not compatible and HTMLElement classList */
@@ -3058,7 +2833,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 32 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -3070,10 +2845,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React             = __webpack_require__(1);
-	var Canvas            = __webpack_require__(22);
+	var Canvas            = __webpack_require__(20);
 	var PropTypes            = React.PropTypes;
 
-	var ViewportScroll      = __webpack_require__(33);
+	var ViewportScroll      = __webpack_require__(31);
 
 
 
@@ -3161,14 +2936,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 33 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow mixins */
 
 	var React             = __webpack_require__(1);
 	var DOMMetrics        = __webpack_require__(9);
-	var getWindowSize     = __webpack_require__(45);
+	var getWindowSize     = __webpack_require__(44);
 
 	var PropTypes            = React.PropTypes;
 	var min   = Math.min;
@@ -3280,7 +3055,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 34 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// /* @flow */
@@ -3422,7 +3197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 35 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow  */
@@ -3435,7 +3210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React              = __webpack_require__(1);
 	var cx             = React.addons.classSet;
-	var ExcelColumn = __webpack_require__(2);
+	var ExcelColumn = __webpack_require__(3);
 
 	var FilterableHeaderCell = React.createClass({displayName: 'FilterableHeaderCell',
 
@@ -3486,7 +3261,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 36 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -3499,7 +3274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React              = __webpack_require__(1);
 	var cx             = React.addons.classSet;
-	var ExcelColumn = __webpack_require__(2);
+	var ExcelColumn = __webpack_require__(3);
 
 	var SortableHeaderCell = React.createClass({displayName: 'SortableHeaderCell',
 	  propTypes: {
@@ -3537,7 +3312,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 37 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -3575,7 +3350,180 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 38 */
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* @flow */
+	/**
+	* @jsx React.DOM
+
+
+	*/
+	'use strict';
+
+	var React                   = __webpack_require__(1);
+	var cx                      = React.addons.classSet;
+	var keyboardHandlerMixin    = __webpack_require__(4);
+	var SimpleTextEditor        = __webpack_require__(16);
+	var isFunction              = __webpack_require__(11);
+
+	var EditorContainer = React.createClass({displayName: 'EditorContainer',
+
+	  mixins : [keyboardHandlerMixin],
+
+	  propTypes : {
+	    cellMetaData : React.PropTypes.func.isRequired,
+	    column : React.PropTypes.object.isRequired
+	  },
+
+	  getStyle:function(){
+	    return {
+	      height : this.props.height - 1
+	    }
+	  },
+
+	  getInitialState:function(){
+	    return {isInvalid : false}
+	  },
+
+	  getEditor:function(){
+	    var editorProps = {onKeyDown : this.onKeyDown, value : this.getDefaultValue(), onCommit : this.commit, editorRowMetaData : this.getEditorRowMetaData(), height : this.props.height};
+	    var customEditor = this.props.column.editor;
+	    if(customEditor && React.isValidElement(customEditor)){
+	      //return custom column editor or SimpleEditor if none specified
+	      return cloneWithProps(customEditor, editorProps);
+	    }else{
+	      return React.createElement(SimpleTextEditor, React.__spread({},  editorProps));
+	    }
+	  },
+
+	  getEditorRowMetaData:function(){
+	    //clone row data so editor cannot actually change this
+	    var columnName = this.props.column.ItemId;
+	    //convention based method to get corresponding Id or Name of any Name or Id property
+	    if(typeof this.props.column.getEditorRowMetaData === 'function'){
+	      return this.props.column.getEditorRowMetaData(this.props.rowData);
+	    }
+	  },
+
+	  onPressEnter:function(e){
+	    e.stopPropagation();
+	    e.preventDefault();
+	    this.commit({key : 'Enter'});
+	  },
+
+	  onPressTab:function(e){
+	    e.stopPropagation();
+	    e.preventDefault();
+	    this.commit({key : 'Tab'});
+	  },
+
+	  commit:function(args){
+	    var value = this.getValue();
+	    var rowDataChanged = {};
+	    rowDataChanged[this.props.column.key] = value;
+	    if(this.isNewValueValid(value)){
+	      this.props.cellMetaData.onCommit({updated : rowDataChanged, key : args.key});
+	    }
+	  },
+
+	  isNewValueValid:function(value){
+	    if(isFunction(this.validate)){
+	      var isValid = this.validate(value);
+	      this.setState({isInvalid : !isValid});
+	      return isValid;
+	    }else{
+	      return true;
+	    }
+	  },
+
+	  getValue:function(){
+	    return this.getInputNode().value;
+	  },
+
+	  setValue:function(value){
+	    this.getInputNode().value = value;
+	  },
+
+	  componentDidMount: function() {
+	    if(this.getInputNode() !== undefined){
+	      this.setTextInputFocus();
+	      this.getInputNode().className += ' editor-main';
+	    }
+	  },
+
+	  getInputNode:function(){
+	    return this.getDOMNode().getElementsByTagName("input")[0];
+	  },
+
+	  getDefaultValue:function(){
+	    var selected = this.props.cellMetaData.selected;
+	    var keyCode = selected.initialKeyCode;
+	    if(keyCode === 'Delete' || keyCode === 'Backspace'){
+	      return '';
+	    }else if(keyCode === 'Enter'){
+	      return this.props.value;
+	    }else{
+	      var text = keyCode ? String.fromCharCode(keyCode) : this.props.value;
+	      return text;
+	    }
+
+	  },
+
+	  getContainerClass:function(){
+	    return cx({
+	      'has-error' : this.state.isInvalid === true
+	    })
+	  },
+
+	  renderStatusIcon:function(){
+	    if(this.state.isInvalid === true){
+	      return React.createElement("span", {className: "glyphicon glyphicon-remove form-control-feedback"})
+	    }
+	  },
+
+	  render:function(){
+	    var Editor = this.getEditor();
+	    return (
+	      React.createElement("div", {style: this.getStyle(), className: this.getContainerClass()}, 
+	      Editor, 
+	      this.renderStatusIcon()
+	      )
+	    )
+	  },
+
+	  setCaretAtEndOfInput:function(){
+	    var input = this.getInputNode();
+	    //taken from http://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element
+	    var txtLength = input.value.length;
+	    if(input.setSelectionRange){
+	      input.setSelectionRange(txtLength, txtLength);
+	    }else if(input.createTextRange){
+	      var fieldRange = input.createTextRange();
+	      fieldRange.moveStart('character', txt.value.length);
+	      fieldRange.collapse();
+	      fieldRange.select();
+	    }
+	  },
+
+	  setTextInputFocus:function(){
+	    var selected = this.props.cellMetaData.selected;
+	    var keyCode = selected.initialKeyCode;
+	    if(!this.isKeyPrintable(keyCode)){
+	      this.getInputNode().focus();
+	      this.setCaretAtEndOfInput();
+	    }else{
+	      this.getInputNode().select();
+	    }
+	  }
+
+	});
+
+	module.exports = EditorContainer;
+
+
+/***/ },
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -3587,18 +3535,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                 = __webpack_require__(1);
 	var PropTypes             = React.PropTypes;
-	var BaseGrid              = __webpack_require__(26);
-	var ExcelCell             = __webpack_require__(34);
-	var Row                   = __webpack_require__(3);
-	var ExcelColumn           = __webpack_require__(2);
-	var merge                 = __webpack_require__(15);
-	var SelectableGridMixin   = __webpack_require__(13);
-	var DraggableGridMixin    = __webpack_require__(40);
-	var CopyPasteGridMixin    = __webpack_require__(39);
-	var SortableGridMixin     = __webpack_require__(42);
-	var FilterableGridMixin   = __webpack_require__(41);
-	var CheckboxEditor        = __webpack_require__(37);
-	var MixinHelper           = __webpack_require__(4);
+	var BaseGrid              = __webpack_require__(24);
+	var ExcelCell             = __webpack_require__(32);
+	var Row                   = __webpack_require__(2);
+	var ExcelColumn           = __webpack_require__(3);
+	var merge                 = __webpack_require__(13);
+	var SelectableGridMixin   = __webpack_require__(12);
+	var DraggableGridMixin    = __webpack_require__(39);
+	var CopyPasteGridMixin    = __webpack_require__(38);
+	var SortableGridMixin     = __webpack_require__(41);
+	var FilterableGridMixin   = __webpack_require__(40);
+	var CheckboxEditor        = __webpack_require__(35);
+	var MixinHelper           = __webpack_require__(5);
 	window.bla = false;
 	var cloneWithProps = React.addons.cloneWithProps;
 
@@ -3789,7 +3737,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow mixins */
@@ -3837,7 +3785,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow mixins */
@@ -3850,8 +3798,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                    = __webpack_require__(1);
 	var PropTypes                = React.PropTypes;
-	var MixinHelper              = __webpack_require__(4);
-	var SelectableGridMixin          = __webpack_require__(13);
+	var MixinHelper              = __webpack_require__(5);
+	var SelectableGridMixin          = __webpack_require__(12);
 
 	MixinHelper.addAlias('SelectableGridMixin');
 
@@ -3920,7 +3868,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow mixins, getHeaderRows */
@@ -3933,8 +3881,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(1);
 	var PropTypes           = React.PropTypes;
-	var FilterableHeaderCell = __webpack_require__(35);
-	var Row = __webpack_require__(3);
+	var FilterableHeaderCell = __webpack_require__(33);
+	var Row = __webpack_require__(2);
 
 	var FilterableGridMixin = {
 	  propTypes : {
@@ -4027,7 +3975,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* TODO@flow mixins */
@@ -4040,10 +3988,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(1);
 	var PropTypes           = React.PropTypes;
-	var SortableHeaderCell  = __webpack_require__(36);
-	var shallowCloneObject  = __webpack_require__(5);
-	var Row = __webpack_require__(3);
-	var ExcelColumn = __webpack_require__(2);
+	var SortableHeaderCell  = __webpack_require__(34);
+	var shallowCloneObject  = __webpack_require__(6);
+	var Row = __webpack_require__(2);
+	var ExcelColumn = __webpack_require__(3);
 
 	                                            
 	var DEFINE_SORT = {
@@ -4119,7 +4067,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -4182,7 +4130,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
-/* 44 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow offsetWidth in HTMLElement */
@@ -4223,7 +4171,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 45 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -4258,6 +4206,118 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	module.exports = getWindowSize;
+
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+	var React                   = __webpack_require__(1);
+	var cx                      = React.addons.classSet;
+	var isFunction = __webpack_require__(11);
+
+	var EditorMixin = {
+
+	  propTypes : {
+	    onCommit : React.PropTypes.func.isRequired
+	  },
+
+	  getStyle:function(){
+	    return {
+	      height : this.props.height - 1
+	    }
+	  },
+
+	  getInitialState:function(){
+	    return {isInvalid : false}
+	  },
+
+	  onPressEnter:function(e){
+	    e.stopPropagation();
+	    e.preventDefault();
+	    this.commit({key : 'Enter'});
+	  },
+
+	  onPressTab:function(e){
+	    e.stopPropagation();
+	    e.preventDefault();
+	    this.commit({key : 'Tab'});
+	  },
+
+	  commit:function(args){
+	    var value = this.getValue();
+	    var rowDataChanged = {};
+	    rowDataChanged[this.props.column.key] = value;
+	    if(this.isNewValueValid(value)){
+	      this.props.onCommit({updated : rowDataChanged, key : args.key});
+	    }
+	  },
+
+	  isNewValueValid:function(value){
+	    if(isFunction(this.validate)){
+	      var isValid = this.validate(value);
+	      this.setState({isInvalid : !isValid});
+	      return isValid;
+	    }else{
+	      return true;
+	    }
+	  },
+
+	  getValue:function(){
+	      return this.getInputNode().value;
+	  },
+
+	  setValue:function(value){
+	      this.getInputNode().value = value;
+	  },
+
+	  componentDidMount: function() {
+	    if(this.getInputNode() !== undefined){
+	      this.checkFocus();
+	      this.getInputNode().className += ' editor-main';
+	    }
+	  },
+
+	  checkFocus:function(){
+	    this.getInputNode().focus();
+	  },
+
+	  getInputNode:function(){
+	    return this.getDOMNode().getElementsByTagName("input")[0];
+	  },
+
+	  getContainerClass:function(){
+	    return cx({
+	      'has-error' : this.state.isInvalid === true
+	    })
+	  },
+
+	  renderStatusIcon:function(){
+	    if(this.state.isInvalid === true){
+	      return React.createElement("span", {className: "glyphicon glyphicon-remove form-control-feedback"})
+	    }
+	  },
+
+	  render:function(){
+	    if(!isFunction(this.renderEditorNode)){
+	        throw "Editor Mixin Error : " + this.displayName + " component must implement method renderEditorNode";
+	    }
+	    var editorNode = this.renderEditorNode();
+	    return (
+	      React.createElement("div", {className: this.getContainerClass()}, 
+	        editorNode, 
+	        this.renderStatusIcon()
+	      )
+	    )
+	  }
+	};
+
+	module.exports = EditorMixin;
 
 
 /***/ },
@@ -4734,12 +4794,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                   = __webpack_require__(1);
 	var cx                      = React.addons.classSet;
-	var MixinHelper             = __webpack_require__(4);
-	var EditorMixin             = __webpack_require__(11);
-	var TextInputMixin          = __webpack_require__(12);
+	var MixinHelper             = __webpack_require__(5);
+	var EditorMixin             = __webpack_require__(45);
+	var TextInputMixin          = __webpack_require__(50);
 	var ReactAutocomplete       = __webpack_require__(46);
-	var keyboardHandlerMixin    = __webpack_require__(6);
-	var ExcelColumn = __webpack_require__(2);
+	var keyboardHandlerMixin    = __webpack_require__(4);
+	var ExcelColumn = __webpack_require__(3);
 
 	var optionPropType = React.PropTypes.shape({
 	      id    :   React.PropTypes.required,
@@ -4880,9 +4940,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                   = __webpack_require__(1);
 	var cx                      = React.addons.classSet;
-	var MixinHelper             = __webpack_require__(4);
-	var keyboardHandlerMixin    = __webpack_require__(6);
-	var EditorMixin             = __webpack_require__(11);
+	var MixinHelper             = __webpack_require__(5);
+	var keyboardHandlerMixin    = __webpack_require__(4);
+	var EditorMixin             = __webpack_require__(45);
 	var cloneWithProps          = React.addons.cloneWithProps;
 
 	var DropDownEditor = React.createClass({displayName: 'DropDownEditor',
@@ -4939,7 +4999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Editors = {
 	  AutoComplete     : __webpack_require__(47),
 	  DropDownEditor   : __webpack_require__(48),
-	  SimpleTextEditor : __webpack_require__(18)
+	  SimpleTextEditor : __webpack_require__(16)
 
 	}
 
@@ -4948,6 +5008,70 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var TextInputMixin = {
+
+	  onPressArrowLeft:function(e){
+	    //prevent event propogation. this disables left cell navigation
+	    e.stopPropagation();
+	  },
+
+	  onPressArrowRight:function(e){
+	    //prevent event propogation. this disables right cell navigation
+	    e.stopPropagation();
+	  },
+
+	  getDefaultValue:function(){
+	    var keyCode = this.props.initialKeyCode;
+	    if(keyCode === 'Delete' || keyCode === 'Backspace'){
+	      return '';
+	    }else if(keyCode === 'Enter'){
+	      return this.props.value;
+	    }else{
+	      var text = keyCode ? String.fromCharCode(keyCode) : this.props.value;
+	      return text;
+	    }
+
+	  },
+
+	  setCaretAtEndOfInput:function(){
+	    var input = this.getInputNode();
+	    //taken from http://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element
+	    var txtLength = input.value.length;
+	    if(input.setSelectionRange){
+	      input.setSelectionRange(txtLength, txtLength);
+	    }else if(input.createTextRange){
+	      var fieldRange = input.createTextRange();
+	      fieldRange.moveStart('character', txt.value.length);
+	      fieldRange.collapse();
+	      fieldRange.select();
+	    }
+	  },
+
+	  setTextInputFocus:function(){
+	    if(!this.isKeyPrintable(this.props.initialKeyCode)){
+	      this.getInputNode().focus();
+	      this.setCaretAtEndOfInput();
+	    }else{
+	      this.getInputNode().select();
+	    }
+	  }
+
+
+	};
+
+	module.exports = TextInputMixin;
+
+
+/***/ },
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -5024,13 +5148,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
 	//not including this
 	//it currently requires the whole of moment, which we dont want to take as a dependency
-	var ImageFormatter = __webpack_require__(50);
+	var ImageFormatter = __webpack_require__(51);
 
 	var Formatters = {
 	  ImageFormatter : ImageFormatter
@@ -5040,7 +5164,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* @flow */
@@ -5051,7 +5175,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React = __webpack_require__(1);
-	var Row = __webpack_require__(3);
+	var Row = __webpack_require__(2);
 
 	var Toolbar = React.createClass({displayName: 'Toolbar',
 	  propTypes: {

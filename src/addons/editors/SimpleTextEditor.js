@@ -8,28 +8,19 @@
 
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
-var MixinHelper             = require('../utils/MixinHelper');
-var EditorMixin             = require('./mixins/EditorMixin');
-var TextInputMixin          = require('./mixins/TextInputMixin');
 var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
 
 var SimpleTextEditor = React.createClass({
 
-  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
-
-  propTypes : {
+  getStyle(){
+    return {
+      height : this.props.height - 1
+    }
   },
 
-  overrides : {
-      checkFocus : function(){
-          this.setTextInputFocus();
-      }
-  },
-
-  renderEditorNode(): ?ReactElement {
-    return (<input type="text" onBlur={this.commit} className="form-control" defaultValue={this.getDefaultValue()}  style={this.getStyle()} onKeyDown={this.onKeyDown} />);
+  render(): ?ReactElement {
+    return (<input type="text" style={this.getStyle()} onBlur={this.props.commit} className="form-control" defaultValue={this.props.value} onKeyDown={this.props.onKeyDown} />);
   }
-
 
 });
 

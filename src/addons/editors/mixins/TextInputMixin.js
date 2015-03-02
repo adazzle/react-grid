@@ -1,29 +1,22 @@
-/* TODO@flow mixin */
 /**
  * @jsx React.DOM
-
-
+ * @copyright Prometheus Research, LLC 2014
  */
 'use strict';
 
 var TextInputMixin = {
 
-  propTypes : {
-    initialKeyCode : React.PropTypes.string,
-    value : React.PropTypes.any.isRequired
-  },
-
-  onPressArrowLeft(e: Event){
+  onPressArrowLeft(e){
     //prevent event propogation. this disables left cell navigation
     e.stopPropagation();
   },
 
-  onPressArrowRight(e: Event){
+  onPressArrowRight(e){
     //prevent event propogation. this disables right cell navigation
     e.stopPropagation();
   },
 
-  getDefaultValue(): string{
+  getDefaultValue(){
     var keyCode = this.props.initialKeyCode;
     if(keyCode === 'Delete' || keyCode === 'Backspace'){
       return '';
@@ -44,7 +37,7 @@ var TextInputMixin = {
       input.setSelectionRange(txtLength, txtLength);
     }else if(input.createTextRange){
       var fieldRange = input.createTextRange();
-      fieldRange.moveStart('character', input.value.length);
+      fieldRange.moveStart('character', txt.value.length);
       fieldRange.collapse();
       fieldRange.select();
     }
