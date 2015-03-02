@@ -9,7 +9,7 @@
 var React               = require('react/addons');
 var PropTypes           = React.PropTypes;
 var FilterableHeaderCell = require('../../cells/headerCells/FilterableHeaderCell');
-var ExcelRow = require('../../rows/ExcelRow');
+var Row = require('../../../Row');
 
 var FilterableGridMixin = {
   propTypes : {
@@ -22,7 +22,7 @@ var FilterableGridMixin = {
     return {canFilter : false, columnFilters : {}};
   },
 
-  filterRows(): Array<ExcelRow>{
+  filterRows(): Array<Row>{
     var rows = this.props.rows;
     if(this.state.sortColumn){
       rows = this.sortRows(rows);
@@ -50,7 +50,7 @@ var FilterableGridMixin = {
     return hasFilters;
   },
 
-  isRowDisplayed(row: ExcelRow): boolean{
+  isRowDisplayed(row: Row): boolean{
     var isRowDisplayed = null;
     Object.keys(this.state.columnFilters).every(function(key){
       var filter = this.state.columnFilters[key].toLowerCase();

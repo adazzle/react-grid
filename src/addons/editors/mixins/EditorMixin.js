@@ -30,6 +30,7 @@ var EditorMixin = {
   },
 
   onPressEnter(e: Event){
+    React.addons.Perf.start();
     e.stopPropagation();
     e.preventDefault();
     this.commit({key : 'Enter'});

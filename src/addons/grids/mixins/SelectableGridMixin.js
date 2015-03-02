@@ -1,11 +1,11 @@
 /* TODO@flow mixins */
 "use strict";
-var ExcelRow       = require('../../rows/ExcelRow');
+var Row       = require('../../../Row');
 var ExcelColumn    = require('../ExcelColumn');
 var React          = require('react/addons');
 var cx             = React.addons.classSet;
 var cloneWithProps = React.addons.cloneWithProps;
-var KeyboardHandlerMixin = require('../../cells/mixins/KeyboardHandlerMixin');
+var KeyboardHandlerMixin = require('../../../KeyboardHandlerMixin');
 var MixinHelper    = require('../../utils/MixinHelper');
 
 type SelectedType = {

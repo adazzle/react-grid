@@ -21,15 +21,24 @@ type RowPropsType = {
   isSelected: ?boolean;
 };
 
+type cellProps = {
+  props: {
+    selected: {rowIdx: number};
+    dragged: {complete: bool; rowIdx: number};
+    copied: { rowIdx: number};
+  }
+};
+
 var Row = React.createClass({
 
   propTypes: {
     height: React.PropTypes.number.isRequired,
-    idx: React.PropTypes.number.isRequired,
     columns: React.PropTypes.array.isRequired,
     row: React.PropTypes.object.isRequired,
     cellRenderer: React.PropTypes.func,
-    isSelected: React.PropTypes.bool
+    isSelected: React.PropTypes.bool,
+    idx : React.PropTypes.number.isRequired,
+    expandedRows : React.PropTypes.arrayOf(React.PropTypes.object)
   },
 
   render(): ?ReactElement {
@@ -39,7 +48,7 @@ var Row = React.createClass({
     );
 
     var style = {
-      height: this.getRowHeight(),
+      height: this.getRowHeight(this.props),
       overflow: 'hidden'
     };
 
@@ -82,8 +91,9 @@ var Row = React.createClass({
   },
 
   getRowHeight(): number {
-    if(this.props.expandedRows && this.props.key) {
-      var row = this.props.expandedRows[this.props.key] || null;
+    var rows = this.props.expandedRows || null;
+    if(rows && this.props.key) {
+      var row = rows[this.props.key] || null;
       if(row) {
         return row.height;
       }
@@ -112,7 +122,9 @@ var Row = React.createClass({
 
   getDefaultProps(): {cellRenderer: Cell} {
     return {
-      cellRenderer: Cell
+      cellRenderer: Cell,
+      isSelected: false,
+      height : 35
     };
   },
 
@@ -150,8 +162,7 @@ var Row = React.createClass({
     this.doesRowContainSelectedCell(nextProps)           ||
     nextProps.row !== this.props.row                     ||
     nextProps.height !== this.props.height;
-  },
-
+  }
 
 });
 

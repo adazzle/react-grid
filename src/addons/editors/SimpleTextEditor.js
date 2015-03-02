@@ -11,7 +11,7 @@ var cx                      = React.addons.classSet;
 var MixinHelper             = require('../utils/MixinHelper');
 var EditorMixin             = require('./mixins/EditorMixin');
 var TextInputMixin          = require('./mixins/TextInputMixin');
-var keyboardHandlerMixin    = require('../cells/mixins/KeyboardHandlerMixin');
+var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
 
 var SimpleTextEditor = React.createClass({
 

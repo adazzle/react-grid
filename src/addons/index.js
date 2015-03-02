@@ -7,6 +7,6 @@ module.exports = {
   Mixins : {
     EditorMixin          : require('./editors/mixins/EditorMixin'),
     TextInputMixin       : require('./editors/mixins/TextInputMixin'),
-    KeyboardHandlerMixin : require('./cells/mixins/KeyboardHandlerMixin')
+    KeyboardHandlerMixin : require('../KeyboardHandlerMixin')
   }
 }

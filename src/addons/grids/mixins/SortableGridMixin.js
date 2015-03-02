@@ -10,7 +10,7 @@ var React               = require('react/addons');
 var PropTypes           = React.PropTypes;
 var SortableHeaderCell  = require('../../cells/headerCells/SortableHeaderCell');
 var shallowCloneObject  = require('../../../shallowCloneObject');
-var ExcelRow = require('../../rows/ExcelRow');
+var Row = require('../../../Row');
 var ExcelColumn = require('../ExcelColumn');
 
 type SortType = {ASC: string; DESC: string};
@@ -61,7 +61,7 @@ var SortableGridMixin = {
       this.setState({sortDirection: direction, sortColumn: column.key});
     },
 
-    sortRows: function(rows: Array<ExcelRow>): Array<ExcelRow> {
+    sortRows: function(rows: Array<Row>): Array<Row> {
       //feels naughty
       rows = [].concat(rows);
       var sortColumn = this.state.sortColumn;

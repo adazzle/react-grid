@@ -9,11 +9,60 @@
 var React          = require('react/addons');
 var cx             = React.addons.classSet;
 var cloneWithProps = React.addons.cloneWithProps;
-var SelectableMixin      = require('./addons/cells/mixins/SelectableMixin');
+var SimpleTextEditor = require('./addons/editors/SimpleTextEditor');
 
 var Cell = React.createClass({
 
-  mixins : [SelectableMixin],
+  propTypes : {
+    rowIdx : React.PropTypes.number.isRequired,
+    idx : React.PropTypes.number.isRequired,
+    selected : React.PropTypes.shape({
+      idx : React.PropTypes.number.isRequired,
+    }),
+    tabIndex : React.PropTypes.number,
+    ref : React.PropTypes.string,
+    // handleDragEnter : React.PropTypes.func,
+    // handleDragStart : React.PropTypes.func,
+    // handleDragEnd : React.PropTypes.func,
+    // handleTerminateDrag : React.PropTypes.func,
+    // onDragEnter : React.PropTypes.func,
+    // onDragEnd : React.PropTypes.func,
+    // value: React.PropTypes.any.isRequired,
+    // dragged: React.PropTypes.shape({
+    //   overRowIdx: React.PropTypes.number.isRequired,
+    //   idx: React.PropTypes.number.isRequired,
+    //   complete: React.PropTypes.bool
+    // }),
+    // copied: React.PropTypes.shape({
+    //   rowIdx: React.PropTypes.number.isRequired,
+    //   idx: React.PropTypes.number.isRequired
+    // }),
+    // handleCopy : React.PropTypes.func.isRequired,
+    // handlePaste : React.PropTypes.func.isRequired
+  },
+
+  getDefaultProps : function(): {tabIndex: number; ref: string } {
+    return {
+      tabIndex : -1,
+      ref : "cell",
+      formatter: simpleCellFormatter,
+      // handleDragStart: this.handleDragStart,
+      // onDragEnter: this.handleDragEnter,
+      // onDragEnd: this.handleDragEnd
+    }
+  },
+
+  componentDidMount: function() {
+    this.checkFocus();
+  },
+
+  componentDidUpdate: function() {
+    this.checkFocus();
+    var dragged = this.props.dragged;
+    if(dragged && dragged.complete === true){
+      this.props.handleTerminateDrag();
+    }
+  },
 
   shouldComponentUpdate(nextProps: any, nextState: any): boolean {
     return this.props.column.width !== nextProps.column.width
@@ -23,24 +72,14 @@ var Cell = React.createClass({
     || this.isCellSelectionChanging(nextProps);
   },
 
-  getCellClass : function(): string {
-
-    var className = cx(
-      'react-grid-Cell',
-      this.props.className,
-      this.props.column.locked ? 'react-grid-Cell--locked' : null
-    );
-
-    var extraClasses = cx({
-      'selected' : this.isSelected() && !this.isActive(),
-      'editing' : this.isActive()
-    })
-
-    return className + ' ' + extraClasses;
-  },
-
-  onCellClick(){
-    this.props.cellMetaData.onCellClick({rowIdx : this.props.rowIdx, idx : this.props.idx});
+  getStyle(): {position:string; width: number; height: number; left: number} {
+    var style = {
+      position: 'absolute',
+      width: this.props.column.width,
+      height: this.props.height,
+      left: this.props.column.left
+    };
+    return style;
   },
 
   render(): ?ReactElement {
@@ -57,9 +96,9 @@ var Cell = React.createClass({
 
     return (
       <div {...this.props} className={className} style={style} onClick={this.onCellClick}>
-          {cellContent}
-          <div className="drag-handle" draggable="true" onDragStart={this.props.handleDragStart}>
-          </div>
+      {cellContent}
+      <div className="drag-handle" draggable="true" onDragStart={this.props.handleDragStart}>
+      </div>
       </div>
     );
   },
@@ -69,24 +108,100 @@ var Cell = React.createClass({
     var formatterTag = React.isValidElement(formatter) ? cloneWithProps(formatter, props) : this.props.formatter(props);
     return (<div
       className="react-grid-Cell__value">{formatterTag} {this.props.cellControls}</div>)
+    },
 
+  isSelected: function(): boolean {
+    var selected = this.props.cellMetaData.selected;
+    return (
+      selected
+      && selected.rowIdx === this.props.rowIdx
+      && selected.idx === this.props.idx
+    );
   },
 
-  getDefaultProps(): {formatter: (props:{value: string}) => string} {
-    return {
-      formatter: simpleCellFormatter
-    };
+  isActive(): boolean{
+    var selected = this.props.cellMetaData.selected;
+    return this.isSelected() && selected.active === true;
   },
 
-  getStyle(): {position:string; width: number; height: number; left: number} {
-    var style = {
-      position: 'absolute',
-      width: this.props.column.width,
-      height: this.props.height,
-      left: this.props.column.left
-    };
-    return style;
+  isCellSelectionChanging(nextProps: {idx: number; cellMetaData: {selected: {idx: number}}}): boolean {
+    var selected     = this.props.cellMetaData.selected;
+    var nextSelected = nextProps.cellMetaData.selected;
+    if(selected && nextSelected){
+      return this.props.idx === nextSelected.idx || this.props.idx === selected.idx;
+    }else{
+      return true;
+    }
   },
+
+  getEditor(): ReactElement{
+    var selected     = this.props.cellMetaData.selected;
+    var editorProps = {height : this.props.height, onCommit : this.onCommit, initialKeyCode : selected.initialKeyCode, editorRowMetaData : this.getEditorRowMetaData()};
+    var customEditor = this.props.column.editor;
+    if(customEditor && React.isValidElement(customEditor)){
+      //return custom column editor or SimpleEditor if none specified
+      return cloneWithProps(customEditor, editorProps);
+    }else{
+      return cloneWithProps(SimpleTextEditor(), editorProps);
+    }
+  },
+
+  getEditorRowMetaData(): any {
+    //clone row data so editor cannot actually change this
+    var columnName = this.props.column.ItemId;
+    //convention based method to get corresponding Id or Name of any Name or Id property
+    if(typeof this.props.column.getEditorRowMetaData === 'function'){
+      return this.props.column.getEditorRowMetaData(this.props.rowData);
+    }
+  },
+
+  getFormatter(): ReactElement {
+    var col = this.props.column;
+    if(this.isActive()){
+      return this.getEditor();
+    }else{
+      return this.props.column.formatter;
+    }
+  },
+
+
+  onCommit(commit: {key: string; updated: any}){
+    var rowIdx = this.props.rowIdx;
+    var idx = this.props.idx;
+    var cellKey = this.props.column.key;
+    this.props.cellMetaData.onCommit({cellKey: cellKey, rowIdx: this.props.filterRowIdx || rowIdx, updated : commit.updated, keyCode : commit.key});
+  },
+
+  onCellClick(){
+    this.props.cellMetaData.onCellClick({rowIdx : this.props.rowIdx, idx : this.props.idx});
+  },
+
+  checkFocus: function() {
+    if (this.isSelected() && !this.isActive()) {
+      this.getDOMNode().focus();
+    }
+  },
+
+  getCellClass : function(): string {
+    var className = cx(
+      'react-grid-Cell',
+      this.props.className,
+      this.props.column.locked ? 'react-grid-Cell--locked' : null
+    );
+
+    var extraClasses = cx({
+      'selected' : this.isSelected() && !this.isActive() ,
+      'editing' : this.isActive(),
+      // 'copied' : this.isCopied(),
+      // 'selected-draggable' : this.isSelected(),
+      // 'active-drag-cell' : this.isSelected() || this.isDraggedOver(),
+      // 'is-dragged-over-up' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx < this.props.dragged.rowIdx,
+      // 'is-dragged-over-down' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx > this.props.dragged.rowIdx,
+      // 'was-dragged-over' : this.wasDraggedOver()
+    });
+    return className + ' ' + extraClasses;
+  },
+
 
   setScrollLeft(scrollLeft: number) {
     if (this.isMounted()) {
@@ -95,7 +210,75 @@ var Cell = React.createClass({
       node.style.webkitTransform = transform;
       node.style.transform = transform;
     }
-  }
+  },
+
+
+  // KeyCode_c : '99',
+  //
+  // KeyCode_C : '67',
+  //
+  // KeyCode_V : '86',
+  //
+  // KeyCode_v : '118',
+  //
+  // isCopied : function(){
+  //   return (
+  //     this.props.copied
+  //     && this.props.copied.rowIdx === this.props.rowIdx
+  //     && this.props.copied.idx === this.props.idx
+  //   );
+  // },
+  //
+  // onPressKeyWithCtrl(e){
+  //   if(this.canEdit()){
+  //     if(e.keyCode == this.KeyCode_c || e.keyCode == this.KeyCode_C){
+  //       this.props.handleCopy({value : this.props.value});
+  //     }else if(e.keyCode == this.KeyCode_v || e.keyCode == this.KeyCode_V){
+  //       this.props.handlePaste({value : this.props.value});
+  //     }
+  //   }
+  // },
+  //
+  // isDraggedOver(){
+  //
+  //   return (
+  //     this.props.dragged &&
+  //     this.props.dragged.overRowIdx === this.props.rowIdx
+  //     && this.props.dragged.idx === this.props.idx
+  //   )
+  // },
+  //
+  // wasDraggedOver(){
+  //   return (
+  //     this.props.dragged
+  //     && ((this.props.dragged.overRowIdx < this.props.rowIdx && this.props.rowIdx < this.props.dragged.rowIdx)
+  //     ||  (this.props.dragged.overRowIdx > this.props.rowIdx && this.props.rowIdx > this.props.dragged.rowIdx))
+  //     && this.props.dragged.idx === this.props.idx
+  //   );
+  // },
+  //
+  // handleDragStart(e){
+  //   var rowIdx = this.props.rowIdx;
+  //   var idx = this.props.idx;
+  //   this.props.handleDragStart({rowIdx : rowIdx, idx : idx, copiedText : this.props.value});
+  // },
+  //
+  // handleDragEnter(){
+  //   this.props.handleDragEnter(this.props.rowIdx);
+  // },
+  //
+  // handleDragEnd(){
+  //   this.props.handleDragEnd();
+  // },
+  //
+  // isDraggedCellChanging(nextProps){
+  //   if(this.props.dragged){
+  //     return (nextProps.dragged && this.props.idx === nextProps.dragged.idx)
+  //     || (this.props.dragged && this.props.idx === this.props.dragged.idx);
+  //   }else{
+  //     return false;
+  //   }
+  // }
 });
 
 function simpleCellFormatter(props: any): string {

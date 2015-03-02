@@ -1,6 +1,6 @@
 /* @flow */
-var ExcelRow = require('../build/ReactGrid').ExcelRow;
-module.exports = function(start: number, end: number): Array<ExcelRow> {
+var Row = require('../build/ReactGrid').Row;
+module.exports = function(start: number, end: number): Array<Row> {
   var result = []
   for (var i = start; i < end; i++) {
     result.push({
