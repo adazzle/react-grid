@@ -40,7 +40,7 @@ var ExcelGrid = React.createClass({
     enableRowSelect: React.PropTypes.bool,
     onRowUpdated:React.PropTypes.func,
     columns:React.PropTypes.arrayOf(ExcelColumn).isRequired,
-
+    rows:React.PropTypes.arrayOf(Row).isRequired,
     toolbar:React.PropTypes.element
   },
 

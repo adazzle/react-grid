@@ -13,6 +13,9 @@ var SimpleTextEditor        = require('./SimpleTextEditor');
 var isFunction              = require('../utils/isFunction');
 var cloneWithProps          = React.addons.cloneWithProps;
 
+type Editor = {
+  getValue: () => string;
+};
 var EditorContainer = React.createClass({
 
   mixins : [keyboardHandlerMixin],
@@ -53,7 +56,7 @@ var EditorContainer = React.createClass({
       //return custom column editor or SimpleEditor if none specified
       return React.addons.cloneWithProps(customEditor, editorProps);
     }else{
-      return <SimpleTextEditor ref={'editor'} column={this.props.column} onKeyDown={this.onKeyDown} value={this.getInitialValue()} commit={this.commit} editorRowMetaData={this.getEditorRowMetaData()} />;
+      return <SimpleTextEditor ref={'editor'} column={this.props.column} onKeyDown={this.onKeyDown} value={this.getInitialValue()} onBlur={this.commit} editorRowMetaData={this.getEditorRowMetaData()} />;
     }
   },
 
