@@ -21,13 +21,13 @@ var EditorContainer = React.createClass({
     column : React.PropTypes.object.isRequired
   },
 
-  getStyle(){
+  getStyle(): {height: number}{
     return {
       height : this.props.height - 1
     }
   },
 
-  getInitialState(){
+  getInitialState() {
     return {isInvalid : false}
   },
 
@@ -42,7 +42,7 @@ var EditorContainer = React.createClass({
     }
   },
 
-  getEditorRowMetaData(){
+  getEditorRowMetaData(): ?any {
     //clone row data so editor cannot actually change this
     var columnName = this.props.column.ItemId;
     //convention based method to get corresponding Id or Name of any Name or Id property
@@ -51,13 +51,13 @@ var EditorContainer = React.createClass({
     }
   },
 
-  onPressEnter(e){
+  onPressEnter(e: Event){
     e.stopPropagation();
     e.preventDefault();
     this.commit({key : 'Enter'});
   },
 
-  onPressTab(e){
+  onPressTab(e: Event){
     e.stopPropagation();
     e.preventDefault();
     this.commit({key : 'Tab'});
@@ -73,7 +73,7 @@ var EditorContainer = React.createClass({
     }
   },
 
-  isNewValueValid(value){
+  isNewValueValid(value: string){
     if(isFunction(this.validate)){
       var isValid = this.validate(value);
       this.setState({isInvalid : !isValid});
@@ -83,11 +83,11 @@ var EditorContainer = React.createClass({
     }
   },
 
-  getValue(){
+  getValue(): string{
     return this.getInputNode().value;
   },
 
-  setValue(value){
+  setValue(value: string){
     this.getInputNode().value = value;
   },
 
@@ -98,11 +98,11 @@ var EditorContainer = React.createClass({
     }
   },
 
-  getInputNode(){
+  getInputNode(): HTMLElement{
     return this.getDOMNode().getElementsByTagName("input")[0];
   },
 
-  getDefaultValue(){
+  getDefaultValue(): string{
     var selected = this.props.cellMetaData.selected;
     var keyCode = selected.initialKeyCode;
     if(keyCode === 'Delete' || keyCode === 'Backspace'){
@@ -122,13 +122,13 @@ var EditorContainer = React.createClass({
     })
   },
 
-  renderStatusIcon(){
+  renderStatusIcon(): ?ReactElement{
     if(this.state.isInvalid === true){
       return <span className="glyphicon glyphicon-remove form-control-feedback"></span>
     }
   },
 
-  render(){
+  render(): ?ReactElement{
     var Editor = this.getEditor();
     return (
       <div style={this.getStyle()} className={this.getContainerClass()}>
@@ -137,7 +137,7 @@ var EditorContainer = React.createClass({
       </div>
     )
   },
-  
+
   setCaretAtEndOfInput(){
     var input = this.getInputNode();
     //taken from http://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element
@@ -146,7 +146,7 @@ var EditorContainer = React.createClass({
       input.setSelectionRange(txtLength, txtLength);
     }else if(input.createTextRange){
       var fieldRange = input.createTextRange();
-      fieldRange.moveStart('character', txt.value.length);
+      fieldRange.moveStart('character', txtLength);
       fieldRange.collapse();
       fieldRange.select();
     }
