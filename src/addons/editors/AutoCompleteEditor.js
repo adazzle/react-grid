@@ -10,8 +10,8 @@ overrides? getDefaultValue, getStyle, onKeyDown
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
 var ReactAutocomplete       = require('ron-react-autocomplete');
-
-var ExcelColumn = require('../grids/ExcelColumn');
+var KeyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
+var ExcelColumn             = require('../grids/ExcelColumn');
 
 var optionPropType = React.PropTypes.shape({
       id    :   React.PropTypes.required,
@@ -20,35 +20,37 @@ var optionPropType = React.PropTypes.shape({
 
 var AutoCompleteEditor = React.createClass({
 
+  mixins : [KeyboardHandlerMixin],
+
   propTypes : {
     onCommit : React.PropTypes.func.isRequired,
     options : React.PropTypes.arrayOf(optionPropType).isRequired,
     label : React.PropTypes.string,
     value : React.PropTypes.any.isRequired,
-    valueParams: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    valueParams: React.PropTypes.arrayOf(React.PropTypes.string),
     column: React.PropTypes.shape(ExcelColumn).isRequired,
-    resultIdentifier : React.PropTypes.string.isRequired,
-    search : React.PropTypes.string.isRequired,
+    resultIdentifier : React.PropTypes.string,
+    search : React.PropTypes.string,
 
   },
 
+  getDefaultProps(){
+    return {
+      resultIdentifier : 'id'
+    }
+  },
 
+  handleKeyDown(e: Event){
+    if(!this.isKeyPrintable(e.keyCode) && this.areResultsShowing()){
+      e.stopPropagation();
+      e.preventDefault();
+    }else{
+      this.props.onKeyDown(e);
+    }
+  },
 
-  overrides : {
-      checkFocus : function(){
-          this.setTextInputFocus();
-      },
-      getInputNode(): HTMLElement {
-        return this.getSearchComponent().getDOMNode();
-      },
-      onPressEnter(args: any){
-        var e = args[0];
-        this.handleEnter(e);
-      },
-      onPressTab(args: any){
-        var e = args[0];
-        this.handleTab(e);
-      }
+  areResultsShowing(){
+    return this.refs.autoComplete.state.showResults === true;
   },
 
   handleTab(e: Event){
@@ -69,8 +71,8 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  getSearchComponent(): ?ReactElement{
-    return this.refs.autoComplete.refs.search;
+  getValue(){
+    return this.refs.autoComplete.refs.search.value
   },
 
   isFocusedOnSuggestion(): boolean{
@@ -80,17 +82,6 @@ var AutoCompleteEditor = React.createClass({
 
   getFocusedSuggestion(): string{
     return this.refs.autoComplete.state.focusedValue;
-  },
-
-  onPressArrowDown(e: Event){
-    //prevent event propogation. this disables downwards cell navigation
-    e.stopPropagation();
-    e.preventDefault();
-  },
-
-  onPressArrowUp(e: Event){
-    //prevent event propogation. this disables upwards cell navigation
-    e.stopPropagation();
   },
 
   getLabel(item: any): string {
@@ -113,7 +104,7 @@ var AutoCompleteEditor = React.createClass({
       rowDataChanged[this.props.column.key] = value;
     }
     key = key ? key : 'Enter';
-    this.props.onCommit({value : value, key : key, updated : rowDataChanged});
+    this.props.commit({value : value, key : key, updated : rowDataChanged});
   },
 
   constuctValueFromParams(obj: any, props: Array<string>): string {
@@ -125,11 +116,9 @@ var AutoCompleteEditor = React.createClass({
   },
 
   render(): ReactElement {
-    var ctrl: any = this; //flow thrown by our override magic, so stepping into the shadows..
-    var val = {title : ctrl.getDefaultValue()};
     var label = this.props.label != null ? this.props.label : 'title';
-    return (<div style={ctrl.getStyle()} onKeyDown={ctrl.onKeyDown}>
-              <ReactAutocomplete  search={this.props.search} ref="autoComplete" label={label} resultIdentifier={this.props.resultIdentifier} options={this.props.options} value={val} onChange={this.handleChange} />
+    return (<div height={this.props.height} onKeyDown={this.handleKeyDown}>
+              <ReactAutocomplete  search={this.props.search} ref="autoComplete" label={label} resultIdentifier={this.props.resultIdentifier} options={this.props.options} value={this.props.value} onChange={this.handleChange} />
             </div>);
   }
 

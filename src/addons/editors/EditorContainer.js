@@ -11,6 +11,7 @@ var cx                      = React.addons.classSet;
 var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
 var SimpleTextEditor        = require('./SimpleTextEditor');
 var isFunction              = require('../utils/isFunction');
+var cloneWithProps          = React.addons.cloneWithProps;
 
 var EditorContainer = React.createClass({
 
@@ -21,18 +22,32 @@ var EditorContainer = React.createClass({
     column : React.PropTypes.object.isRequired
   },
 
-  getStyle(){
-    return {
-      height : this.props.height - 1
-    }
-  },
-
   getInitialState(){
     return {isInvalid : false}
   },
 
+  componentWillMount(){
+      this.validateEditor();
+  },
+
+  componentDidMount: function() {
+    var inputNode = this.getInputNode();
+    if(inputNode !== undefined){
+      this.setTextInputFocus();
+      inputNode.className += ' editor-main';
+      inputNode.style.height = this.props.height - 1 + 'px';
+    }
+  },
+
+  validateEditor(){
+    var editor = this.props.column.editor;
+    if(editor){
+
+    }
+  },
+
   getEditor(){
-    var editorProps = {onKeyDown : this.onKeyDown, value : this.getDefaultValue(), onCommit : this.commit, editorRowMetaData : this.getEditorRowMetaData(), height : this.props.height};
+    var editorProps = {ref: 'editor', onKeyDown : this.onKeyDown, value : this.getInitialValue(), onCommit : this.commit, editorRowMetaData : this.getEditorRowMetaData(), height : this.props.height};
     var customEditor = this.props.column.editor;
     if(customEditor && React.isValidElement(customEditor)){
       //return custom column editor or SimpleEditor if none specified
@@ -64,12 +79,10 @@ var EditorContainer = React.createClass({
   },
 
   commit(args: {key : string}){
-    var value = this.getValue();
-    var rowDataChanged = {};
-    rowDataChanged[this.props.column.key] = value;
+    var updated = this.refs.editor.getValue();
     if(this.isNewValueValid(value)){
       var cellKey = this.props.column.key;
-      this.props.cellMetaData.onCommit({cellKey: cellKey, rowIdx: this.props.rowIdx, updated : rowDataChanged, key : args.key});
+      this.props.cellMetaData.onCommit({cellKey: cellKey, rowIdx: this.props.rowIdx, updated : updated, key : args.key});
     }
   },
 
@@ -83,26 +96,11 @@ var EditorContainer = React.createClass({
     }
   },
 
-  getValue(){
-    return this.getInputNode().value;
-  },
-
-  setValue(value){
-    this.getInputNode().value = value;
-  },
-
-  componentDidMount: function() {
-    if(this.getInputNode() !== undefined){
-      this.setTextInputFocus();
-      this.getInputNode().className += ' editor-main';
-    }
-  },
-
   getInputNode(){
     return this.getDOMNode().getElementsByTagName("input")[0];
   },
 
-  getDefaultValue(){
+  getInitialValue(){
     var selected = this.props.cellMetaData.selected;
     var keyCode = selected.initialKeyCode;
     if(keyCode === 'Delete' || keyCode === 'Backspace'){
@@ -131,13 +129,13 @@ var EditorContainer = React.createClass({
   render(){
     var Editor = this.getEditor();
     return (
-      <div style={this.getStyle()} className={this.getContainerClass()}>
+      <div className={this.getContainerClass()}>
       {Editor}
       {this.renderStatusIcon()}
       </div>
     )
   },
-  
+
   setCaretAtEndOfInput(){
     var input = this.getInputNode();
     //taken from http://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element

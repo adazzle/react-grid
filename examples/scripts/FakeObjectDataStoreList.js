@@ -1,5 +1,5 @@
 var faker = require('faker');
-
+faker.locale = 'en_GB';
 var SIZE = 2000;
 var _cache = [];
 
@@ -7,7 +7,7 @@ function createFakeRowObjectData(/*number*/ index) {
   return {
     id: 'id_' + index,
     avartar: faker.image.avatar(),
-    city: faker.address.city(),
+    county: faker.address.county(),
     email: faker.internet.email(),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),

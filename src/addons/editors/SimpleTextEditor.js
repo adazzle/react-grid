@@ -12,14 +12,19 @@ var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
 
 var SimpleTextEditor = React.createClass({
 
-  getStyle(){
-    return {
-      height : this.props.height - 1
-    }
+  propTypes : {
+    onKeyDown : React.PropTypes.func.isRequired,
+    value : React.PropTypes.any.isRequired,
+    commit : React.PropTypes.func.isRequired,
+    height : React.PropTypes.number.isRequired
+  },
+
+  getValue(){
+    return this.refs.text.value;
   },
 
   render(): ?ReactElement {
-    return (<input type="text" style={this.getStyle()} onBlur={this.props.commit} className="form-control" defaultValue={this.props.value} onKeyDown={this.props.onKeyDown} />);
+    return (<input type="text" onBlur={this.props.commit} className="form-control" defaultValue={this.props.value} onKeyDown={this.props.onKeyDown} />);
   }
 
 });
