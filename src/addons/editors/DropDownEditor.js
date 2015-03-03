@@ -17,13 +17,13 @@ var DropDownEditor = React.createClass({
     commit : React.PropTypes.func.isRequired
   },
 
-  getStyle(){
+  getStyle(): {width: string}{
     return {
       width : '100%'
     }
   },
 
-  render(): ReactElement{
+  render(): ?ReactElement{
     return (
       <select ref="select" style={this.getStyle()} defaultValue={this.props.value} onChange={this.onChange} >
         {this.renderOptions()}
@@ -38,11 +38,11 @@ var DropDownEditor = React.createClass({
     return options;
   },
 
-  getValue(){
+  getValue(): string{
     return this.refs.select.getDOMNode().value;
   },
 
-  getInputNode(){
+  getInputNode(): HTMLInputElement{
     return this.refs.select.getDOMNode();
   },
 

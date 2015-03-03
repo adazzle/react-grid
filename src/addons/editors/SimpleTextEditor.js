@@ -20,13 +20,13 @@ var SimpleTextEditor = React.createClass({
     column :  React.PropTypes.shape(ExcelColumn).isRequired
   },
 
-  getValue(): Object{
+  getValue(): any{
     var updated = {};
     updated[this.props.column.key] = this.refs.input.getDOMNode().value;
     return updated;
   },
 
-  getInputNode(){
+  getInputNode(): HTMLInputElement{
     return this.getDOMNode();
   },
 

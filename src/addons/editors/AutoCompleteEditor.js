@@ -51,7 +51,7 @@ var AutoCompleteEditor = React.createClass({
     return updated;
   },
 
-  getInputNode(){
+  getInputNode(): HTMLInputElement{
     return this.getDOMNode().getElementsByTagName("input")[0];
   },
 
