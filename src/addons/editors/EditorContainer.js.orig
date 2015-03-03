@@ -22,6 +22,7 @@ var EditorContainer = React.createClass({
     column : React.PropTypes.object.isRequired
   },
 
+<<<<<<< HEAD
   getInitialState(){
     return {isInvalid : false}
   },
@@ -44,6 +45,16 @@ var EditorContainer = React.createClass({
     if(editor){
 
     }
+=======
+  getStyle(): {height: number}{
+    return {
+      height : this.props.height - 1
+    }
+  },
+
+  getInitialState() {
+    return {isInvalid : false}
+>>>>>>> a1cb62a2fae3a42303523f263b496a4afa0d0354
   },
 
   getEditor(){
@@ -96,11 +107,34 @@ var EditorContainer = React.createClass({
     }
   },
 
+<<<<<<< HEAD
+  getInputNode(){
+    return this.getDOMNode().getElementsByTagName("input")[0];
+  },
+
+  getInitialValue(){
+=======
+  getValue(): string{
+    return this.getInputNode().value;
+  },
+
+  setValue(value: string){
+    this.getInputNode().value = value;
+  },
+
+  componentDidMount: function() {
+    if(this.getInputNode() !== undefined){
+      this.setTextInputFocus();
+      this.getInputNode().className += ' editor-main';
+    }
+  },
+
   getInputNode(): HTMLInputElement{
     return this.getDOMNode().getElementsByTagName("input")[0];
   },
 
-  getInitialValue(): string{
+  getDefaultValue(): string{
+>>>>>>> a1cb62a2fae3a42303523f263b496a4afa0d0354
     var selected = this.props.cellMetaData.selected;
     var keyCode = selected.initialKeyCode;
     if(keyCode === 'Delete' || keyCode === 'Backspace'){
