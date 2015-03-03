@@ -47,7 +47,7 @@ var EditorContainer = React.createClass({
   },
 
   getEditor(){
-    var editorProps = {ref: 'editor', onKeyDown : this.onKeyDown, value : this.getInitialValue(), onCommit : this.commit, editorRowMetaData : this.getEditorRowMetaData(), height : this.props.height};
+    var editorProps = {ref: 'editor', column : this.props.column, onKeyDown : this.onKeyDown, value : this.getInitialValue(), onCommit : this.commit, editorRowMetaData : this.getEditorRowMetaData(), height : this.props.height};
     var customEditor = this.props.column.editor;
     if(customEditor && React.isValidElement(customEditor)){
       //return custom column editor or SimpleEditor if none specified
@@ -78,9 +78,31 @@ var EditorContainer = React.createClass({
     this.commit({key : 'Tab'});
   },
 
+  onPressArrowDown(e: Event){
+    if(this.editorHasResults()){
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  },
+
+  onPressArrowUp(e: Event){
+    if(this.editorHasResults()){
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  },
+
+  editorHasResults(): boolean{
+    if(isFunction(this.refs.editor['hasResults'])){
+      return this.refs.editor.hasResults();
+    }else{
+      return false;
+    }
+  },
+
   commit(args: {key : string}){
     var updated = this.refs.editor.getValue();
-    if(this.isNewValueValid(value)){
+    if(this.isNewValueValid(updated)){
       var cellKey = this.props.column.key;
       this.props.cellMetaData.onCommit({cellKey: cellKey, rowIdx: this.props.rowIdx, updated : updated, key : args.key});
     }

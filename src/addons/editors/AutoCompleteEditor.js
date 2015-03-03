@@ -20,8 +20,6 @@ var optionPropType = React.PropTypes.shape({
 
 var AutoCompleteEditor = React.createClass({
 
-  mixins : [KeyboardHandlerMixin],
-
   propTypes : {
     onCommit : React.PropTypes.func.isRequired,
     options : React.PropTypes.arrayOf(optionPropType).isRequired,
@@ -30,8 +28,7 @@ var AutoCompleteEditor = React.createClass({
     valueParams: React.PropTypes.arrayOf(React.PropTypes.string),
     column: React.PropTypes.shape(ExcelColumn).isRequired,
     resultIdentifier : React.PropTypes.string,
-    search : React.PropTypes.string,
-
+    search : React.PropTypes.string
   },
 
   getDefaultProps(){
@@ -40,48 +37,27 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  handleKeyDown(e: Event){
-    if(!this.isKeyPrintable(e.keyCode) && this.areResultsShowing()){
-      e.stopPropagation();
-      e.preventDefault();
-    }else{
-      this.props.onKeyDown(e);
-    }
+  hasResults(){
+    return this.refs.autoComplete.state.results.length > 0;
   },
 
-  areResultsShowing(){
-    return this.refs.autoComplete.state.showResults === true;
-  },
-
-  handleTab(e: Event){
-    e.stopPropagation();
-    e.preventDefault();
-    if(!this.isFocusedOnSuggestion()){
-      this.handleChange(null, 'Tab');
-    }else{
-      this.handleChange(this.getFocusedSuggestion(), 'Tab');
-    }
-  },
-
-  handleEnter(e: Event){
-    e.stopPropagation();
-    e.preventDefault();
-    if(!this.isFocusedOnSuggestion()){
-      this.props.onCommit({value : this.refs.autoComplete.state.searchTerm, key : 'Enter'});
-    }
-  },
-
-  getValue(){
-    return this.refs.autoComplete.refs.search.value
-  },
-
-  isFocusedOnSuggestion(): boolean{
+  isFocusedOnSuggestion(){
     var autoComplete = this.refs.autoComplete;
     return autoComplete.state.focusedValue != null;
   },
 
-  getFocusedSuggestion(): string{
-    return this.refs.autoComplete.state.focusedValue;
+  getValue(){
+    var value, updated = {};
+    if(this.hasResults() && this.isFocusedOnSuggestion()){
+      value = this.getLabel(this.refs.autoComplete.state.focusedValue);
+      if(this.props.valueParams){
+        value = this.constuctValueFromParams(this.refs.autoComplete.state.focusedValue, this.props.valueParams);
+      }
+    }else{
+      value = this.refs.autoComplete.state.searchTerm;
+    }
+    updated[this.props.column.key] = value;
+    return updated;
   },
 
   getLabel(item: any): string {
@@ -91,20 +67,6 @@ var AutoCompleteEditor = React.createClass({
     } else if (typeof label === "string") {
       return item[label];
     }
-  },
-
-  handleChange(item: ?string, key: string) {
-    var rowDataChanged = {};
-    var value = this.props.value;
-    if(item!=null){
-      value = this.getLabel(item);
-      if(this.props.valueParams){
-        value = this.constuctValueFromParams(item, this.props.valueParams);
-      }
-      rowDataChanged[this.props.column.key] = value;
-    }
-    key = key ? key : 'Enter';
-    this.props.commit({value : value, key : key, updated : rowDataChanged});
   },
 
   constuctValueFromParams(obj: any, props: Array<string>): string {
@@ -117,8 +79,8 @@ var AutoCompleteEditor = React.createClass({
 
   render(): ReactElement {
     var label = this.props.label != null ? this.props.label : 'title';
-    return (<div height={this.props.height} onKeyDown={this.handleKeyDown}>
-              <ReactAutocomplete  search={this.props.search} ref="autoComplete" label={label} resultIdentifier={this.props.resultIdentifier} options={this.props.options} value={this.props.value} onChange={this.handleChange} />
+    return (<div height={this.props.height} onKeyDown={this.props.onKeyDown}>
+              <ReactAutocomplete  search={this.props.search} ref="autoComplete" label={label} resultIdentifier={this.props.resultIdentifier} options={this.props.options} value={{title : this.props.value}} />
             </div>);
   }
 
