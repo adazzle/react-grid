@@ -156,7 +156,7 @@ var Row = React.createClass({
     return cell.props.copied != null && cell.props.copied.rowIdx === this.props.idx;
   },
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: any): boolean {
     return !(ColumnMetrics.sameColumns(this.props.columns, nextProps.columns, ColumnMetrics.sameColumn)) ||
     this.doesRowContainSelectedCell(this.props)          ||
     this.doesRowContainSelectedCell(nextProps)           ||

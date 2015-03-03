@@ -56,7 +56,7 @@ var Cell = React.createClass({
     this.checkFocus();
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate: function(prevProps: any, prevState: any) {
     this.checkFocus();
     var dragged = this.props.dragged;
     if(dragged && dragged.complete === true){
