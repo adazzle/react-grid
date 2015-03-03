@@ -31,13 +31,13 @@ var AutoCompleteEditor = React.createClass({
     search : React.PropTypes.string
   },
 
-  getDefaultProps(){
+  getDefaultProps(): {resultIdentifier: string}{
     return {
       resultIdentifier : 'id'
     }
   },
 
-  getValue(){
+  getValue(): any{
     var value, updated = {};
     if(this.hasResults() && this.isFocusedOnSuggestion()){
       value = this.getLabel(this.refs.autoComplete.state.focusedValue);
@@ -51,18 +51,18 @@ var AutoCompleteEditor = React.createClass({
     return updated;
   },
 
-  render(): ReactElement {
+  render(): ?ReactElement {
     var label = this.props.label != null ? this.props.label : 'title';
     return (<div height={this.props.height} onKeyDown={this.props.onKeyDown}>
       <ReactAutocomplete  search={this.props.search} ref="autoComplete" label={label} resultIdentifier={this.props.resultIdentifier} options={this.props.options} value={{title : this.props.value}} />
       </div>);
   },
 
-  hasResults(){
+  hasResults(): boolean{
     return this.refs.autoComplete.state.results.length > 0;
   },
 
-  isFocusedOnSuggestion(){
+  isFocusedOnSuggestion(): boolean{
     var autoComplete = this.refs.autoComplete;
     return autoComplete.state.focusedValue != null;
   },
@@ -76,7 +76,10 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  constuctValueFromParams(obj: any, props: Array<string>): string {
+  constuctValueFromParams(obj: any, props: ?Array<string>): string {
+    if(!props){
+      return '';
+    }
     var ret = [];
     for (var i = 0, ii = props.length; i < ii; i++) {
       ret.push(obj[props[i]]);

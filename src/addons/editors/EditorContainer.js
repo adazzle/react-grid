@@ -46,14 +46,14 @@ var EditorContainer = React.createClass({
     }
   },
 
-  getEditor(){
+  getEditor(): Editor{
     var editorProps = {ref: 'editor', column : this.props.column, onKeyDown : this.onKeyDown, value : this.getInitialValue(), onCommit : this.commit, editorRowMetaData : this.getEditorRowMetaData(), height : this.props.height};
     var customEditor = this.props.column.editor;
     if(customEditor && React.isValidElement(customEditor)){
       //return custom column editor or SimpleEditor if none specified
       return React.addons.cloneWithProps(customEditor, editorProps);
     }else{
-      return <SimpleTextEditor {...editorProps} />;
+      return <SimpleTextEditor ref={'editor'} column={this.props.column} onKeyDown={this.onKeyDown} value={this.getInitialValue()} commit={this.commit} editorRowMetaData={this.getEditorRowMetaData()} />;
     }
   },
 
@@ -66,40 +66,40 @@ var EditorContainer = React.createClass({
     }
   },
 
-  onPressEnter(e: Event){
+  onPressEnter(e: SyntheticKeyboardEvent){
     e.stopPropagation();
     e.preventDefault();
     this.commit({key : 'Enter'});
   },
 
-  onPressTab(e: Event){
+  onPressTab(e: SyntheticKeyboardEvent){
     e.stopPropagation();
     e.preventDefault();
     this.commit({key : 'Tab'});
   },
 
-  onPressArrowDown(e: Event){
+  onPressArrowDown(e: SyntheticKeyboardEvent){
     if(this.editorHasResults()){
       e.stopPropagation();
       e.preventDefault();
     }
   },
 
-  onPressArrowUp(e: Event){
+  onPressArrowUp(e: SyntheticKeyboardEvent){
     if(this.editorHasResults()){
       e.stopPropagation();
       e.preventDefault();
     }
   },
 
-  onPressArrowLeft(e){
+  onPressArrowLeft(e: SyntheticKeyboardEvent){
     //prevent event propogation. this disables left cell navigation
     if(!this.isCaretAtBeginningOfInput()){
       e.stopPropagation();
     }
   },
 
-  onPressArrowRight(e){
+  onPressArrowRight(e: SyntheticKeyboardEvent){
     //prevent event propogation. this disables right cell navigation
     if(!this.isCaretAtEndOfInput()){
       e.stopPropagation();
@@ -186,12 +186,12 @@ var EditorContainer = React.createClass({
     }
   },
 
-  isCaretAtBeginningOfInput(){
+  isCaretAtBeginningOfInput(): boolean{
     var inputNode = this.getInputNode();
     return inputNode.selectionStart === 0;
   },
 
-  isCaretAtEndOfInput(){
+  isCaretAtEndOfInput(): boolean{
     var inputNode = this.getInputNode();
     return inputNode.selectionStart === inputNode.value.length;
   },
