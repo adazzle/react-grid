@@ -36,7 +36,7 @@ var EditorContainer = React.createClass({
     var customEditor = this.props.column.editor;
     if(customEditor && React.isValidElement(customEditor)){
       //return custom column editor or SimpleEditor if none specified
-      return cloneWithProps(customEditor, editorProps);
+      return React.addons.cloneWithProps(customEditor, editorProps);
     }else{
       return <SimpleTextEditor {...editorProps} />;
     }
@@ -73,7 +73,7 @@ var EditorContainer = React.createClass({
     }
   },
 
-  isNewValueValid(value: string){
+  isNewValueValid(value: string): boolean{
     if(isFunction(this.validate)){
       var isValid = this.validate(value);
       this.setState({isInvalid : !isValid});
@@ -98,7 +98,7 @@ var EditorContainer = React.createClass({
     }
   },
 
-  getInputNode(): HTMLElement{
+  getInputNode(): HTMLInputElement{
     return this.getDOMNode().getElementsByTagName("input")[0];
   },
 
