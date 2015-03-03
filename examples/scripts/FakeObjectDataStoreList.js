@@ -9,6 +9,7 @@ function createFakeRowObjectData(/*number*/ index) {
     avartar: faker.image.avatar(),
     county: faker.address.county(),
     email: faker.internet.email(),
+    title: faker.name.prefix(),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     street: faker.address.streetName(),

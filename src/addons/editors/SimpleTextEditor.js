@@ -26,6 +26,10 @@ var SimpleTextEditor = React.createClass({
     return updated;
   },
 
+  getInputNode(){
+    return this.getDOMNode();
+  },
+
   render(): ?ReactElement {
     return (<input ref="input" type="text" onBlur={this.props.onBlur} className="form-control" defaultValue={this.props.value} onKeyDown={this.props.onKeyDown} />);
   }

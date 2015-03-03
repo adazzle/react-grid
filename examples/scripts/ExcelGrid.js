@@ -43,6 +43,8 @@
    { id : 38, title :'Worcestershire'},
    { id : 39, title :'Yorkshire'}]
 
+var titles = ['Mr.', 'Mrs.', 'Miss', 'Ms.'];
+
   function renderImage(cellData) {
     var ImageFormatter = ReactGrid.Formatters.ImageFormatter;
     return <ImageFormatter src={cellData.value} />;
@@ -67,9 +69,9 @@
       width : 200
     },
     {
-      key: 'email',
-      name: 'Email',
-      editable:true,
+      key: 'title',
+      name: 'Title',
+      editor : <DropDownEditor options={titles}/>,
       width : 200
     },
     {
@@ -81,6 +83,12 @@
     {
       key: 'lastName',
       name: 'Last Name',
+      editable:true,
+      width : 200
+    },
+    {
+      key: 'email',
+      name: 'Email',
       editable:true,
       width : 200
     },

@@ -51,6 +51,10 @@ var AutoCompleteEditor = React.createClass({
     return updated;
   },
 
+  getInputNode(){
+    return this.getDOMNode().getElementsByTagName("input")[0];
+  },
+
   render(): ?ReactElement {
     var label = this.props.label != null ? this.props.label : 'title';
     return (<div height={this.props.height} onKeyDown={this.props.onKeyDown}>

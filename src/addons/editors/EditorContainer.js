@@ -136,7 +136,7 @@ var EditorContainer = React.createClass({
   },
 
   getInputNode(): HTMLInputElement{
-    return this.getDOMNode().getElementsByTagName("input")[0];
+    return this.refs.editor.getInputNode();
   },
 
   getInitialValue(): string{
