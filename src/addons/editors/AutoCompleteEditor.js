@@ -37,15 +37,6 @@ var AutoCompleteEditor = React.createClass({
     }
   },
 
-  hasResults(){
-    return this.refs.autoComplete.state.results.length > 0;
-  },
-
-  isFocusedOnSuggestion(){
-    var autoComplete = this.refs.autoComplete;
-    return autoComplete.state.focusedValue != null;
-  },
-
   getValue(){
     var value, updated = {};
     if(this.hasResults() && this.isFocusedOnSuggestion()){
@@ -58,6 +49,22 @@ var AutoCompleteEditor = React.createClass({
     }
     updated[this.props.column.key] = value;
     return updated;
+  },
+
+  render(): ReactElement {
+    var label = this.props.label != null ? this.props.label : 'title';
+    return (<div height={this.props.height} onKeyDown={this.props.onKeyDown}>
+      <ReactAutocomplete  search={this.props.search} ref="autoComplete" label={label} resultIdentifier={this.props.resultIdentifier} options={this.props.options} value={{title : this.props.value}} />
+      </div>);
+  },
+
+  hasResults(){
+    return this.refs.autoComplete.state.results.length > 0;
+  },
+
+  isFocusedOnSuggestion(){
+    var autoComplete = this.refs.autoComplete;
+    return autoComplete.state.focusedValue != null;
   },
 
   getLabel(item: any): string {
@@ -75,15 +82,7 @@ var AutoCompleteEditor = React.createClass({
       ret.push(obj[props[i]]);
     }
     return ret.join('|');
-  },
-
-  render(): ReactElement {
-    var label = this.props.label != null ? this.props.label : 'title';
-    return (<div height={this.props.height} onKeyDown={this.props.onKeyDown}>
-              <ReactAutocomplete  search={this.props.search} ref="autoComplete" label={label} resultIdentifier={this.props.resultIdentifier} options={this.props.options} value={{title : this.props.value}} />
-            </div>);
   }
-
 });
 
 module.exports = AutoCompleteEditor;

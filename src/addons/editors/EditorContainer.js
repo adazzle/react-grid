@@ -92,6 +92,20 @@ var EditorContainer = React.createClass({
     }
   },
 
+  onPressArrowLeft(e){
+    //prevent event propogation. this disables left cell navigation
+    if(!this.isCaretAtBeginningOfInput()){
+      e.stopPropagation();
+    }
+  },
+
+  onPressArrowRight(e){
+    //prevent event propogation. this disables right cell navigation
+    if(!this.isCaretAtEndOfInput()){
+      e.stopPropagation();
+    }
+  },
+
   editorHasResults(): boolean{
     if(isFunction(this.refs.editor['hasResults'])){
       return this.refs.editor.hasResults();
@@ -170,6 +184,16 @@ var EditorContainer = React.createClass({
       fieldRange.collapse();
       fieldRange.select();
     }
+  },
+
+  isCaretAtBeginningOfInput(){
+    var inputNode = this.getInputNode();
+    return inputNode.selectionStart === 0;
+  },
+
+  isCaretAtEndOfInput(){
+    var inputNode = this.getInputNode();
+    return inputNode.selectionStart === inputNode.value.length;
   },
 
   setTextInputFocus(){

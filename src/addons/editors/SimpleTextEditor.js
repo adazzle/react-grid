@@ -9,6 +9,7 @@
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
 var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
+var ExcelColumn             = require('../grids/ExcelColumn');
 
 var SimpleTextEditor = React.createClass({
 
@@ -16,15 +17,17 @@ var SimpleTextEditor = React.createClass({
     onKeyDown : React.PropTypes.func.isRequired,
     value : React.PropTypes.any.isRequired,
     commit : React.PropTypes.func.isRequired,
-    height : React.PropTypes.number.isRequired
+    column :  React.PropTypes.shape(ExcelColumn).isRequired
   },
 
   getValue(){
-    return this.refs.text.value;
+    var updated = {};
+    updated[this.props.column.key] = this.refs.input.getDOMNode().value;
+    return updated;
   },
 
   render(): ?ReactElement {
-    return (<input type="text" onBlur={this.props.commit} className="form-control" defaultValue={this.props.value} onKeyDown={this.props.onKeyDown} />);
+    return (<input ref="input" type="text" onBlur={this.props.commit} className="form-control" defaultValue={this.props.value} onKeyDown={this.props.onKeyDown} />);
   }
 
 });
