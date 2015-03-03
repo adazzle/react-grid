@@ -13,9 +13,7 @@ var SimpleTextEditor        = require('./SimpleTextEditor');
 var isFunction              = require('../utils/isFunction');
 var cloneWithProps          = React.addons.cloneWithProps;
 
-type Editor = {
-  getValue: () => string;
-};
+
 var EditorContainer = React.createClass({
 
   mixins : [keyboardHandlerMixin],
@@ -49,7 +47,7 @@ var EditorContainer = React.createClass({
     }
   },
 
-  getEditor(): Editor{
+  createEditor(): ReactElement{
     var editorProps = {ref: 'editor', column : this.props.column, onKeyDown : this.onKeyDown, value : this.getInitialValue(), onCommit : this.commit, editorRowMetaData : this.getEditorRowMetaData(), height : this.props.height};
     var customEditor = this.props.column.editor;
     if(customEditor && React.isValidElement(customEditor)){
@@ -117,8 +115,13 @@ var EditorContainer = React.createClass({
     }
   },
 
+  getEditor(): Editor {
+    //TODO need to check that this.refs.editor conforms to the type
+    return this.refs.editor;
+  },
+
   commit(args: {key : string}){
-    var updated = this.refs.editor.getValue();
+    var updated = this.getEditor().getValue();
     if(this.isNewValueValid(updated)){
       var cellKey = this.props.column.key;
       this.props.cellMetaData.onCommit({cellKey: cellKey, rowIdx: this.props.rowIdx, updated : updated, key : args.key});
@@ -166,10 +169,9 @@ var EditorContainer = React.createClass({
   },
 
   render(): ?ReactElement{
-    var Editor = this.getEditor();
-    return (
+  return (
       <div className={this.getContainerClass()}>
-      {Editor}
+      {this.createEditor()}
       {this.renderStatusIcon()}
       </div>
     )

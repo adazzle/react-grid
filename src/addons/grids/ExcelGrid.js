@@ -32,6 +32,13 @@ type ExcelGridProps = {
   rows: Array<Row>;
   toolbar: ?any;
 };
+
+type RowUpdateEvent = {
+  keyCode: string;
+  changed: {expandedHeight: number};
+  rowIdx: number;
+};
+
 var ExcelGrid = React.createClass({
 
   propTypes: {
