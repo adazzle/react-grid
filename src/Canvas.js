@@ -27,7 +27,8 @@ var Canvas = React.createClass({
       PropTypes.func.isRequired,
       PropTypes.array.isRequired
     ]),
-    onRows: PropTypes.func
+    onRows: PropTypes.func,
+    columns: PropTypes.arrayOf(ExcelColumn).isRequird
   },
 
   render(): ?ReactElement {

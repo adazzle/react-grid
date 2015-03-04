@@ -10,6 +10,7 @@ var React          = require('react/addons');
 var cx             = React.addons.classSet;
 var cloneWithProps = React.addons.cloneWithProps;
 var EditorContainer = require('./addons/editors/EditorContainer');
+var ExcelColumn  = require('./addons/grids/ExcelColumn');
 
 var Cell = React.createClass({
 
@@ -21,34 +22,19 @@ var Cell = React.createClass({
     }),
     tabIndex : React.PropTypes.number,
     ref : React.PropTypes.string,
-    // handleDragEnter : React.PropTypes.func,
-    // handleDragStart : React.PropTypes.func,
-    // handleDragEnd : React.PropTypes.func,
-    // handleTerminateDrag : React.PropTypes.func,
-    // onDragEnter : React.PropTypes.func,
-    // onDragEnd : React.PropTypes.func,
-    // value: React.PropTypes.any.isRequired,
-    // dragged: React.PropTypes.shape({
-    //   overRowIdx: React.PropTypes.number.isRequired,
-    //   idx: React.PropTypes.number.isRequired,
-    //   complete: React.PropTypes.bool
-    // }),
-    // copied: React.PropTypes.shape({
-    //   rowIdx: React.PropTypes.number.isRequired,
-    //   idx: React.PropTypes.number.isRequired
-    // }),
-    // handleCopy : React.PropTypes.func.isRequired,
-    // handlePaste : React.PropTypes.func.isRequired
+    column: React.PropTypes.shape(ExcelColumn).isRequired,
+    value: React.PropTypes.oneOfType(React.PropTypes.string,React.PropTypes.number, React.PropTypes.Object).isRequired,
+    isExpanded: React.PropTypes.bool,
+    cellMetaData: React.PropTypes.shape({selected: {idx: React.PropTypes.number.isRequired, onCellClick: React.PropTypes.func}}),
+    handleDragStart: React.PropTypes.func,
+    className: React.PropTypes.string
   },
 
-  getDefaultProps : function(): {tabIndex: number; ref: string } {
+  getDefaultProps : function(): {tabIndex: number; ref: string; isExpanded: boolean } {
     return {
       tabIndex : -1,
       ref : "cell",
-      formatter: simpleCellFormatter,
-      // handleDragStart: this.handleDragStart,
-      // onDragEnter: this.handleDragEnter,
-      // onDragEnd: this.handleDragEnd
+      isExpanded: false
     }
   },
 
@@ -104,31 +90,35 @@ var Cell = React.createClass({
   },
 
   renderCellContent(props: any): ReactElement {
-    var formatter = this.getFormatter() || this.props.formatter;
+    var formatter = this.getFormatter();
     var formatterTag = React.isValidElement(formatter) ? cloneWithProps(formatter, props) : this.props.formatter(props);
     return (<div
       className="react-grid-Cell__value">{formatterTag} {this.props.cellControls}</div>)
     },
 
   isSelected: function(): boolean {
-    var selected = this.props.cellMetaData.selected;
+    var meta = this.props.cellMetaData;
+    if(meta == null || meta.selected == null) { return false; }
+
     return (
-      selected
-      && selected.rowIdx === this.props.rowIdx
-      && selected.idx === this.props.idx
+      meta.selected
+      && meta.selected.rowIdx === this.props.rowIdx
+      && meta.selected.idx === this.props.idx
     );
   },
 
   isActive(): boolean{
-    var selected = this.props.cellMetaData.selected;
-    return this.isSelected() && selected.active === true;
+    var meta = this.props.cellMetaData;
+    if(meta == null || meta.selected == null) { return false; }
+    return this.isSelected() && meta.selected.active === true;
   },
 
   isCellSelectionChanging(nextProps: {idx: number; cellMetaData: {selected: {idx: number}}}): boolean {
-    var selected     = this.props.cellMetaData.selected;
+    var meta = this.props.cellMetaData;
+    if(meta == null || meta.selected == null) { return false; }
     var nextSelected = nextProps.cellMetaData.selected;
-    if(selected && nextSelected){
-      return this.props.idx === nextSelected.idx || this.props.idx === selected.idx;
+    if(meta.selected && nextSelected){
+      return this.props.idx === nextSelected.idx || this.props.idx === meta.selected.idx;
     }else{
       return true;
     }
@@ -144,7 +134,10 @@ var Cell = React.createClass({
   },
 
   onCellClick(){
-    this.props.cellMetaData.onCellClick({rowIdx : this.props.rowIdx, idx : this.props.idx});
+    var meta = this.props.cellMetaData;
+    if(meta != null && meta.onCellClick != null) {
+      meta.onCellClick({rowIdx : this.props.rowIdx, idx : this.props.idx});
+    }
   },
 
   checkFocus: function() {
@@ -253,8 +246,5 @@ var Cell = React.createClass({
   // }
 });
 
-function simpleCellFormatter(props: any): string {
-  return props.value;
-}
 
 module.exports = Cell;

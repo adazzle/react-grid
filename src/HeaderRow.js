@@ -9,6 +9,7 @@ var PropTypes         = React.PropTypes;
 var shallowEqual      = require('./shallowEqual');
 var HeaderCell        = require('./HeaderCell');
 var getScrollbarSize  = require('./getScrollbarSize');
+var ExcelColumn  = require('./addons/grids/ExcelColumn');
 
 
 class HeaderRowStyle {
@@ -18,25 +19,12 @@ class HeaderRowStyle {
   position: string;
 };
 
-type Column = {
-  locked: boolean;
-  headerRenderer: ?any;
-};
-
-type HeaderRowProps = {
-  width: ?string | ?number;
-  height: number;
-  columns: Array<Column>;
-  onColumnResize: ?any;
-  style: ?HeaderRowStyle
-};
-
 var HeaderRow = React.createClass({
 
   propTypes: {
     width: PropTypes.oneOf(PropTypes.number, PropTypes.string),
     height: PropTypes.number.isRequired,
-    columns: PropTypes.array.isRequired,
+    columns: PropTypes.arrayOf(ExcelColumn).isRequired,
     onColumnResize: PropTypes.func,
     style: PropTypes.shape(HeaderRowStyle)
   },
@@ -96,7 +84,8 @@ var HeaderRow = React.createClass({
     }
   },
 
-  shouldComponentUpdate(nextProps: HeaderRowProps): boolean {
+
+  shouldComponentUpdate(nextProps: {width: ?(number | string); height: number; columns: Array<ExcelColumn>; style: ?HeaderRowStyle; onColumnResize: ?any}): boolean {
     return (
       nextProps.width !== this.props.width
       || nextProps.height !== this.props.height
