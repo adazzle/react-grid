@@ -108,8 +108,8 @@ var EditorContainer = React.createClass({
   },
 
   editorHasResults(): boolean{
-    if(isFunction(this.refs.editor['hasResults'])){
-      return this.refs.editor.hasResults();
+    if(isFunction(this.getEditor().hasResults)){
+      return this.getEditor().hasResults();
     }else{
       return false;
     }
@@ -117,6 +117,7 @@ var EditorContainer = React.createClass({
 
   getEditor(): Editor {
     //TODO need to check that this.refs.editor conforms to the type
+    //this function is basically just a type cast for the sake of flow
     return this.refs.editor;
   },
 
@@ -139,7 +140,7 @@ var EditorContainer = React.createClass({
   },
 
   getInputNode(): HTMLInputElement{
-    return this.refs.editor.getInputNode();
+    return this.getEditor().getInputNode();
   },
 
   getInitialValue(): string{

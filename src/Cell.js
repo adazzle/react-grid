@@ -175,7 +175,8 @@ var Cell = React.createClass({
 
 
   setScrollLeft(scrollLeft: number) {
-    if (this.isMounted()) {
+    var ctrl: any = this; //flow on windows has an outdated react declaration, once that gets updated, we can remove this
+    if (ctrl.isMounted()) {
       var node = this.getDOMNode();
       var transform = `translate3d(${scrollLeft}px, 0px, 0px)`;
       node.style.webkitTransform = transform;
