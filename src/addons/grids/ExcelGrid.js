@@ -100,7 +100,8 @@ var ExcelGrid = React.createClass({
     var cellMetaData = {
       selected : this.state.selected,
       onCellClick : this.onCellClick,
-      onCommit : this.onCellCommit
+      onCommit : this.onCellCommit,
+      copied : this.state.copied
     }
 
     var rows = this.filterRows();
@@ -204,12 +205,39 @@ var ExcelGrid = React.createClass({
     }
   },
 
+  onPressKeyWithCtrl(e){
+    var keys = {
+      KeyCode_c : '99',
+      KeyCode_C : '67',
+      KeyCode_V : '86',
+      KeyCode_v : '118',
+    }
+
+    var idx = this.state.selected.idx
+    if(this.canEdit(idx)){
+      var value = this.getSelectedValue();
+      if(e.keyCode == keys.KeyCode_c || e.keyCode == keys.KeyCode_C){
+        this.handleCopy({value : value});
+      }else if(e.keyCode == keys.KeyCode_v || e.keyCode == keys.KeyCode_V){
+        this.handlePaste({value : value});
+      }
+    }
+  },
+
   moveSelectedCell(e: SyntheticEvent, rowDelta: number, cellDelta: number){
     e.stopPropagation();
     e.preventDefault();
     var rowIdx = this.state.selected.rowIdx + rowDelta;
     var idx = this.state.selected.idx + cellDelta;
     this.onSelect({idx: idx, rowIdx: rowIdx});
+  },
+
+  getSelectedValue(): string{
+    var rowIdx = this.state.selected.rowIdx;
+    var idx = this.state.selected.idx;
+    var cellOffset = this.props.enableRowSelect ? 1 : 0;
+    var cellKey = this.props.columns[idx - cellOffset].key;
+    return this.props.rows[rowIdx][cellKey];
   },
 
   setActive(keyPressed: string){
@@ -475,9 +503,10 @@ var ExcelGrid = React.createClass({
     if(!this.copyPasteEnabled()) { return; }
       var selected = this.state.selected;
       var cellKey = this.getColumns()[selected.idx].key;
-      if(this.props.onCellCopyPaste) { this.props.onCellCopyPaste({cellKey: cellKey , rowIdx: selected.rowIdx, value : this.state.textToCopy, fromRow : this.state.copied.rowIdx, toRow : selected.rowIdx}); }
-        this.setState({copied : null});
-
+      if(this.props.onCellCopyPaste) {
+        this.props.onCellCopyPaste({cellKey: cellKey , rowIdx: selected.rowIdx, value : this.state.textToCopy, fromRow : this.state.copied.rowIdx, toRow : selected.rowIdx});
+      }
+      this.setState({copied : null});
   },
 
   dragEnabled: function(): boolean {

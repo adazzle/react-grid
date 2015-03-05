@@ -152,8 +152,8 @@ var Row = React.createClass({
   },
 
   hasRowBeenCopied(): boolean{
-    var cell = this.props.cellRenderer;
-    return cell.props.copied != null && cell.props.copied.rowIdx === this.props.idx;
+    var copied = this.props.cellMetaData.copied;
+    return copied != null && copied.rowIdx === this.props.idx;
   },
 
   shouldComponentUpdate(nextProps: any): boolean {
@@ -161,6 +161,7 @@ var Row = React.createClass({
     this.doesRowContainSelectedCell(this.props)          ||
     this.doesRowContainSelectedCell(nextProps)           ||
     nextProps.row !== this.props.row                     ||
+    this.hasRowBeenCopied()                              ||
     nextProps.height !== this.props.height;
   }
 

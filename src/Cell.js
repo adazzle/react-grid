@@ -156,7 +156,7 @@ var Cell = React.createClass({
     var extraClasses = cx({
       'selected' : this.isSelected() && !this.isActive() ,
       'editing' : this.isActive(),
-      // 'copied' : this.isCopied(),
+      'copied' : this.isCopied(),
       // 'selected-draggable' : this.isSelected(),
       // 'active-drag-cell' : this.isSelected() || this.isDraggedOver(),
       // 'is-dragged-over-up' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx < this.props.dragged.rowIdx,
@@ -177,32 +177,15 @@ var Cell = React.createClass({
     }
   },
 
+  isCopied : function(): boolean{
+    var copied = this.props.cellMetaData.copied
+    return (
+      copied
+      && copied.rowIdx === this.props.rowIdx
+      && copied.idx === this.props.idx
+    );
+  },
 
-  // KeyCode_c : '99',
-  //
-  // KeyCode_C : '67',
-  //
-  // KeyCode_V : '86',
-  //
-  // KeyCode_v : '118',
-  //
-  // isCopied : function(){
-  //   return (
-  //     this.props.copied
-  //     && this.props.copied.rowIdx === this.props.rowIdx
-  //     && this.props.copied.idx === this.props.idx
-  //   );
-  // },
-  //
-  // onPressKeyWithCtrl(e){
-  //   if(this.canEdit()){
-  //     if(e.keyCode == this.KeyCode_c || e.keyCode == this.KeyCode_C){
-  //       this.props.handleCopy({value : this.props.value});
-  //     }else if(e.keyCode == this.KeyCode_v || e.keyCode == this.KeyCode_V){
-  //       this.props.handlePaste({value : this.props.value});
-  //     }
-  //   }
-  // },
   //
   // isDraggedOver(){
   //
