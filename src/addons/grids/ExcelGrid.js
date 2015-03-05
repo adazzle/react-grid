@@ -14,8 +14,8 @@ var ExcelColumn           = require('./ExcelColumn');
 var merge                 = require('../../merge');
 var KeyboardHandlerMixin  = require('../../KeyboardHandlerMixin');
 var CheckboxEditor        = require('../editors/CheckboxEditor');
-var SortableHeaderCell  = require('../cells/headerCells/SortableHeaderCell');
-
+var SortableHeaderCell    = require('../cells/headerCells/SortableHeaderCell');
+var FilterableHeaderCell  = require('../cells/headerCells/FilterableHeaderCell');
 
 var cloneWithProps = React.addons.cloneWithProps;
 
@@ -122,7 +122,7 @@ var ExcelGrid = React.createClass({
         expandedRows={this.state.expandedRows}
         rowOffsetHeight={this.getRowOffsetHeight()}
         minHeight={this.props.minHeight}
-        onKeyDown={this.onKeyDown} />)}
+        onViewportKeydown={this.onKeyDown} />)}
         </div>
         </div>
       )

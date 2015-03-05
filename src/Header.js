@@ -130,7 +130,7 @@ var Header = React.createClass({
   getStyle(): {position: string; height: number} {
     return {
       position: 'relative',
-      height: this.props.height,
+      height: this.props.height * this.props.headerRows.length,
       overflow : 'hidden'
     };
   },

@@ -33,7 +33,8 @@ var Grid = React.createClass({
     selectedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
     totalRows: PropTypes.number,
     onRows: PropTypes.func,
-    rowOffsetHeight: PropTypes.number.isRequired
+    rowOffsetHeight: PropTypes.number.isRequired,
+    onViewportKeydown : PropTypes.func.isRequired
   },
 
   getStyle: function(): { overflow: string; outline: number; position: string; minHeight: number } {
@@ -57,22 +58,24 @@ var Grid = React.createClass({
           totalWidth={this.DOMMetrics.gridWidth()}
           headerRows={headerRows}
           />
-        <Viewport
-          ref="viewport"
-          width={this.state.columns.width}
-          rowHeight={this.props.rowHeight}
-          rowRenderer={this.props.rowRenderer}
-          rows={this.props.rows}
-          selectedRows={this.props.selectedRows}
-          expandedRows={this.props.expandedRows}
-          totalRows={this.props.totalRows || this.props.rows.length}
-          columns={this.state.columns}
-          totalWidth={this.DOMMetrics.gridWidth()}
-          onScroll={this.onScroll}
-          onRows={this.props.onRows}
-          cellMetaData={this.props.cellMetaData}
-          rowOffsetHeight={this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
-          />
+          <div onKeyDown={this.props.onViewportKeydown}>
+            <Viewport
+              ref="viewport"
+              width={this.state.columns.width}
+              rowHeight={this.props.rowHeight}
+              rowRenderer={this.props.rowRenderer}
+              rows={this.props.rows}
+              selectedRows={this.props.selectedRows}
+              expandedRows={this.props.expandedRows}
+              totalRows={this.props.totalRows || this.props.rows.length}
+              columns={this.state.columns}
+              totalWidth={this.DOMMetrics.gridWidth()}
+              onScroll={this.onScroll}
+              onRows={this.props.onRows}
+              cellMetaData={this.props.cellMetaData}
+              rowOffsetHeight={this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
+              />
+          </div>
       </div>
     );
   },
