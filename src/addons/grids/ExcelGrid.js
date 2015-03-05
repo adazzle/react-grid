@@ -358,8 +358,6 @@ var ExcelGrid = React.createClass({
 
   onAfterAddRow:function(numberOfRows: number){
     this.setState({selected : {idx : 1, rowIdx : numberOfRows - 2}});
-    //cheeky
-    this.refs.base.refs.viewport.refs.canvas.getDOMNode().scrollTop = numberOfRows * this.props.rowHeight;
   },
 
   filterRows(): Array<Row>{
