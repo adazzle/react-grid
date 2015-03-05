@@ -1,3 +1,5 @@
+/* @flow */
+var React = require('react/addons');
 var ReactGrid = require('../build/ReactGrid');
 var getRows   = require('./getRows');
 var QuickStartDescription = require('./components/QuickStartDescription')
@@ -16,10 +18,9 @@ var columns = [
   name: 'Count'
 }
 ]
+var Example = React.createClass({
 
-module.exports = React.createClass({
-
-  render:function(){
+  render:function(): ?ReactElement {
     return(
       <div>
         <QuickStartDescription title="A Simple Example"/>
@@ -29,3 +30,5 @@ module.exports = React.createClass({
   }
 
 });
+
+module.exports = Example;

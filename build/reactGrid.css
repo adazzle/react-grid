@@ -287,6 +287,14 @@ input.react-grid-CheckBox {
   outline: none;
 }
 
+.react-grid-image {
+  background: #efefef;
+  background-size: 100%;
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+}
+
 .react-autocomplete-Autocomplete__search {
   display: block;
   width: 100%;

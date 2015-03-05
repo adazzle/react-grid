@@ -55,13 +55,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	var Navbar = __webpack_require__(6);
+	var Navbar = __webpack_require__(111);
 	React.render(React.createElement(Navbar, null), document.getElementById('navbarContainer'));
 
 
 /***/ },
 
-/***/ 6:
+/***/ 111:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
