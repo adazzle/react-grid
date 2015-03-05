@@ -10,8 +10,9 @@ var Row = require('../../Row');
 
 var Toolbar = React.createClass({
   propTypes: {
-    onAddRow : React.PropTypes.func.isRequired,
+    onAddRow : React.PropTypes.func,
     onToggleFilter : React.PropTypes.func.isRequired,
+    enableFilter : React.PropTypes.bool,
     numberOfRows : React.PropTypes.number.isRequired
   },
   onAddRow(){
@@ -26,10 +27,18 @@ var Toolbar = React.createClass({
     }
   },
 
-  getAddRowButton(): ReactElement{
-    if(this.props.enableAddRow){
+  renderAddRowButton(): ReactElement{
+    if(this.props.onAddRow){
       return(<button type="button" className="btn" onClick={this.onAddRow}>
         Add Row
+      </button>)
+    }
+  },
+
+  renderToggleFilterButton(): ReactElement{
+    if(this.props.enableFilter){
+      return(  <button type="button" className="btn" onClick={this.props.onToggleFilter}>
+      Filter Rows
       </button>)
     }
   },
@@ -38,10 +47,8 @@ var Toolbar = React.createClass({
     return (
       <div className="react-grid-Toolbar">
         <div className="tools">
-          {this.getAddRowButton()}
-          <button type="button" className="btn" onClick={this.props.onToggleFilter}>
-            Filter Rows
-          </button>
+          {this.renderAddRowButton()}
+          {this.renderToggleFilterButton()}
         </div>
       </div>)
       }

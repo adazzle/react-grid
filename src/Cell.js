@@ -157,7 +157,7 @@ var Cell = React.createClass({
       'selected' : this.isSelected() && !this.isActive() ,
       'editing' : this.isActive(),
       'copied' : this.isCopied(),
-      // 'selected-draggable' : this.isSelected(),
+      'active-drag-cell' : this.isSelected() || this.isDraggedOver(),
       // 'active-drag-cell' : this.isSelected() || this.isDraggedOver(),
       // 'is-dragged-over-up' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx < this.props.dragged.rowIdx,
       // 'is-dragged-over-down' :  !this.isSelected() && this.isDraggedOver() && this.props.rowIdx > this.props.dragged.rowIdx,
@@ -186,15 +186,14 @@ var Cell = React.createClass({
     );
   },
 
-  //
-  // isDraggedOver(){
-  //
-  //   return (
-  //     this.props.dragged &&
-  //     this.props.dragged.overRowIdx === this.props.rowIdx
-  //     && this.props.dragged.idx === this.props.idx
-  //   )
-  // },
+  isDraggedOver(): boolean{
+  var dragged = this.props.cellMetaData.dragged
+    return (
+      dragged &&
+      dragged.overRowIdx === this.props.rowIdx
+      && dragged.idx === this.props.idx
+    )
+  },
   //
   // wasDraggedOver(){
   //   return (
