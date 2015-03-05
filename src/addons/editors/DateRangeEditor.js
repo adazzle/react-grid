@@ -8,10 +8,6 @@
 
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
-
-var EditorMixin             = require('./mixins/EditorMixin');
-var TextInputMixin          = require('./mixins/TextInputMixin');
-var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
 var DateRangeFilter         = require('./widgets/DateRangeFilter');
 var Moment                  = require('moment');
 
