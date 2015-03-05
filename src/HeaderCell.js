@@ -10,7 +10,7 @@ var React       = require('react/addons');
 var cx          = React.addons.classSet;
 var Draggable   = require('./Draggable');
 var PropTypes   = React.PropTypes;
-
+var ExcelColumn = require('./addons/grids/ExcelColumn');
 var ResizeHandle = React.createClass({
 
   style: {

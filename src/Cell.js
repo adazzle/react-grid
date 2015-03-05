@@ -23,9 +23,9 @@ var Cell = React.createClass({
     tabIndex : React.PropTypes.number,
     ref : React.PropTypes.string,
     column: React.PropTypes.shape(ExcelColumn).isRequired,
-    value: React.PropTypes.oneOfType(React.PropTypes.string,React.PropTypes.number, React.PropTypes.Object).isRequired,
+    value: React.PropTypes.oneOf(React.PropTypes.string,React.PropTypes.number, React.PropTypes.object).isRequired,
     isExpanded: React.PropTypes.bool,
-    cellMetaData: React.PropTypes.shape({selected: {idx: React.PropTypes.number.isRequired, onCellClick: React.PropTypes.func}}),
+    cellMetaData: React.PropTypes.shape({selected: React.PropTypes.object.isRequired, onCellClick: React.PropTypes.func}),
     handleDragStart: React.PropTypes.func,
     className: React.PropTypes.string
   },
@@ -91,7 +91,7 @@ var Cell = React.createClass({
 
   renderCellContent(props: any): ReactElement {
     var formatter = this.getFormatter();
-    var formatterTag = React.isValidElement(formatter) ? cloneWithProps(formatter, props) : this.props.formatter(props);
+    var formatterTag = React.isValidElement(formatter) ? cloneWithProps(formatter, props) : formatter(props);
     return (<div
       className="react-grid-Cell__value">{formatterTag} {this.props.cellControls}</div>)
     },
@@ -129,7 +129,7 @@ var Cell = React.createClass({
     if(this.isActive()){
       return <EditorContainer rowIdx={this.props.rowIdx} idx={this.props.idx} cellMetaData={this.props.cellMetaData} column={col} height={this.props.height}/>;
     }else{
-      return this.props.column.formatter;
+      return this.props.column.formatter || simpleCellFormatter;
     }
   },
 
@@ -229,5 +229,8 @@ var Cell = React.createClass({
   // }
 });
 
+function simpleCellFormatter(props: any): string {
+  return props.value;
+}
 
 module.exports = Cell;

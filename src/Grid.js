@@ -13,7 +13,7 @@ var Viewport             = require('./Viewport');
 var DOMMetrics           = require('./DOMMetrics');
 var GridScrollMixin      = require('./GridScrollMixin');
 var ColumnMetricsMixin      = require('./ColumnMetricsMixin');
-
+var ExcelColumn = require('./addons/grids/ExcelColumn');
 
 var Grid = React.createClass({
   mixins: [
