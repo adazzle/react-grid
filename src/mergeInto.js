@@ -1,3 +1,4 @@
+/* @flow */
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -15,6 +16,7 @@
  *
  * @providesModule mergeInto
  * @typechecks static-only
+
  */
 
 "use strict";
@@ -26,7 +28,7 @@
  * @param {?object} two Optional object with properties to merge from.
  * @return {object|function} The first argument coerced into an object.
  */
-function mergeInto(one, two) {
+function mergeInto(one: any, two: any): any {
   if (two != null) {
     return Object.assign(one, two);
   } else {

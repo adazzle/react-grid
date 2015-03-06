@@ -1,6 +1,8 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 "use strict";
 
@@ -8,57 +10,34 @@ var React                = require('react/addons');
 var PropTypes            = React.PropTypes;
 var Header               = require('./Header');
 var Viewport             = require('./Viewport');
-var ColumnMetrics        = require('./ColumnMetrics');
 var DOMMetrics           = require('./DOMMetrics');
-
-
-var GridScrollMixin = {
-
-  componentDidMount() {
-    this._scrollLeft = this.refs.viewport.getScroll().scrollLeft;
-    this._onScroll();
-  },
-
-  componentDidUpdate() {
-    this._onScroll();
-  },
-
-  componentWillMount() {
-    this._scrollLeft = undefined;
-  },
-
-  componentWillUnmount() {
-    this._scrollLeft = undefined;
-  },
-
-  onScroll({scrollLeft}) {
-    if (this._scrollLeft !== scrollLeft) {
-      this._scrollLeft = scrollLeft;
-      this._onScroll();
-    }
-  },
-
-  _onScroll() {
-    if (this._scrollLeft !== undefined) {
-      this.refs.header.setScrollLeft(this._scrollLeft);
-      this.refs.viewport.setScrollLeft(this._scrollLeft);
-    }
-  }
-};
+var GridScrollMixin      = require('./GridScrollMixin');
+var ColumnMetricsMixin      = require('./ColumnMetricsMixin');
+var ExcelColumn = require('./addons/grids/ExcelColumn');
 
 var Grid = React.createClass({
   mixins: [
     GridScrollMixin,
-    ColumnMetrics.Mixin,
+    ColumnMetricsMixin,
     DOMMetrics.MetricsComputatorMixin
   ],
 
   propTypes: {
     rows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]).isRequired,
-    columns: PropTypes.array.isRequired
+    columns: PropTypes.arrayOf(ExcelColumn).isRequired,
+    minHeight: PropTypes.number,
+    headerRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
+    rowHeight: PropTypes.number,
+    rowRenderer: PropTypes.func,
+    expandedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
+    selectedRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
+    totalRows: PropTypes.number,
+    onRows: PropTypes.func,
+    rowOffsetHeight: PropTypes.number.isRequired,
+    onViewportKeydown : PropTypes.func.isRequired
   },
 
-  getStyle: function(){
+  getStyle: function(): { overflow: string; outline: number; position: string; minHeight: number } {
     return{
       overflow: 'hidden',
       outline: 0,
@@ -67,7 +46,7 @@ var Grid = React.createClass({
     }
   },
 
-  render() {
+  render(): ?ReactElement {
     var headerRows = this.props.headerRows || [{ref : 'row'}];
     return (
       <div {...this.props} style={this.getStyle()} className="react-grid-Grid">
@@ -79,22 +58,24 @@ var Grid = React.createClass({
           totalWidth={this.DOMMetrics.gridWidth()}
           headerRows={headerRows}
           />
-        <Viewport
-          ref="viewport"
-          width={this.state.columns.width}
-          rowHeight={this.props.rowHeight}
-          rowRenderer={this.props.rowRenderer}
-          cellRenderer={this.props.cellRenderer}
-          rows={this.props.rows}
-          selectedRows={this.props.selectedRows}
-          expandedRows={this.props.expandedRows}
-          length={this.props.length}
-          columns={this.state.columns}
-          totalWidth={this.DOMMetrics.gridWidth()}
-          onScroll={this.onScroll}
-          onRows={this.props.onRows}
-          rowOffsetHeight={this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
-          />
+          <div onKeyDown={this.props.onViewportKeydown}>
+            <Viewport
+              ref="viewport"
+              width={this.state.columns.width}
+              rowHeight={this.props.rowHeight}
+              rowRenderer={this.props.rowRenderer}
+              rows={this.props.rows}
+              selectedRows={this.props.selectedRows}
+              expandedRows={this.props.expandedRows}
+              totalRows={this.props.totalRows || this.props.rows.length}
+              columns={this.state.columns}
+              totalWidth={this.DOMMetrics.gridWidth()}
+              onScroll={this.onScroll}
+              onRows={this.props.onRows}
+              cellMetaData={this.props.cellMetaData}
+              rowOffsetHeight={this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
+              />
+          </div>
       </div>
     );
   },

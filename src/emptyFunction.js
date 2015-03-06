@@ -1,3 +1,4 @@
+/* @flow */
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -14,6 +15,7 @@
  * limitations under the License.
  *
  * @providesModule emptyFunction
+
  */
 'use strict';
 

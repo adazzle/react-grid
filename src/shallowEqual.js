@@ -1,10 +1,12 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
-function shallowEqual(a, b) {
+function shallowEqual(a: any, b: any): boolean {
   if (a === b) {
     return true;
   }

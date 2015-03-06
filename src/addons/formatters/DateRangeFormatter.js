@@ -1,6 +1,9 @@
+/* @flow */
 /**
+
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
@@ -12,13 +15,15 @@ var PropTypes = React.PropTypes;
 var DateRangeFormatter = React.createClass({
 
   propTypes : {
-      value : PropTypes.shape({
+    value : PropTypes.shape({
       startDate : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
       endDate   : PropTypes.oneOfType([PropTypes.string, PropTypes.object])
-    }).isRequired
+    }).isRequired,
+    inputFormat : PropTypes.string,
+    displayFormat : PropTypes.string
   },
 
-  getDefaultProps(){
+  getDefaultProps() : {inputFormat: string; displayFormat: string; value: {startDate: ?Date; endDate: ?Date }}{
     return {
       inputFormat : 'YYYY-MM-DD',
       displayFormat : 'YYYY-MM-DD',
@@ -26,15 +31,15 @@ var DateRangeFormatter = React.createClass({
     }
   },
 
-  formatDate(date){
+  formatDate(date: Date | moment): string{
     if(moment.isMoment(date)){
-      return date.format(this.props.displayFormat);
+      return moment(date).format(this.props.displayFormat);
     }else{
       return moment(date, this.props.inputFormat).format(this.props.displayFormat);
     }
   },
 
-  render(){
+  render(): ?ReactElement{
     var startDate = this.props.value.startDate;
     var endDate = this.props.value.endDate;
     return (<span>{startDate} to {endDate}</span>);

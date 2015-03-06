@@ -1,16 +1,17 @@
+/* @flow */
+/* Flow issues:
+overrides? getDefaultValue, getStyle, onKeyDown
+*/
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
  */
 'use strict';
 
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
-var MixinHelper             = require('../utils/MixinHelper');
-var EditorMixin             = require('./mixins/EditorMixin');
-var TextInputMixin          = require('./mixins/TextInputMixin');
 var ReactAutocomplete       = require('ron-react-autocomplete');
-var keyboardHandlerMixin    = require('../cells/mixins/KeyboardHandlerMixin');
+var KeyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
+var ExcelColumn             = require('../grids/ExcelColumn');
 
 var optionPropType = React.PropTypes.shape({
       id    :   React.PropTypes.required,
@@ -20,109 +21,75 @@ var optionPropType = React.PropTypes.shape({
 var AutoCompleteEditor = React.createClass({
 
   propTypes : {
-    options : React.PropTypes.arrayOf(optionPropType)
+    onCommit : React.PropTypes.func.isRequired,
+    options : React.PropTypes.arrayOf(optionPropType).isRequired,
+    label : React.PropTypes.string,
+    value : React.PropTypes.any.isRequired,
+    valueParams: React.PropTypes.arrayOf(React.PropTypes.string),
+    column: React.PropTypes.shape(ExcelColumn).isRequired,
+    resultIdentifier : React.PropTypes.string,
+    search : React.PropTypes.string
   },
 
-  mixins : MixinHelper.mix([keyboardHandlerMixin, EditorMixin, TextInputMixin]),
+  getDefaultProps(): {resultIdentifier: string}{
+    return {
+      resultIdentifier : 'id'
+    }
+  },
 
-  overrides : {
-      checkFocus : function(){
-          this.setTextInputFocus();
-      },
-      getInputNode(){
-        return this.getSearchComponent().getDOMNode();
-      },
-      onPressEnter(args){
-        var e = args[0];
-        this.handleEnter(e);
-      },
-      onPressTab(args){
-        var e = args[0];
-        this.handleTab(e);
+  getValue(): any{
+    var value, updated = {};
+    if(this.hasResults() && this.isFocusedOnSuggestion()){
+      value = this.getLabel(this.refs.autoComplete.state.focusedValue);
+      if(this.props.valueParams){
+        value = this.constuctValueFromParams(this.refs.autoComplete.state.focusedValue, this.props.valueParams);
       }
-  },
-
-  handleTab(e){
-    e.stopPropagation();
-    e.preventDefault();
-    if(!this.isFocusedOnSuggestion()){
-      this.handleChange(null, 'Tab');
     }else{
-      this.handleChange(this.getFocusedSuggestion(), 'Tab');
+      value = this.refs.autoComplete.state.searchTerm;
     }
+    updated[this.props.column.key] = value;
+    return updated;
   },
 
-  handleEnter(e){
-    e.stopPropagation();
-    e.preventDefault();
-    if(!this.isFocusedOnSuggestion()){
-      this.props.onCommit({value : this.refs.autoComplete.state.searchTerm, key : 'Enter'});
-    }
+  getInputNode(): HTMLInputElement{
+    return this.getDOMNode().getElementsByTagName("input")[0];
   },
 
-  getSearchComponent(){
-    return this.refs.autoComplete.refs.search;
+  render(): ?ReactElement {
+    var label = this.props.label != null ? this.props.label : 'title';
+    return (<div height={this.props.height} onKeyDown={this.props.onKeyDown}>
+      <ReactAutocomplete  search={this.props.search} ref="autoComplete" label={label} resultIdentifier={this.props.resultIdentifier} options={this.props.options} value={{title : this.props.value}} />
+      </div>);
   },
 
-  isFocusedOnSuggestion(){
+  hasResults(): boolean{
+    return this.refs.autoComplete.state.results.length > 0;
+  },
+
+  isFocusedOnSuggestion(): boolean{
     var autoComplete = this.refs.autoComplete;
     return autoComplete.state.focusedValue != null;
   },
 
-  getFocusedSuggestion(){
-    return this.refs.autoComplete.state.focusedValue;
-  },
-
-  onPressArrowDown(e){
-    //prevent event propogation. this disables downwards cell navigation
-    e.stopPropagation();
-    e.preventDefault();
-  },
-
-  onPressArrowUp(e){
-    //prevent event propogation. this disables upwards cell navigation
-    e.stopPropagation();
-  },
-
-  getLabel(result) {
+  getLabel(item: any): string {
     var label = this.props.label != null ? this.props.label : 'title';
     if (typeof label === "function") {
-      return label(result);
+      return label(item);
     } else if (typeof label === "string") {
-      return result[label];
+      return item[label];
     }
   },
 
-  handleChange(item, key){
-    var rowDataChanged = {};
-    var value = this.props.value;
-    if(item!=null){
-      value = this.getLabel(item);
-      if(this.props.valueParams){
-        value = this.constuctValueFromParams(item, this.props.valueParams);
-      }
-      rowDataChanged[this.props.column.key] = value;
+  constuctValueFromParams(obj: any, props: ?Array<string>): string {
+    if(!props){
+      return '';
     }
-    key = key ? key : 'Enter';
-    this.props.onCommit({value : value, key : key, updated : rowDataChanged});
-  },
-
-  constuctValueFromParams(obj, props) {
     var ret = [];
     for (var i = 0, ii = props.length; i < ii; i++) {
       ret.push(obj[props[i]]);
     }
     return ret.join('|');
-  },
-
-  renderEditorNode(){
-    var val = {title : this.getDefaultValue()};
-    var label = this.props.label != null ? this.props.label : 'title';
-    return (<div style={this.getStyle()} onKeyDown={this.onKeyDown}>
-              <ReactAutocomplete  search={this.props.search} ref="autoComplete" label={label} resultIdentifier={this.props.resultIdentifier} options={this.props.options} value={val} onChange={this.handleChange} />
-            </div>);
   }
-
 });
 
 module.exports = AutoCompleteEditor;

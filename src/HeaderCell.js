@@ -1,6 +1,8 @@
+/* TODO@flow unkwon */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 "use strict";
 
@@ -8,7 +10,7 @@ var React       = require('react/addons');
 var cx          = React.addons.classSet;
 var Draggable   = require('./Draggable');
 var PropTypes   = React.PropTypes;
-
+var ExcelColumn = require('./addons/grids/ExcelColumn');
 var ResizeHandle = React.createClass({
 
   style: {
@@ -19,7 +21,7 @@ var ResizeHandle = React.createClass({
     height: '100%'
   },
 
-  render() {
+  render(): ?ReactElement {
     return (
       <Draggable {...this.props}
         className="react-grid-HeaderCell__resizeHandle"
@@ -33,11 +35,11 @@ var HeaderCell = React.createClass({
 
   propTypes: {
     renderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
-    column: PropTypes.object.isRequired,
+    column: PropTypes.shape(ExcelColumn).isRequired,
     onResize: PropTypes.func
   },
 
-  render() {
+  render(): ?ReactElement {
     var className = cx({
       'react-grid-HeaderCell': true,
       'react-grid-HeaderCell--resizing': this.state.resizing,
@@ -59,7 +61,7 @@ var HeaderCell = React.createClass({
     );
   },
 
-  getCell() {
+  getCell(): ReactComponent {
     if (React.isValidElement(this.props.renderer)) {
       return React.addons.cloneWithProps(this.props.renderer, {column : this.props.column});
     } else {
@@ -67,23 +69,23 @@ var HeaderCell = React.createClass({
     }
   },
 
-  getDefaultProps() {
+  getDefaultProps(): {renderer: ReactComponent | (props: {column: {name: string}}) => ReactElement} {
     return {
       renderer: simpleCellRenderer
     };
   },
 
-  getInitialState() {
+  getInitialState(): {resizing: boolean} {
     return {resizing: false};
   },
 
-  setScrollLeft(scrollLeft) {
+  setScrollLeft(scrollLeft: number) {
     var node = this.getDOMNode();
     node.style.webkitTransform = `translate3d(${scrollLeft}px, 0px, 0px)`;
     node.style.transform = `translate3d(${scrollLeft}px, 0px, 0px)`;
   },
 
-  getStyle() {
+  getStyle(): {width:number; left: number; display: string; position: string; overflow: string; height: number; margin: number; textOverflow: string; whiteSpace: string } {
     return {
       width: this.props.column.width,
       left: this.props.column.left,
@@ -101,28 +103,31 @@ var HeaderCell = React.createClass({
     this.setState({resizing: true});
   },
 
-  onDrag(e) {
-    var width = this.getWidthFromMouseEvent(e);
-    if (width > 0 && this.props.onResize) {
-      this.props.onResize(this.props.column, width);
+  onDrag(e: SyntheticMouseEvent) {
+    var resize = this.props.onResize || null; //for flows sake, doesnt recognise a null check direct
+    if(resize) {
+      var width = this.getWidthFromMouseEvent(e);
+      if (width > 0) {
+        resize(this.props.column, width);
+      }
     }
   },
 
-  onDragEnd(e) {
+  onDragEnd(e: SyntheticMouseEvent) {
     var width = this.getWidthFromMouseEvent(e);
     this.props.onResizeEnd(this.props.column, width);
     this.setState({resizing: false});
   },
 
-  getWidthFromMouseEvent(e) {
+  getWidthFromMouseEvent(e: SyntheticMouseEvent): number {
     var right = e.pageX;
     var left = this.getDOMNode().getBoundingClientRect().left;
     return right - left;
   }
 });
 
-function simpleCellRenderer(props) {
-  return <div className="rex-widget-HeaderCell__value">{props.column.name}</div>;
+function simpleCellRenderer(props: {column: {name: string}}): ReactElement {
+  return <div className="widget-HeaderCell__value">{props.column.name}</div>;
 }
 
 module.exports = HeaderCell;

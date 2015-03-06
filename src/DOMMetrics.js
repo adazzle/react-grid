@@ -1,13 +1,14 @@
+/* TODO@flow mixin and invarient splat */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
 var React               = require('react/addons');
 var emptyFunction       = require('./emptyFunction');
 var shallowCloneObject  = require('./shallowCloneObject');
-var invariant           = require('./invariant');
 
 var contextTypes = {
   metricsComputator: React.PropTypes.object
@@ -17,23 +18,22 @@ var MetricsComputatorMixin = {
 
   childContextTypes: contextTypes,
 
-  getChildContext() {
+  getChildContext(): {metricsComputator: any} {
     return {metricsComputator: this};
   },
 
-  getMetricImpl(name) {
+  getMetricImpl(name: string): any {
     return this._DOMMetrics.metrics[name].value;
   },
 
-  registerMetricsImpl(component, metrics) {
+  registerMetricsImpl(component: ReactComponent, metrics: any): {[key:string]: any} {
     var getters = {};
     var s = this._DOMMetrics;
 
     for (var name in metrics) {
-      invariant(
-          s.metrics[name] === undefined,
-          'DOM metric ' + name + ' is already defined'
-      );
+      if(s.metrics[name] !== undefined) {
+          throw new Error('DOM metric ' + name + ' is already defined');
+      }
       s.metrics[name] = {component, computator: metrics[name].bind(component)};
       getters[name] = this.getMetricImpl.bind(null, name);
     }
@@ -45,7 +45,7 @@ var MetricsComputatorMixin = {
     return getters;
   },
 
-  unregisterMetricsFor(component) {
+  unregisterMetricsFor(component: ReactComponent) {
     var s = this._DOMMetrics;
     var idx = s.components.indexOf(component);
 
@@ -132,7 +132,7 @@ var MetricsMixin = {
     }
   },
 
-  componentWillUnmount() {
+  componentWillUnmount(): any {
     if (!this.registerMetricsImpl) {
       return this.context.metricsComputator.unregisterMetricsFor(this);
     }
@@ -141,7 +141,7 @@ var MetricsMixin = {
     }
   },
 
-  registerMetrics(metrics) {
+  registerMetrics(metrics: any): any {
     if (this.registerMetricsImpl) {
       return this.registerMetricsImpl(this, metrics);
     } else {
@@ -149,7 +149,7 @@ var MetricsMixin = {
     }
   },
 
-  getMetric(name) {
+  getMetric(name: string): any {
     if (this.getMetricImpl) {
       return this.getMetricImpl(name);
     } else {

@@ -1,38 +1,36 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
-var MixinHelper             = require('../utils/MixinHelper');
-var keyboardHandlerMixin    = require('../cells/mixins/KeyboardHandlerMixin');
-var EditorMixin             = require('./mixins/EditorMixin');
-var cloneWithProps          = React.addons.cloneWithProps;
 
 var DropDownEditor = React.createClass({
 
-  mixins : [keyboardHandlerMixin, EditorMixin],
+  propTypes : {
+    options : React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+    value : React.PropTypes.string.isRequired,
+    commit : React.PropTypes.func.isRequired
+  },
 
-  overrides : {
-    getInputNode : function(){
-      return this.refs.select.getDOMNode();
+  getStyle(): {width: string}{
+    return {
+      width : '100%'
     }
   },
 
-  propTypes : {
-    options : React.PropTypes.array.isRequired
-  },
-
-  renderEditorNode(){
+  render(): ?ReactElement{
     return (
       <select ref="select" style={this.getStyle()} defaultValue={this.props.value} onChange={this.onChange} >
         {this.renderOptions()}
       </select>);
   },
 
-  renderOptions(){
+  renderOptions(): Array<ReactElement>{
     var options = [];
     this.props.options.forEach(function(name){
       options.push(<option key={name} value={name}  >{name}</option>);
@@ -40,12 +38,21 @@ var DropDownEditor = React.createClass({
     return options;
   },
 
-
-  onChange(e){
-    this.commit({key : 'Enter'});
+  getValue(): string{
+    var updated = {};
+    updated[this.props.column.key] = this.refs.select.getDOMNode().value;
+    return updated;
   },
 
-  onClick(e){
+  getInputNode(): HTMLInputElement{
+    return this.refs.select.getDOMNode();
+  },
+
+  onChange(){
+    this.props.onCommit({key : 'Enter'});
+  },
+
+  onClick(e: Event){
     e.stopPropagation();
     e.preventDefault();
   }

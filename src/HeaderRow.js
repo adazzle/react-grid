@@ -1,6 +1,6 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
  */
 "use strict";
 
@@ -9,17 +9,27 @@ var PropTypes         = React.PropTypes;
 var shallowEqual      = require('./shallowEqual');
 var HeaderCell        = require('./HeaderCell');
 var getScrollbarSize  = require('./getScrollbarSize');
+var ExcelColumn  = require('./addons/grids/ExcelColumn');
+
+
+class HeaderRowStyle {
+  overflow: string;
+  width: string;
+  height: number;
+  position: string;
+};
 
 var HeaderRow = React.createClass({
 
   propTypes: {
-    width: PropTypes.number,
+    width: PropTypes.oneOf(PropTypes.number, PropTypes.string),
     height: PropTypes.number.isRequired,
-    columns: PropTypes.array.isRequired,
-    onColumnResize: PropTypes.func
+    columns: PropTypes.arrayOf(ExcelColumn).isRequired,
+    onColumnResize: PropTypes.func,
+    style: PropTypes.shape(HeaderRowStyle)
   },
 
-  render() {
+  render(): ?ReactElement {
     var cellsStyle = {
       width: this.props.width ? (this.props.width + getScrollbarSize()) : '100%',
       height: this.props.height,
@@ -30,7 +40,7 @@ var HeaderRow = React.createClass({
 
     var cells = this.getCells();
     return (
-      <div {...this.props} className="react-grid-HeaderRow">
+      <div {...this.props}  className="react-grid-HeaderRow">
         <div style={cellsStyle}>
           {cells}
         </div>
@@ -38,7 +48,7 @@ var HeaderRow = React.createClass({
     );
   },
 
-  getCells() {
+  getCells(): Array<HeaderCell> {
     var cells = [];
     var lockedCells = [];
 
@@ -66,7 +76,7 @@ var HeaderRow = React.createClass({
     return cells.concat(lockedCells);
   },
 
-  setScrollLeft(scrollLeft) {
+  setScrollLeft(scrollLeft: number) {
     for (var i = 0, len = this.props.columns.length; i < len; i++) {
       if (this.props.columns[i].locked) {
         this.refs[i].setScrollLeft(scrollLeft);
@@ -74,7 +84,8 @@ var HeaderRow = React.createClass({
     }
   },
 
-  shouldComponentUpdate(nextProps) {
+
+  shouldComponentUpdate(nextProps: {width: ?(number | string); height: number; columns: Array<ExcelColumn>; style: ?HeaderRowStyle; onColumnResize: ?any}): boolean {
     return (
       nextProps.width !== this.props.width
       || nextProps.height !== this.props.height
@@ -83,7 +94,7 @@ var HeaderRow = React.createClass({
     );
   },
 
-  getStyle() {
+  getStyle(): HeaderRowStyle {
     return {
       overflow: 'hidden',
       width: '100%',

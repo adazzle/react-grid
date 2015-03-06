@@ -1,40 +1,54 @@
+/* @flow */
 /**
 * @jsx React.DOM
-* @copyright Prometheus Research, LLC 2014
+
 */
 'use strict';
 
-var React                   = require('react/addons');
-var Toolbar = React.createClass({
+var React = require('react/addons');
+var Row = require('../../Row');
 
+var Toolbar = React.createClass({
+  propTypes: {
+    onAddRow : React.PropTypes.func,
+    onToggleFilter : React.PropTypes.func.isRequired,
+    enableFilter : React.PropTypes.bool,
+    numberOfRows : React.PropTypes.number.isRequired
+  },
   onAddRow(){
     if(this.props.onAddRow){
-      this.props.onAddRow({newRowIndex : this.props.rows.length});
+      this.props.onAddRow({newRowIndex : this.props.numberOfRows});
     }
   },
 
-  getDefaultProps(){
+  getDefaultProps(): {enableAddRow: boolean}{
     return {
       enableAddRow : true
     }
   },
 
-  getAddRowButton(){
-    if(this.props.enableAddRow){
+  renderAddRowButton(): ReactElement{
+    if(this.props.onAddRow){
       return(<button type="button" className="btn" onClick={this.onAddRow}>
         Add Row
       </button>)
     }
   },
 
-  render(){
+  renderToggleFilterButton(): ReactElement{
+    if(this.props.enableFilter){
+      return(  <button type="button" className="btn" onClick={this.props.onToggleFilter}>
+      Filter Rows
+      </button>)
+    }
+  },
+
+  render(): ?ReactElement{
     return (
       <div className="react-grid-Toolbar">
         <div className="tools">
-          {this.getAddRowButton()}
-          <button type="button" className="btn" onClick={this.props.onToggleFilter}>
-            Filter Rows
-          </button>
+          {this.renderAddRowButton()}
+          {this.renderToggleFilterButton()}
         </div>
       </div>)
       }

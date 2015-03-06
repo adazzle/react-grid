@@ -1,3 +1,4 @@
+/* @flow offsetWidth in HTMLElement */
 "use strict";
 
 var size;
@@ -20,8 +21,8 @@ function getScrollbarSize() {
     outer.appendChild(inner);
     document.body.appendChild(outer);
 
-    var outerWidth = outer.offsetWidth;
-    var innerWidth = inner.offsetWidth;
+    var outerWidth = outer.clientWidth;
+    var innerWidth = inner.clientWidth;
 
     document.body.removeChild(outer);
 

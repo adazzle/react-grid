@@ -1,6 +1,7 @@
 var gulp        = require('gulp');
 var concat			= require('gulp-concat');
 var webpack   = require("webpack");
+var bundle		= require('./bundle');
 var gutil     = require("gulp-util");
 var path = require("path");
 
@@ -48,7 +49,7 @@ gulp.task('script-deps',  function() {
 });
 
 
-gulp.task("copy-dist", ['build'], function(){
+gulp.task("copy-dist", ['dist'], function(){
 	//copy dist folder to examples
 	return gulp.src([
 		'dist/**',
@@ -66,12 +67,5 @@ gulp.task('styles', function () {
 gulp.task("examples", ['script-deps', 'copy-dist', 'styles'],  function(callback) {
 
 		// run webpack
-		webpack(Object.create(webpackConfig), function(err, stats) {
-				if(err) throw new gutil.PluginError("webpack", err);
-				gutil.log("[standalone]", stats.toString({
-						// output options
-				}));
-
-				callback();
-		});
+		bundle(Object.create(webpackConfig), callback);
 });

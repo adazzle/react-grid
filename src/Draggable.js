@@ -1,6 +1,8 @@
+/* @flow need   */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
@@ -17,7 +19,7 @@ var Draggable = React.createClass({
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.constructor])
   },
 
-  render() {
+  render(): ?ReactElement {
     var Component = this.props.component;
     return (
       <Component {...this.props}  onMouseDown={this.onMouseDown} />
@@ -33,13 +35,13 @@ var Draggable = React.createClass({
     };
   },
 
-  getInitialState() {
+  getInitialState(): {drag: ?any} {
     return {
       drag: null
     };
   },
 
-  onMouseDown(e) {
+  onMouseDown(e: SyntheticMouseEvent) {
     var drag = this.props.onDragStart(e);
 
     if (drag === null && e.button !== 0) {
@@ -52,7 +54,7 @@ var Draggable = React.createClass({
     this.setState({drag});
   },
 
-  onMouseMove(e) {
+  onMouseMove(e: SyntheticEvent) {
     if (this.state.drag === null) {
       return;
     }
@@ -68,7 +70,7 @@ var Draggable = React.createClass({
     this.props.onDrag(e);
   },
 
-  onMouseUp(e) {
+  onMouseUp(e: SyntheticEvent) {
     this.cleanUp();
     this.props.onDragEnd(e, this.state.drag);
     this.setState({drag: null});

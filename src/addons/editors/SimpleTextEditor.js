@@ -1,30 +1,38 @@
+/* @flow */
 /**
  * @jsx React.DOM
- * @copyright Prometheus Research, LLC 2014
+
+
  */
 'use strict';
 
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
-var MixinHelper             = require('../utils/MixinHelper');
-var EditorMixin             = require('./mixins/EditorMixin');
-var TextInputMixin          = require('./mixins/TextInputMixin');
-var keyboardHandlerMixin    = require('../cells/mixins/KeyboardHandlerMixin');
+var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
+var ExcelColumn             = require('../grids/ExcelColumn');
 
 var SimpleTextEditor = React.createClass({
 
-  mixins : [keyboardHandlerMixin, EditorMixin, TextInputMixin],
-
-  overrides : {
-      checkFocus : function(){
-          this.setTextInputFocus();
-      }
+  propTypes : {
+    onKeyDown : React.PropTypes.func.isRequired,
+    value : React.PropTypes.any.isRequired,
+    onBlur : React.PropTypes.func.isRequired,
+    column :  React.PropTypes.shape(ExcelColumn).isRequired
   },
 
-  renderEditorNode(){
-    return (<input type="text" onBlur={this.commit} className="form-control" defaultValue={this.getDefaultValue()}  style={this.getStyle()} onKeyDown={this.onKeyDown} />);
-  }
+  getValue(): any{
+    var updated = {};
+    updated[this.props.column.key] = this.refs.input.getDOMNode().value;
+    return updated;
+  },
 
+  getInputNode(): HTMLInputElement{
+    return this.getDOMNode();
+  },
+
+  render(): ?ReactElement {
+    return (<input ref="input" type="text" onBlur={this.props.onBlur} className="form-control" defaultValue={this.props.value} onKeyDown={this.props.onKeyDown} />);
+  }
 
 });
 

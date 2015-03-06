@@ -1,34 +1,30 @@
 var gulp      = require("gulp");
 var gutil     = require("gulp-util");
-var webpack   = require("webpack");
+var bundle   = require("./bundle");
 var uglify = require('gulp-uglify');
-var webpackConfig = require("../../webpack.config.js");
+var webpackConfig = require("../../config/webpack.config.js");
 var gulp = require('gulp');
 var rename = require('gulp-rename');
 
-gulp.task("webpack", function(callback) {
+gulp.task("dist", function(callback) {
 
-    // run webpack
-    webpack(Object.create(webpackConfig), function(err, stats) {
-        if(err) throw new gutil.PluginError("webpack", err);
-        gutil.log("[standalone]", stats.toString({
-            // output options
-        }));
-        callback();
-    });
-});
+  var onBundle = function(){
+    gulp.src('dist/ReactGridWithAddons.js')
+    .pipe(uglify())
+    .pipe(rename('ReactGridWithAddons.min.js'))
+    .pipe(gulp.dest('dist'))
+    .on('error', gutil.log)
+
+    gulp.src('dist/ReactGrid.js')
+    .pipe(uglify())
+    .pipe(rename('ReactGrid.min.js'))
+    .pipe(gulp.dest('dist'))
+    .on('error', gutil.log)
+    callback();
+  }
+
+  bundle(Object.create(webpackConfig), onBundle);
 
 
-gulp.task("dist", ['webpack'], function() {
-  gulp.src('dist/ReactGridWithAddons.js')
-  .pipe(uglify())
-  .pipe(rename('ReactGridWithAddons.min.js'))
-  .pipe(gulp.dest('dist'))
-  .on('error', gutil.log)
 
-  return gulp.src('dist/ReactGrid.js')
-  .pipe(uglify())
-  .pipe(rename('ReactGrid.min.js'))
-  .pipe(gulp.dest('dist'))
-  .on('error', gutil.log)
 });

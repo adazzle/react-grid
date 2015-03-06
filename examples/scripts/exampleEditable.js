@@ -1,3 +1,5 @@
+/* @flow */
+var React = require('react/addons');
 var ReactGrid = require('../build/ReactGrid');
 var getRows   = require('./getRows');
 var RowsDescription = require('./components/RowsDescription')
@@ -7,7 +9,7 @@ var Description = React.createClass({
 
   mixins : [HightlightMixin],
 
-  render : function(){
+  render : function(): ?ReactElement {
     return(
       <div>
         <h3 id="js-basic-example">Editable Example</h3>
@@ -61,14 +63,14 @@ var EditableGrid = React.createClass({
     this.setState({rows:rows});
   },
 
-  render : function(){
+  render : function(): ?ReactElement {
     return(<ReactGrid rows={this.state.rows} columns={columns} enableCellSelect={true} onRowUpdated={this.handleRowUpdated}></ReactGrid>);
   }
 });
 
-module.exports = React.createClass({
+var Example = React.createClass({
 
-  render:function(){
+  render:function(): ?ReactElement {
     return(
       <div>
       <Description/>
@@ -78,3 +80,4 @@ module.exports = React.createClass({
   }
 
 });
+module.exports = Example;

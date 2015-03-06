@@ -1,4 +1,6 @@
-module.exports = function(start, end) {
+/* @flow */
+var Row = require('../build/ReactGrid').Row;
+module.exports = function(start: number, end: number): Array<Row> {
   var result = []
   for (var i = start; i < end; i++) {
     result.push({
