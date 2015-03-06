@@ -11,7 +11,7 @@ var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
 var ReactAutocomplete       = require('ron-react-autocomplete');
 var KeyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
-var ExcelColumn             = require('../grids/ExcelColumn');
+var Column             = require('../../Column').ColumnType;
 
 var optionPropType = React.PropTypes.shape({
       id    :   React.PropTypes.required,
@@ -26,7 +26,7 @@ var AutoCompleteEditor = React.createClass({
     label : React.PropTypes.string,
     value : React.PropTypes.any.isRequired,
     valueParams: React.PropTypes.arrayOf(React.PropTypes.string),
-    column: React.PropTypes.shape(ExcelColumn).isRequired,
+    column: React.PropTypes.shape(Column).isRequired,
     resultIdentifier : React.PropTypes.string,
     search : React.PropTypes.string
   },

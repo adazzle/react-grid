@@ -1,4 +1,4 @@
-/* TODO@flow unkwon */
+/* @flow unkwon */
 /**
  * @jsx React.DOM
 
@@ -9,6 +9,7 @@
 var React       = require('react/addons');
 var cx          = React.addons.classSet;
 var Draggable   = require('./Draggable');
+var Column   = require('./Column').ColumnType;
 var PropTypes   = React.PropTypes;
 
 var ResizeHandle = React.createClass({
@@ -34,8 +35,8 @@ var ResizeHandle = React.createClass({
 var HeaderCell = React.createClass({
 
   propTypes: {
-    renderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
-    column: PropTypes.shape(ExcelColumn).isRequired,
+    renderer: PropTypes.element,
+    column: PropTypes.shape(Column).isRequired,
     onResize: PropTypes.func
   },
 
@@ -62,17 +63,11 @@ var HeaderCell = React.createClass({
   },
 
   getCell(): ReactComponent {
-    if (React.isValidElement(this.props.renderer)) {
+    if (this.props.renderer && React.isValidElement(this.props.renderer)) {
       return React.addons.cloneWithProps(this.props.renderer, {column : this.props.column});
     } else {
-      return this.props.renderer({column: this.props.column});
+      return <SimpleCellRenderer column={this.props.column} />;
     }
-  },
-
-  getDefaultProps(): {renderer: ReactComponent | (props: {column: {name: string}}) => ReactElement} {
-    return {
-      renderer: simpleCellRenderer
-    };
   },
 
   getInitialState(): {resizing: boolean} {
@@ -126,8 +121,13 @@ var HeaderCell = React.createClass({
   }
 });
 
-function simpleCellRenderer(props: {column: {name: string}}): ReactElement {
-  return <div className="widget-HeaderCell__value">{props.column.name}</div>;
-}
+var SimpleCellRenderer = React.createClass({
+  propTypes: {
+    column: PropTypes.shape(Column).isRequired,
+    },
+  render(): ?ReactElement {
+    return <div className="widget-HeaderCell__value">{this.props.column.label}</div>;
+  }
+});
 
 module.exports = HeaderCell;

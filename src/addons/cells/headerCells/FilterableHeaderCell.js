@@ -8,13 +8,13 @@
 
 var React              = require('react/addons');
 var cx             = React.addons.classSet;
-var ExcelColumn = require('../../grids/ExcelColumn');
+var Column = require('../../../Column').ColumnType;
 
 var FilterableHeaderCell = React.createClass({
 
   propTypes: {
     onChange: React.PropTypes.func.isRequired,
-    column: React.PropTypes.shape(ExcelColumn).isRequired
+    column: React.PropTypes.shape(Column).isRequired
   },
 
   getInitialState(): {filterTerm: string}{
@@ -39,7 +39,7 @@ var FilterableHeaderCell = React.createClass({
     return (
       <div>
         <div className="form-group">
-          <this.renderInput/>
+          {this.renderInput()}
         </div>
       </div>
     );

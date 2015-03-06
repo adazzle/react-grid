@@ -12,6 +12,7 @@ var shallowEqual   = require('./shallowEqual');
 var emptyFunction  = require('./emptyFunction');
 var ScrollShim     = require('./ScrollShim');
 var Row            = require('./Row');
+var Column         = require('./Column').ColumnType;
 
 var Canvas = React.createClass({
   mixins: [ScrollShim],
@@ -28,7 +29,7 @@ var Canvas = React.createClass({
       PropTypes.array.isRequired
     ]),
     onRows: PropTypes.func,
-    columns: PropTypes.arrayOf(ExcelColumn).isRequird
+    //columns: PropTypes.arrayOf(Column).isRequird
   },
 
   render(): ?ReactElement {

@@ -11,7 +11,7 @@ var PropTypes           = React.PropTypes;
 var SortableHeaderCell  = require('../../cells/headerCells/SortableHeaderCell');
 var shallowCloneObject  = require('../../../shallowCloneObject');
 var Row = require('../../../Row');
-var ExcelColumn = require('../ExcelColumn');
+var Column = require('../../../Column').ColumnType;
 
 type SortType = {ASC: string; DESC: string};
 var DEFINE_SORT = {
@@ -22,14 +22,14 @@ Object.freeze(DEFINE_SORT);
 
 var SortableGridMixin = {
   propTypes : {
-    columns : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired
+    columns : React.PropTypes.arrayOf(React.PropTypes.shape(Column)).isRequired
   },
 
   getInitialState: function(): any {
     return {sortDirection: null, sortColumn: null};
   },
 
-   getDecoratedColumns: function(columns: Array<ExcelColumn>): Array<ExcelColumn> {
+   getDecoratedColumns: function(columns: Array<Column>): Array<Column> {
       return this.props.columns.map(function(column) {
         column = shallowCloneObject(column);
         if (column.sortable) {

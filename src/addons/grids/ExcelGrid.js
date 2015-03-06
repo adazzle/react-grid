@@ -8,9 +8,8 @@
 var React                 = require('react/addons');
 var PropTypes             = React.PropTypes;
 var BaseGrid              = require('../../Grid');
-var ExcelCell             = require('../cells/ExcelCell');
 var Row                   = require('../../Row');
-var ExcelColumn           = require('./ExcelColumn');
+var Column                = require('../../Column').ColumnType;
 var merge                 = require('../../merge');
 var SelectableGridMixin   = require('./mixins/SelectableGridMixin');
 var DraggableGridMixin    = require('./mixins/DraggableGridMixin');
@@ -28,7 +27,7 @@ type ExcelGridProps = {
   minHeight: number;
   enableRowSelect: ?boolean;
   onRowUpdated: ?() => void;
-  columns: Array<ExcelColumn>;
+  columns: Array<Column>;
   rows: Array<Row>;
   toolbar: ?any;
 };
@@ -46,7 +45,7 @@ var ExcelGrid = React.createClass({
     minHeight: React.PropTypes.number.isRequired,
     enableRowSelect: React.PropTypes.bool,
     onRowUpdated:React.PropTypes.func,
-    columns:React.PropTypes.arrayOf(ExcelColumn).isRequired,
+    columns:React.PropTypes.arrayOf(Column).isRequired,
     rows:React.PropTypes.arrayOf(Row).isRequired,
     toolbar:React.PropTypes.element
   },
@@ -63,15 +62,15 @@ var ExcelGrid = React.createClass({
     if (commit.keyCode === 'Tab') {
       selected.idx += 1;
     }
-    var expandedRows = this.state.expandedRows;
-    if(commit.changed && commit.changed.expandedHeight){
-      expandedRows = this.expandRow(commit.rowIdx, commit.changed.expandedHeight);
-    }
+     var expandedRows = this.state.expandedRows;
+     if(commit.changed && commit.changed.expandedHeight){
+       expandedRows = this.expandRow(commit.rowIdx, commit.changed.expandedHeight);
+     }
     this.setState({selected : selected, expandedRows : expandedRows});
     this.props.onRowUpdated(commit);
 
   },
-  getColumns : function(): Array<any>{
+  getColumns : function(): Array<Column>{
     var cols = this.getDecoratedColumns(this.props.columns)
     if(this.props.enableRowSelect){
         cols.unshift({
@@ -115,14 +114,12 @@ var ExcelGrid = React.createClass({
     this.setState({selectedRows : selectedRows});
   },
 
-  expandRow(row: Row, newHeight: number): Array<Row>{
+  expandRow(idx: number, newHeight: number): Array<Row>{
     var expandedRows = this.state.expandedRows;
-    if(expandedRows[row]){
-      if(expandedRows[row]== null || expandedRows[row] < newHeight){
-        expandedRows[row] = newHeight;
+    if(expandedRows[idx]){
+      if(expandedRows[idx] < newHeight){
+         expandedRows[idx] = newHeight;
       }
-    }else{
-      expandedRows[row] = newHeight;
     }
     return expandedRows;
   },
@@ -131,15 +128,15 @@ var ExcelGrid = React.createClass({
 
   },
 
-  handleShowMore(row: Row, newHeight: number) {
+  handleShowMore(row: number, newHeight: number) {
     var expandedRows = this.expandRow(row, newHeight);
     this.setState({expandedRows : expandedRows});
   },
 
-  handleShowLess(row: Row){
+  handleShowLess(row: number){
     var expandedRows = this.state.expandedRows;
     if(expandedRows[row]){
-        expandedRows[row] = false;
+        expandedRows.removeAt(row);
     }
     this.setState({expandedRows : expandedRows});
   },

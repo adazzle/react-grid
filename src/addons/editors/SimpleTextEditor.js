@@ -9,7 +9,7 @@
 var React                   = require('react/addons');
 var cx                      = React.addons.classSet;
 var keyboardHandlerMixin    = require('../../KeyboardHandlerMixin');
-var ExcelColumn             = require('../grids/ExcelColumn');
+var Column             = require('../../Column').ColumnType;
 
 var SimpleTextEditor = React.createClass({
 
@@ -17,7 +17,7 @@ var SimpleTextEditor = React.createClass({
     onKeyDown : React.PropTypes.func.isRequired,
     value : React.PropTypes.any.isRequired,
     onBlur : React.PropTypes.func.isRequired,
-    column :  React.PropTypes.shape(ExcelColumn).isRequired
+    column :  React.PropTypes.shape(Column).isRequired
   },
 
   getValue(): any{

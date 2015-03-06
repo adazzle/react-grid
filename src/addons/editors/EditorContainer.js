@@ -19,7 +19,7 @@ var EditorContainer = React.createClass({
   mixins : [keyboardHandlerMixin],
 
   propTypes : {
-    cellMetaData : React.PropTypes.func.isRequired,
+    cellMetaData : React.PropTypes.object.isRequired,
     column : React.PropTypes.object.isRequired
   },
 

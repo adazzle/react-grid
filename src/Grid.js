@@ -13,6 +13,7 @@ var Viewport             = require('./Viewport');
 var DOMMetrics           = require('./DOMMetrics');
 var GridScrollMixin      = require('./GridScrollMixin');
 var ColumnMetricsMixin      = require('./ColumnMetricsMixin');
+var Column      = require('./Column').ColumnType;
 
 
 var Grid = React.createClass({
@@ -24,7 +25,7 @@ var Grid = React.createClass({
 
   propTypes: {
     rows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]).isRequired,
-    columns: PropTypes.arrayOf(ExcelColumn).isRequired,
+    columns: PropTypes.arrayOf(Column).isRequired,
     minHeight: PropTypes.number,
     headerRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
     rowHeight: PropTypes.number,

@@ -10,15 +10,17 @@ var React               = require('react/addons');
 var cx                  = React.addons.classSet;
 var shallowCloneObject  = require('./shallowCloneObject');
 var ColumnMetrics       = require('./ColumnMetrics');
+var Column       = require('./Column').ColumnType;
 var HeaderRow           = require('./HeaderRow');
 
-type Column = {
-  width: number
-}
 
 var Header = React.createClass({
   propTypes: {
-    columns: React.PropTypes.shape({  width: React.PropTypes.number.isRequired }).isRequired,
+    columns: React.PropTypes.shape({
+        columns: React.PropTypes.arrayOf(Column),
+        totalWidth: React.PropTypes.number,
+        minColumnWidth: React.PropTypes.number
+    }).isRequired,
     totalWidth: React.PropTypes.number,
     height: React.PropTypes.number.isRequired,
     headerRows : React.PropTypes.array.isRequired
@@ -51,7 +53,7 @@ var Header = React.createClass({
   },
 
   getHeaderRows(): Array<HeaderRow>{
-    var state = this.state.resizing || this.props;
+    var state = this.state.resizing || this.props; //eh???
     var headerRows = [];
     this.props.headerRows.forEach((function(row, index){
       var headerRowStyle = {

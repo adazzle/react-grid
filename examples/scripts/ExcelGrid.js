@@ -3,6 +3,7 @@
  */
 (function(){
   var Grid                = ReactGrid.Grid;
+  var Column              = ReactGrid.Column;
   var Editors             = ReactGrid.Editors;
   var Toolbar             = ReactGrid.Toolbar;
   var AutoCompleteEditor  = Editors.AutoComplete;
@@ -51,95 +52,95 @@ var titles = ['Mr.', 'Mrs.', 'Miss', 'Ms.'];
   }
 
   var columns = [
-    {
+    Column({
       key: 'id',
-      name: 'ID',
+      label: 'ID',
       width : 80
-    },
-    {
-      key: 'avartar',
-      name: 'Avartar',
+    }),
+    Column({
+      key: 'avatar',
+      label: 'Avatar',
       width : 60,
       formatter : renderImage
-    },
-    {
+    }),
+    Column({
       key: 'county',
-      name: 'County',
+      label: 'County',
       editor: <AutoCompleteEditor options={counties}/>,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'title',
       name: 'Title',
       editor : <DropDownEditor options={titles}/>,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'firstName',
       name: 'First Name',
       editable:true,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'lastName',
       name: 'Last Name',
       editable:true,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'email',
       name: 'Email',
       editable:true,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'street',
       name: 'Street',
       editable:true,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'zipCode',
       name: 'ZipCode',
       editable:true,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'date',
       name: 'Date',
       editable:true,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'bs',
       name: 'bs',
       editable:true,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'catchPhrase',
       name: 'Catch Phrase',
       editable:true,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'companyName',
       name: 'Company Name',
       editable:true,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'words',
       name: 'Words',
       editable:true,
       width : 200
-    },
-    {
+    }),
+    Column({
       key: 'sentence',
-      name: 'Sentence',
+      label: 'Sentence',
       editable:true,
       width : 200
-    }
+    })
   ]
 
  var Component = React.createClass({displayName: 'component',

@@ -9,7 +9,7 @@ var PropTypes         = React.PropTypes;
 var shallowEqual      = require('./shallowEqual');
 var HeaderCell        = require('./HeaderCell');
 var getScrollbarSize  = require('./getScrollbarSize');
-var ExcelColumn  = require('./addons/grids/ExcelColumn');
+var Column  = require('./Column').ColumnType;
 
 
 class HeaderRowStyle {
@@ -22,11 +22,12 @@ class HeaderRowStyle {
 var HeaderRow = React.createClass({
 
   propTypes: {
-    width: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+    width: PropTypes.oneOf([PropTypes.number, PropTypes.string]),
     height: PropTypes.number.isRequired,
-    columns: PropTypes.arrayOf(ExcelColumn).isRequired,
+    columns: PropTypes.arrayOf(Column).isRequired,
     onColumnResize: PropTypes.func,
-    style: PropTypes.shape(HeaderRowStyle)
+    style: PropTypes.shape(HeaderRowStyle),
+    headerCellRenderer: PropTypes.element
   },
 
   render(): ?ReactElement {
@@ -51,7 +52,6 @@ var HeaderRow = React.createClass({
   getCells(): Array<HeaderCell> {
     var cells = [];
     var lockedCells = [];
-
     for (var i = 0, len = this.props.columns.length; i < len; i++) {
       var column = this.props.columns[i];
       var cell = (
@@ -60,7 +60,7 @@ var HeaderRow = React.createClass({
           key={i}
           height={this.props.height}
           column={column}
-          renderer={this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer}
+          renderer={this.props.headerCellRenderer || column.headerRenderer}
           resizing={this.props.resizing === column}
           onResize={this.props.onColumnResize}
           onResizeEnd={this.props.onColumnResizeEnd}
@@ -85,7 +85,7 @@ var HeaderRow = React.createClass({
   },
 
 
-  shouldComponentUpdate(nextProps: {width: ?(number | string); height: number; columns: Array<ExcelColumn>; style: ?HeaderRowStyle; onColumnResize: ?any}): boolean {
+  shouldComponentUpdate(nextProps: {width: ?(number | string); height: number; columns: Array<Column>; style: ?HeaderRowStyle; onColumnResize: ?any; headerCellRenderer: ?ReactElement}): boolean {
     return (
       nextProps.width !== this.props.width
       || nextProps.height !== this.props.height

@@ -1,7 +1,7 @@
 /* TODO@flow mixins */
 "use strict";
 var Row       = require('../../../Row');
-var ExcelColumn    = require('../ExcelColumn');
+var Column    = require('../../../Column').ColumnType;
 var React          = require('react/addons');
 var cx             = React.addons.classSet;
 var cloneWithProps = React.addons.cloneWithProps;
@@ -18,7 +18,7 @@ var SelectableGridMixin = {
 
   propTypes : {
     enableCellSelect : React.PropTypes.bool,
-    columns : React.PropTypes.arrayOf(React.PropTypes.shape(ExcelColumn)).isRequired,
+    columns : React.PropTypes.arrayOf(React.PropTypes.shape(Column)).isRequired,
     rows : React.PropTypes.array.isRequired,
     onSelect : React.PropTypes.func
   },
