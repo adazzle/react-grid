@@ -38,6 +38,7 @@
     "es5-shim": "^4.0.1",
     "es6-shim": "^0.15.0",
     "eslint-jsx": "git+https://github.com/andreypopp/eslint#jsx",
+    "gh-pages": "~0.2.0",
     "gulp": "^3.8.7",
     "gulp-changed": "^0.4.1",
     "gulp-clean": "^0.3.1",
@@ -53,7 +54,7 @@
     "gulp-util": "^3.0.0",
     "istanbul-instrumenter-loader": "^0.1.2",
     "jasmine-react": "^1.0.7",
-    "jsx-loader": "^0.12.2",
+    "jsx-loader": "^0.13.1",
     "karma": "^0.12.28",
     "karma-chrome-launcher": "^0.1.4",
     "karma-cli": "0.0.4",
@@ -73,8 +74,7 @@
     "rewire-webpack": "^1.0.0",
     "sinon": "^1.9.1",
     "vinyl-source-stream": "^0.1.1",
-    "webpack": "^1.5.3",
-    "gh-pages": "~0.2.0"
+    "webpack": "^1.5.3"
   },
   "author": "Adazzle",
   "license": "MIT",
