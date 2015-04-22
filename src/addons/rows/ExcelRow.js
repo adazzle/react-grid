@@ -22,8 +22,8 @@ var ExcelRow = React.createClass({
   },
 
   getRowHeight(props){
-    if(props.expandedRows && props.expandedRows[props.key]){
-      return props.expandedRows[props.key];
+    if(props.expandedRows && props.expandedRows[props.idx]){
+      return props.expandedRows[props.idx];
     }else{
       return props.height;
     }
@@ -31,8 +31,8 @@ var ExcelRow = React.createClass({
 
   hasRowHeightChanged(props){
     if(props.expandedRows){
-      if(typeof props.expandedRows[props.key] !== 'undefined'){
-        return this.props.height !== props.expandedRows[props.key]
+      if(typeof props.expandedRows[props.idx] !== 'undefined'){
+        return this.props.height !== props.expandedRows[props.idx]
       }else{
         return false;
       }
