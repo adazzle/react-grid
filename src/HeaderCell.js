@@ -122,7 +122,7 @@ var HeaderCell = React.createClass({
 });
 
 function simpleCellRenderer(props) {
-  return <div className="rex-widget-HeaderCell__value">{props.column.name}</div>;
+  return <div className="rex-widget-HeaderCell__value" title={props.column.name}>{props.column.name}</div>;
 }
 
 module.exports = HeaderCell;

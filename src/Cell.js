@@ -37,7 +37,7 @@ var Cell = React.createClass({
   renderCellContent(props) {
     var formatter = React.isValidElement(this.props.formatter) ? cloneWithProps(this.props.formatter, props) : this.props.formatter(props);
     return (<div
-      className="react-grid-Cell__value">{formatter} {this.props.cellControls}</div>)
+      className="react-grid-Cell__value" title={this.props.value}>{formatter} {this.props.cellControls}</div>)
 
   },
 
