@@ -67,7 +67,7 @@ var Canvas = React.createClass({
       left: 0,
       overflowX: 'hidden',
       overflowY: 'scroll',
-      width: this.props.totalWidth,
+      //width: this.props.totalWidth,
       height: this.props.height,
       transform: 'translate3d(0, 0, 0)'
     };
