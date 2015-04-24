@@ -58,10 +58,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  Grid       : __webpack_require__(1),
 	  Editors    : __webpack_require__(7),
 	  Formatters : __webpack_require__(8),
-	  Toolbar    : __webpack_require__(4),
+	  Toolbar    : __webpack_require__(2),
 	  Mixins : {
-	    EditorMixin          : __webpack_require__(5),
-	    TextInputMixin       : __webpack_require__(6),
+	    EditorMixin          : __webpack_require__(3),
+	    TextInputMixin       : __webpack_require__(4),
 	    KeyboardHandlerMixin : __webpack_require__(9)
 	  }
 	}
@@ -278,6 +278,231 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
+	* @jsx React.DOM
+	* @copyright Prometheus Research, LLC 2014
+	*/
+	'use strict';
+
+	var React                   = __webpack_require__(10);
+	var Toolbar = React.createClass({displayName: "Toolbar",
+
+	  onAddRow:function(){
+	    if(this.props.onAddRow){
+	      this.props.onAddRow({newRowIndex : this.props.rows.length});
+	    }
+	  },
+
+	  getDefaultProps:function(){
+	    return {
+	      enableAddRow : true
+	    }
+	  },
+
+	  getAddRowButton:function(){
+	    if(this.props.enableAddRow){
+	      return(React.createElement("button", {type: "button", className: "btn", onClick: this.onAddRow}, 
+	        "Add Row"
+	      ))
+	    }
+	  },
+
+	  render:function(){
+	    return (
+	      React.createElement("div", {className: "react-grid-Toolbar"}, 
+	        React.createElement("div", {className: "tools"}, 
+	          this.getAddRowButton(), 
+	          React.createElement("button", {type: "button", className: "btn", onClick: this.props.onToggleFilter}, 
+	            "Filter Rows"
+	          )
+	        )
+	      ))
+	      }
+	});
+
+	module.exports = Toolbar;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+	var React                   = __webpack_require__(10);
+	var cx                      = React.addons.classSet;
+	var isFunction = __webpack_require__(24);
+
+	var EditorMixin = {
+
+	  propTypes : {
+	    onCommit : React.PropTypes.func.isRequired
+	  },
+
+	  getStyle:function(){
+	    return {
+	      height : this.props.height - 1
+	    }
+	  },
+
+	  getInitialState:function(){
+	    return {isInvalid : false}
+	  },
+
+	  onPressEnter:function(e){
+	    e.stopPropagation();
+	    e.preventDefault();
+	    this.commit({key : 'Enter'});
+	  },
+
+	  onPressTab:function(e){
+	    e.stopPropagation();
+	    e.preventDefault();
+	    this.commit({key : 'Tab'});
+	  },
+
+	  commit:function(args){
+	    var value = this.getValue();
+	    var rowDataChanged = {};
+	    rowDataChanged[this.props.column.key] = value;
+	    if(this.isNewValueValid(value)){
+	      this.props.onCommit({updated : rowDataChanged, key : args.key});
+	    }
+	  },
+
+	  isNewValueValid:function(value){
+	    if(isFunction(this.validate)){
+	      var isValid = this.validate(value);
+	      this.setState({isInvalid : !isValid});
+	      return isValid;
+	    }else{
+	      return true;
+	    }
+	  },
+
+	  getValue:function(){
+	      return this.getInputNode().value;
+	  },
+
+	  setValue:function(value){
+	      this.getInputNode().value = value;
+	  },
+
+	  componentDidMount: function() {
+	    if(this.getInputNode() !== undefined){
+	      this.checkFocus();
+	      this.getInputNode().className += ' editor-main';
+	    }
+	  },
+
+	  checkFocus:function(){
+	    this.getInputNode().focus();
+	  },
+
+	  getInputNode:function(){
+	    return this.getDOMNode().getElementsByTagName("input")[0];
+	  },
+
+	  getContainerClass:function(){
+	    return cx({
+	      'has-error' : this.state.isInvalid === true
+	    })
+	  },
+
+	  renderStatusIcon:function(){
+	    if(this.state.isInvalid === true){
+	      return React.createElement("span", {className: "glyphicon glyphicon-remove form-control-feedback"})
+	    }
+	  },
+
+	  render:function(){
+	    if(!isFunction(this.renderEditorNode)){
+	        throw "Editor Mixin Error : " + this.displayName + " component must implement method renderEditorNode";
+	    }
+	    var editorNode = this.renderEditorNode();
+	    return (
+	      React.createElement("div", {className: this.getContainerClass()}, 
+	        editorNode, 
+	        this.renderStatusIcon()
+	      )
+	    )
+	  }
+	};
+
+	module.exports = EditorMixin;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var TextInputMixin = {
+
+	  onPressArrowLeft:function(e){
+	    //prevent event propogation. this disables left cell navigation
+	    e.stopPropagation();
+	  },
+
+	  onPressArrowRight:function(e){
+	    //prevent event propogation. this disables right cell navigation
+	    e.stopPropagation();
+	  },
+
+	  getDefaultValue:function(){
+	    var keyCode = this.props.initialKeyCode;
+	    if(keyCode === 'Delete' || keyCode === 'Backspace'){
+	      return '';
+	    }else if(keyCode === 'Enter'){
+	      return this.props.value;
+	    }else{
+	      var text = keyCode ? String.fromCharCode(keyCode) : this.props.value;
+	      return text;
+	    }
+
+	  },
+
+	  setCaretAtEndOfInput:function(){
+	    var input = this.getInputNode();
+	    //taken from http://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element
+	    var txtLength = input.value.length;
+	    if(input.setSelectionRange){
+	      input.setSelectionRange(txtLength, txtLength);
+	    }else if(input.createTextRange){
+	      var fieldRange = input.createTextRange();
+	      fieldRange.moveStart('character', txt.value.length);
+	      fieldRange.collapse();
+	      fieldRange.select();
+	    }
+	  },
+
+	  setTextInputFocus:function(){
+	    if(!this.isKeyPrintable(this.props.initialKeyCode)){
+	      this.getInputNode().focus();
+	      this.setCaretAtEndOfInput();
+	    }else{
+	      this.getInputNode().select();
+	    }
+	  }
+
+
+	};
+
+	module.exports = TextInputMixin;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
 	 * @jsx React.DOM
 	 * @copyright Prometheus Research, LLC 2014
 	 */
@@ -285,7 +510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React          = __webpack_require__(10);
 	var cx             = React.addons.classSet;
-	var Cell           = __webpack_require__(3);
+	var Cell           = __webpack_require__(6);
 	var cloneWithProps = React.addons.cloneWithProps;
 	var ColumnMetrics    = __webpack_require__(11);
 
@@ -413,7 +638,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 3 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -490,231 +715,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	module.exports = Cell;
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	* @jsx React.DOM
-	* @copyright Prometheus Research, LLC 2014
-	*/
-	'use strict';
-
-	var React                   = __webpack_require__(10);
-	var Toolbar = React.createClass({displayName: "Toolbar",
-
-	  onAddRow:function(){
-	    if(this.props.onAddRow){
-	      this.props.onAddRow({newRowIndex : this.props.rows.length});
-	    }
-	  },
-
-	  getDefaultProps:function(){
-	    return {
-	      enableAddRow : true
-	    }
-	  },
-
-	  getAddRowButton:function(){
-	    if(this.props.enableAddRow){
-	      return(React.createElement("button", {type: "button", className: "btn", onClick: this.onAddRow}, 
-	        "Add Row"
-	      ))
-	    }
-	  },
-
-	  render:function(){
-	    return (
-	      React.createElement("div", {className: "react-grid-Toolbar"}, 
-	        React.createElement("div", {className: "tools"}, 
-	          this.getAddRowButton(), 
-	          React.createElement("button", {type: "button", className: "btn", onClick: this.props.onToggleFilter}, 
-	            "Filter Rows"
-	          )
-	        )
-	      ))
-	      }
-	});
-
-	module.exports = Toolbar;
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-	var React                   = __webpack_require__(10);
-	var cx                      = React.addons.classSet;
-	var isFunction = __webpack_require__(24);
-
-	var EditorMixin = {
-
-	  propTypes : {
-	    onCommit : React.PropTypes.func.isRequired
-	  },
-
-	  getStyle:function(){
-	    return {
-	      height : this.props.height - 1
-	    }
-	  },
-
-	  getInitialState:function(){
-	    return {isInvalid : false}
-	  },
-
-	  onPressEnter:function(e){
-	    e.stopPropagation();
-	    e.preventDefault();
-	    this.commit({key : 'Enter'});
-	  },
-
-	  onPressTab:function(e){
-	    e.stopPropagation();
-	    e.preventDefault();
-	    this.commit({key : 'Tab'});
-	  },
-
-	  commit:function(args){
-	    var value = this.getValue();
-	    var rowDataChanged = {};
-	    rowDataChanged[this.props.column.key] = value;
-	    if(this.isNewValueValid(value)){
-	      this.props.onCommit({updated : rowDataChanged, key : args.key});
-	    }
-	  },
-
-	  isNewValueValid:function(value){
-	    if(isFunction(this.validate)){
-	      var isValid = this.validate(value);
-	      this.setState({isInvalid : !isValid});
-	      return isValid;
-	    }else{
-	      return true;
-	    }
-	  },
-
-	  getValue:function(){
-	      return this.getInputNode().value;
-	  },
-
-	  setValue:function(value){
-	      this.getInputNode().value = value;
-	  },
-
-	  componentDidMount: function() {
-	    if(this.getInputNode() !== undefined){
-	      this.checkFocus();
-	      this.getInputNode().className += ' editor-main';
-	    }
-	  },
-
-	  checkFocus:function(){
-	    this.getInputNode().focus();
-	  },
-
-	  getInputNode:function(){
-	    return this.getDOMNode().getElementsByTagName("input")[0];
-	  },
-
-	  getContainerClass:function(){
-	    return cx({
-	      'has-error' : this.state.isInvalid === true
-	    })
-	  },
-
-	  renderStatusIcon:function(){
-	    if(this.state.isInvalid === true){
-	      return React.createElement("span", {className: "glyphicon glyphicon-remove form-control-feedback"})
-	    }
-	  },
-
-	  render:function(){
-	    if(!isFunction(this.renderEditorNode)){
-	        throw "Editor Mixin Error : " + this.displayName + " component must implement method renderEditorNode";
-	    }
-	    var editorNode = this.renderEditorNode();
-	    return (
-	      React.createElement("div", {className: this.getContainerClass()}, 
-	        editorNode, 
-	        this.renderStatusIcon()
-	      )
-	    )
-	  }
-	};
-
-	module.exports = EditorMixin;
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var TextInputMixin = {
-
-	  onPressArrowLeft:function(e){
-	    //prevent event propogation. this disables left cell navigation
-	    e.stopPropagation();
-	  },
-
-	  onPressArrowRight:function(e){
-	    //prevent event propogation. this disables right cell navigation
-	    e.stopPropagation();
-	  },
-
-	  getDefaultValue:function(){
-	    var keyCode = this.props.initialKeyCode;
-	    if(keyCode === 'Delete' || keyCode === 'Backspace'){
-	      return '';
-	    }else if(keyCode === 'Enter'){
-	      return this.props.value;
-	    }else{
-	      var text = keyCode ? String.fromCharCode(keyCode) : this.props.value;
-	      return text;
-	    }
-
-	  },
-
-	  setCaretAtEndOfInput:function(){
-	    var input = this.getInputNode();
-	    //taken from http://stackoverflow.com/questions/511088/use-javascript-to-place-cursor-at-end-of-text-in-text-input-element
-	    var txtLength = input.value.length;
-	    if(input.setSelectionRange){
-	      input.setSelectionRange(txtLength, txtLength);
-	    }else if(input.createTextRange){
-	      var fieldRange = input.createTextRange();
-	      fieldRange.moveStart('character', txt.value.length);
-	      fieldRange.collapse();
-	      fieldRange.select();
-	    }
-	  },
-
-	  setTextInputFocus:function(){
-	    if(!this.isKeyPrintable(this.props.initialKeyCode)){
-	      this.getInputNode().focus();
-	      this.setCaretAtEndOfInput();
-	    }else{
-	      this.getInputNode().select();
-	    }
-	  }
-
-
-	};
-
-	module.exports = TextInputMixin;
 
 
 /***/ },
@@ -824,8 +824,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 
 	var $__0=   __webpack_require__(10),PropTypes=$__0.PropTypes,isValidElement=$__0.isValidElement;
-	var shallowCloneObject            = __webpack_require__(28);
-	var DOMMetrics                    = __webpack_require__(29);
+	var shallowCloneObject            = __webpack_require__(32);
+	var DOMMetrics                    = __webpack_require__(30);
 	var merge                         = __webpack_require__(15);
 
 	/**
@@ -1046,10 +1046,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React                = __webpack_require__(10);
 	var PropTypes            = React.PropTypes;
-	var Header               = __webpack_require__(30);
-	var Viewport             = __webpack_require__(31);
+	var Header               = __webpack_require__(28);
+	var Viewport             = __webpack_require__(29);
 	var ColumnMetrics        = __webpack_require__(11);
-	var DOMMetrics           = __webpack_require__(29);
+	var DOMMetrics           = __webpack_require__(30);
 
 
 	var GridScrollMixin = {
@@ -1100,7 +1100,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  getStyle: function(){
 	    return{
-	      overflow: 'scroll',
+	      overflowX: 'scroll',
+	      overflowY: 'hidden',
 	      outline: 0,
 	      position: 'relative',
 	      minHeight: this.props.minHeight
@@ -1161,11 +1162,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React                = __webpack_require__(10);
-	var BaseCell             = __webpack_require__(3);
-	var SelectableMixin      = __webpack_require__(33);
-	var EditableMixin        = __webpack_require__(34);
-	var CopyableMixin        = __webpack_require__(35);
-	var DraggableMixin       = __webpack_require__(36);
+	var BaseCell             = __webpack_require__(6);
+	var SelectableMixin      = __webpack_require__(34);
+	var EditableMixin        = __webpack_require__(35);
+	var CopyableMixin        = __webpack_require__(36);
+	var DraggableMixin       = __webpack_require__(37);
 	var MixinHelper          = __webpack_require__(23);
 	var KeyboardHandlerMixin = __webpack_require__(9);
 	var isFunction           = __webpack_require__(24);
@@ -1304,7 +1305,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React          = __webpack_require__(10);
 	var cx             = React.addons.classSet;
-	var BaseRow       = __webpack_require__(2);
+	var BaseRow       = __webpack_require__(5);
 	var ColumnMetrics = __webpack_require__(11);
 	var ExcelRow = React.createClass({displayName: "ExcelRow",
 
@@ -1662,8 +1663,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(10);
 	var PropTypes           = React.PropTypes;
-	var SortableHeaderCell  = __webpack_require__(37);
-	var shallowCloneObject  = __webpack_require__(28);
+	var SortableHeaderCell  = __webpack_require__(33);
+	var shallowCloneObject  = __webpack_require__(32);
 
 	var DEFINE_SORT = {
 	  ASC : 'ASC',
@@ -1746,7 +1747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React               = __webpack_require__(10);
 	var PropTypes           = React.PropTypes;
-	var FilterableHeaderCell = __webpack_require__(32);
+	var FilterableHeaderCell = __webpack_require__(31);
 
 	var FilterableGridMixin = {
 
@@ -2129,9 +2130,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React                   = __webpack_require__(10);
 	var cx                      = React.addons.classSet;
 	var MixinHelper             = __webpack_require__(23);
-	var EditorMixin             = __webpack_require__(5);
-	var TextInputMixin          = __webpack_require__(6);
-	var ReactAutocomplete       = __webpack_require__(43);
+	var EditorMixin             = __webpack_require__(3);
+	var TextInputMixin          = __webpack_require__(4);
+	var ReactAutocomplete       = __webpack_require__(40);
 	var keyboardHandlerMixin    = __webpack_require__(9);
 
 	var optionPropType = React.PropTypes.shape({
@@ -2264,7 +2265,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cx                      = React.addons.classSet;
 	var MixinHelper             = __webpack_require__(23);
 	var keyboardHandlerMixin    = __webpack_require__(9);
-	var EditorMixin             = __webpack_require__(5);
+	var EditorMixin             = __webpack_require__(3);
 	var cloneWithProps          = React.addons.cloneWithProps;
 
 	var DropDownEditor = React.createClass({displayName: "DropDownEditor",
@@ -2324,8 +2325,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var React                   = __webpack_require__(10);
 	var cx                      = React.addons.classSet;
 	var MixinHelper             = __webpack_require__(23);
-	var EditorMixin             = __webpack_require__(5);
-	var TextInputMixin          = __webpack_require__(6);
+	var EditorMixin             = __webpack_require__(3);
+	var TextInputMixin          = __webpack_require__(4);
 	var keyboardHandlerMixin    = __webpack_require__(9);
 
 	var SimpleTextEditor = React.createClass({displayName: "SimpleTextEditor",
@@ -2356,206 +2357,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @jsx React.DOM
 	 * @copyright Prometheus Research, LLC 2014
 	 */
-	'use strict';
-
-	function shallowCloneObject(obj) {
-	  var result = {};
-	  for (var k in obj) {
-	    if (obj.hasOwnProperty(k)) {
-	      result[k] = obj[k];
-	    }
-	  }
-	  return result;
-	}
-
-	module.exports = shallowCloneObject;
-
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React               = __webpack_require__(10);
-	var emptyFunction       = __webpack_require__(44);
-	var shallowCloneObject  = __webpack_require__(28);
-	var invariant           = __webpack_require__(45);
-
-	var contextTypes = {
-	  metricsComputator: React.PropTypes.object
-	};
-
-	var MetricsComputatorMixin = {
-
-	  childContextTypes: contextTypes,
-
-	  getChildContext:function() {
-	    return {metricsComputator: this};
-	  },
-
-	  getMetricImpl:function(name) {
-	    return this._DOMMetrics.metrics[name].value;
-	  },
-
-	  registerMetricsImpl:function(component, metrics) {
-	    var getters = {};
-	    var s = this._DOMMetrics;
-
-	    for (var name in metrics) {
-	      invariant(
-	          s.metrics[name] === undefined,
-	          'DOM metric ' + name + ' is already defined'
-	      );
-	      s.metrics[name] = {component:component, computator: metrics[name].bind(component)};
-	      getters[name] = this.getMetricImpl.bind(null, name);
-	    }
-
-	    if (s.components.indexOf(component) === -1) {
-	      s.components.push(component);
-	    }
-
-	    return getters;
-	  },
-
-	  unregisterMetricsFor:function(component) {
-	    var s = this._DOMMetrics;
-	    var idx = s.components.indexOf(component);
-
-	    if (idx > -1) {
-	      s.components.splice(idx, 1);
-
-	      var name;
-	      var metricsToDelete = {};
-
-	      for (name in s.metrics) {
-	        if (s.metrics[name].component === component) {
-	          metricsToDelete[name] = true;
-	        }
-	      }
-
-	      for (name in metricsToDelete) {
-	        delete s.metrics[name];
-	      }
-	    }
-	  },
-
-	  updateMetrics:function() {
-	    var s = this._DOMMetrics;
-
-	    var needUpdate = false;
-
-	    for (var name in s.metrics) {
-	      var newMetric = s.metrics[name].computator();
-	      if (newMetric !== s.metrics[name].value) {
-	        needUpdate = true;
-	      }
-	      s.metrics[name].value = newMetric;
-	    }
-
-	    if (needUpdate) {
-	      for (var i = 0, len = s.components.length; i < len; i++) {
-	        if (s.components[i].metricsUpdated) {
-	          s.components[i].metricsUpdated();
-	        }
-	      }
-	    }
-	  },
-
-	  componentWillMount:function() {
-	    this._DOMMetrics = {
-	      metrics: {},
-	      components: []
-	    };
-	  },
-
-	  componentDidMount:function() {
-	    if(window.addEventListener){
-	      window.addEventListener('resize', this.updateMetrics);
-	    }else{
-	      window.attachEvent('resize', this.updateMetrics);
-	    }
-	    this.updateMetrics();
-	  },
-
-	  componentWillUnmount:function() {
-	    window.removeEventListener('resize', this.updateMetrics);
-	  }
-
-	};
-
-	var MetricsMixin = {
-
-	  contextTypes: contextTypes,
-
-	  componentWillMount:function() {
-	    if (this.DOMMetrics) {
-	      this._DOMMetricsDefs = shallowCloneObject(this.DOMMetrics);
-
-	      this.DOMMetrics = {};
-	      for (var name in this._DOMMetricsDefs) {
-	        this.DOMMetrics[name] = emptyFunction;
-	      }
-	    }
-	  },
-
-	  componentDidMount:function() {
-	    if (this.DOMMetrics) {
-	      this.DOMMetrics = this.registerMetrics(this._DOMMetricsDefs);
-	    }
-	  },
-
-	  componentWillUnmount:function() {
-	    if (!this.registerMetricsImpl) {
-	      return this.context.metricsComputator.unregisterMetricsFor(this);
-	    }
-	    if (this.hasOwnProperty('DOMMetrics')) {
-	        delete this.DOMMetrics;
-	    }
-	  },
-
-	  registerMetrics:function(metrics) {
-	    if (this.registerMetricsImpl) {
-	      return this.registerMetricsImpl(this, metrics);
-	    } else {
-	      return this.context.metricsComputator.registerMetricsImpl(this, metrics);
-	    }
-	  },
-
-	  getMetric:function(name) {
-	    if (this.getMetricImpl) {
-	      return this.getMetricImpl(name);
-	    } else {
-	      return this.context.metricsComputator.getMetricImpl(name);
-	    }
-	  }
-	};
-
-	module.exports = {
-	  MetricsComputatorMixin:MetricsComputatorMixin,
-	  MetricsMixin:MetricsMixin
-	};
-
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
 	"use strict";
 
 	var React               = __webpack_require__(10);
 	var cx                  = React.addons.classSet;
-	var shallowCloneObject  = __webpack_require__(28);
+	var shallowCloneObject  = __webpack_require__(32);
 	var ColumnMetrics       = __webpack_require__(11);
-	var HeaderRow           = __webpack_require__(40);
+	var HeaderRow           = __webpack_require__(41);
 	var ColumnMetrics = __webpack_require__(11);
 
 	var Header = React.createClass({displayName: "Header",
@@ -2680,7 +2488,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 31 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2690,9 +2498,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var React             = __webpack_require__(10);
-	var getWindowSize     = __webpack_require__(41);
-	var DOMMetrics        = __webpack_require__(29);
-	var Canvas            = __webpack_require__(42);
+	var getWindowSize     = __webpack_require__(44);
+	var DOMMetrics        = __webpack_require__(30);
+	var Canvas            = __webpack_require__(45);
 
 	var min   = Math.min;
 	var max   = Math.max;
@@ -2864,7 +2672,177 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 32 */
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React               = __webpack_require__(10);
+	var emptyFunction       = __webpack_require__(42);
+	var shallowCloneObject  = __webpack_require__(32);
+	var invariant           = __webpack_require__(43);
+
+	var contextTypes = {
+	  metricsComputator: React.PropTypes.object
+	};
+
+	var MetricsComputatorMixin = {
+
+	  childContextTypes: contextTypes,
+
+	  getChildContext:function() {
+	    return {metricsComputator: this};
+	  },
+
+	  getMetricImpl:function(name) {
+	    return this._DOMMetrics.metrics[name].value;
+	  },
+
+	  registerMetricsImpl:function(component, metrics) {
+	    var getters = {};
+	    var s = this._DOMMetrics;
+
+	    for (var name in metrics) {
+	      invariant(
+	          s.metrics[name] === undefined,
+	          'DOM metric ' + name + ' is already defined'
+	      );
+	      s.metrics[name] = {component:component, computator: metrics[name].bind(component)};
+	      getters[name] = this.getMetricImpl.bind(null, name);
+	    }
+
+	    if (s.components.indexOf(component) === -1) {
+	      s.components.push(component);
+	    }
+
+	    return getters;
+	  },
+
+	  unregisterMetricsFor:function(component) {
+	    var s = this._DOMMetrics;
+	    var idx = s.components.indexOf(component);
+
+	    if (idx > -1) {
+	      s.components.splice(idx, 1);
+
+	      var name;
+	      var metricsToDelete = {};
+
+	      for (name in s.metrics) {
+	        if (s.metrics[name].component === component) {
+	          metricsToDelete[name] = true;
+	        }
+	      }
+
+	      for (name in metricsToDelete) {
+	        delete s.metrics[name];
+	      }
+	    }
+	  },
+
+	  updateMetrics:function() {
+	    var s = this._DOMMetrics;
+
+	    var needUpdate = false;
+
+	    for (var name in s.metrics) {
+	      var newMetric = s.metrics[name].computator();
+	      if (newMetric !== s.metrics[name].value) {
+	        needUpdate = true;
+	      }
+	      s.metrics[name].value = newMetric;
+	    }
+
+	    if (needUpdate) {
+	      for (var i = 0, len = s.components.length; i < len; i++) {
+	        if (s.components[i].metricsUpdated) {
+	          s.components[i].metricsUpdated();
+	        }
+	      }
+	    }
+	  },
+
+	  componentWillMount:function() {
+	    this._DOMMetrics = {
+	      metrics: {},
+	      components: []
+	    };
+	  },
+
+	  componentDidMount:function() {
+	    if(window.addEventListener){
+	      window.addEventListener('resize', this.updateMetrics);
+	    }else{
+	      window.attachEvent('resize', this.updateMetrics);
+	    }
+	    this.updateMetrics();
+	  },
+
+	  componentWillUnmount:function() {
+	    window.removeEventListener('resize', this.updateMetrics);
+	  }
+
+	};
+
+	var MetricsMixin = {
+
+	  contextTypes: contextTypes,
+
+	  componentWillMount:function() {
+	    if (this.DOMMetrics) {
+	      this._DOMMetricsDefs = shallowCloneObject(this.DOMMetrics);
+
+	      this.DOMMetrics = {};
+	      for (var name in this._DOMMetricsDefs) {
+	        this.DOMMetrics[name] = emptyFunction;
+	      }
+	    }
+	  },
+
+	  componentDidMount:function() {
+	    if (this.DOMMetrics) {
+	      this.DOMMetrics = this.registerMetrics(this._DOMMetricsDefs);
+	    }
+	  },
+
+	  componentWillUnmount:function() {
+	    if (!this.registerMetricsImpl) {
+	      return this.context.metricsComputator.unregisterMetricsFor(this);
+	    }
+	    if (this.hasOwnProperty('DOMMetrics')) {
+	        delete this.DOMMetrics;
+	    }
+	  },
+
+	  registerMetrics:function(metrics) {
+	    if (this.registerMetricsImpl) {
+	      return this.registerMetricsImpl(this, metrics);
+	    } else {
+	      return this.context.metricsComputator.registerMetricsImpl(this, metrics);
+	    }
+	  },
+
+	  getMetric:function(name) {
+	    if (this.getMetricImpl) {
+	      return this.getMetricImpl(name);
+	    } else {
+	      return this.context.metricsComputator.getMetricImpl(name);
+	    }
+	  }
+	};
+
+	module.exports = {
+	  MetricsComputatorMixin:MetricsComputatorMixin,
+	  MetricsMixin:MetricsMixin
+	};
+
+
+/***/ },
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2917,7 +2895,76 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	function shallowCloneObject(obj) {
+	  var result = {};
+	  for (var k in obj) {
+	    if (obj.hasOwnProperty(k)) {
+	      result[k] = obj[k];
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = shallowCloneObject;
+
+
+/***/ },
 /* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var React              = __webpack_require__(10);
+	var cx             = React.addons.classSet;
+
+	var SortableHeaderCell = React.createClass({displayName: "SortableHeaderCell",
+
+	  onClick: function() {
+	    this.props.column.sortBy(
+	      this.props.column,
+	      this.props.column.sorted);
+	  },
+
+	  getSortByClass : function(){
+	    var sorted = this.props.column.sorted;
+	    return cx({
+	      'pull-right' : true,
+	      'glyphicon glyphicon-arrow-up' : sorted === 'ASC',
+	      'glyphicon glyphicon-arrow-down' : sorted === 'DESC'
+	    });
+	  },
+
+	  render: function() {
+
+	    return (
+	      React.createElement("div", {
+	        onClick: this.onClick, 
+	        style: {cursor: 'pointer'}}, 
+	        this.props.column.name, 
+	        React.createElement("span", {className: this.getSortByClass()})
+	      )
+	    );
+	  }
+	});
+
+	module.exports = SortableHeaderCell;
+
+
+/***/ },
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3016,7 +3063,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3031,7 +3078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var SimpleTextEditor = __webpack_require__(27);
 	var PropTypes        = React.PropTypes;
 	var MixinHelper      = __webpack_require__(23);
-	var SelectableMixin  = __webpack_require__(33);
+	var SelectableMixin  = __webpack_require__(34);
 	var KeyboardHandlerMixin = __webpack_require__(9);
 
 	var EditableMixin = MixinHelper.createDependency({
@@ -3161,7 +3208,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3176,7 +3223,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var PropTypes            = React.PropTypes;
 	var SimpleTextEditor     = __webpack_require__(27);
 	var MixinHelper          = __webpack_require__(23);
-	var SelectableMixin      = __webpack_require__(33);
+	var SelectableMixin      = __webpack_require__(34);
 	var KeyboardHandlerMixin = __webpack_require__(9);
 
 	var CopyableMixin = MixinHelper.createDependency({
@@ -3232,7 +3279,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3246,7 +3293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var cloneWithProps = React.addons.cloneWithProps;
 	var PropTypes      = React.PropTypes;
 	var MixinHelper      = __webpack_require__(23);
-	var SelectableMixin  = __webpack_require__(33);
+	var SelectableMixin  = __webpack_require__(34);
 	var KeyboardHandlerMixin = __webpack_require__(9);
 
 	var DraggableMixin = MixinHelper.createDependency({
@@ -3335,52 +3382,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	module.exports = DraggableMixin;
-
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var React              = __webpack_require__(10);
-	var cx             = React.addons.classSet;
-
-	var SortableHeaderCell = React.createClass({displayName: "SortableHeaderCell",
-
-	  onClick: function() {
-	    this.props.column.sortBy(
-	      this.props.column,
-	      this.props.column.sorted);
-	  },
-
-	  getSortByClass : function(){
-	    var sorted = this.props.column.sorted;
-	    return cx({
-	      'pull-right' : true,
-	      'glyphicon glyphicon-arrow-up' : sorted === 'ASC',
-	      'glyphicon glyphicon-arrow-down' : sorted === 'DESC'
-	    });
-	  },
-
-	  render: function() {
-
-	    return (
-	      React.createElement("div", {
-	        onClick: this.onClick, 
-	        style: {cursor: 'pointer'}}, 
-	        this.props.column.name, 
-	        React.createElement("span", {className: this.getSortByClass()})
-	      )
-	    );
-	  }
-	});
-
-	module.exports = SortableHeaderCell;
 
 
 /***/ },
@@ -3475,361 +3476,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	"use strict";
-
-	var React             = __webpack_require__(10);
-	var PropTypes         = React.PropTypes;
-	var shallowEqual      = __webpack_require__(46);
-	var HeaderCell        = __webpack_require__(47);
-	var getScrollbarSize  = __webpack_require__(48);
-
-	var HeaderRow = React.createClass({displayName: "HeaderRow",
-
-	  propTypes: {
-	    width: PropTypes.number,
-	    height: PropTypes.number.isRequired,
-	    columns: PropTypes.array.isRequired,
-	    onColumnResize: PropTypes.func
-	  },
-
-	  render:function() {
-	    var cellsStyle = {
-	      width: this.props.width ? (this.props.width + getScrollbarSize()) : '100%',
-	      height: this.props.height,
-	      whiteSpace: 'nowrap',
-	      overflowX: 'hidden',
-	      overflowY: 'hidden'
-	    };
-
-	    var cells = this.getCells();
-	    return (
-	      React.createElement("div", React.__spread({},  this.props, {className: "react-grid-HeaderRow"}), 
-	        React.createElement("div", {style: cellsStyle}, 
-	          cells
-	        )
-	      )
-	    );
-	  },
-
-	  getCells:function() {
-	    var cells = [];
-	    var lockedCells = [];
-
-	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
-	      var column = this.props.columns[i];
-	      var cell = (
-	        React.createElement(HeaderCell, {
-	          ref: i, 
-	          key: i, 
-	          height: this.props.height, 
-	          column: column, 
-	          renderer: this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer, 
-	          resizing: this.props.resizing === column, 
-	          onResize: this.props.onColumnResize, 
-	          onResizeEnd: this.props.onColumnResizeEnd}
-	          )
-	      );
-	      if (column.locked) {
-	        lockedCells.push(cell);
-	      } else {
-	        cells.push(cell);
-	      }
-	    }
-
-	    return cells.concat(lockedCells);
-	  },
-
-	  setScrollLeft:function(scrollLeft) {
-	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
-	      if (this.props.columns[i].locked) {
-	        this.refs[i].setScrollLeft(scrollLeft);
-	      }
-	    }
-	  },
-
-	  shouldComponentUpdate:function(nextProps) {
-	    return (
-	      nextProps.width !== this.props.width
-	      || nextProps.height !== this.props.height
-	      || nextProps.columns !== this.props.columns
-	      || !shallowEqual(nextProps.style, this.props.style)
-	    );
-	  },
-
-	  getStyle:function() {
-	    return {
-	      overflow: 'hidden',
-	      width: '100%',
-	      height: this.props.height,
-	      position: 'absolute'
-	    };
-	  }
-
-	});
-
-	module.exports = HeaderRow;
-
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	/**
-	 * Return window's height and width
-	 *
-	 * @return {Object} height and width of the window
-	 */
-	function getWindowSize() {
-	    var width = window.innerWidth;
-	    var height = window.innerHeight;
-
-	    if (!width || !height) {
-	        width = document.documentElement.clientWidth;
-	        height = document.documentElement.clientHeight;
-	    }
-
-	    if (!width || !height) {
-	        width = document.body.clientWidth;
-	        height = document.body.clientHeight;
-	    }
-
-	    return {width:width, height:height};
-	}
-
-	module.exports = getWindowSize;
-
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	"use strict";
-
-	var React          = __webpack_require__(10);
-	var cx             = React.addons.classSet;
-	var PropTypes      = React.PropTypes;
-	var cloneWithProps = React.addons.cloneWithProps;
-	var shallowEqual   = __webpack_require__(46);
-	var emptyFunction  = __webpack_require__(44);
-	var ScrollShim     = __webpack_require__(49);
-	var Row            = __webpack_require__(2);
-
-	var Canvas = React.createClass({displayName: "Canvas",
-	  mixins: [ScrollShim],
-
-	  propTypes: {
-	    cellRenderer: PropTypes.element,
-	    rowRenderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-	    rowHeight: PropTypes.number.isRequired,
-	    displayStart: PropTypes.number.isRequired,
-	    displayEnd: PropTypes.number.isRequired,
-	    length: PropTypes.number.isRequired,
-	    rows: PropTypes.oneOfType([
-	      PropTypes.func.isRequired,
-	      PropTypes.array.isRequired
-	    ]),
-	    onRows: PropTypes.func
-	  },
-
-	  render:function() {
-	    var displayStart = this.state.displayStart;
-	    var displayEnd = this.state.displayEnd;
-	    var rowHeight = this.props.rowHeight;
-	    var length = this.props.length;
-
-	    var rows = this
-	        .getRows(displayStart, displayEnd)
-	        .map(function(row, idx)  {return this.renderRow({
-	          key: displayStart + idx,
-	          ref: idx,
-	          idx: displayStart + idx,
-	          row: row,
-	          height: rowHeight,
-	          columns: this.props.columns,
-	          cellRenderer: this.props.cellRenderer,
-	          isSelected : this.isRowSelected(displayStart + idx),
-	          expandedRows : this.props.expandedRows
-	        });}.bind(this));
-
-	    this._currentRowsLength = rows.length;
-
-	    if (displayStart > 0) {
-	      rows.unshift(this.renderPlaceholder('top', displayStart * rowHeight));
-	    }
-
-	    if (length - displayEnd > 0) {
-	      rows.push(
-	        this.renderPlaceholder('bottom', (length - displayEnd) * rowHeight));
-	    }
-
-	    var style = {
-	      position: 'absolute',
-	      top: 0,
-	      left: 0,
-	      //overflowX: 'auto',
-	      overflowY: 'overlay',
-	      width: this.props.totalWidth,
-	      height: this.props.height,
-	      transform: 'translate3d(0, 0, 0)'
-	    };
-
-	    return (
-	      React.createElement("div", {
-	        style: style, 
-	        onScroll: this.onScroll, 
-	        className: cx("react-grid-Canvas", this.props.className)}, 
-	        React.createElement("div", {style: {width: this.props.width, overflow: 'hidden'}}, 
-	          rows
-	        )
-	      )
-	    );
-	  },
-
-	  renderRow:function(props) {
-	    if (React.isValidElement(this.props.rowRenderer)) {
-	      return cloneWithProps(this.props.rowRenderer, props);
-	    } else {
-	      return this.props.rowRenderer(props);
-	    }
-	  },
-
-	  renderPlaceholder:function(key, height) {
-	    return (
-	      React.createElement("div", {key: key, style: {height: height}}, 
-	        this.props.columns.map(
-	          function(column, idx)  {return React.createElement("div", {style: {width: column.width}, key: idx});})
-	      )
-	    );
-	  },
-
-	  getDefaultProps:function() {
-	    return {
-	      rowRenderer: React.createElement(Row, null),
-	      onRows: emptyFunction
-	    };
-	  },
-
-	  isRowSelected:function(rowIdx){
-	   return this.props.selectedRows && this.props.selectedRows[rowIdx] === true;
-	  },
-
-	  getInitialState:function() {
-	    return {
-	      shouldUpdate: true,
-	      displayStart: this.props.displayStart,
-	      displayEnd: this.props.displayEnd
-	    };
-	  },
-
-	  componentWillMount:function() {
-	    this._currentRowsLength = undefined;
-	    this._currentRowsRange = undefined;
-	    this._scroll = undefined;
-	  },
-
-	  componentDidMount:function() {
-	    this.onRows();
-	  },
-
-	  componentDidUpdate:function() {
-	    if (this._scroll !== undefined) {
-	      this.setScrollLeft(this._scroll);
-	    }
-	    this.onRows();
-	  },
-
-	  componentWillUnmount:function() {
-	    this._currentRowsLength = undefined;
-	    this._currentRowsRange = undefined;
-	    this._scroll = undefined;
-	  },
-
-	  componentWillReceiveProps:function(nextProps) {
-	    var shouldUpdate = !(nextProps.visibleStart > this.state.displayStart
-	                        && nextProps.visibleEnd < this.state.displayEnd)
-	                        || nextProps.length !== this.props.length
-	                        || nextProps.rowHeight !== this.props.rowHeight
-	                        || nextProps.columns !== this.props.columns
-	                        || nextProps.width !== this.props.width
-	                        || !shallowEqual(nextProps.style, this.props.style);
-
-	    if (shouldUpdate) {
-	      this.setState({
-	        shouldUpdate: true,
-	        displayStart: nextProps.displayStart,
-	        displayEnd: nextProps.displayEnd
-	      });
-	    } else {
-	      this.setState({shouldUpdate: false});
-	    }
-	  },
-
-	  shouldComponentUpdate:function(nextProps, nextState) {
-	    return nextState.shouldUpdate;
-	  },
-
-	  onRows:function() {
-	    if (this._currentRowsRange !== undefined) {
-	      this.props.onRows(this._currentRowsRange);
-	      this._currentRowsRange = undefined;
-	    }
-	  },
-
-	  getRows:function(displayStart, displayEnd) {
-	    this._currentRowsRange = {start: displayStart, end: displayEnd};
-	    if (Array.isArray(this.props.rows)) {
-	      return this.props.rows.slice(displayStart, displayEnd);
-	    } else {
-	      return this.props.rows(displayStart, displayEnd);
-	    }
-	  },
-
-	  setScrollLeft:function(scrollLeft) {
-	    if (this._currentRowsLength !== undefined) {
-	      for (var i = 0, len = this._currentRowsLength; i < len; i++) {
-	        if(this.refs[i]) {
-	          this.refs[i].setScrollLeft(scrollLeft);
-	        }
-	      }
-	    }
-	  },
-
-	  getScroll:function() {
-	    var $__0=   this.getDOMNode(),scrollTop=$__0.scrollTop,scrollLeft=$__0.scrollLeft;
-	    return {scrollTop:scrollTop, scrollLeft:scrollLeft};
-	  },
-
-	  onScroll:function(e) {
-	    this.appendScrollShim();
-	    var $__0=   e.target,scrollTop=$__0.scrollTop,scrollLeft=$__0.scrollLeft;
-	    var scroll = {scrollTop:scrollTop, scrollLeft:scrollLeft};
-	    this._scroll = scroll;
-	    this.props.onScroll(scroll);
-	  }
-	});
-
-
-	module.exports = Canvas;
-
-
-/***/ },
-/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function webpackUniversalModuleDefinition(root, factory) {
@@ -4288,7 +3934,110 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 44 */
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	"use strict";
+
+	var React             = __webpack_require__(10);
+	var PropTypes         = React.PropTypes;
+	var shallowEqual      = __webpack_require__(46);
+	var HeaderCell        = __webpack_require__(47);
+	var getScrollbarSize  = __webpack_require__(48);
+
+	var HeaderRow = React.createClass({displayName: "HeaderRow",
+
+	  propTypes: {
+	    width: PropTypes.number,
+	    height: PropTypes.number.isRequired,
+	    columns: PropTypes.array.isRequired,
+	    onColumnResize: PropTypes.func
+	  },
+
+	  render:function() {
+	    var cellsStyle = {
+	      width: this.props.width ? (this.props.width + getScrollbarSize()) : '100%',
+	      height: this.props.height,
+	      whiteSpace: 'nowrap',
+	      overflowX: 'hidden',
+	      overflowY: 'hidden'
+	    };
+
+	    var cells = this.getCells();
+	    return (
+	      React.createElement("div", React.__spread({},  this.props, {className: "react-grid-HeaderRow"}), 
+	        React.createElement("div", {style: cellsStyle}, 
+	          cells
+	        )
+	      )
+	    );
+	  },
+
+	  getCells:function() {
+	    var cells = [];
+	    var lockedCells = [];
+
+	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
+	      var column = this.props.columns[i];
+	      var cell = (
+	        React.createElement(HeaderCell, {
+	          ref: i, 
+	          key: i, 
+	          height: this.props.height, 
+	          column: column, 
+	          renderer: this.props.headerCellRenderer || column.headerRenderer || this.props.cellRenderer, 
+	          resizing: this.props.resizing === column, 
+	          onResize: this.props.onColumnResize, 
+	          onResizeEnd: this.props.onColumnResizeEnd}
+	          )
+	      );
+	      if (column.locked) {
+	        lockedCells.push(cell);
+	      } else {
+	        cells.push(cell);
+	      }
+	    }
+
+	    return cells.concat(lockedCells);
+	  },
+
+	  setScrollLeft:function(scrollLeft) {
+	    for (var i = 0, len = this.props.columns.length; i < len; i++) {
+	      if (this.props.columns[i].locked) {
+	        this.refs[i].setScrollLeft(scrollLeft);
+	      }
+	    }
+	  },
+
+	  shouldComponentUpdate:function(nextProps) {
+	    return (
+	      nextProps.width !== this.props.width
+	      || nextProps.height !== this.props.height
+	      || nextProps.columns !== this.props.columns
+	      || !shallowEqual(nextProps.style, this.props.style)
+	    );
+	  },
+
+	  getStyle:function() {
+	    return {
+	      overflow: 'hidden',
+	      width: '100%',
+	      height: this.props.height,
+	      position: 'absolute'
+	    };
+	  }
+
+	});
+
+	module.exports = HeaderRow;
+
+
+/***/ },
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4310,7 +4059,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	'use strict';
 
-	var copyProperties = __webpack_require__(50);
+	var copyProperties = __webpack_require__(49);
 
 	function makeEmptyFunction(arg) {
 	  return function() {
@@ -4338,7 +4087,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 45 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -4403,6 +4152,258 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = invariant;
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	/**
+	 * Return window's height and width
+	 *
+	 * @return {Object} height and width of the window
+	 */
+	function getWindowSize() {
+	    var width = window.innerWidth;
+	    var height = window.innerHeight;
+
+	    if (!width || !height) {
+	        width = document.documentElement.clientWidth;
+	        height = document.documentElement.clientHeight;
+	    }
+
+	    if (!width || !height) {
+	        width = document.body.clientWidth;
+	        height = document.body.clientHeight;
+	    }
+
+	    return {width:width, height:height};
+	}
+
+	module.exports = getWindowSize;
+
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	"use strict";
+
+	var React          = __webpack_require__(10);
+	var cx             = React.addons.classSet;
+	var PropTypes      = React.PropTypes;
+	var cloneWithProps = React.addons.cloneWithProps;
+	var shallowEqual   = __webpack_require__(46);
+	var emptyFunction  = __webpack_require__(42);
+	var ScrollShim     = __webpack_require__(50);
+	var Row            = __webpack_require__(5);
+
+	var Canvas = React.createClass({displayName: "Canvas",
+	  mixins: [ScrollShim],
+
+	  propTypes: {
+	    cellRenderer: PropTypes.element,
+	    rowRenderer: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+	    rowHeight: PropTypes.number.isRequired,
+	    displayStart: PropTypes.number.isRequired,
+	    displayEnd: PropTypes.number.isRequired,
+	    length: PropTypes.number.isRequired,
+	    rows: PropTypes.oneOfType([
+	      PropTypes.func.isRequired,
+	      PropTypes.array.isRequired
+	    ]),
+	    onRows: PropTypes.func
+	  },
+
+	  render:function() {
+	    var displayStart = this.state.displayStart;
+	    var displayEnd = this.state.displayEnd;
+	    var rowHeight = this.props.rowHeight;
+	    var length = this.props.length;
+
+	    var rows = this
+	        .getRows(displayStart, displayEnd)
+	        .map(function(row, idx)  {return this.renderRow({
+	          key: displayStart + idx,
+	          ref: idx,
+	          idx: displayStart + idx,
+	          row: row,
+	          height: rowHeight,
+	          columns: this.props.columns,
+	          cellRenderer: this.props.cellRenderer,
+	          isSelected : this.isRowSelected(displayStart + idx),
+	          expandedRows : this.props.expandedRows
+	        });}.bind(this));
+
+	    this._currentRowsLength = rows.length;
+
+	    if (displayStart > 0) {
+	      rows.unshift(this.renderPlaceholder('top', displayStart * rowHeight));
+	    }
+
+	    if (length - displayEnd > 0) {
+	      rows.push(
+	        this.renderPlaceholder('bottom', (length - displayEnd) * rowHeight));
+	    }
+
+	    var style = {
+	      position: 'absolute',
+	      top: 0,
+	      left: 0,
+	      overflowX: 'hidden',
+	      overflowY: 'scroll',
+	      width: this.props.totalWidth,
+	      height: this.props.height,
+	      transform: 'translate3d(0, 0, 0)'
+	    };
+
+	    return (
+	      React.createElement("div", {
+	        style: style, 
+	        onScroll: this.onScroll, 
+	        className: cx("react-grid-Canvas", this.props.className)}, 
+	        React.createElement("div", {style: {width: this.props.width, overflow: 'hidden'}}, 
+	          rows
+	        )
+	      )
+	    );
+	  },
+
+	  renderRow:function(props) {
+	    if (React.isValidElement(this.props.rowRenderer)) {
+	      return cloneWithProps(this.props.rowRenderer, props);
+	    } else {
+	      return this.props.rowRenderer(props);
+	    }
+	  },
+
+	  renderPlaceholder:function(key, height) {
+	    return (
+	      React.createElement("div", {key: key, style: {height: height}}, 
+	        this.props.columns.map(
+	          function(column, idx)  {return React.createElement("div", {style: {width: column.width}, key: idx});})
+	      )
+	    );
+	  },
+
+	  getDefaultProps:function() {
+	    return {
+	      rowRenderer: React.createElement(Row, null),
+	      onRows: emptyFunction
+	    };
+	  },
+
+	  isRowSelected:function(rowIdx){
+	   return this.props.selectedRows && this.props.selectedRows[rowIdx] === true;
+	  },
+
+	  getInitialState:function() {
+	    return {
+	      shouldUpdate: true,
+	      displayStart: this.props.displayStart,
+	      displayEnd: this.props.displayEnd
+	    };
+	  },
+
+	  componentWillMount:function() {
+	    this._currentRowsLength = undefined;
+	    this._currentRowsRange = undefined;
+	    this._scroll = undefined;
+	  },
+
+	  componentDidMount:function() {
+	    this.onRows();
+	  },
+
+	  componentDidUpdate:function() {
+	    if (this._scroll !== undefined) {
+	      this.setScrollLeft(this._scroll);
+	    }
+	    this.onRows();
+	  },
+
+	  componentWillUnmount:function() {
+	    this._currentRowsLength = undefined;
+	    this._currentRowsRange = undefined;
+	    this._scroll = undefined;
+	  },
+
+	  componentWillReceiveProps:function(nextProps) {
+	    var shouldUpdate = !(nextProps.visibleStart > this.state.displayStart
+	                        && nextProps.visibleEnd < this.state.displayEnd)
+	                        || nextProps.length !== this.props.length
+	                        || nextProps.rowHeight !== this.props.rowHeight
+	                        || nextProps.columns !== this.props.columns
+	                        || nextProps.width !== this.props.width
+	                        || !shallowEqual(nextProps.style, this.props.style);
+
+	    if (shouldUpdate) {
+	      this.setState({
+	        shouldUpdate: true,
+	        displayStart: nextProps.displayStart,
+	        displayEnd: nextProps.displayEnd
+	      });
+	    } else {
+	      this.setState({shouldUpdate: false});
+	    }
+	  },
+
+	  shouldComponentUpdate:function(nextProps, nextState) {
+	    return nextState.shouldUpdate;
+	  },
+
+	  onRows:function() {
+	    if (this._currentRowsRange !== undefined) {
+	      this.props.onRows(this._currentRowsRange);
+	      this._currentRowsRange = undefined;
+	    }
+	  },
+
+	  getRows:function(displayStart, displayEnd) {
+	    this._currentRowsRange = {start: displayStart, end: displayEnd};
+	    if (Array.isArray(this.props.rows)) {
+	      return this.props.rows.slice(displayStart, displayEnd);
+	    } else {
+	      return this.props.rows(displayStart, displayEnd);
+	    }
+	  },
+
+	  setScrollLeft:function(scrollLeft) {
+	    if (this._currentRowsLength !== undefined) {
+	      for (var i = 0, len = this._currentRowsLength; i < len; i++) {
+	        if(this.refs[i]) {
+	          this.refs[i].setScrollLeft(scrollLeft);
+	        }
+	      }
+	    }
+	  },
+
+	  getScroll:function() {
+	    var $__0=   this.getDOMNode(),scrollTop=$__0.scrollTop,scrollLeft=$__0.scrollLeft;
+	    return {scrollTop:scrollTop, scrollLeft:scrollLeft};
+	  },
+
+	  onScroll:function(e) {
+	    this.appendScrollShim();
+	    var $__0=   e.target,scrollTop=$__0.scrollTop,scrollLeft=$__0.scrollLeft;
+	    var scroll = {scrollTop:scrollTop, scrollLeft:scrollLeft};
+	    this._scroll = scroll;
+	    this.props.onScroll(scroll);
+	  }
+	});
+
+
+	module.exports = Canvas;
+
 
 /***/ },
 /* 46 */
@@ -4618,60 +4619,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * @jsx React.DOM
-	 * @copyright Prometheus Research, LLC 2014
-	 */
-	'use strict';
-
-	var ScrollShim = {
-
-	  appendScrollShim:function() {
-	    if (!this._scrollShim) {
-	      var size = this._scrollShimSize();
-	      var shim = document.createElement('div');
-	      shim.classList.add('react-grid-ScrollShim');
-	      shim.style.position = 'absolute';
-	      shim.style.top = 0;
-	      shim.style.left = 0;
-	      shim.style.width = (size.width + "px");
-	      shim.style.height = (size.height + "px");
-	      this.getDOMNode().appendChild(shim);
-	      this._scrollShim = shim;
-	    }
-	    this._scheduleRemoveScrollShim();
-	  },
-
-	  _scrollShimSize:function() {
-	    return {
-	      width: this.props.width,
-	      height: this.props.length * this.props.rowHeight
-	    };
-	  },
-
-	  _scheduleRemoveScrollShim:function() {
-	    if (this._scheduleRemoveScrollShimTimer) {
-	      clearTimeout(this._scheduleRemoveScrollShimTimer);
-	    }
-	    this._scheduleRemoveScrollShimTimer = setTimeout(
-	      this._removeScrollShim, 200);
-	  },
-
-	  _removeScrollShim:function() {
-	    if (this._scrollShim) {
-	      this._scrollShim.parentNode.removeChild(this._scrollShim);
-	      this._scrollShim = undefined;
-	    }
-	  }
-	};
-
-	module.exports = ScrollShim;
-
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(process) {/**
 	 * Copyright 2013-2014 Facebook, Inc.
 	 *
@@ -4729,6 +4676,60 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = copyProperties;
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @jsx React.DOM
+	 * @copyright Prometheus Research, LLC 2014
+	 */
+	'use strict';
+
+	var ScrollShim = {
+
+	  appendScrollShim:function() {
+	    if (!this._scrollShim) {
+	      var size = this._scrollShimSize();
+	      var shim = document.createElement('div');
+	      shim.classList.add('react-grid-ScrollShim');
+	      shim.style.position = 'absolute';
+	      shim.style.top = 0;
+	      shim.style.left = 0;
+	      shim.style.width = (size.width + "px");
+	      shim.style.height = (size.height + "px");
+	      this.getDOMNode().appendChild(shim);
+	      this._scrollShim = shim;
+	    }
+	    this._scheduleRemoveScrollShim();
+	  },
+
+	  _scrollShimSize:function() {
+	    return {
+	      width: this.props.width,
+	      height: this.props.length * this.props.rowHeight
+	    };
+	  },
+
+	  _scheduleRemoveScrollShim:function() {
+	    if (this._scheduleRemoveScrollShimTimer) {
+	      clearTimeout(this._scheduleRemoveScrollShimTimer);
+	    }
+	    this._scheduleRemoveScrollShimTimer = setTimeout(
+	      this._removeScrollShim, 200);
+	  },
+
+	  _removeScrollShim:function() {
+	    if (this._scrollShim) {
+	      this._scrollShim.parentNode.removeChild(this._scrollShim);
+	      this._scrollShim = undefined;
+	    }
+	  }
+	};
+
+	module.exports = ScrollShim;
+
 
 /***/ },
 /* 51 */
@@ -4866,7 +4867,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React         = __webpack_require__(10);
 	var PropTypes     = React.PropTypes;
-	var emptyFunction = __webpack_require__(44);
+	var emptyFunction = __webpack_require__(42);
 
 	var Draggable = React.createClass({displayName: "Draggable",
 
