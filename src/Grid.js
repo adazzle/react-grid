@@ -60,7 +60,8 @@ var Grid = React.createClass({
 
   getStyle: function(){
     return{
-      overflow: 'scroll',
+      overflowX: 'scroll',
+      overflowY: 'hidden',
       outline: 0,
       position: 'relative',
       minHeight: this.props.minHeight
